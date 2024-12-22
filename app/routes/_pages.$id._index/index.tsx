@@ -1,4 +1,4 @@
-import { Link, useLoaderData, useOutletContext } from "@remix-run/react";
+import { Link, useLoaderData, useOutletContext } from "react-router";
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import Card from "~/components/Card";

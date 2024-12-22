@@ -1,4 +1,4 @@
-import { defer, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
@@ -9,5 +9,5 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     .then((res) => res?.data || null)
     .catch(console.error);
 
-  return defer({ $user });
+  return { $user };
 };

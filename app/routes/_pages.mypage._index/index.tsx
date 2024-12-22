@@ -1,9 +1,4 @@
-import {
-  Link,
-  useLoaderData,
-  useNavigate,
-  useSearchParams,
-} from "@remix-run/react";
+import { Link, useLoaderData, useNavigate, useSearchParams } from "react-router";
 import SettinIcon from "~/assets/setting.svg";
 import Avator from "~/components/Avator";
 import Card from "~/components/Card";

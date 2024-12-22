@@ -1,4 +1,4 @@
-import { HeadersArgs } from "@remix-run/cloudflare";
+import { HeadersArgs } from "react-router";
 
 /**
  * loader の戻り値をページの Cache-Control header にセットする

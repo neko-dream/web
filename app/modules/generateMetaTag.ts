@@ -1,4 +1,4 @@
-import { MetaFunction } from "@remix-run/cloudflare";
+import { MetaFunction } from "react-router";
 
 type Props = {
   title?: string;

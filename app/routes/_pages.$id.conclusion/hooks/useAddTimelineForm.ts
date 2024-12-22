@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { addTimelineSchema } from "../schemas/addTimelineSchema";
-import { useRevalidator } from "@remix-run/react";
+import { useRevalidator } from "react-router";
 
 type Props = {
   talkSessionID: string;

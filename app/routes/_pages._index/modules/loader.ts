@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs, redirect } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
@@ -10,5 +10,5 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw redirect("/home");
   }
 
-  return json({});
+  return {};
 };

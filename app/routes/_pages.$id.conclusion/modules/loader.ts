@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = async ({ params }: LoaderFunctionArgs) => {
@@ -24,8 +24,8 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
     },
   );
 
-  return json({
+  return {
     timeline: timeline?.items || [],
     conclusion,
-  });
+  };
 };

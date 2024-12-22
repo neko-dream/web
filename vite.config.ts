@@ -1,20 +1,14 @@
-import {
-  vitePlugin as remix,
-  cloudflareDevProxyVitePlugin as remixCloudflareDevProxy,
-} from "@remix-run/dev";
-import basicSsl from "@vitejs/plugin-basic-ssl";
+import { reactRouter } from "@react-router/dev/vite";
 import "dotenv/config";
 import { defineConfig, loadEnv, UserConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import fs from "fs";
+import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 
 export default ({ mode }: UserConfig) => {
   process.env = { ...process.env, ...loadEnv(mode || "", process.cwd()) };
 
-  if (
-    !process.env.API_BASE_URL ||
-    !process.env.BASE_URL ||
-    !process.env.FUNCTIONS_URL
-  ) {
+  if (!process.env.API_BASE_URL || !process.env.BASE_URL) {
     throw new Error("❌ 必要な環境変数が読み込めていません。");
   }
 
@@ -28,25 +22,11 @@ export default ({ mode }: UserConfig) => {
       proxy: {},
       host: "local.kotohiro.com",
       port: 3000,
+      https: {
+        key: fs.readFileSync("./certificates/server.key"),
+        cert: fs.readFileSync("./certificates/server.crt"),
+      },
     },
-    plugins: [
-      basicSsl({
-        name: "test",
-        domains: ["local.kotohiro.com"],
-        certDir: "./certificates",
-      }),
-      remixCloudflareDevProxy(),
-      remix({
-        future: {
-          v3_singleFetch: true,
-          v3_lazyRouteDiscovery: true,
-          v3_optimizeDeps: true,
-          v3_fetcherPersist: true,
-          v3_relativeSplatPath: true,
-          v3_throwAbortReason: true,
-        },
-      }),
-      tsconfigPaths(),
-    ],
+    plugins: [cloudflareDevProxy(), reactRouter(), tsconfigPaths()],
   });
 };

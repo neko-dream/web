@@ -1,4 +1,4 @@
-import { defer, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
@@ -61,5 +61,11 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     },
   );
 
-  return defer({ data, opinions, report, timeline, conclusion });
+  return {
+    data,
+    opinions,
+    report,
+    timeline,
+    conclusion,
+  };
 };

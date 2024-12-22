@@ -1,4 +1,4 @@
-import { LoaderFunction, redirect } from "@remix-run/cloudflare";
+import { LoaderFunction, redirect } from "react-router";
 
 /**
  * 外部のページにリダイレクトするページ

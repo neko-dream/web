@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet } from "react-router";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 

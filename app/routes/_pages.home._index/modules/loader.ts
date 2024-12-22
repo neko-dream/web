@@ -1,6 +1,5 @@
-import { defer, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
-import { httpCacheHeader } from "~/libs/api/cache-header";
 
 const setStatus = (requestURL: string) => {
   try {
@@ -83,11 +82,5 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     })
     .then((res) => res?.data || null);
 
-  console.log(
-    setSortKey(request.url),
-    setGeoLocation(request.url)?.lat,
-    setGeoLocation(request.url)?.lng,
-  );
-
-  return defer({ $session }, { headers: httpCacheHeader() });
+  return { $session };
 };

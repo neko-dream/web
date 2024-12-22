@@ -1,4 +1,4 @@
-import { Await, Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import { Await, Link, useLoaderData, useSearchParams } from "react-router";
 import { Suspense } from "react";
 import Error from "~/components/Error";
 import Heading from "~/components/Heading";

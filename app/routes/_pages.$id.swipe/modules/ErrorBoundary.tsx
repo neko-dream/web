@@ -1,4 +1,4 @@
-import { isRouteErrorResponse, Link, useRouteError } from "@remix-run/react";
+import { isRouteErrorResponse, Link, useRouteError } from "react-router";
 import { button } from "~/components/Button";
 import Error from "~/components/Error";
 import SingupButton from "~/feature/auth/components/SingupButton";

@@ -2,7 +2,7 @@ import { useCustomForm } from "~/hooks/useCustomForm";
 import { createSessionFormSchema } from "../schemas";
 import { api } from "~/libs/api";
 import { toast } from "react-toastify";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 import { reverse } from "../libs";
 

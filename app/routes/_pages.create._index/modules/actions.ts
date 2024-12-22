@@ -1,6 +1,6 @@
 // import { openReverseGeocoder } from "@geolonia/open-reverse-geocoder";
 import { normalize } from "@geolonia/normalize-japanese-addresses";
-import { ActionFunction, json } from "@remix-run/cloudflare";
+import { ActionFunction } from "react-router";
 
 export const action: ActionFunction = async ({ request }) => {
   const formData = await request.formData();
@@ -13,12 +13,12 @@ export const action: ActionFunction = async ({ request }) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const openReverseGeocoder = (args: any): any => args;
       const result = await openReverseGeocoder([Number(lng), Number(lat)]);
-      return json({
+      return {
         prefecture: result.prefecture,
         city: result.city,
-      });
+      };
     } catch (error) {
-      return json({ error: "住所の取得に失敗しました" }, { status: 400 });
+      return { error: "住所の取得に失敗しました" };
     }
   }
 
@@ -36,15 +36,15 @@ export const action: ActionFunction = async ({ request }) => {
         !normalized.point?.lat ||
         !normalized.point?.lng
       ) {
-        return json({ error: "住所の正規化に失敗しました" }, { status: 400 });
+        return { error: "住所の正規化に失敗しました" };
       }
 
-      return json({
+      return {
         lat: normalized.point?.lat,
         lng: normalized.point?.lng,
-      });
+      };
     } catch (error) {
-      return json({ error: "処理に失敗しました" }, { status: 500 });
+      return { error: "処理に失敗しました" };
     }
   }
 };

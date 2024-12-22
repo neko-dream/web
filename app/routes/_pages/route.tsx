@@ -1,4 +1,4 @@
-import { Await, Link, Outlet, useLoaderData } from "@remix-run/react";
+import { Await, Link, Outlet, useLoaderData } from "react-router";
 import { Suspense, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

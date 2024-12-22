@@ -1,4 +1,4 @@
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "react-router";
 import GoogleLoginButton from "~/components/Button/template/GoogleLoginButton";
 
 export default function SingupButton() {

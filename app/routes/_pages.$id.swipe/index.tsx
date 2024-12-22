@@ -1,10 +1,4 @@
-import {
-  Link,
-  useLoaderData,
-  useOutletContext,
-  useParams,
-  useRevalidator,
-} from "@remix-run/react";
+import { Link, useLoaderData, useOutletContext, useParams, useRevalidator } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Button, { button } from "~/components/Button";

@@ -1,5 +1,5 @@
 import { animated } from "@react-spring/web";
-import { Link, useLocation, useNavigate } from "@remix-run/react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useRef } from "react";
 import { tv } from "tailwind-variants";
 import SearchWhiteIcon from "~/assets/search-white.svg";

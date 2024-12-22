@@ -1,4 +1,4 @@
-import { createRemixStub } from "@remix-run/testing";
+import { createRoutesStub } from "react-router";
 import type { Meta, StoryObj } from "@storybook/react";
 import OpinionCount from ".";
 
@@ -7,7 +7,7 @@ const meta: Meta<typeof OpinionCount> = {
   component: OpinionCount,
   decorators: [
     (Story) => {
-      const Stub = createRemixStub([
+      const Stub = createRoutesStub([
         {
           path: "/",
           Component: Story,

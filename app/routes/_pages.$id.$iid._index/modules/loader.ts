@@ -1,4 +1,4 @@
-import { json, LoaderFunctionArgs } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
@@ -38,20 +38,20 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     );
 
-    return json({
+    return {
       ...data,
       user,
       parentOpinion,
       rootOpinion: data?.rootOpinion,
       opinions: data?.opinions.reverse(),
-    });
+    };
   }
 
-  return json({
+  return {
     ...data,
     user,
     parentOpinion: undefined,
     rootOpinion: data?.rootOpinion,
     opinions: data?.opinions.reverse(),
-  });
+  };
 };

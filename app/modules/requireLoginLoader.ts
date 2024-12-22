@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, defer } from "@remix-run/cloudflare";
+import { LoaderFunctionArgs } from "react-router";
 import { User } from "~/feature/user/types";
 import { api } from "~/libs/api";
 
@@ -23,6 +23,6 @@ export const requireLoginLoader = <T extends Record<string, unknown>>(
       ...data.demographics,
     });
 
-    return defer(result);
+    return result;
   };
 };

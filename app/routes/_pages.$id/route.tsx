@@ -1,4 +1,4 @@
-import { Link, Outlet, useLoaderData, useLocation } from "@remix-run/react";
+import { Link, Outlet, useLoaderData, useLocation } from "react-router";
 import { useState } from "react";
 import { RiChat1Line } from "react-icons/ri";
 import Avator from "~/components/Avator";

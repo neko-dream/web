@@ -24,4 +24,11 @@ const convertFormData = (params: object): FormData => {
 export const api = createClient<paths>({
   baseUrl: API_BASE_URL,
   bodySerializer: (body) => body && convertFormData(body),
+  fetch: async (init) => {
+    return fetch(init, {
+      headers: {
+        cookie: init.headers?.get("cookie") || "",
+      },
+    });
+  },
 });

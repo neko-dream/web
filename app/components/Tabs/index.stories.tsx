@@ -1,4 +1,4 @@
-import { createRemixStub } from "@remix-run/testing";
+import { createRoutesStub } from "react-router";
 import type { Meta, StoryObj } from "@storybook/react";
 import Tabs from ".";
 
@@ -7,7 +7,7 @@ const meta: Meta<typeof Tabs> = {
   component: Tabs,
   decorators: [
     (Story) => {
-      const Stub = createRemixStub([
+      const Stub = createRoutesStub([
         {
           path: "/",
           Component: Story,
