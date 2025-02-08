@@ -1,7 +1,3 @@
-/**
- * 参考元
- * https://github.com/sergiodxa/remix-utils/blob/main/src/react/client-only.tsx
- */
 import { useSyncExternalStore } from "react";
 import * as React from "react";
 

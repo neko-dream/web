@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Session from ".";
 
 const meta: Meta<typeof Session> = {
-  title: "components/Session",
   component: Session,
   decorators: [
     (Story) => {

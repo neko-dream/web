@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import type { Meta, StoryObj } from "@storybook/react";
 import prefectures from "~/assets/data/adress/prefectures.json";
 import birthday from "~/assets/data/birthday.json";
@@ -6,7 +7,6 @@ import occupation from "~/assets/data/occupation.json";
 import Select from ".";
 
 const meta: Meta<typeof Select> = {
-  title: "components/Select",
   component: Select,
 };
 export default meta;

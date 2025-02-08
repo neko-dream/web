@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Avator from ".";
 
 const meta: Meta<typeof Avator> = {
-  title: "components/Avator",
   component: Avator,
 };
 export default meta;

@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Card from ".";
 
 const meta: Meta<typeof Card> = {
-  title: "components/Card",
   component: Card,
   decorators: [
     (Story) => {
@@ -22,7 +21,6 @@ const meta: Meta<typeof Card> = {
     },
   ],
 };
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 

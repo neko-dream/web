@@ -1,3 +1,4 @@
+/* eslint-disable import/no-unresolved */
 import { ComponentProps, ForwardedRef, forwardRef } from "react";
 import GoogleIcon from "~/assets/auth/Google.png";
 import Button from "../..";

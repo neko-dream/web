@@ -179,11 +179,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
       // eslint-disable-next-line react/jsx-key
       <>
         <Sprite
-          image={
-            iconURL
-              ? `${FUNCTIONS_URL}/image/?i=${iconURL}&width=120&height=120`
-              : images[colorIdx]
-          }
+          image={images[colorIdx]}
           x={x}
           y={y}
           zIndex={zIndex + 10}

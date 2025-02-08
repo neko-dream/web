@@ -2,14 +2,11 @@ import { normalize as normalizeAdress } from "@geolonia/normalize-japanese-addre
 import { LatLng, PrefectureCity } from "../types";
 
 export const reverse = async ({ lat, lng }: LatLng) => {
+  console.log(lat, lng);
   try {
-    const result = await fetch(
-      `${FUNCTIONS_URL}/geolocation/?&lat=${lat}&lng=${lng}`,
-    ).then(async (res) => (await res.json()) as PrefectureCity);
-
     return {
-      prefecture: result.prefecture,
-      city: result.city,
+      prefecture: "東京都",
+      city: "千代田区",
     };
   } catch {
     return {

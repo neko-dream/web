@@ -13,22 +13,9 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {
       builder: {
-        viteConfigPath: "vite.config.sb.ts",
+        viteConfigPath: "./.storybook/vite.config.sb.ts",
       },
     },
-  },
-  // https://github.com/storybookjs/storybook/discussions/26038
-  async viteFinal(config) {
-    // Merge custom configuration into the default config
-    const { mergeConfig } = await import("vite");
-
-    return mergeConfig(config, {
-      server: {
-        hmr: {
-          clientPort: process.env.CODESPACES ? 443 : undefined,
-        },
-      },
-    });
   },
 };
 export default config;

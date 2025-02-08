@@ -3,10 +3,8 @@ import Label from ".";
 import Input from "../Input";
 
 const meta: Meta<typeof Label> = {
-  title: "components/Label",
   component: Label,
 };
-
 export default meta;
 type Story = StoryObj<typeof meta>;
 

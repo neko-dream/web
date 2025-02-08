@@ -3,7 +3,6 @@ import type { Meta, StoryObj } from "@storybook/react";
 import OpinionCount from ".";
 
 const meta: Meta<typeof OpinionCount> = {
-  title: "components/OpinionCount",
   component: OpinionCount,
   decorators: [
     (Story) => {
