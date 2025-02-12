@@ -1,7 +1,6 @@
 import { isRouteErrorResponse, Link, useRouteError } from "react-router";
 import { button } from "~/components/Button";
 import Error from "~/components/Error";
-import SingupButton from "~/feature/auth/components/SingupButton";
 import { forbidden } from "~/libs/response";
 
 export function ErrorBoundary(): JSX.Element {
@@ -17,9 +16,7 @@ export function ErrorBoundary(): JSX.Element {
         <p className="text-gray-700">
           このページはログインすることで見れます🙇‍♀️
         </p>
-        <div className="mt-4">
-          <SingupButton />
-        </div>
+        <div className="mt-4"></div>
       </Error>
     );
   }

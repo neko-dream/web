@@ -6,6 +6,7 @@ import {
   mantineHtmlProps,
 } from "@mantine/core";
 import "./tailwind.css";
+import "@mantine/core/styles.css";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },

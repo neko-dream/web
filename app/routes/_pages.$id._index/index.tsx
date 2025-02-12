@@ -4,7 +4,7 @@ import ReactMarkdown from "react-markdown";
 import Card from "~/components/Card";
 import Heading from "~/components/Heading";
 import { components } from "~/libs/api/openapi";
-import Graph from "./components/Graph";
+// import Graph from "./components/Graph";
 import { loader } from "./modules/loader";
 import { SessionRouteContext } from "../_pages.$id/types";
 import { JST } from "~/libs/date";
@@ -55,6 +55,7 @@ export default function Page() {
       );
     })
     .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
+  console.log(positions);
 
   const sortedTimeline = timeline?.items.sort(
     (a, b) => a.Sequence - b.Sequence,
@@ -62,14 +63,14 @@ export default function Page() {
 
   return (
     <>
-      <Graph
+      {/* <Graph
         polygons={positions}
         positions={data?.positions}
         myPosition={data?.myPosition}
         selectGroupId={(id: number) => {
           setGroupID(id);
         }}
-      />
+      /> */}
       <Heading>レポート & 結論</Heading>
 
       <details className="prose-sm px-2">
