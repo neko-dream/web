@@ -4,7 +4,7 @@ export default {
   // Config options...
   // Server-side render by default, to enable SPA mode set this to `false`
   ssr: true,
-  async prerender() {
-    return ["/"];
-  },
+  // async prerender() {
+  //   return ["/"];
+  // },
 } satisfies Config;
