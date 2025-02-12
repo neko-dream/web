@@ -10,7 +10,7 @@ type Props = ComponentProps<"button"> & {
 };
 
 export const button = tv({
-  base: "w-full max-w-[175px] rounded-full p-2 text-center font-bold disabled:opacity-30",
+  base: "rounded-full p-2 text-center disabled:opacity-30",
   variants: {
     color: {
       primary: "border-green-500 bg-green-500 text-white",
@@ -20,7 +20,7 @@ export const button = tv({
       disabled: "border-gray-200 bg-gray-200 text-white",
     } satisfies { [x in variants]: string },
     outline: {
-      true: "border-2 border-solid bg-white text-gray-500",
+      true: "border border-solid bg-white text-gray-800",
     },
   },
 });
