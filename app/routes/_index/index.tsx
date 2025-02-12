@@ -18,7 +18,7 @@ export default function Index() {
 
       <div className="flex h-screen content-center">
         <div className="m-auto flex w-[350px] flex-col content-center rounded-lg bg-white p-4 shadow-lg">
-          <img src={Logo} alt="" className="mx-auto w-52" />
+          <img src={Logo} alt="" className="mx-auto w-52 -translate-x-4" />
 
           <div className="mt-6 text-center">
             <p>多種多様な意見や言葉を重ねてよりよい</p>
