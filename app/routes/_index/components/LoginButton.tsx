@@ -1,7 +1,8 @@
 import { tv } from "tailwind-variants";
 
 type Props = {
-  src: string;
+  href: string;
+  src?: string;
   title: string;
   className?: string;
 };
@@ -10,11 +11,11 @@ const button = tv({
   base: "flex h-10 w-full items-center justify-center rounded-full border py-2 hover:opacity-90",
 });
 
-export const LoginButton = ({ src, title, className }: Props) => {
+export const LoginButton = ({ src, title, className, href }: Props) => {
   return (
-    <a href="./#" className={button({ className })}>
-      <img src={src} alt="social icon" className="h-full" />
-      <span className="ml-[10px] font-semibold">{title}</span>
+    <a href={href} className={button({ className })}>
+      {src && <img src={src} alt="social icon" className="mr-[10px] h-full" />}
+      <span className="font-medium">{title}</span>
     </a>
   );
 };

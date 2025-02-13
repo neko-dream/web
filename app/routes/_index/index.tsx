@@ -2,6 +2,7 @@ import Logo from "~/assets/kotihiro.png";
 import LINE_PNG from "~/assets/auth/LINE.png";
 import GOOGLE_PNG from "~/assets/auth/Google.png";
 import { LoginButton } from "./components/LoginButton";
+import "./index.css";
 
 const CIRCLES_COUNT = Array(10).fill(null);
 
@@ -25,12 +26,19 @@ export default function Index() {
             <p>意思決定を目指すサービス</p>
           </div>
 
-          <div className="mx-4 mt-8 flex flex-col items-center space-y-4">
-            <LoginButton src={GOOGLE_PNG} title="Googleでログインする" />
+          <div className="mx-4 mt-8 flex flex-col items-center">
+            <LoginButton href="/home" title="ログインせずに使う！" />
             <LoginButton
+              href="#"
+              src={GOOGLE_PNG}
+              title="Googleでログインする"
+              className="mt-4"
+            />
+            <LoginButton
+              href="#"
               src={LINE_PNG}
               title="LINEでログインする"
-              className="border-none bg-[#06C755] text-white"
+              className="mt-2 border-none bg-[#06C755] text-white"
             />
           </div>
 
