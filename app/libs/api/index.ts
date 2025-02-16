@@ -25,10 +25,18 @@ export const api = createClient<paths>({
   baseUrl: API_BASE_URL,
   bodySerializer: (body) => body && convertFormData(body),
   fetch: async (init) => {
+    const headers = new Headers(init.headers);
+
+    /**
+     * ReactRouterV7はundiciを使うようになっています。
+     * ブラウザからのリクエストを全て付け替えてるのでそこにzstdが入ってる？
+     * ただundiciはzstdに対応していなく文字化けしてしまいます。
+     * https://github.com/nodejs/undici/issues/2847
+     */
+    headers.set("accept-encoding", "gzip");
+
     return fetch(init, {
-      headers: {
-        cookie: init.headers?.get("cookie") || "",
-      },
+      headers,
     });
   },
 });
