@@ -11,16 +11,13 @@ const avator = tv({
   base: "block h-10 w-10 rounded-full bg-slate-500",
 });
 
-function Avator(
-  { className, ...props }: Props,
-  ref: ForwardedRef<HTMLSourceElement>,
-) {
+function Avator({ className }: Props, ref: ForwardedRef<HTMLSourceElement>) {
   return (
-    <picture ref={ref} {...props} className={avator({ className })}>
-      <source srcSet={props.src || ""} />
+    <picture ref={ref} className={avator({ className })}>
+      <source srcSet={"https://placehold.jp/150x150.png"} />
       <img
         // FIXME: デフォルトの画像を設定する
-        src={""}
+        src={"https:example.com"}
         alt=""
         className="aspect-square w-full rounded-full object-cover"
       />

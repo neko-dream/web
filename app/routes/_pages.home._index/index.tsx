@@ -1,10 +1,9 @@
 import { Await, Link, useLoaderData, useSearchParams } from "react-router";
 import { Suspense } from "react";
 import Error from "~/components/Error";
-import Heading from "~/components/Heading";
 import Session from "~/components/Session";
-import Tabs from "~/components/Tabs";
 import { loader } from "./modules/loader";
+import { SessionSkeleton } from "./components/SessionSkeleton";
 
 export { loader };
 
@@ -15,16 +14,8 @@ export default function Page() {
 
   return (
     <>
-      <Heading className="h-10 shrink-0">投稿されたセッション</Heading>
-      <Tabs
-        items={[
-          { label: "開催中", href: "/home" },
-          { label: "終了", href: "/home?q=finished" },
-        ]}
-        active={isFinished ? "終了" : "開催中"}
-        className="shrink-0"
-      />
-      <Suspense>
+      <h2 className="mx-4 mt-4 text-xl font-bold">注目のセッション</h2>
+      <Suspense fallback={<SessionSkeleton />}>
         <Await resolve={$session}>
           {(data) => {
             if (!data?.talkSessions.length) {
@@ -40,7 +31,7 @@ export default function Page() {
             }
 
             return (
-              <div className="space-y-2 bg-gray-100 pt-2">
+              <div className="mt-4 space-y-6 px-4">
                 {data?.talkSessions.map((session, i) => (
                   <Link
                     to={
