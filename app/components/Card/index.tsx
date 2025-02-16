@@ -140,7 +140,7 @@ function Card(
       </button>
 
       {isTooltipOpen && (
-        <div className="absolute right-12 top-3 rounded border border-gray-500 bg-white p-2">
+        <div className="absolute right-12 top-3 rounded-sm border border-gray-500 bg-white p-2">
           <button onClick={handleCloseButton}>通報する</button>
         </div>
       )}

@@ -159,7 +159,7 @@ export const OpinionModal = ({
           <Button
             type="submit"
             variation="primary"
-            className="mx-auto !mb-8 !mt-auto"
+            className="mx-auto mb-8! mt-auto!"
             disabled={isDisabled}
           >
             送信する
