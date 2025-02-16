@@ -1,8 +1,7 @@
 import { reactRouter } from "@react-router/dev/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
-import autoprefixer from "autoprefixer";
-import tailwindcss from "tailwindcss";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import fs from "fs";
 import path from "path";
@@ -21,11 +20,6 @@ export default defineConfig(() => ({
     BASE_URL: `${JSON.stringify("https://www.kotohiro.com")}`,
     API_BASE_URL: `${JSON.stringify("https://api.kotohiro.com")}`,
   },
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer],
-    },
-  },
   plugins: [
     cloudflareDevProxy({
       getLoadContext({ context }) {
@@ -34,5 +28,6 @@ export default defineConfig(() => ({
     }),
     reactRouter(),
     tsconfigPaths(),
+    tailwindcss(),
   ],
 }));
