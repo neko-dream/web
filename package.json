@@ -20,8 +20,6 @@
     "@conform-to/react": "^1.2.2",
     "@geolonia/normalize-japanese-addresses": "^3.1.1",
     "@geolonia/open-reverse-geocoder": "^0.1.0",
-    "@mantine/core": "^7.16.2",
-    "@mantine/hooks": "^7.16.2",
     "@react-router/cloudflare": "^7.1.1-pre.0",
     "@react-router/fs-routes": "^7.1.0",
     "@react-router/node": "^7.1.3",
