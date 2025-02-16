@@ -1,6 +1,5 @@
 import { ComponentProps, ForwardedRef, forwardRef } from "react";
 import { tv } from "tailwind-variants";
-import defaultImage from "~/assets/default/avator-1.png";
 
 type Props = Avator & ComponentProps<"div">;
 
@@ -20,7 +19,8 @@ function Avator(
     <picture ref={ref} {...props} className={avator({ className })}>
       <source srcSet={props.src || ""} />
       <img
-        src={defaultImage}
+        // FIXME: デフォルトの画像を設定する
+        src={""}
         alt=""
         className="aspect-square w-full rounded-full object-cover"
       />
