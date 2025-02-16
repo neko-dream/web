@@ -12,6 +12,6 @@ API_BASE_URL = "https://api-dev.kotohiro.com/"
 BASE_URL = "https://www.kotohiro.com"
 API_BASE_URL = "https://api.kotohiro.com"
 
-[env.staging.observability]
+[env.production.observability]
 enabled = true
 head_sampling_rate = 1
