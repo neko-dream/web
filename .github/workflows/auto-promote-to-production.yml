@@ -28,6 +28,6 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create PR
         if: ${{ steps.check_pr_exist.outputs.count == 0 }}
-        run: gh pr create -B "main" -t "🚚 本番配達 💨"
+        run: gh pr create -B "main" -t "🚀 本番反映" -b "🛵 本番環境へデリバリーに参りました"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
