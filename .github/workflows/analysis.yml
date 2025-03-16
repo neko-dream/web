@@ -43,6 +43,9 @@ jobs:
       - name: Build project
         run: CF_ENV=${{ steps.env.outputs.CF_ENV }} bun run build
 
+      - name: Install Wrangler
+        run: bun add -g wrangler@latest
+
       - name: Build Worker
         run: wrangler pages functions build --outdir build/worker
 
