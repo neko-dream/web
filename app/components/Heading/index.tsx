@@ -1,25 +1,38 @@
-import { ComponentProps, ForwardedRef, forwardRef, ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { tv } from "tailwind-variants";
+import { Left } from "../Icons";
 
-type Props = Heading & ComponentProps<"div">;
-
-type Heading = {
-  children: ReactNode;
+type Props = ComponentProps<"button"> & {
+  title: ReactNode;
+  isLeftIcon?: boolean;
 };
 
 const heading = tv({
-  base: "flex h-6 items-center bg-gray-100 pl-4 text-sm",
+  base: "flex w-full cursor-pointer bg-gradient-to-r from-[#FF3B30] from-0% via-[#5856D6] via-50% to-[#32ADE6] to-100% p-2 text-[18px] font-bold text-white",
 });
 
-function Heading(
-  { className, children, ...props }: Props,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  return (
-    <div {...props} ref={ref} className={heading({ class: className })}>
-      {children}
-    </div>
-  );
-}
+const text = tv({
+  base: "mx-auto -translate-x-[13.5px]",
+  variants: {
+    isLeftIcon: {
+      false: "translate-x-0",
+    },
+  },
+});
 
-export default forwardRef(Heading);
+/**
+ * MEMO: 一個前に戻る方法が思いつかなかったのでbuttonにしてnavigate(-1)で対応できるように
+ */
+export const Heading = ({
+  className,
+  title,
+  isLeftIcon = true,
+  ...props
+}: Props) => {
+  return (
+    <button {...props} className={heading({ class: className })}>
+      {isLeftIcon && <Left />}
+      <span className={text({ isLeftIcon })}>{title}</span>
+    </button>
+  );
+};

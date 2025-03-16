@@ -1,0 +1,33 @@
+name: Auto Promote to Production
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - staging
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set git config
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+      - name: Check PR exist
+        id: check_pr_exist
+        run: |
+          echo "count=$(gh pr list -B "main" | wc -l)" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create PR
+        if: ${{ steps.check_pr_exist.outputs.count == 0 }}
+        run: gh pr create -B "main" -t "🚚 本番配達 💨"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

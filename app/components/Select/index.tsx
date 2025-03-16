@@ -1,6 +1,6 @@
 import { ComponentProps, ForwardedRef, forwardRef } from "react";
 import { tv } from "tailwind-variants";
-import ArrowIcon from "~/assets/arrow.svg";
+import { Arrow } from "../Icons";
 
 type Props = ComponentProps<"select"> & {
   options: { value: string; title: string }[];
@@ -50,11 +50,7 @@ function Select(
           );
         })}
       </select>
-      <img
-        src={ArrowIcon}
-        className="absolute right-4 top-1/2 -translate-y-1/2"
-        alt=""
-      />
+      <Arrow className="absolute top-1/2 right-4 -translate-y-1/2" />
     </span>
   );
 }

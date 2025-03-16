@@ -1,20 +1,8 @@
-import { createRoutesStub } from "react-router";
 import type { Meta, StoryObj } from "@storybook/react";
-import OpinionCount from ".";
+import { OpinionCount } from ".";
 
 const meta: Meta<typeof OpinionCount> = {
   component: OpinionCount,
-  decorators: [
-    (Story) => {
-      const Stub = createRoutesStub([
-        {
-          path: "/",
-          Component: Story,
-        },
-      ]);
-      return <Stub />;
-    },
-  ],
 };
 
 export default meta;

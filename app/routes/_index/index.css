@@ -32,6 +32,7 @@
   width: 80px;
   height: 80px;
   animation-delay: 0s;
+  background: #ff3b30;
 }
 
 .circles li:nth-child(2) {
@@ -40,6 +41,7 @@
   height: 20px;
   animation-delay: 2s;
   animation-duration: 12s;
+  background: #5856d6;
 }
 
 .circles li:nth-child(3) {

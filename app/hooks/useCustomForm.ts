@@ -62,7 +62,8 @@ export const useCustomForm = <T extends U>({
       }
     },
     onValidate: ({ formData }) => {
-      return parseWithValibot(formData, { schema });
+      const parse = parseWithValibot(formData, { schema });
+      return parse;
     },
     shouldValidate,
   });

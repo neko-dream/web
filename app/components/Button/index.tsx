@@ -1,23 +1,23 @@
-import { ComponentProps, ForwardedRef, forwardRef, ReactNode } from "react";
+import { ComponentProps, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 
 type variants = "primary" | "agree" | "disagree" | "pass" | "disabled";
 
-type Props = ComponentProps<"button"> & {
-  variation?: variants;
+export type Button = ComponentProps<"button"> & {
   children: ReactNode;
-  outline?: boolean;
+  color?: variants;
+  mini?: boolean;
 };
 
 export const button = tv({
-  base: "rounded-full p-2 text-center disabled:opacity-30",
+  base: "h-13 cursor-pointer rounded-2xl px-6 text-center font-bold text-white disabled:opacity-30",
   variants: {
     color: {
-      primary: "border-green-500 bg-green-500 text-white",
-      agree: "border-[#32ADE6] bg-[#32ADE6] text-white",
-      disagree: "border-[#FF2D55] bg-[#FF2D55] text-white",
-      pass: "border-[#AF52DE] bg-[#AF52DE] text-white",
-      disabled: "border-gray-200 bg-gray-200 text-white",
+      primary: "primary-gradient",
+      agree: "border-[#32ADE6] bg-[#32ADE6]",
+      disagree: "border-[#FF2D55] bg-[#FF2D55]",
+      pass: "border-[#AF52DE] bg-[#AF52DE]",
+      disabled: "border-2 border-gray-200 bg-white text-gray-300",
     } satisfies { [x in variants]: string },
     outline: {
       true: "border border-solid bg-white text-gray-800",
@@ -25,19 +25,10 @@ export const button = tv({
   },
 });
 
-function Button(
-  { children, variation, className, outline = false, ...props }: Props,
-  ref: ForwardedRef<HTMLButtonElement>,
-) {
+export const Button = ({ children, color, className, ...props }: Button) => {
   return (
-    <button
-      {...props}
-      className={button({ color: variation, class: className, outline })}
-      ref={ref}
-    >
+    <button {...props} className={button({ class: className, color })}>
       {children}
     </button>
   );
-}
-
-export default forwardRef(Button);
+};

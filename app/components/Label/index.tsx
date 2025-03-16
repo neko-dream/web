@@ -1,4 +1,4 @@
-import { ComponentProps, ForwardedRef, forwardRef, ReactNode } from "react";
+import { ComponentProps, JSX, ReactNode } from "react";
 import { RiAlertFill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
 import Tip from "../Tip";
@@ -9,22 +9,37 @@ type Props = ComponentProps<"div"> & {
   required?: boolean;
   optional?: boolean;
   errors?: string[];
+  notes?: string[];
 };
 
 const label = tv({
   base: "w-full space-y-1",
 });
 
-function Label(
-  { children, title, required, optional, errors, className, ...props }: Props,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
+export const Label = ({
+  children,
+  title,
+  required,
+  optional,
+  errors,
+  notes,
+  className,
+  ...props
+}: Props): JSX.Element => {
   return (
-    <div {...props} className={label({ className })} ref={ref}>
+    <div {...props} className={label({ className })}>
       <div className="mb-1 flex items-center space-x-1">
-        <p className="text-xs">{title}</p>
-        <Tip required={required} optional={optional} />
+        <p className="font-bold">{title}</p>
+        {(required || optional) && (
+          <Tip required={required} optional={optional} />
+        )}
       </div>
+      {notes &&
+        notes.map((v, i) => (
+          <p key={i} className="text-sm text-gray-400">
+            {v}
+          </p>
+        ))}
       {children}
       {errors?.map((v, i) => {
         return (
@@ -36,6 +51,4 @@ function Label(
       })}
     </div>
   );
-}
-
-export default forwardRef(Label);
+};
