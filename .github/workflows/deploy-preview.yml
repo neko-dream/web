@@ -8,10 +8,6 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -36,4 +32,3 @@ jobs:
           command: |
             pages functions build --outdir build/worker
             deploy --env develop
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
