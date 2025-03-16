@@ -31,6 +31,5 @@ routes = [
 APP_URL = "https://www.kotohiro.com"
 API_URL = "https://api.kotohiro.com"
 
-
 [observability.logs]
 enabled = true
