@@ -1,32 +1,11 @@
-import { createRoutesStub } from "react-router";
 import type { Meta, StoryObj } from "@storybook/react";
-import Card from ".";
+import { Card } from ".";
 
-const meta: Meta<typeof Card> = {
-  component: Card,
-  decorators: [
-    (Story) => {
-      const Stub = createRoutesStub([
-        {
-          path: "/",
-          Component: Story,
-        },
-      ]);
-
-      return (
-        <div className="max-w-[327px]">
-          <Stub />
-        </div>
-      );
-    },
-  ],
-};
-export default meta;
+const meta: Meta<typeof Card> = { component: Card };
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    title: "過言では？",
     description:
       "確かにいい感じだが、完全に習得するのに学習コストがかかるので、すべてのアプリに適応するのは難しいかも",
     user: {
@@ -34,6 +13,14 @@ export const Default: Story = {
       displayName: "山田太郎マン",
       iconURL: "",
     },
-    opinionStatus: "disagree",
+    href: "#",
+    status: "disagree",
+    date: "2022-01-01 00:00",
+    onClickAgree: () => console.log("agree"),
+    onClickDisagree: () => console.log("disagree"),
+    onClickPass: () => console.log("pass"),
+    onClickMore: () => console.log("more"),
   },
 };
+
+export default meta;

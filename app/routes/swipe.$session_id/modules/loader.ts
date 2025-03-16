@@ -1,0 +1,40 @@
+import { LoaderFunctionArgs } from "react-router";
+import { api } from "~/libs/api";
+import { forbidden, notfound } from "~/libs/response";
+import { OPINIONS_LIMIT } from "../constants";
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+    headers: request.headers,
+    params: {
+      path: {
+        talkSessionId: params.session_id || "",
+      },
+    },
+  });
+
+  const { data: opinions, error } = await api.GET(
+    "/talksessions/{talkSessionID}/swipe_opinions",
+    {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id!,
+        },
+        query: {
+          limit: OPINIONS_LIMIT,
+        },
+      },
+    },
+  );
+
+  if (!opinions || !session || error) {
+    if (error?.code.includes("AUTH")) {
+      throw forbidden();
+    }
+
+    throw notfound();
+  }
+
+  return { opinions, session };
+};

@@ -1,5 +1,5 @@
-import { Link } from "react-router";
-import { ComponentProps, ForwardedRef, forwardRef } from "react";
+import { NavLink } from "react-router";
+import { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"div"> & {
@@ -7,41 +7,42 @@ type Props = ComponentProps<"div"> & {
     label: string;
     href: string;
   }>;
-  active?: string;
 };
 
 const tabs = tv({
-  base: "flex h-10 justify-around",
+  base: "flex h-10 bg-white px-4",
 });
 
 const link = tv({
-  base: "flex h-full w-full items-center justify-center border-b-2 border-white text-xs",
+  base: "relative flex h-full w-20 items-center justify-center text-sm font-bold text-gray-400",
   variants: {
-    active: { true: "border-b-2 border-blue-500" },
+    isActive: {
+      true: "text-black before:absolute before:bottom-0 before:left-1/2 before:h-1 before:w-3/4 before:-translate-x-1/2 before:transform before:rounded-full before:bg-cyan-500",
+    },
   },
 });
 
-function Tabs(
-  { className, items, active, ...props }: Props,
-  ref: ForwardedRef<HTMLParagraphElement>,
-) {
+/**
+ * 汎用的なタブ要素
+ */
+export const Tabs = ({ className, items, ...props }: Props) => {
   return (
-    <div {...props} ref={ref} className={tabs({ className })}>
+    <div {...props} className={tabs({ className })}>
       {items.map(({ href, label }, i) => {
         return (
-          <Link
-            to={href}
-            className={link({ active: active === label })}
+          <NavLink
             key={i}
+            to={href}
+            end={true}
+            className={({ isActive }) => link({ isActive: isActive })}
             prefetch="viewport"
             replace={true}
+            viewTransition
           >
             {label}
-          </Link>
+          </NavLink>
         );
       })}
     </div>
   );
-}
-
-export default forwardRef(Tabs);
+};

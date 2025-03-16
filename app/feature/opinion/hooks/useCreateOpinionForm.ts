@@ -5,15 +5,15 @@ import { toast } from "react-toastify";
 import { fileCompress } from "~/libs/compressor";
 
 type Props = {
-  talkSessionID: string;
+  talkSessionID?: string;
   parentOpinionID?: string;
   onFinishedProcess: () => void;
 };
 
 export const useCreateOpinionsForm = ({
+  onFinishedProcess,
   talkSessionID,
   parentOpinionID,
-  onFinishedProcess,
 }: Props) => {
   return useCustomForm({
     schema: createOpinionFormSchema,
@@ -23,22 +23,15 @@ export const useCreateOpinionsForm = ({
         value.picture?.size !== 0 &&
         fileCompress(value.picture, 150);
 
-      const { data, error } = await api.POST(
-        "/talksessions/{talkSessionID}/opinions",
-        {
-          params: {
-            path: {
-              talkSessionID,
-            },
-          },
-          credentials: "include",
-          body: {
-            ...value,
-            parentOpinionID,
-            picture: (await compressedPicture) as unknown as string,
-          },
+      const { data, error } = await api.POST("/opinions", {
+        credentials: "include",
+        body: {
+          talkSessionID,
+          parentOpinionID,
+          ...value,
+          picture: (await compressedPicture) as unknown as string,
         },
-      );
+      });
 
       if (data) {
         toast.success("意見を送信しました");
