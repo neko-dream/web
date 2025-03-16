@@ -1,5 +1,4 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "kotohiro-web-app"
 main = "./build/worker/index.js"
 assets = { directory = "./build/client" }
 compatibility_date = "2024-10-18"
@@ -11,18 +10,31 @@ preview_urls = false
 APP_URL = "https://local.kotohiro.com:3000"
 API_URL = "https://api-dev.kotohiro.com"
 
+# 開発環境の設定
+[env.develop]
+name = "kotohiro-develop"
+routes = [
+  { pattern = "develop.kotohiro.com", custom_domain = true }
+]
+
+[env.develop.vars]
+APP_URL = "https://develop.kotohiro.com"
+API_URL = "https://api-dev.kotohiro.com"
+
 # ステージング環境の設定
 [env.staging]
+name = "kotohiro-staging"
 routes = [
   { pattern = "staging.kotohiro.com", custom_domain = true }
 ]
 
 [env.staging.vars]
-API_URL = "https://api-dev.kotohiro.com"
 APP_URL = "https://staging.kotohiro.com"
+API_URL = "https://api.kotohiro.com"
 
 # 本番環境の設定
 [env.production]
+name = "kotohiro"
 routes = [
   { pattern = "www.kotohiro.com", custom_domain = true }
 ]
