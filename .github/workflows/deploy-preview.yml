@@ -29,4 +29,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy --env develop
+          command: |
+            pages functions build --outdir build/worker
+            deploy --env develop
