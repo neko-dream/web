@@ -43,6 +43,9 @@ jobs:
       - name: Build project
         run: CF_ENV=${{ steps.env.outputs.CF_ENV }} bun run build
 
+      - name: Build Worker
+        run: wrangler pages functions build --outdir build/worker
+
       - name: Get current bundle info
         id: current
         run: |
