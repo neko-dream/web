@@ -4,9 +4,9 @@
   "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "LOCAL=1 && react-router dev",
-    "build": "cross-env NODE_OPTIONS=\"-C workerd\" react-router build",
-    "deploy": "bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy",
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
     "format": "prettier --write ./app/**",
     "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
     "storybook": "SB=1 storybook dev -p 6006",

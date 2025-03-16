@@ -15,7 +15,9 @@ export default defineConfig(async () => {
     };
   }
 
-  const proxy = await getPlatformProxy();
+  const proxy = await getPlatformProxy({
+    environment: process.env.CR_ENV,
+  });
   const { APP_URL, API_URL } = proxy.env;
 
   if (typeof APP_URL !== "string" || typeof API_URL !== "string") {
