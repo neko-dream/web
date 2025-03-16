@@ -1,0 +1,54 @@
+name: PR bot
+run-name: 🚀 Auto Promote to ${{ github.ref == 'refs/heads/staging' && 'Production' || 'Staging' }}
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - staging
+
+jobs:
+  create:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set git config
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+
+      - name: Set target branch and message
+        id: config
+        run: |
+          if [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
+            echo "target_branch=main" >> $GITHUB_OUTPUT
+            echo "pr_title=🚀 本番反映" >> $GITHUB_OUTPUT
+            echo "pr_body=🛵 本番環境へデリバリーに参りました" >> $GITHUB_OUTPUT
+          else
+            echo "target_branch=staging" >> $GITHUB_OUTPUT
+            echo "pr_title=🤖 ステージング反映" >> $GITHUB_OUTPUT
+            echo "pr_body=🍏 めんどくさいよね" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check PR exist
+        id: check_pr_exist
+        run: |
+          echo "count=$(gh pr list -B "${{ steps.config.outputs.target_branch }}" | wc -l)" >> $GITHUB_OUTPUT
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Create PR
+        if: ${{ steps.check_pr_exist.outputs.count == 0 }}
+        run: |
+          gh pr create -B "${{ steps.config.outputs.target_branch }}" \
+            -t "${{ steps.config.outputs.pr_title }}" \
+            -b "${{ steps.config.outputs.pr_body }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
