@@ -1,4 +1,5 @@
-name: Deploy Production
+name: Deploy Cloudflare Worker
+run-name: 🚀 Deploy to ${{ github.ref == 'refs/heads/main' && 'Production' || github.ref == 'refs/heads/staging' && 'Staging' || 'Development' }}
 
 on:
   push:
