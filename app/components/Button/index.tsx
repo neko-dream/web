@@ -6,7 +6,6 @@ type variants = "primary" | "agree" | "disagree" | "pass" | "disabled";
 export type Button = ComponentProps<"button"> & {
   children: ReactNode;
   color?: variants;
-  mini?: boolean;
 };
 
 export const button = tv({

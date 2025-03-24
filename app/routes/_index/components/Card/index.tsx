@@ -51,5 +51,5 @@ export const Card = ({
 };
 
 const OpinionButton = (props: Button) => {
-  return <Button {...props} className="z-10 h-7 w-16 px-0" mini />;
+  return <Button {...props} className="z-10 h-7 w-16 px-0 text-xs" />;
 };
