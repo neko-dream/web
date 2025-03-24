@@ -34,35 +34,3 @@ export const Pass: Story = {
     children: "セッションを作成する",
   },
 };
-
-export const MiniPrimary: Story = {
-  args: {
-    color: "primary",
-    mini: true,
-    children: "完了",
-  },
-};
-
-export const MiniAgree: Story = {
-  args: {
-    color: "agree",
-    mini: true,
-    children: "完了",
-  },
-};
-
-export const MiniDisagree: Story = {
-  args: {
-    color: "disagree",
-    mini: true,
-    children: "完了",
-  },
-};
-
-export const MiniPass: Story = {
-  args: {
-    color: "pass",
-    mini: true,
-    children: "完了",
-  },
-};
