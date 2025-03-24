@@ -5,7 +5,7 @@ import { JST } from "~/libs/date";
 import { OpinionCheckButton } from "./components/OpinionCheckButton";
 import { Tabs } from "~/components/Tabs";
 import { Avatar } from "~/components/Avatar";
-import type { Route } from "~/app/routes/$session_id/+types/route";
+import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { Graph } from "~/feature/graph/components";
 import { List } from "~/feature/acordion";

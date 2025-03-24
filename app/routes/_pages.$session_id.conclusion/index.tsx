@@ -1,6 +1,6 @@
 import { Link, useOutletContext } from "react-router";
 import { button } from "~/components/Button";
-import { SessionRouteContext } from "../$session_id/types";
+import { SessionRouteContext } from "../_pages.$session_id/types";
 
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();

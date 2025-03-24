@@ -10,7 +10,7 @@ import { Input } from "~/components/Input";
 import { Label } from "~/components/Label";
 import { isFieldsError } from "~/libs/form";
 import { useCreateSessionForm } from "./hooks/useCreateSessionForm";
-import type { Route } from "~/app/routes/create.session/+types";
+import type { Route } from "~/app/routes/_pages.create.session/+types";
 import { Checkbox } from "~/components/Checkbox";
 import { Check } from "~/components/Icons";
 import { Editor } from "~/feature/editor";

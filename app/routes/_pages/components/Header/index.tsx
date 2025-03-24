@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, Suspense } from "react";
 import { Await, Link } from "react-router";
 import LogoIcon from "~/assets/kotihiro.png";
 import { Avatar, AvatarSkeleton } from "~/components/Avatar";
-import type { Route } from "~/app/routes/@layout/+types/route";
+import type { Route } from "~/app/routes/_pages/+types/route";
 import { button } from "~/components/Button";
 import { PlusCircle, Search } from "~/components/Icons";
 
@@ -46,11 +46,11 @@ export const Header = ({ $user, setIsSearchMenuOpen }: Props) => {
                   to={"/create/session"}
                   className={button({
                     className:
-                      "flex h-8 items-center space-x-1 rounded-md bg-blue-500 p-2 text-xs",
+                      "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
                   })}
                 >
                   <PlusCircle />
-                  作成
+                  <span>作成</span>
                 </Link>
               </>
             );

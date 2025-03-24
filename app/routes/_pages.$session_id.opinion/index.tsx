@@ -3,8 +3,8 @@ import { toast } from "react-toastify";
 import { Card } from "~/components/Card";
 import { loader } from "./modules/loader";
 import { postVote } from "~/feature/opinion/libs/postVote";
-import type { Route } from "~/app/routes/$session_id.opinion/+types";
-import { SessionRouteContext } from "../$session_id/types";
+import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
+import { SessionRouteContext } from "../_pages.$session_id/types";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
@@ -14,6 +14,7 @@ export default function Page({
 }: Route.ComponentProps) {
   const { session } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
+  console.log(session);
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
@@ -32,7 +33,7 @@ export default function Page({
 
   return (
     <div className="flex flex-col space-y-2">
-      {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
+      {opinions.map(({ opinion, user: opinionUser }, i) => {
         return (
           <Card
             key={i}
@@ -44,7 +45,7 @@ export default function Page({
               displayName: opinionUser.displayName,
               iconURL: opinionUser.iconURL,
             }}
-            status={myVoteType}
+            // status={myVoteType}
             date={"2025/12/31 10:00"}
             onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
             onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}

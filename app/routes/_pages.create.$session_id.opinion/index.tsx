@@ -1,6 +1,6 @@
 import { Form, useNavigate } from "react-router";
 import { Heading } from "~/components/Heading";
-import type { Route } from "~/app/routes/create.$session_id.opinion/+types";
+import type { Route } from "~/app/routes/_pages.create.$session_id.opinion/+types";
 import { Label } from "~/components/Label";
 import Textarea from "~/components/Textarea";
 import { useCreateOpinionsForm } from "~/feature/opinion/hooks/useCreateOpinionForm";

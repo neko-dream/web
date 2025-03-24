@@ -2,9 +2,9 @@ import { Link, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import { Card } from "~/components/Card";
 import { loader } from "./modules/loader";
-import { SessionRouteContext } from "../$session_id/types";
+import { SessionRouteContext } from "../_pages.$session_id/types";
 import { postVote } from "~/feature/opinion/libs/postVote";
-import type { Route } from "~/app/routes/$session_id.report/+types";
+import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
 import { Graph } from "~/feature/graph/components";
 import { Arrow } from "~/components/Icons";
 

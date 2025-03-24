@@ -8,7 +8,7 @@ import { useSwipe } from "./hooks/useSwipe";
 import { animations } from "./libs/animations";
 import { loader } from "./modules/loader";
 import { postVote } from "~/feature/opinion/libs/postVote";
-import type { Route } from "~/app/routes/swipe.$session_id/+types";
+import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
 import { Graph } from "~/feature/graph/components";
 import { List } from "~/feature/acordion";
 import {

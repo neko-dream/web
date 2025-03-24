@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router";
-import { SessionRouteContext } from "../$session_id/types";
+import { SessionRouteContext } from "../_pages.$session_id/types";
 import xss from "xss";
 
 export default function Page() {

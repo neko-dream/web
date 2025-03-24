@@ -1,7 +1,7 @@
 import { Form, useNavigate } from "react-router";
 import { Heading } from "~/components/Heading";
 import { loader } from "./modules/loader";
-import type { Route } from "~/app/routes/opinion.$opinion_id/+types";
+import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
 import { Card } from "~/components/Card";
 import { RiMore2Fill } from "react-icons/ri";
 import { Fragment } from "react/jsx-runtime";

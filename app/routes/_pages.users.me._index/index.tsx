@@ -10,7 +10,7 @@ export default function Page() {
 
   return (
     <div className="mt-2 flex flex-1 flex-col items-center">
-      <Link to={"/mypage/edit"} className="mr-2 ml-auto">
+      <Link to={"/users/me/edit"} className="mr-2 ml-auto">
         <Setting />
       </Link>
       <Avatar src={user.iconURL} className="mt-2 h-16 w-16" />
