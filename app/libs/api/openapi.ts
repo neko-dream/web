@@ -430,6 +430,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/dev/detach": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * **開発用** 現在のアカウントを切り離す
+         * @description そのアカウントには再度ログインできなくなります。ログインしたければ言ってね！
+         */
+        delete: operations["authAccountDetach"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/{provider}/callback": {
         parameters: {
             query?: never;
@@ -546,6 +566,24 @@ export interface paths {
          * @description 画像を投稿してURLを返すAPI
          */
         post: operations["postImage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/policy/consent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 最新のポリシーに同意したかを取得 */
+        get: operations["getPolicyConsentStatus"];
+        put?: never;
+        /** 最新のポリシーに同意する */
+        post: operations["policyConsent"];
         delete?: never;
         options?: never;
         head?: never;
@@ -694,6 +732,14 @@ export interface components {
         restriction: {
             key: string;
             description: string;
+        };
+        policyConsentStatus: {
+            /** @description 最新ポリシーのバージョン */
+            policyVersion: string;
+            /** @description 同意した日時 */
+            consentedAt?: string | null;
+            /** @description 同意したか */
+            consentGiven: boolean;
         };
     };
     responses: never;
@@ -2273,6 +2319,43 @@ export interface operations {
             };
         };
     };
+    authAccountDetach: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    /** @example  */
+                    "Set-Cookie"?: string[];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
     oauth_callback: {
         parameters: {
             query: {
@@ -2576,6 +2659,86 @@ export interface operations {
                         /** @description 画像のURL */
                         url: string;
                     };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getPolicyConsentStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["policyConsentStatus"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    policyConsent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description ポリシーバージョン
+                     * @example
+                     */
+                    policyVersion: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["policyConsentStatus"];
                 };
             };
             400: {
