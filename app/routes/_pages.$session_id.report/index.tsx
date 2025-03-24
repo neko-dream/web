@@ -14,7 +14,7 @@ export { loader };
 export default function Page({
   loaderData: { opinions },
 }: Route.ComponentProps) {
-  const { session } = useOutletContext<SessionRouteContext>();
+  const { session, user } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
@@ -73,7 +73,7 @@ export default function Page({
             onClickDisagree={() => handleSubmitVote("", "disagree")}
             onClickPass={() => handleSubmitVote("", "pass")}
             onClickMore={() => {}}
-            isJudgeButton
+            isJudgeButton={user?.displayId !== opinionUser.displayID}
           />
         );
       })}
