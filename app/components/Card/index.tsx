@@ -1,215 +1,108 @@
-import {
-  ComponentProps,
-  ForwardedRef,
-  forwardRef,
-  ReactNode,
-  useState,
-} from "react";
-import { RiChat1Line, RiMore2Fill } from "react-icons/ri";
+import { ComponentProps, createElement } from "react";
+import { RiMore2Fill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
-import { OpinionType } from "~/feature/opinion/types";
-import { User } from "~/feature/user/types";
-import Avator from "../Avator";
-import Badge from "../Badge";
-import Button from "../Button";
-import { toast } from "react-toastify";
-import { OpinionJpMap } from "~/feature/opinion/constants";
+import { OpinionType } from "~/features/opinion/types";
+import { User } from "~/features/user/types";
+import { Avatar } from "../Avatar";
+import { Button } from "../Button";
+import { OpinionCount } from "../OpinionCount";
 
-type Props = Card & ComponentProps<"div">;
-
-type Card = {
-  percentage?: {
-    key: string;
-    value: number;
-  };
+type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
-  children?: ReactNode;
-  opinionStatus?: OpinionType;
+  status?: OpinionType;
+  href?: string;
   user: User;
-  isOpnionLink?: string;
-  isJegde?: boolean;
-  onClickVoteButton?: (v: string) => void;
-  myVoteType?: OpinionType;
-  referenceURL?: string;
-  img?: string;
+  date: string;
+  isJudgeButton?: boolean;
+  isMoreButton?: boolean;
+  opinionCount?: number;
+  onClickAgree?: () => void;
+  onClickDisagree?: () => void;
+  onClickPass?: () => void;
+  onClickMore?: () => void;
 };
 
 const card = tv({
-  base: "relative rounded-md border border-solid border-black p-4",
-  variants: {
-    isView: {
-      true: "pt-10",
-    },
-  },
+  base: "relative flex rounded-md bg-white p-2 pb-4",
 });
 
-const percentageUI = tv({
-  base: "absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap text-xs underline",
-  variants: {
-    agree: { true: "text-blue-500" },
-    disagree: { true: "text-red-500" },
-    pass: { true: "text-gray-500" },
-  },
-});
-
-const kebab = tv({
-  base: "absolute right-4 top-6 z-10",
-  variants: {
-    isView: {
-      true: "top-12",
-    },
-  },
-});
-
-function Card(
-  {
-    percentage,
-    user,
-    description,
-    opinionStatus,
-    children,
-    className,
-    isOpnionLink,
-    isJegde,
-    onClickVoteButton,
-    myVoteType,
-    referenceURL,
-    img,
-    ...props
-  }: Props,
-  ref: ForwardedRef<HTMLDivElement>,
-) {
-  const [isTooltipOpen, setIsTooltipOpen] = useState(false);
-  const handleButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    setIsTooltipOpen(!isTooltipOpen);
-  };
-
-  const handleCloseButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.stopPropagation();
-    event.preventDefault();
-    toast.success("通報しました");
-    setIsTooltipOpen(false);
-  };
-
-  const handleClickVoteButton = (
-    event: React.MouseEvent<HTMLButtonElement>,
-    target: string,
-  ) => {
-    event.stopPropagation();
-    event.preventDefault();
-    onClickVoteButton?.(target);
-  };
-
-  const isView = !isNaN(percentage?.value || NaN);
-
-  const handleClick = () => {
-    const result = window.confirm(`${referenceURL}に飛びます。`);
-    if (result) {
-      window.location.replace(referenceURL || "");
-    }
-  };
-
+export const Card = ({
+  user,
+  description,
+  className,
+  status,
+  date,
+  href,
+  isJudgeButton,
+  isMoreButton,
+  opinionCount,
+  onClickAgree,
+  onClickDisagree,
+  onClickPass,
+  onClickMore,
+  ...props
+}: Props) => {
   return (
-    <div {...props} ref={ref} className={card({ class: className, isView })}>
-      {isView && (
-        <p
-          className={percentageUI({
-            agree: percentage?.key === "agree",
-            disagree: percentage?.key === "disagree",
-            pass: percentage?.key === "pass",
-          })}
-        >
-          {percentage?.value}%の人がこの意見に「
-          {OpinionJpMap[percentage?.key as never]}」しました
-        </p>
-      )}
-      <div className="flex items-center">
-        <Avator src={user.iconURL} className="" />
-        <p className="ml-2 mr-auto text-xs text-[#6d6c6a]">
-          {user.displayName}
-        </p>
-        <Badge status={opinionStatus} className="ml-2 mr-8" />
+    <div {...props} className={card({ className })}>
+      <Avatar src={user.iconURL} className="shrink-0" />
+
+      <div className="w-full">
+        {createElement(
+          href ? "a" : "div",
+          { className: "ml-2 block", href: href },
+          <>
+            <p className="mt-1 text-xs text-gray-400">{user.displayName}</p>
+            <p className="mt-1 text-xs text-gray-300">{date}</p>
+            <p className="mt-2 line-clamp-3 text-[#4e4d4b]">{description}</p>
+
+            {opinionCount && (
+              <div className="mt-2">
+                <OpinionCount count={opinionCount} />
+              </div>
+            )}
+          </>,
+        )}
+
+        {isJudgeButton && (
+          <>
+            {/* ライン */}
+            <div className="mt-2 h-[1px] w-full bg-gray-200" />
+
+            <p className="mt-2 text-xs text-gray-300">あなたの意見</p>
+            {/* 40pxはアバター分 */}
+            <div className="mt-1 flex w-[calc(100%-40px)] justify-between">
+              <OpinionButton
+                onClick={onClickDisagree}
+                color={status === "disagree" ? "disagree" : "disabled"}
+              >
+                違うかも
+              </OpinionButton>
+              <OpinionButton
+                onClick={onClickPass}
+                color={status === "pass" ? "pass" : "disabled"}
+              >
+                保留
+              </OpinionButton>
+              <OpinionButton
+                onClick={onClickAgree}
+                color={status === "agree" ? "agree" : "disabled"}
+              >
+                良さそう
+              </OpinionButton>
+            </div>
+          </>
+        )}
       </div>
 
-      <p className="mt-2 line-clamp-4 text-[#4e4d4b]">{description}</p>
-
-      <button className={kebab({ isView })} onClick={handleButtonClick}>
-        <RiMore2Fill size={24} />
-      </button>
-
-      {isTooltipOpen && (
-        <div className="absolute right-12 top-3 rounded-sm border border-gray-500 bg-white p-2">
-          <button onClick={handleCloseButton}>通報する</button>
-        </div>
-      )}
-
-      {img && <img src={img} alt="" className="mx-auto my-2" />}
-
-      {children}
-
-      {referenceURL && (
-        <p className="mt-4 flex space-x-1 text-xs">
-          <span className="shrink-0">参考文献:</span>
-          <button
-            onClick={handleClick}
-            className="line-clamp-1 w-full text-start text-blue-400"
-          >
-            {referenceURL}
-          </button>
-        </p>
-      )}
-
-      <RpleyLink to={isOpnionLink} />
-
-      {isJegde && (
-        <div className="mt-4 flex justify-between">
-          <Button
-            className="h-8 w-24 p-1"
-            variation={myVoteType === "disagree" ? "disagree" : "disabled"}
-            onClick={(e) => handleClickVoteButton(e, "disagree")}
-            outline={myVoteType !== "disagree"}
-          >
-            違うかも
-          </Button>
-          <Button
-            className="h-8 w-24 p-1"
-            variation={myVoteType === "pass" ? "pass" : "disabled"}
-            onClick={(e) => handleClickVoteButton(e, "pass")}
-            outline={myVoteType !== "pass"}
-          >
-            保留
-          </Button>
-          <Button
-            className="h-8 w-24 p-1"
-            variation={myVoteType === "agree" ? "agree" : "disabled"}
-            onClick={(e) => handleClickVoteButton(e, "agree")}
-            outline={myVoteType !== "agree"}
-          >
-            良さそう
-          </Button>
-        </div>
+      {isMoreButton && (
+        <button className="absolute top-4 right-4" onClick={onClickMore}>
+          <RiMore2Fill size={24} className="text-gray-600" />
+        </button>
       )}
     </div>
   );
-}
-
-type RpleyLinkProps = {
-  to?: string;
 };
 
-function RpleyLink({ to }: RpleyLinkProps) {
-  if (!to) {
-    return null;
-  }
-
-  return (
-    <div className="mt-2 flex items-center justify-end text-blue-500">
-      <RiChat1Line />
-      <p className="ml-1 text-sm">返信画面にいく</p>
-    </div>
-  );
-}
-
-export default forwardRef(Card);
+const OpinionButton = (props: Button) => {
+  return <Button {...props} className="z-10 h-7 w-16 px-0 text-xs" />;
+};

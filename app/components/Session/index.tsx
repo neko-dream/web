@@ -1,7 +1,7 @@
 import { RiMapPinLine } from "react-icons/ri";
 import { components } from "~/libs/api/openapi";
-import Avator from "../Avator";
-import OpinionLink from "../OpinionCount";
+import { Avatar } from "../Avatar";
+import { OpinionCount } from "../OpinionCount";
 import { JST } from "~/libs/date";
 
 type Props = {
@@ -17,7 +17,7 @@ export default function Session({ talkSession, opinionCount }: Props) {
       {/* サムネイル */}
       {/* FIXME: 画像のURLを修正してください */}
       <img
-        src="https://placehold.jp/150x150.png"
+        src={talkSession.thumbnailURL || "https://placehold.jp/150x150.png"}
         className="aspect-square h-16 w-16 rounded-2xl"
         alt="session thumbnail"
       />
@@ -28,7 +28,7 @@ export default function Session({ talkSession, opinionCount }: Props) {
 
         {/* アバター */}
         <div className="flex items-center space-x-2">
-          <Avator
+          <Avatar
             src={"https://placehold.jp/150x150.png"}
             className="block h-5 w-5"
           />
@@ -38,20 +38,22 @@ export default function Session({ talkSession, opinionCount }: Props) {
         </div>
 
         <div className="flex space-x-6">
-          <div className="flex w-full max-w-24 items-center space-x-1">
-            <RiMapPinLine className="text-gray-500" />
-            <p className="text-xs text-gray-500">{talkSession.city}</p>
-          </div>
+          {talkSession.city && (
+            <div className="flex w-full max-w-24 items-center space-x-1">
+              <RiMapPinLine className="text-gray-500" />
+              <p className="text-xs text-gray-500">{talkSession.city}</p>
+            </div>
+          )}
 
           {isFinished ? (
-            <p className="text-xs text-gray-500">終了</p>
+            <p className="w-20 text-xs text-gray-500">終了</p>
           ) : (
-            <p className="text-xs text-gray-500">
+            <p className="w-20 text-xs text-gray-500">
               {JST(talkSession.scheduledEndTime).format("MM/DD(ddd)まで")}
             </p>
           )}
 
-          <OpinionLink count={opinionCount} />
+          <OpinionCount count={opinionCount} />
         </div>
       </div>
     </div>

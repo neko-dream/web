@@ -4,1019 +4,597 @@
  */
 
 export interface paths {
-  "/talksessions/{talkSessionID}/opinions/{opinionID}/votes": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/opinions/{opinionID}/votes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 意思表明API */
+        post: operations["vote2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** 意思表明API */
-    post: operations["vote"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/swipe_opinions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/opinions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * セッションに対して意見投稿 or 意見に対するリプライ
+         * @description parentOpinionIDがなければルートの意見として投稿される
+         *     parentOpinionIDがない場合はtalkSessionIDが必須
+         */
+        post: operations["postOpinionPost2"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * スワイプ用のエンドポイント
-     * @description セッションの中からまだ投票していない意見をランダムに取得する
-     */
-    get: operations["swipe_opinions"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/opinions/{opinionID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見詳細 */
+        get: operations["getOpinionDetail2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** セッションに対する意見一覧 */
-    get: operations["getOpinionsForTalkSession"];
-    put?: never;
-    /**
-     * セッションに対して意見投稿
-     * @description parentOpinionIDがなければルートの意見として投稿される
-     */
-    post: operations["postOpinionPost"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/opinions/{opinionID}/replies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見に対するリプライ意見一覧 */
+        get: operations["opinionComments2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 意見の詳細 */
-    get: operations["getOpinionDetail"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionId}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/opinions/{opinionID}/votes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 意思表明API */
+        post: operations["vote"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** トークセッションの詳細 */
-    get: operations["getTalkSessionDetail"];
-    /** セッション編集 */
-    put: operations["editTalkSession"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/swipe_opinions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * スワイプ用のエンドポイント
+         * @description セッションの中からまだ投票していない意見をランダムに取得する
+         */
+        get: operations["swipe_opinions"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** セッション一覧 */
-    get: operations["getTalkSessionList"];
-    put?: never;
-    /** セッション作成 */
-    post: operations["createTalkSession"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionId}/analysis": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/opinions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** セッションに対する意見一覧 */
+        get: operations["getOpinionsForTalkSession"];
+        put?: never;
+        /**
+         * セッションに対して意見投稿
+         * @description parentOpinionIDがなければルートの意見として投稿される
+         */
+        post: operations["postOpinionPost"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 分析結果一覧 */
-    get: operations["talkSessionAnalysis"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/timelines/{actionItemID}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/opinions/{opinionID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見の詳細 */
+        get: operations["getOpinionDetail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    /** タイムライン編集 */
-    put: operations["editTimeLine"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionId}/report": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** トークセッションの詳細 */
+        get: operations["getTalkSessionDetail"];
+        /** セッション編集 */
+        put: operations["editTalkSession"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** セッションレポートを返す */
-    get: operations["getTalkSessionReport"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}/replies": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** セッション一覧 */
+        get: operations["getTalkSessionList"];
+        put?: never;
+        /**
+         * セッション作成
+         * @description ## サムネイル画像について
+         *     - `Description中に出てくる画像で一番最初のものを使用`。
+         *     - 画像自体は`POST /images`でサーバにポストしたものを使用してください。
+         *
+         *     ## 投稿制限のキーについて
+         *     restrictionsに値を入れると一定のデモグラ情報を登録していない限り、セッションへの投稿が制限されるようにできる。
+         *     restrictionsには [GET /talksessions/restrictions](https://app.apidog.com/link/project/674502/apis/api-14271260) より取れるkeyをカンマ区切りで入力してください。
+         */
+        post: operations["createTalkSession"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 意見に対するリプライ意見一覧 */
-    get: operations["opinionComments"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}/replies2": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionId}/analysis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 分析結果一覧 */
+        get: operations["talkSessionAnalysis"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 意見に対するリプライ意見一覧 Copy */
-    get: operations["opinionComments2"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/conclusion": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionId}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** セッションレポートを返す */
+        get: operations["getTalkSessionReport"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 結論取得 */
-    get: operations["getConclusion"];
-    put?: never;
-    /**
-     * 結論投稿
-     * @description 結論（conclusion）はセッションが終了した後にセッっションの作成者が投稿できる文章。
-     *     セッションの流れやグループの分かれ方などに対するセッション作成者の感想やそれらの意見を受け、これからの方向性などを記入する。
-     */
-    post: operations["postConclusion"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/timelines": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/timelines/{actionItemID}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** タイムライン編集 */
+        put: operations["editTimeLine"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /**
-     * タイムライン取得
-     * @description タイムラインはセッション終了後にセッション作成者が設定できるその後の予定を知らせるもの
-     */
-    get: operations["getTimeLine"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/timeline": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/opinions/{opinionID}/replies": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見に対するリプライ意見一覧 */
+        get: operations["opinionComments"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** タイムラインアイテム追加 */
-    post: operations["postTimeLineItem"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/user": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/conclusion": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 結論取得 */
+        get: operations["getConclusion"];
+        put?: never;
+        /**
+         * 結論投稿
+         * @description 結論（conclusion）はセッションが終了した後にセッっションの作成者が投稿できる文章。
+         *     セッションの流れやグループの分かれ方などに対するセッション作成者の感想やそれらの意見を受け、これからの方向性などを記入する。
+         */
+        post: operations["postConclusion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** ユーザー情報の取得 */
-    get: operations["get_user_info"];
-    /** ユーザー情報の変更 */
-    put: operations["editUserProfile"];
-    /** ユーザー作成 */
-    post: operations["registerUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/opened": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/timelines": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * タイムライン取得
+         * @description タイムラインはセッション終了後にセッション作成者が設定できるその後の予定を知らせるもの
+         */
+        get: operations["getTimeLine"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 自分が開いたセッション一覧 */
-    get: operations["getOpenedTalkSession"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/opinions/histories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/{talkSessionID}/timeline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** タイムラインアイテム追加 */
+        post: operations["postTimeLineItem"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** 今までに投稿した異見 */
-    get: operations["opinionsHistory"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/histories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/restrictions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * セッションで指定可能な制限一覧
+         * @description セッションの投稿制限に使用できるキーの一覧を返す
+         */
+        get: operations["getTalkSessionRestrictionKeys"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** リアクション済みのセッション一覧 */
-    get: operations["sessionsHistory"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/token/info": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/user": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** ユーザー情報の取得 */
+        get: operations["get_user_info"];
+        /** ユーザー情報の変更 */
+        put: operations["editUserProfile"];
+        /** ユーザー作成 */
+        post: operations["registerUser"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** JWTの内容を返してくれる */
-    get: operations["oauth_token_info"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/test": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/talksessions/opened": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 自分が開いたセッション一覧 */
+        get: operations["getOpenedTalkSession"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    /** OpenAPIテスト用 */
-    get: operations["test"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/test/dummy": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    "/opinions/histories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 今までに投稿した異見 */
+        get: operations["opinionsHistory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
     };
-    get?: never;
-    put?: never;
-    /** mudai */
-    post: operations["dummiInit"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
+    "/talksessions/histories": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** リアクション済みのセッション一覧 */
+        get: operations["sessionsHistory"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/token/info": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** JWTの内容を返してくれる */
+        get: operations["oauth_token_info"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/dev/detach": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /**
+         * **開発用** 現在のアカウントを切り離す
+         * @description そのアカウントには再度ログインできなくなります。ログインしたければ言ってね！
+         */
+        delete: operations["authAccountDetach"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/{provider}/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Auth Callback */
+        get: operations["oauth_callback"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/{provider}/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** ログイン */
+        get: operations["authorize"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** トークンを失効（ログアウト） */
+        post: operations["oauth_token_revoke"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/dev/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 開発用登録/ログイン */
+        get: operations["devAuthorize"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/test": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** OpenAPIテスト用 */
+        get: operations["test"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/test/dummy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** mudai */
+        post: operations["dummiInit"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/images": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * 画像投稿
+         * @description 画像を投稿してURLを返すAPI
+         */
+        post: operations["postImage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/policy/consent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 最新のポリシーに同意したかを取得 */
+        get: operations["getPolicyConsentStatus"];
+        put?: never;
+        /** 最新のポリシーに同意する */
+        post: operations["policyConsent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    talkSession: {
-      /** @description トークセッションID */
-      id: string;
-      /** @description テーマ */
-      theme: string;
-      /** @description 説明 */
-      description?: string | null;
-      /** @description 作成ユーザー */
-      owner: components["schemas"]["user"];
-      /** @description 作成日時 */
-      createdAt: string;
-      /** @description 終了予定日時 */
-      scheduledEndTime: string;
-      /** @description 位置情報 */
-      location?: components["schemas"]["location"];
-      /** @description 市区町村 */
-      city?: string | null;
-      /** @description 都道府県 */
-      prefecture?: string | null;
-    };
-    validationErrorItem: {
-      /** @description バリデーションエラーのフィールド */
-      field: string;
-      /** @description バリデーションエラーメッセージ */
-      message: string;
-    };
-    error: {
-      code: string;
-      message: string;
-    };
-    user: {
-      displayID: string;
-      displayName: string;
-      iconURL?: string | null;
-    };
-    opinion: {
-      /** @description 意見ID */
-      id: string;
-      title?: string;
-      /** @description 意見のテキスト */
-      content: string;
-      /** @description 親の意見ID。ルートならば無し */
-      parentID?: string;
-      /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-      voteType?: components["schemas"]["voteType"];
-      /** @description 画像が返る場合もある */
-      pictureURL?: string;
-      /** @description 参考文献URL */
-      referenceURL?: string;
-      postedAt: string;
-    };
-    /**
-     * @description 意見の3種のステータス
-     * @default unvote
-     * @enum {string}
-     */
-    voteType: "agree" | "disagree" | "pass";
-    location: {
-      /** @description 緯度 */
-      latitude?: number;
-      /** @description 経度 */
-      longitude?: number;
-    };
-    tokenClaim: {
-      /** @description Audience */
-      aud: string;
-      /** @description 有効期限 */
-      exp: string;
-      /** @description 発行日時 */
-      iat: string;
-      /** @description 発行者 */
-      iss: string;
-      /** @description ユーザID */
-      sub: string;
-      /** @description JWT ID */
-      jti: string;
-      /** @description ユーザーID */
-      displayId?: string;
-      /** @description ユーザー名 */
-      displayName?: string;
-      /** @description アイコンURL */
-      iconURL?: string;
-      /** @description ユーザ登録済みか */
-      isVerify: boolean;
-    };
-    offsetPagination: {
-      totalCount: number;
-      offset: number;
-      limit: number;
-    };
-    userDemographics: {
-      /** @description 誕生年 */
-      yearOfBirth?: number | null;
-      /**
-       * 職業
-       * @description 職業
-       */
-      occupation: string;
-      /**
-       * 性別
-       * @description 性別
-       */
-      gender: string;
-      /**
-       * 市区町村
-       * @description 市区町村
-       */
-      city?: string | null;
-      /**
-       * 世帯人数
-       * @description 世帯人数
-       */
-      householdSize?: number | null;
-      /** @description 都道府県 */
-      prefecture?: string | null;
-    };
-    userGroupPosition: {
-      posX: number;
-      posY: number;
-      displayId: string;
-      displayName: string;
-      iconURL?: string | null;
-      groupName: string;
-      groupId: number;
-      /** @description 境界ポイントのインデックス */
-      perimeterIndex?: number;
-    };
-    Report: {
-      talkSessionID: string;
-      /** @description レポート本文 */
-      content: string;
-    };
-    conclusion: {
-      /** @description 作成ユーザー */
-      user: components["schemas"]["user"];
-      /** @description 結論本文 */
-      content: string;
-    };
-    actionItem: {
-      ActionItemID: string;
-      Sequence: number;
-      Content: string;
-      Status: string;
-      CreatedAt: string;
-      UpdatedAt: string;
-    };
-  };
-  responses: never;
-  parameters: never;
-  requestBodies: never;
-  headers: never;
-  pathItems: never;
-}
-export type $defs = Record<string, never>;
-export interface operations {
-  vote: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description セッションのID */
-        talkSessionID: string;
-        /** @description 意見のID */
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @example
-           * @enum {string|null}
-           */
-          voteStatus: "agree" | "disagree" | "pass" | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["opinion"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  swipe_opinions: {
-    parameters: {
-      query?: {
-        limit?: number;
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinion: components["schemas"]["opinion"];
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-            replyCount: number;
-          }[];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpinionsForTalkSession: {
-    parameters: {
-      query?: {
-        sort?: "latest" | "mostReply" | "oldest" | null;
-        /** @example 10 */
-        limit?: number | null;
-        /** @example 0 */
-        offset?: number | null;
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              replyCount: number;
-              /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-              myVoteType: components["schemas"]["voteType"];
-            }[];
-            pagination: {
-              totalCount: number;
-            };
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postOpinionPost: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          parentOpinionID?: string | null;
-          /** @example  */
-          title?: string | null;
-          /** @example  */
-          opinionContent: string;
-          /**
-           * Format: url
-           * @example
-           */
-          referenceURL?: string | null;
-          /**
-           * Format: binary
-           * @description 参考画像。4MiBまで
-           * @example
-           */
-          picture?: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpinionDetail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinion: components["schemas"]["opinion"];
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionDetail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["talkSession"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  editTalkSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          theme: string;
-          /** @example  */
-          scheduledEndTime: string;
-          /**
-           * @description 緯度
-           * @example 0
-           */
-          latitude?: number | null;
-          /**
-           * @description 経度
-           * @example 0
-           */
-          longitude?: number;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 説明文
-           * @example
-           */
-          description?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["talkSession"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionList: {
-    parameters: {
-      query?: {
-        /**
-         * @description 1ページあたりの要素数
-         * @example 10
-         */
-        limit?: number | null;
-        /**
-         * @description どの要素から始めるか
-         * @example 0
-         */
-        offset?: number | null;
-        theme?: string | null;
-        status?: "open" | "finished";
-        sortKey?: "latest" | "oldest" | "mostReplies" | "nearest";
-        latitude?: number | null;
-        longitude?: number | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            talkSessions: {
-              talkSession: components["schemas"]["talkSession"];
-              opinionCount: number;
-            }[];
-            pagination: components["schemas"]["offsetPagination"];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  createTalkSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example オブジェクト指向は悪 */
-          theme: string;
-          /**
-           * Format: date-time
-           * @example 2024-12-17T03:24:00Z
-           */
-          scheduledEndTime: string;
-          /**
-           * @description 緯度
-           * @example 0
-           */
-          latitude?: number | null;
-          /**
-           * @description 経度
-           * @example 0
-           */
-          longitude?: number | null;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-          /**
-           * @description 説明文
-           * @example
-           */
-          description?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
+    schemas: {
+        talkSession: {
             /** @description トークセッションID */
             id: string;
             /** @description テーマ */
@@ -1035,881 +613,49 @@ export interface operations {
             city?: string | null;
             /** @description 都道府県 */
             prefecture?: string | null;
-          };
+            /** @description サムネ画像 */
+            thumbnailURL?: string | null;
+            /** @description セッションの参加制限 */
+            restrictions: components["schemas"]["restriction"][];
         };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
+        validationErrorItem: {
+            /** @description バリデーションエラーのフィールド */
+            field: string;
+            /** @description バリデーションエラーメッセージ */
+            message: string;
         };
-        content: {
-          "application/json": {
+        error: {
             code: string;
             message: string;
-          };
         };
-      };
-    };
-  };
-  talkSessionAnalysis: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            myPosition?: components["schemas"]["userGroupPosition"];
-            positions: components["schemas"]["userGroupPosition"][];
-            groupOpinions: {
-              groupName: string;
-              groupId: number;
-              opinions: {
-                opinion: components["schemas"]["opinion"];
-                /** @description 作成ユーザー */
-                user: components["schemas"]["user"];
-                agreeCount: number;
-                disagreeCount: number;
-                passCount: number;
-              }[];
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  editTimeLine: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        actionItemID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          content?: string | null;
-          /** @example  */
-          status?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["actionItem"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionReport: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionId: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            report: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  opinionComments: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        /** @description 親意見のID */
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            rootOpinion: {
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-              myVoteType?: components["schemas"]["voteType"];
-              opinion: components["schemas"]["opinion"];
-            };
-            opinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-              myVoteType?: components["schemas"]["voteType"];
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  opinionComments2: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        /** @description 親意見のID */
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            rootOpinion: {
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              opinion: components["schemas"]["opinion"];
-            };
-            replyOpinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              myVoteType?: components["schemas"]["voteType"] | null;
-            }[];
-            parentOpinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-              myVoteType: components["schemas"]["voteType"];
-              level: number;
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getConclusion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["conclusion"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postConclusion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description 結論本文。2文字以上
-           * @example よかった！
-           */
-          content: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["conclusion"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTimeLine: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            items: components["schemas"]["actionItem"][];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postTimeLineItem: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          content: string;
-          /** @example  */
-          status: string;
-          /**
-           * @description 親があるなら親のIDヲシテイ
-           * @example
-           */
-          parentActionItemID?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            ActionItemID: string;
-            Sequence: number;
-            Content: string;
-            Status: string;
-            CreatedAt: string;
-            UpdatedAt: string;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  get_user_info: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-            demographics: components["schemas"]["userDemographics"];
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  editUserProfile: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description ユーザー名
-           * @example
-           */
-          displayName?: string | null;
-          /**
-           * Format: binary
-           * @description ユーザーアイコン
-           * @example
-           */
-          icon?: string;
-          /**
-           * @default false
-           * @example false
-           */
-          deleteIcon?: boolean | null;
-          /**
-           * @description 生まれ年
-           * @example 0
-           */
-          yearOfBirth?: number | null;
-          /**
-           * @description 性別
-           * @example
-           * @enum {string|null}
-           */
-          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 職業
-           * @example
-           * @enum {string|null}
-           */
-          occupation?:
-            | "正社員"
-            | "契約社員"
-            | "公務員"
-            | "自営業"
-            | "会社役員"
-            | "パート・アルバイト"
-            | "家事従事者"
-            | "学生"
-            | "無職"
-            | "その他"
-            | "回答しない"
-            | null;
-          /**
-           * @description 世帯人数
-           * @example 0
-           */
-          householdSize?: number | null;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
+        user: {
             displayID: string;
             displayName: string;
             iconURL?: string | null;
-          };
         };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
+        opinion: {
+            /** @description 意見ID */
+            id: string;
+            title?: string;
+            /** @description 意見のテキスト */
+            content: string;
+            /** @description 親の意見ID。ルートならば無し */
+            parentID?: string;
+            /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
+            voteType?: string | null;
+            /** @description 画像が返る場合もある */
+            pictureURL?: string | null;
+            /** @description 参考文献URL */
+            referenceURL?: string;
+            postedAt: string;
         };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
+        location: {
+            /** @description 緯度 */
+            latitude?: number;
+            /** @description 経度 */
+            longitude?: number;
         };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  registerUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description ユーザー名。日本語なども設定可能。
-           * @example hogesge
-           */
-          displayName: string;
-          /**
-           * @description ユーザーID。プロフィールのパスなどで使用される。DBのIDとは別。
-           * @example suge-
-           */
-          displayID: string;
-          /**
-           * Format: binary
-           * @description ユーザーアイコン
-           * @example
-           */
-          icon?: string;
-          /**
-           * @description 生まれ年
-           * @default 0
-           * @example 0
-           */
-          yearOfBirth?: number | null;
-          /**
-           * @description 性別
-           * @default preferNotToSay
-           * @example
-           * @enum {string|null}
-           */
-          gender?: "男性" | "女性" | "その他" | "回答しない";
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description ユーザーの職業
-           * @default 無回答
-           * @example
-           * @enum {string|null}
-           */
-          occupation?:
-            | "正社員"
-            | "契約社員"
-            | "公務員"
-            | "自営業"
-            | "会社役員"
-            | "パート・アルバイト"
-            | "家事従事者"
-            | "学生"
-            | "無職"
-            | "その他"
-            | "回答しない";
-          /**
-           * @description 世帯人数
-           * @example 0
-           */
-          householdSize?: number | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            displayID: string;
-            displayName: string;
-            iconURL?: string | null;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpenedTalkSession: {
-    parameters: {
-      query?: {
-        /** @example 0 */
-        limit?: number;
-        /** @example 0 */
-        offset?: number;
-        /**
-         * @description テーマ
-         * @example
-         */
-        theme?: string;
-        /** @example  */
-        status?: "finished" | "open" | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            talkSessions: {
-              talkSession: components["schemas"]["talkSession"];
-              opinionCount: number;
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  opinionsHistory: {
-    parameters: {
-      query?: {
-        /** @description ソートきー */
-        sort?: "latest" | "mostReply" | "oldest" | null;
-        limit?: number;
-        offset?: number;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              opinion: components["schemas"]["opinion"];
-              replyCount: number;
-            }[];
-            pagination: {
-              totalCount: number;
-            };
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  sessionsHistory: {
-    parameters: {
-      query?: {
-        limit?: number;
-        offset?: number;
-        /** @description テーマ  */
-        theme?: string | null;
-        status?: "open" | "finished" | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            pagination: components["schemas"]["offsetPagination"];
-            talkSessions: {
-              opinionCount: number;
-              talkSession: components["schemas"]["talkSession"];
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  oauth_token_info: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
+        tokenClaim: {
             /** @description Audience */
             aud: string;
             /** @description 有効期限 */
@@ -1930,110 +676,2087 @@ export interface operations {
             iconURL?: string;
             /** @description ユーザ登録済みか */
             isVerify: boolean;
-          };
+            isEmailVerified: boolean;
         };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
+        offsetPagination: {
+            totalCount: number;
+            offset: number;
+            limit: number;
         };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
+        userDemographics: {
+            /** @description 誕生年 */
+            yearOfBirth?: number | null;
+            /**
+             * 性別
+             * @description 性別
+             */
+            gender?: string | null;
+            /**
+             * 市区町村
+             * @description 市区町村
+             */
+            city?: string | null;
+            /** @description 都道府県 */
+            prefecture?: string | null;
         };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
+        userGroupPosition: {
+            posX: number;
+            posY: number;
+            displayId: string;
+            displayName: string;
+            iconURL?: string | null;
+            groupName: string;
+            groupId: number;
+            /** @description 境界ポイントのインデックス */
+            perimeterIndex?: number;
         };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
+        Report: {
+            talkSessionID: string;
+            /** @description レポート本文 */
+            content: string;
         };
-      };
+        conclusion: {
+            /** @description 作成ユーザー */
+            user: components["schemas"]["user"];
+            /** @description 結論本文 */
+            content: string;
+        };
+        actionItem: {
+            ActionItemID: string;
+            Sequence: number;
+            Content: string;
+            Status: string;
+            CreatedAt: string;
+            UpdatedAt: string;
+        };
+        restriction: {
+            key: string;
+            description: string;
+        };
+        policyConsentStatus: {
+            /** @description 最新ポリシーのバージョン */
+            policyVersion: string;
+            /** @description 同意した日時 */
+            consentedAt?: string | null;
+            /** @description 同意したか */
+            consentGiven: boolean;
+        };
     };
-  };
-  test: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
+}
+export type $defs = Record<string, never>;
+export interface operations {
+    vote2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 意見のID */
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @example
+                     * @enum {string|null}
+                     */
+                    voteStatus: "agree" | "disagree" | "pass" | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["opinion"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    postOpinionPost2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
         };
-        content: {
-          "application/json": {
-            optInt?: number | null;
-            optNilInt?: number;
-            optNilBool?: boolean | null;
-            optBool?: boolean;
-            /** Format: uri */
-            optUrl?: string;
-            /** Format: url */
-            optNilUrl?: string | null;
-          };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example  */
+                    talkSessionID?: string | null;
+                    /**
+                     * @description これがある場合はリプライとみなす。これがない場合はTalkSessionIDが必須。
+                     * @example
+                     */
+                    parentOpinionID?: string | null;
+                    /** @example  */
+                    title?: string | null;
+                    /** @example  */
+                    opinionContent: string;
+                    /**
+                     * Format: url
+                     * @example
+                     */
+                    referenceURL?: string | null;
+                    /**
+                     * Format: binary
+                     * @description 参考画像。4MiBまで
+                     * @example
+                     */
+                    picture?: string;
+                };
+            };
         };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
         };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
     };
-  };
-  dummiInit: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
+    getOpinionDetail2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinion: components["schemas"]["opinion"];
+                        /** @description 作成ユーザー */
+                        user: components["schemas"]["user"];
+                        myVoteType?: string | null;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
     };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
+    opinionComments2: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description 親意見のID */
+                opinionID: string;
+            };
+            cookie?: never;
         };
-        content: {
-          "application/json": Record<string, never>;
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinions: {
+                            opinion: components["schemas"]["opinion"];
+                            /** @description 作成ユーザー */
+                            user: components["schemas"]["user"];
+                            myVoteType?: string | null;
+                        }[];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
         };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
     };
-  };
+    vote: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description セッションのID */
+                talkSessionID: string;
+                /** @description 意見のID */
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @example
+                     * @enum {string|null}
+                     */
+                    voteStatus: "agree" | "disagree" | "pass" | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["opinion"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    swipe_opinions: {
+        parameters: {
+            query?: {
+                limit?: number;
+            };
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinion: components["schemas"]["opinion"];
+                        /** @description 作成ユーザー */
+                        user: components["schemas"]["user"];
+                        replyCount: number;
+                    }[];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getOpinionsForTalkSession: {
+        parameters: {
+            query?: {
+                sort?: "latest" | "mostReplies" | "oldest" | null;
+                /** @example 10 */
+                limit?: number | null;
+                /** @example 0 */
+                offset?: number | null;
+            };
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinions: {
+                            opinion: components["schemas"]["opinion"];
+                            /** @description 作成ユーザー */
+                            user: components["schemas"]["user"];
+                            replyCount: number;
+                            myVoteType?: string | null;
+                        }[];
+                        pagination: {
+                            totalCount: number;
+                        };
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    postOpinionPost: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example  */
+                    parentOpinionID?: string | null;
+                    /** @example  */
+                    title?: string | null;
+                    /** @example  */
+                    opinionContent: string;
+                    /**
+                     * Format: url
+                     * @example
+                     */
+                    referenceURL?: string | null;
+                    /**
+                     * Format: binary
+                     * @description 参考画像。4MiBまで
+                     * @example
+                     */
+                    picture?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getOpinionDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinion: components["schemas"]["opinion"];
+                        /** @description 作成ユーザー */
+                        user: components["schemas"]["user"];
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getTalkSessionDetail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["talkSession"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    editTalkSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example  */
+                    theme: string;
+                    /** @example  */
+                    scheduledEndTime: string;
+                    /**
+                     * @description 緯度
+                     * @example 0
+                     */
+                    latitude?: number | null;
+                    /**
+                     * @description 経度
+                     * @example 0
+                     */
+                    longitude?: number;
+                    /**
+                     * @description 都道府県
+                     * @example
+                     */
+                    prefecture?: string | null;
+                    /**
+                     * @description 市区町村
+                     * @example
+                     */
+                    city?: string | null;
+                    /**
+                     * @description 説明文
+                     * @example
+                     */
+                    description?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["talkSession"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getTalkSessionList: {
+        parameters: {
+            query?: {
+                /**
+                 * @description 1ページあたりの要素数
+                 * @example 10
+                 */
+                limit?: number | null;
+                /**
+                 * @description どの要素から始めるか
+                 * @example 0
+                 */
+                offset?: number | null;
+                theme?: string | null;
+                status?: "open" | "finished";
+                sortKey?: "latest" | "oldest" | "mostReplies" | "nearest";
+                latitude?: number | null;
+                longitude?: number | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        talkSessions: {
+                            talkSession: components["schemas"]["talkSession"];
+                            opinionCount: number;
+                        }[];
+                        pagination: components["schemas"]["offsetPagination"];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    createTalkSession: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example いい感じのテーマ */
+                    theme: string;
+                    /**
+                     * Format: date-time
+                     * @example 2024-12-17T03:24:00Z
+                     */
+                    scheduledEndTime: string;
+                    /**
+                     * @description 緯度
+                     * @example 0
+                     */
+                    latitude?: number | null;
+                    /**
+                     * @description 経度
+                     * @example 0
+                     */
+                    longitude?: number | null;
+                    /**
+                     * @description 市区町村
+                     * @example
+                     */
+                    city?: string | null;
+                    /**
+                     * @description 都道府県
+                     * @example
+                     */
+                    prefecture?: string | null;
+                    /**
+                     * @description 説明文
+                     * @example
+                     */
+                    description?: string | null;
+                    /**
+                     * @description サムネイルURL。文中から一番最初の画像URLをサムネとする。
+                     * @example
+                     */
+                    thumbnailURL?: string | null;
+                    /**
+                     * @description 投稿制限のキー
+                     * @example [
+                     *       "demographics.city"
+                     *     ]
+                     */
+                    restrictions?: string[];
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description トークセッションID */
+                        id: string;
+                        /** @description テーマ */
+                        theme: string;
+                        /** @description 説明 */
+                        description?: string | null;
+                        /** @description 作成ユーザー */
+                        owner: components["schemas"]["user"];
+                        /** @description 作成日時 */
+                        createdAt: string;
+                        /** @description 終了予定日時 */
+                        scheduledEndTime: string;
+                        /** @description 位置情報 */
+                        location?: components["schemas"]["location"];
+                        /** @description 市区町村 */
+                        city?: string | null;
+                        /** @description 都道府県 */
+                        prefecture?: string | null;
+                        /** @description サムネ画像 */
+                        thumbnailURL?: string | null;
+                        /** @description セッションの参加制限 */
+                        restrictions: components["schemas"]["restriction"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    talkSessionAnalysis: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        myPosition?: components["schemas"]["userGroupPosition"];
+                        positions: components["schemas"]["userGroupPosition"][];
+                        groupOpinions: {
+                            groupName: string;
+                            groupId: number;
+                            opinions: {
+                                opinion: components["schemas"]["opinion"];
+                                /** @description 作成ユーザー */
+                                user: components["schemas"]["user"];
+                                agreeCount: number;
+                                disagreeCount: number;
+                                passCount: number;
+                            }[];
+                        }[];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getTalkSessionReport: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        report: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    editTimeLine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+                actionItemID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example  */
+                    content?: string | null;
+                    /** @example  */
+                    status?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["actionItem"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    opinionComments: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+                /** @description 親意見のID */
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinions: {
+                            opinion: components["schemas"]["opinion"];
+                            /** @description 作成ユーザー */
+                            user: components["schemas"]["user"];
+                            myVoteType?: string | null;
+                        }[];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getConclusion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["conclusion"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    postConclusion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description 結論本文。2文字以上
+                     * @example よかった！
+                     */
+                    content: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["conclusion"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getTimeLine: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        items: components["schemas"]["actionItem"][];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    postTimeLineItem: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example  */
+                    content: string;
+                    /** @example  */
+                    status: string;
+                    /**
+                     * @description 親があるなら親のIDヲシテイ
+                     * @example
+                     */
+                    parentActionItemID?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        ActionItemID: string;
+                        Sequence: number;
+                        Content: string;
+                        Status: string;
+                        CreatedAt: string;
+                        UpdatedAt: string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getTalkSessionRestrictionKeys: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["restriction"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    get_user_info: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description 作成ユーザー */
+                        user: components["schemas"]["user"];
+                        demographics: components["schemas"]["userDemographics"];
+                        email?: string | null;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    editUserProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description ユーザー名
+                     * @example
+                     */
+                    displayName?: string | null;
+                    /**
+                     * Format: binary
+                     * @description ユーザーアイコン
+                     * @example
+                     */
+                    icon?: string;
+                    /**
+                     * @default false
+                     * @example false
+                     */
+                    deleteIcon?: boolean | null;
+                    /**
+                     * @description 生まれ年
+                     * @example 0
+                     */
+                    yearOfBirth?: number | null;
+                    /**
+                     * @description 性別
+                     * @example
+                     * @enum {string|null}
+                     */
+                    gender?: "男性" | "女性" | "その他" | "回答しない" | null;
+                    /**
+                     * @description 市区町村
+                     * @example
+                     */
+                    city?: string | null;
+                    /**
+                     * @description 都道府県
+                     * @example
+                     */
+                    prefecture?: string | null;
+                    /**
+                     * @description メールアドレス
+                     * @example
+                     */
+                    email?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        displayID: string;
+                        displayName: string;
+                        iconURL?: string | null;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    registerUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description ユーザー名。日本語なども設定可能。
+                     * @example hogesge
+                     */
+                    displayName: string;
+                    /**
+                     * @description ユーザーID。プロフィールのパスなどで使用される。DBのIDとは別。
+                     * @example suge-
+                     */
+                    displayID: string;
+                    /**
+                     * Format: binary
+                     * @description ユーザーアイコン
+                     * @example
+                     */
+                    icon?: string;
+                    /**
+                     * @description 生まれ年
+                     * @default 0
+                     * @example 0
+                     */
+                    yearOfBirth?: number | null;
+                    /**
+                     * @description 性別
+                     * @default preferNotToSay
+                     * @example
+                     * @enum {string|null}
+                     */
+                    gender?: "男性" | "女性" | "その他" | "回答しない";
+                    /**
+                     * @description 都道府県
+                     * @example
+                     */
+                    prefecture?: string;
+                    /**
+                     * @description 市区町村
+                     * @example
+                     */
+                    city?: string | null;
+                    /**
+                     * Format: email
+                     * @description メアド
+                     * @example
+                     */
+                    email?: string | null;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        displayID: string;
+                        displayName: string;
+                        iconURL?: string | null;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    getOpenedTalkSession: {
+        parameters: {
+            query?: {
+                /** @example 0 */
+                limit?: number;
+                /** @example 0 */
+                offset?: number;
+                /**
+                 * @description テーマ
+                 * @example
+                 */
+                theme?: string;
+                /** @example  */
+                status?: "finished" | "open" | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        talkSessions: {
+                            talkSession: components["schemas"]["talkSession"];
+                            opinionCount: number;
+                        }[];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    opinionsHistory: {
+        parameters: {
+            query?: {
+                /** @description ソートきー */
+                sort?: "latest" | "mostReplies" | "oldest" | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        opinions: {
+                            /** @description 作成ユーザー */
+                            user: components["schemas"]["user"];
+                            opinion: components["schemas"]["opinion"];
+                            replyCount: number;
+                        }[];
+                        pagination: {
+                            totalCount: number;
+                        };
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    sessionsHistory: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+                /** @description テーマ  */
+                theme?: string | null;
+                status?: "open" | "finished" | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        pagination: components["schemas"]["offsetPagination"];
+                        talkSessions: {
+                            talkSession: components["schemas"]["talkSession"];
+                            opinionCount: number;
+                        }[];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    oauth_token_info: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description Audience */
+                        aud: string;
+                        /** @description 有効期限 */
+                        exp: string;
+                        /** @description 発行日時 */
+                        iat: string;
+                        /** @description 発行者 */
+                        iss: string;
+                        /** @description ユーザID */
+                        sub: string;
+                        /** @description JWT ID */
+                        jti: string;
+                        /** @description ユーザーID */
+                        displayId?: string;
+                        /** @description ユーザー名 */
+                        displayName?: string;
+                        /** @description アイコンURL */
+                        iconURL?: string;
+                        /** @description ユーザ登録済みか */
+                        isVerify: boolean;
+                        isEmailVerified: boolean;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        code: string;
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    authAccountDetach: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    /** @example  */
+                    "Set-Cookie"?: string[];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    oauth_callback: {
+        parameters: {
+            query: {
+                code: string;
+                /** @description OAuth State from Query */
+                state: string;
+            };
+            header?: never;
+            path: {
+                provider: string;
+            };
+            cookie: {
+                /**
+                 * @description OAuth2.0 State from Cookie
+                 * @example {{$string.uuid}}
+                 */
+                state: string;
+                /**
+                 * @description Authorization Code
+                 * @example
+                 */
+                redirect_url: string;
+            };
+        };
+        requestBody?: never;
+        responses: {
+            302: {
+                headers: {
+                    /** @example  */
+                    Location: string;
+                    /**
+                     * @description SessionID
+                     * @example
+                     */
+                    "Set-Cookie": string;
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    authorize: {
+        parameters: {
+            query: {
+                /** @description ログイン後にリダイレクトするURL */
+                redirect_url: string;
+            };
+            header?: never;
+            path: {
+                provider: "google" | "line";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description コンテンツタイプを必ず指定しなければならないため、仮の値としてapplication/jsonを入れている */
+            302: {
+                headers: {
+                    /**
+                     * @description IDPのログインページ
+                     * @example
+                     */
+                    Location: string;
+                    /**
+                     * @description OAuth2.0 State
+                     * @example
+                     */
+                    "Set-Cookie": string[];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    oauth_token_revoke: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    /**
+                     * @description Cookie削除用のSet-Cookie
+                     * @example
+                     */
+                    "Set-Cookie": string[];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    devAuthorize: {
+        parameters: {
+            query: {
+                redirect_url: string;
+                /** @description devのみで使用するsubjectです。ここで指定した値はログインした後も確認できないため覚えておいてください。同じ値を指定すると同じアカウントにログインできます。 */
+                id: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            302: {
+                headers: {
+                    /** @example  */
+                    Location?: string;
+                    /**
+                     * @description OAuth2.0 State
+                     * @example
+                     */
+                    "Set-Cookie"?: string[];
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    test: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        optInt?: number | null;
+                        optNilInt?: number;
+                        optNilBool?: boolean | null;
+                        optBool?: boolean;
+                        /** Format: uri */
+                        optUrl?: string;
+                        /** Format: url */
+                        optNilUrl?: string | null;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    dummiInit: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    postImage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * Format: binary
+                     * @example
+                     */
+                    image: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @description 画像のURL */
+                        url: string;
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getPolicyConsentStatus: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["policyConsentStatus"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    policyConsent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /**
+                     * @description ポリシーバージョン
+                     * @example
+                     */
+                    policyVersion: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["policyConsentStatus"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
 }

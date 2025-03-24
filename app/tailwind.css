@@ -1,166 +1,214 @@
 @import "tailwindcss";
 
-@plugin '@tailwindcss/typography';
-
-@theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
-/*
-  The default border color has changed to `currentColor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentColor);
-  }
-}
+@plugin "@tailwindcss/typography";
 
 @layer utilities {
   body {
-    background-size: cover;
-    height: 100vh;
     margin: 0;
   }
-}
-
-.area {
-  background: #4e54c8;
-  background: linear-gradient(to left, #ecf5ff, #ecf5ff);
-  width: 100vw;
-  height: 100vh;
-  position: absolute;
-  z-index: -1;
-}
-
-.circles {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.circles li {
-  position: absolute;
-  display: block;
-  list-style: none;
-  width: 20px;
-  height: 20px;
-  background: white;
-  animation: animate 25s linear infinite;
-  bottom: -150px;
-}
-
-.circles li:nth-child(1) {
-  left: 25%;
-  width: 80px;
-  height: 80px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(2) {
-  left: 10%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 2s;
-  animation-duration: 12s;
-}
-
-.circles li:nth-child(3) {
-  left: 70%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 4s;
-}
-
-.circles li:nth-child(4) {
-  left: 40%;
-  width: 60px;
-  height: 60px;
-  animation-delay: 0s;
-  animation-duration: 18s;
-}
-
-.circles li:nth-child(5) {
-  left: 65%;
-  width: 20px;
-  height: 20px;
-  animation-delay: 0s;
-}
-
-.circles li:nth-child(6) {
-  left: 75%;
-  width: 110px;
-  height: 110px;
-  animation-delay: 3s;
-}
-
-.circles li:nth-child(7) {
-  left: 35%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 7s;
-}
-
-.circles li:nth-child(8) {
-  left: 50%;
-  width: 25px;
-  height: 25px;
-  animation-delay: 15s;
-  animation-duration: 45s;
-}
-
-.circles li:nth-child(9) {
-  left: 20%;
-  width: 15px;
-  height: 15px;
-  animation-delay: 2s;
-  animation-duration: 35s;
-}
-
-.circles li:nth-child(10) {
-  left: 85%;
-  width: 150px;
-  height: 150px;
-  animation-delay: 0s;
-  animation-duration: 11s;
-}
-
-@keyframes animate {
-  0% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 1;
-    border-radius: 0;
+  .h-inherit {
+    height: inherit;
   }
-
-  100% {
-    transform: translateY(-1000px) rotate(720deg);
-    opacity: 0;
-    border-radius: 50%;
+  .primary-gradient {
+    background-image: linear-gradient(
+      90deg,
+      #ff3b30 0%,
+      #5856d6 50%,
+      #32ade6 100%
+    );
+  }
+  .primary-gradient-30 {
+    background-image: linear-gradient(
+      90deg,
+      #ff3a304e 0%,
+      #5856d64a 50%,
+      #32ade652 100%
+    );
+  }
+  .text-clip {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hidden-scrollbar {
+    -ms-overflow-style: none; /* IE, Edge 対応 */
+    scrollbar-width: none; /* Firefox 対応 */
+  }
+  .hidden-scrollbar::-webkit-scrollbar {
+    /* Chrome, Safari 対応 */
+    display: none;
   }
 }
 
-/* html {
-  background-color: #e0efff;
-} */
-/* 
-body {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  max-width: 375px;
-  min-height: 100dvh;
-  margin-inline: auto;
-  background-color: white;
-} */
+/**
+ * Mantine Custom CSS
+ */
+@theme {
+  /* Dark colors */
+  --color-dark-50: #c1c2c5;
+  --color-dark-100: #a6a7ab;
+  --color-dark-200: #909296;
+  --color-dark-300: #5c5f66;
+  --color-dark-400: #373a40;
+  --color-dark-500: #2c2e33;
+  --color-dark-600: #25262b;
+  --color-dark-700: #1a1b1e;
+  --color-dark-800: #141517;
+  --color-dark-900: #101113;
+
+  /* Gray colors */
+  --color-gray-50: #f8f9fa;
+  --color-gray-100: #f1f3f5;
+  --color-gray-200: #e9ecef;
+  --color-gray-300: #dee2e6;
+  --color-gray-400: #ced4da;
+  --color-gray-500: #adb5bd;
+  --color-gray-600: #868e96;
+  --color-gray-700: #495057;
+  --color-gray-800: #343a40;
+  --color-gray-900: #212529;
+
+  /* Red colors */
+  --color-red-50: #fff5f5;
+  --color-red-100: #ffe3e3;
+  --color-red-200: #ffc9c9;
+  --color-red-300: #ffa8a8;
+  --color-red-400: #ff8787;
+  --color-red-500: #ff6b6b;
+  --color-red-600: #fa5252;
+  --color-red-700: #f03e3e;
+  --color-red-800: #e03131;
+  --color-red-900: #c92a2a;
+
+  /* Pink colors */
+  --color-pink-50: #fff0f6;
+  --color-pink-100: #ffdeeb;
+  --color-pink-200: #fcc2d7;
+  --color-pink-300: #faa2c1;
+  --color-pink-400: #f783ac;
+  --color-pink-500: #f06595;
+  --color-pink-600: #e64980;
+  --color-pink-700: #d6336c;
+  --color-pink-800: #c2255c;
+  --color-pink-900: #a61e4d;
+
+  /* Grape colors */
+  --color-grape-50: #f8f0fc;
+  --color-grape-100: #f3d9fa;
+  --color-grape-200: #eebefa;
+  --color-grape-300: #e599f7;
+  --color-grape-400: #da77f2;
+  --color-grape-500: #cc5de8;
+  --color-grape-600: #be4bdb;
+  --color-grape-700: #ae3ec9;
+  --color-grape-800: #9c36b5;
+  --color-grape-900: #862e9c;
+
+  /* Violet colors */
+  --color-violet-50: #f3f0ff;
+  --color-violet-100: #e5dbff;
+  --color-violet-200: #d0bfff;
+  --color-violet-300: #b197fc;
+  --color-violet-400: #9775fa;
+  --color-violet-500: #845ef7;
+  --color-violet-600: #7950f2;
+  --color-violet-700: #7048e8;
+  --color-violet-800: #6741d9;
+  --color-violet-900: #5f3dc4;
+
+  /* Indigo colors */
+  --color-indigo-50: #edf2ff;
+  --color-indigo-100: #dbe4ff;
+  --color-indigo-200: #bac8ff;
+  --color-indigo-300: #91a7ff;
+  --color-indigo-400: #748ffc;
+  --color-indigo-500: #5c7cfa;
+  --color-indigo-600: #4c6ef5;
+  --color-indigo-700: #4263eb;
+  --color-indigo-800: #3b5bdb;
+  --color-indigo-900: #364fc7;
+
+  /* Blue colors */
+  --color-blue-50: #e7f5ff;
+  --color-blue-100: #d0ebff;
+  --color-blue-200: #a5d8ff;
+  --color-blue-300: #74c0fc;
+  --color-blue-400: #4dabf7;
+  --color-blue-500: #339af0;
+  --color-blue-600: #228be6;
+  --color-blue-700: #1c7ed6;
+  --color-blue-800: #1971c2;
+  --color-blue-900: #1864ab;
+
+  /* Cyan colors */
+  --color-cyan-50: #e3fafc;
+  --color-cyan-100: #c5f6fa;
+  --color-cyan-200: #99e9f2;
+  --color-cyan-300: #66d9e8;
+  --color-cyan-400: #3bc9db;
+  --color-cyan-500: #22b8cf;
+  --color-cyan-600: #15aabf;
+  --color-cyan-700: #1098ad;
+  --color-cyan-800: #0c8599;
+  --color-cyan-900: #0b7285;
+
+  /* Teal colors */
+  --color-teal-50: #e6fcf5;
+  --color-teal-100: #c3fae8;
+  --color-teal-200: #96f2d7;
+  --color-teal-300: #63e6be;
+  --color-teal-400: #38d9a9;
+  --color-teal-500: #20c997;
+  --color-teal-600: #12b886;
+  --color-teal-700: #0ca678;
+  --color-teal-800: #099268;
+  --color-teal-900: #087f5b;
+
+  /* Green colors */
+  --color-green-50: #ebfbee;
+  --color-green-100: #d3f9d8;
+  --color-green-200: #b2f2bb;
+  --color-green-300: #8ce99a;
+  --color-green-400: #69db7c;
+  --color-green-500: #51cf66;
+  --color-green-600: #40c057;
+  --color-green-700: #37b24d;
+  --color-green-800: #2f9e44;
+  --color-green-900: #2b8a3e;
+
+  /* Lime colors */
+  --color-lime-50: #f4fce3;
+  --color-lime-100: #e9fac8;
+  --color-lime-200: #d8f5a2;
+  --color-lime-300: #c0eb75;
+  --color-lime-400: #a9e34b;
+  --color-lime-500: #94d82d;
+  --color-lime-600: #82c91e;
+  --color-lime-700: #74b816;
+  --color-lime-800: #66a80f;
+  --color-lime-900: #5c940d;
+
+  /* Yellow colors */
+  --color-yellow-50: #fff9db;
+  --color-yellow-100: #fff3bf;
+  --color-yellow-200: #ffec99;
+  --color-yellow-300: #ffe066;
+  --color-yellow-400: #ffd43b;
+  --color-yellow-500: #fcc419;
+  --color-yellow-600: #fab005;
+  --color-yellow-700: #f59f00;
+  --color-yellow-800: #f08c00;
+  --color-yellow-900: #e67700;
+
+  /* Orange colors */
+  --color-orange-50: #fff4e6;
+  --color-orange-100: #ffe8cc;
+  --color-orange-200: #ffd8a8;
+  --color-orange-300: #ffc078;
+  --color-orange-400: #ffa94d;
+  --color-orange-500: #ff922b;
+  --color-orange-600: #fd7e14;
+  --color-orange-700: #f76707;
+  --color-orange-800: #e8590c;
+  --color-orange-900: #d9480f;
+}

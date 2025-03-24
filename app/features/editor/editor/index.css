@@ -1,0 +1,9 @@
+.article a {
+  color: #4dabf7;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.article img {
+  margin: 0;
+}

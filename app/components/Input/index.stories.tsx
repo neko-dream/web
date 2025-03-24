@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Input from ".";
+import { Input } from ".";
 
 const meta: Meta<typeof Input> = {
   component: Input,
@@ -10,6 +10,13 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     placeholder: "意見を一言で(タイトル)",
+  },
+};
+
+export const WithIcon: Story = {
+  args: {
+    placeholder: "意見を一言で(タイトル)",
+    icon: "📝",
   },
 };
 

@@ -23,6 +23,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     talkSession: {
+      restrictions: [],
       id: "0000",
       theme: "レッサーパンダかわいい、アイドルにしたい",
       owner: {
@@ -46,6 +47,7 @@ export const Default: Story = {
 export const Finished: Story = {
   args: {
     talkSession: {
+      restrictions: [],
       id: "0000",
       theme: "レッサーパンダかわいい、アイドルにしたい",
       owner: {

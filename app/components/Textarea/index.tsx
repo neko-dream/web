@@ -6,7 +6,7 @@ type Props = ComponentProps<"textarea"> & {
 };
 
 const textarea = tv({
-  base: "w-full rounded-md border border-gray-300 px-2 py-1 text-sm",
+  base: "w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm",
   variants: {
     error: { true: "border-red-500" },
   },

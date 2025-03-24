@@ -1,6 +1,6 @@
 import { createRoutesStub } from "react-router";
 import type { Meta, StoryObj } from "@storybook/react";
-import Tabs from ".";
+import { Tabs } from ".";
 
 const meta: Meta<typeof Tabs> = {
   component: Tabs,
@@ -22,8 +22,9 @@ type Story = StoryObj<typeof meta>;
 export const Optional: Story = {
   args: {
     items: [
-      { label: "開催中", href: "./" },
-      { label: "終了", href: "./?q=finish" },
+      { label: "内容", href: "./" },
+      { label: "意見", href: "./?q=finish" },
+      { label: "レポート", href: "./?q=finish" },
     ],
   },
 };
