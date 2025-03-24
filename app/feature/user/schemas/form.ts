@@ -36,6 +36,14 @@ export const userEditFormSchema = v.object({
 
 export const signupFormSchema = v.object({
   displayID: v.pipe(v.string("ユーザーIDの入力は必須です"), alphanumericSchema),
+  email: v.optional(v.string()),
+  ...baseSchema.entries,
+  ...adressFormSchema.entries,
+});
+
+export const singupFormWithEmailSchema = v.object({
+  displayID: v.pipe(v.string("ユーザーIDの入力は必須です"), alphanumericSchema),
+  email: v.string("メールアドレスの入力は必須です"),
   ...baseSchema.entries,
   ...adressFormSchema.entries,
 });

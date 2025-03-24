@@ -20,12 +20,12 @@ import type { Route } from "~/app/routes/signup/+types";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
-export default function Page({ loaderData }: Route.ComponentProps) {
-  console.log(loaderData);
-
+export default function Page({
+  loaderData: { isEmailVerified },
+}: Route.ComponentProps) {
   const [preview, setPreview] = useState<string>();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const { form, fields, isDisabled } = useCreateUserForm();
+  const { form, fields, isDisabled } = useCreateUserForm(!isEmailVerified);
 
   const handleOnChangeInputFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -57,9 +57,8 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           <Uploadarea onClick={handleOpenFiler} preview={preview} />
           <Button
             type="button"
-            mini
             color="disabled"
-            className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 font-normal"
+            className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 text-sm font-normal"
             onClick={handleOpenFiler}
           >
             <RiImage2Line className="text-gray-400" size={20} />
@@ -72,16 +71,27 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             {...getInputProps(fields.displayName, { type: "text" })}
             error={isFieldsError(fields.displayName.errors)}
             className="h-12 w-full px-4"
-            placeholder="記入する"
+            placeholder="例）こと太郎"
           />
         </Label>
+
+        {!isEmailVerified && (
+          <Label title="メールアドレス" required errors={fields.email.errors}>
+            <Input
+              {...getInputProps(fields.email, { type: "text" })}
+              error={isFieldsError(fields.email.errors)}
+              className="h-12 w-full px-4"
+              placeholder="mail-address@example.com"
+            />
+          </Label>
+        )}
 
         <Label title="ユーザーID" required errors={fields.displayID.errors}>
           <Input
             {...getInputProps(fields.displayID, { type: "text" })}
             error={isFieldsError(fields.displayID.errors)}
             className="h-12 w-full px-4"
-            placeholder="記入する"
+            placeholder="例）koto-taro1234"
           />
         </Label>
 
