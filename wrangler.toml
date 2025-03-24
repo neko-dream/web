@@ -36,6 +36,7 @@ API_URL = "https://api.kotohiro.com"
 [env.production]
 name = "kotohiro"
 routes = [
+  { pattern = "kotohiro.com", custom_domain = true },
   { pattern = "www.kotohiro.com", custom_domain = true }
 ]
 
