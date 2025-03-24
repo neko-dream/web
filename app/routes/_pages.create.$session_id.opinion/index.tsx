@@ -15,10 +15,10 @@ export default function Page({
 }: Route.ComponentProps) {
   const navigate = useNavigate();
 
-  const { form, fields } = useCreateOpinionsForm({
+  const { form, fields, isDisabled } = useCreateOpinionsForm({
     talkSessionID: session.id!,
     onFinishedProcess: () => {
-      console.log("onFinishedProcess");
+      navigate(`/${session.id}/opinion`);
     },
   });
 
@@ -46,6 +46,7 @@ export default function Page({
           color="primary"
           type="submit"
           className="mx-auto !mt-12 flex items-center space-x-4"
+          disabled={isDisabled}
         >
           <PaperPlane />
           <span>意見を投稿する</span>
