@@ -5,7 +5,7 @@ import { CarouselScroll } from "./components/CarouselScroll";
 
 export default function Index() {
   return (
-    <div className="z-20 flex flex-col items-center justify-center py-32">
+    <div className="flex flex-col items-center justify-center py-32">
       <div className="flex flex-col justify-center">
         <div className="flex flex-col">
           <div className="mx-auto text-4xl font-bold text-gray-900">

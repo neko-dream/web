@@ -55,7 +55,7 @@ const overlayVariants = {
   },
 };
 
-export const SearchMenuDialog = ({ open, onOpenChange, ...props }: Props) => {
+export const SearchModal = ({ open, onOpenChange, ...props }: Props) => {
   const location = useLocation();
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
