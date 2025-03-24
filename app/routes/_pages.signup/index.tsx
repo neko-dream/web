@@ -15,7 +15,7 @@ import { Heading } from "~/components/Heading";
 import Uploadarea from "./components/Uploadarea";
 import { RiImage2Line } from "react-icons/ri";
 import { Check } from "~/components/Icons";
-import type { Route } from "~/app/routes/signup/+types";
+import type { Route } from "~/app/routes/_pages.signup/+types";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";

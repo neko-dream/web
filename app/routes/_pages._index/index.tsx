@@ -1,5 +1,5 @@
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
-import { AuthGoogle, AuthLine } from "~/components/Icons";
+import { Arrow, AuthGoogle, AuthLine } from "~/components/Icons";
 import { TopicCard } from "./components/TopicCard";
 import { CarouselScroll } from "./components/CarouselScroll";
 
@@ -51,7 +51,7 @@ export default function Index() {
             >
               <AuthGoogle />
               <span className="mx-auto font-bold text-gray-700">
-                Googleでログイン
+                Googleでアカウント作成
               </span>
             </a>
             <a
@@ -60,8 +60,16 @@ export default function Index() {
             >
               <AuthLine />
               <span className="mx-auto font-bold text-white">
-                LINEでログイン
+                LINEでアカウント作成
               </span>
+            </a>
+
+            <a
+              href="/login"
+              className="mt-6 flex items-center space-x-2 text-sm font-bold text-gray-600"
+            >
+              <span>アカウントをお持ちの方はこちら</span>
+              <Arrow className="-rotate-90" />
             </a>
           </div>
         </div>

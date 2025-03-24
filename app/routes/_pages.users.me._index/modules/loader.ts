@@ -25,7 +25,6 @@ export const loader = requireLoginLoader(async ({ request }, user) => {
       },
     },
   });
-  console.log(sessions?.talkSessions, setStatus(request.url));
 
   return {
     user,

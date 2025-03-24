@@ -17,8 +17,6 @@ export default function Page() {
       <Suspense fallback={<SessionSkeleton />}>
         <Await resolve={$session}>
           {(data) => {
-            console.log(data?.talkSessions);
-
             if (!data?.talkSessions.length) {
               return (
                 <Error>
