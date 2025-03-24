@@ -12,7 +12,7 @@ export { loader };
 export default function Page({
   loaderData: { opinions },
 }: Route.ComponentProps) {
-  const { session } = useOutletContext<SessionRouteContext>();
+  const { session, user } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
   console.log(session);
 
@@ -45,13 +45,12 @@ export default function Page({
               displayName: opinionUser.displayName,
               iconURL: opinionUser.iconURL,
             }}
-            // status={myVoteType}
             date={"2025/12/31 10:00"}
             onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
             onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
             onClickPass={() => handleSubmitVote(opinion.id, "pass")}
             onClickMore={() => {}}
-            isJudgeButton
+            isJudgeButton={user?.displayId !== opinionUser.displayID}
           />
         );
       })}
