@@ -2,15 +2,15 @@ import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, button } from "~/components/Button";
-import { OpinionType } from "~/feature/opinion/types";
+import { OpinionType } from "~/features/opinion/types";
 import CardSwiper from "./components/CardSwiper";
 import { useSwipe } from "./hooks/useSwipe";
 import { animations } from "./libs/animations";
 import { loader } from "./modules/loader";
-import { postVote } from "~/feature/opinion/libs/postVote";
+import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
-import { Graph } from "~/feature/graph/components";
-import { List } from "~/feature/acordion";
+import { Graph } from "~/features/graph/components";
+import { List } from "~/features/acordion";
 import {
   Left,
   PointUp,

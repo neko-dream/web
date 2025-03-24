@@ -6,7 +6,7 @@ import municipality from "~/assets/data/adress/municipality.json";
 import prefectures from "~/assets/data/adress/prefectures.json";
 import { Label } from "~/components/Label";
 import Select from "~/components/Select";
-import { adressFormSchema } from "~/feature/user/schemas/form";
+import { adressFormSchema } from "~/features/user/schemas/form";
 import { isCity, isFieldsError } from "~/libs/form";
 
 type Output = v.InferOutput<typeof adressFormSchema>;

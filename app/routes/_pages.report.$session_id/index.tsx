@@ -1,4 +1,4 @@
-import { Graph } from "~/feature/graph/components";
+import { Graph } from "~/features/graph/components";
 import { useNavigate } from "react-router";
 import { Left } from "~/components/Icons";
 

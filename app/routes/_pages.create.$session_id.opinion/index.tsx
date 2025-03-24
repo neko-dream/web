@@ -3,7 +3,7 @@ import { Heading } from "~/components/Heading";
 import type { Route } from "~/app/routes/_pages.create.$session_id.opinion/+types";
 import { Label } from "~/components/Label";
 import Textarea from "~/components/Textarea";
-import { useCreateOpinionsForm } from "~/feature/opinion/hooks/useCreateOpinionForm";
+import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { Button } from "~/components/Button";
 import { InfoCircle, PaperPlane } from "~/components/Icons";

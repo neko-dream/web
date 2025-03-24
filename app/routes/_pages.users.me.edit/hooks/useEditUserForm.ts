@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
-import { userEditFormSchema } from "~/feature/user/schemas/form";
+import { userEditFormSchema } from "~/features/user/schemas/form";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
-import { User } from "~/feature/user/types";
+import { User } from "~/features/user/types";
 
 type Props = {
   user: User;

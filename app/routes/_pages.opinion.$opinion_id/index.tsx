@@ -8,12 +8,12 @@ import { Fragment } from "react/jsx-runtime";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
 import { useState } from "react";
-import { useCreateOpinionsForm } from "~/feature/opinion/hooks/useCreateOpinionForm";
+import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
 import Textarea from "~/components/Textarea";
 import { Button } from "~/components/Button";
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { api } from "~/libs/api";
-import { OpinionType } from "~/feature/opinion/types";
+import { OpinionType } from "~/features/opinion/types";
 
 export { loader };
 

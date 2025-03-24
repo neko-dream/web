@@ -1,8 +1,8 @@
 import { ComponentProps, createElement } from "react";
 import { RiMore2Fill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
-import { OpinionType } from "~/feature/opinion/types";
-import { User } from "~/feature/user/types";
+import { OpinionType } from "~/features/opinion/types";
+import { User } from "~/features/user/types";
 import { Avatar } from "../Avatar";
 import { Button } from "../Button";
 import { OpinionCount } from "../OpinionCount";

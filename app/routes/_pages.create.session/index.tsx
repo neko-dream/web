@@ -13,7 +13,7 @@ import { useCreateSessionForm } from "./hooks/useCreateSessionForm";
 import type { Route } from "~/app/routes/_pages.create.session/+types";
 import { Checkbox } from "~/components/Checkbox";
 import { Check } from "~/components/Icons";
-import { Editor } from "~/feature/editor";
+import { Editor } from "~/features/editor";
 import { api } from "~/libs/api";
 import { useRef } from "react";
 

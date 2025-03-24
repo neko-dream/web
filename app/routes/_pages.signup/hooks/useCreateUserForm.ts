@@ -4,7 +4,7 @@ import { useCustomForm } from "~/hooks/useCustomForm";
 import {
   signupFormSchema,
   singupFormWithEmailSchema,
-} from "~/feature/user/schemas/form";
+} from "~/features/user/schemas/form";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
 

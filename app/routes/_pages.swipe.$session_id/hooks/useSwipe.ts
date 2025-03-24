@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSprings } from "react-spring";
 import { useDrag } from "react-use-gesture";
-import { OpinionType } from "~/feature/opinion/types";
+import { OpinionType } from "~/features/opinion/types";
 import { components } from "~/libs/api/openapi";
 import { animations } from "../libs/animations";
 

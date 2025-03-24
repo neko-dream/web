@@ -3,9 +3,9 @@ import { toast } from "react-toastify";
 import { Card } from "~/components/Card";
 import { loader } from "./modules/loader";
 import { SessionRouteContext } from "../_pages.$session_id/types";
-import { postVote } from "~/feature/opinion/libs/postVote";
+import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
-import { Graph } from "~/feature/graph/components";
+import { Graph } from "~/features/graph/components";
 import { Arrow } from "~/components/Icons";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
