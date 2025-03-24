@@ -29,12 +29,17 @@ export const api = createClient<paths>({
      */
     headers.set("accept-encoding", "gzip");
 
-    console.time(init.url);
-    return fetch(init, {
+    const response = fetch(init, {
       headers,
-    }).then((res) => {
-      console.timeEnd(init.url);
-      return res;
     });
+    trace(response);
+    return response;
   },
 });
+
+const trace = async (response: Promise<Response>) => {
+  const res = await response;
+  if (!res.ok) {
+    console.error(res);
+  }
+};
