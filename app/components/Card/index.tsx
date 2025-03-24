@@ -1,8 +1,8 @@
 import { ComponentProps, createElement } from "react";
 import { RiMore2Fill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
-import { OpinionType } from "~/feature/opinion/types";
-import { User } from "~/feature/user/types";
+import { OpinionType } from "~/features/opinion/types";
+import { User } from "~/features/user/types";
 import { Avatar } from "../Avatar";
 import { Button } from "../Button";
 import { OpinionCount } from "../OpinionCount";
@@ -104,5 +104,5 @@ export const Card = ({
 };
 
 const OpinionButton = (props: Button) => {
-  return <Button {...props} className="z-10 h-7 w-16 px-0" mini />;
+  return <Button {...props} className="z-10 h-7 w-16 px-0 text-xs" />;
 };

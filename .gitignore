@@ -12,3 +12,5 @@ node_modules
 storybook-static
 
 .react-router
+
+*.tsbuildinfo
