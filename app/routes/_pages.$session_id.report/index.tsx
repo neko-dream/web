@@ -5,16 +5,17 @@ import { loader } from "./modules/loader";
 import { SessionRouteContext } from "../_pages.$session_id/types";
 import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
-import { Graph } from "~/features/graph/components";
+import Graph from "~/features/graph/components";
 import { Arrow } from "~/components/Icons";
+import ReactMarkdown from "react-markdown";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
 
 export default function Page({
-  loaderData: { opinions },
+  loaderData: { opinions, report, position },
 }: Route.ComponentProps) {
-  const { session, user } = useOutletContext<SessionRouteContext>();
+  const { session } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
@@ -33,16 +34,27 @@ export default function Page({
     }
   };
 
+  // グループ３が一番意見多そうなので、グループ３の意見を取得
+  // ついでにインデックス順にする
+  const positions = position?.positions
+    .filter((opinion) => {
+      return (
+        opinion.groupId === 3 &&
+        (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+      );
+    })
+    .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
+
   return (
     <div>
-      <div className="rounded-md bg-white p-2">
+      <div className="mx-auto w-full max-w-2xl rounded-md bg-white p-2">
         <div className="flex items-center space-x-2">
           <img src="/icon.png" alt="" className="m-1 h-7" />
           <p className="text-xs text-gray-500">ことひろAIレポート</p>
         </div>
-        <p className="mt-1 text-sm text-gray-800">
-          西山公園でのライブ開催を巡る議論では、Aグループが地域活性化や若いアーティストへの支援を強調。Bグループは騒音や管理の負担を懸念。Cグループは、住民の意見を聞き、規制を設けた上で試験的に開催することを提案。
-        </p>
+        <article className="mt-1 line-clamp-4 text-sm text-gray-800">
+          <ReactMarkdown>{report}</ReactMarkdown>
+        </article>
         <Link
           to={`/report/${session.id}`}
           className="m-2 flex items-center justify-end text-xs text-blue-400"
@@ -52,31 +64,40 @@ export default function Page({
         </Link>
       </div>
 
-      <Graph className="mt-2" />
+      <div className="mx-auto mt-2 w-full max-w-2xl">
+        <Graph
+          polygons={positions}
+          positions={position?.positions}
+          myPosition={position?.myPosition}
+          selectGroupId={(id: number) => {
+            console.log(id);
+          }}
+        />
+      </div>
 
-      {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
-        return (
-          <Card
-            href={`/opinion/${opinion.id}`}
-            key={i}
-            title={opinion.title}
-            description={opinion.content}
-            user={{
-              displayID: "",
-              displayName: opinionUser.displayName,
-              iconURL: opinionUser.iconURL,
-            }}
-            status={myVoteType as never}
-            className="mt-2 h-full w-full bg-white select-none"
-            date={"2025/12/31 10:00"}
-            onClickAgree={() => handleSubmitVote("", "agree")}
-            onClickDisagree={() => handleSubmitVote("", "disagree")}
-            onClickPass={() => handleSubmitVote("", "pass")}
-            onClickMore={() => {}}
-            isJudgeButton={user?.displayId !== opinionUser.displayID}
-          />
-        );
-      })}
+      <div className="mt-2 flex flex-col space-y-4">
+        {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
+          return (
+            <Card
+              href={`/opinion/${opinion.id}`}
+              key={i}
+              title={opinion.title}
+              description={opinion.content}
+              user={{
+                displayID: "",
+                displayName: opinionUser.displayName,
+                iconURL: opinionUser.iconURL,
+              }}
+              status={myVoteType as never}
+              className="mx-auto w-full max-w-2xl"
+              date={"2025/12/31 10:00"}
+              onClickAgree={() => handleSubmitVote("", "agree")}
+              onClickDisagree={() => handleSubmitVote("", "disagree")}
+              onClickPass={() => handleSubmitVote("", "pass")}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
