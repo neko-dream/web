@@ -49,9 +49,9 @@ export default function Page({
           <img src="/icon.png" alt="" className="m-1 h-7" />
           <p className="text-xs text-gray-500">ことひろAIレポート</p>
         </div>
-        <p className="mt-1 text-sm text-gray-800">
+        <article className="prose mt-1 text-sm text-gray-800">
           <ReactMarkdown>{report}</ReactMarkdown>
-        </p>
+        </article>
       </div>
     </div>
   );
