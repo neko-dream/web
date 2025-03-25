@@ -22,7 +22,7 @@ export default function Session({ talkSession, opinionCount }: Props) {
         alt="session thumbnail"
       />
 
-      <div className="ml-4 flex w-full flex-col justify-between">
+      <div className="ml-4 flex w-full flex-col space-y-1">
         {/* テーマ名 */}
         <p className="font-bold">{talkSession.theme}</p>
 
@@ -37,7 +37,7 @@ export default function Session({ talkSession, opinionCount }: Props) {
           </p>
         </div>
 
-        <div className="flex space-x-6">
+        <div className="flex space-x-4">
           {talkSession.city && (
             <div className="flex w-full max-w-24 items-center space-x-1">
               <RiMapPinLine className="text-gray-500" />
@@ -46,10 +46,10 @@ export default function Session({ talkSession, opinionCount }: Props) {
           )}
 
           {isFinished ? (
-            <p className="w-20 text-xs text-gray-500">終了</p>
+            <p className="w-10 text-xs text-gray-500">終了</p>
           ) : (
-            <p className="w-20 text-xs text-gray-500">
-              {JST(talkSession.scheduledEndTime).format("MM/DD(ddd)まで")}
+            <p className="w-10 text-xs text-gray-500">
+              {JST(talkSession.scheduledEndTime).format("MM/DD")}
             </p>
           )}
 
