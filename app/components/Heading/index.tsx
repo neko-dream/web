@@ -8,7 +8,7 @@ type Props = ComponentProps<"button"> & {
 };
 
 const heading = tv({
-  base: "flex w-full cursor-pointer bg-gradient-to-r from-[#FF3B30] from-0% via-[#5856D6] via-50% to-[#32ADE6] to-100% p-2 text-[18px] font-bold text-white",
+  base: "flex w-full cursor-pointer items-center bg-gradient-to-r from-[#FF3B30] from-0% via-[#5856D6] via-50% to-[#32ADE6] to-100% p-2 text-[18px] font-bold text-white",
 });
 
 const text = tv({
@@ -31,7 +31,7 @@ export const Heading = ({
 }: Props) => {
   return (
     <button {...props} className={heading({ class: className })}>
-      {isLeftIcon && <Left />}
+      {isLeftIcon && <Left className="fill-white" />}
       <span className={text({ isLeftIcon })}>{title}</span>
     </button>
   );
