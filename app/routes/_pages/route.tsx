@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
 import { useState } from "react";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SearchModal } from "./components/SearchModal";
 import { loader } from "./modules/loader";
@@ -32,7 +32,14 @@ export default function Route({ loaderData: { $user } }: Route.ComponentProps) {
       <Footer />
 
       {/* -- 以下ダイアログなど -- */}
-      <ToastContainer position="top-center" autoClose={1500} />
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        pauseOnFocusLoss={false}
+        hideProgressBar={true}
+        transition={Zoom}
+        draggable={true}
+      />
       <SearchModal open={isSearchOpen} onOpenChange={setIsSearchOpen} />
       <MenuDialog open={isMenuOpen} onOpenChange={setIsMenuOpen} />
     </>
