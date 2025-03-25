@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import { Link, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import { Card } from "~/components/Card";

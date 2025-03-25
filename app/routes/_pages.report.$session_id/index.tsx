@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default */
 import Graph from "~/features/graph/components";
 import { useNavigate } from "react-router";
 import { Left } from "~/components/Icons";
