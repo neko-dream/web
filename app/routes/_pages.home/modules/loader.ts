@@ -31,12 +31,11 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
         query: {
           status: setStatus(request.url),
           theme: setTheme(request.url),
+          limit: 100,
         },
       },
     })
     .then((res) => res?.data || null);
-
-  $session.then(console.log);
 
   return { $session };
 };
