@@ -65,7 +65,7 @@ export default function Page({
         </Link>
       </div>
 
-      <div className="mx-auto mt-2 w-full max-w-2xl">
+      <div className="mx-auto mt-2 flex w-full max-w-2xl justify-center">
         <Graph
           polygons={positions}
           positions={position?.positions}

@@ -15,8 +15,18 @@ export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
 
 export default function Route({
-  loaderData: { session, user },
+  loaderData: { session, user, report },
 }: Route.ComponentProps) {
+  const items = [
+    { label: "活動報告", href: `/${session.id}/conclusion` },
+    { label: "内容", href: `/${session.id}` },
+    { label: "意見", href: `/${session.id}/opinion` },
+  ];
+
+  if (report) {
+    items.push({ label: "レポート", href: `/${session.id}/report` });
+  }
+
   return (
     <>
       <div className="flex flex-col space-y-2 px-4 py-2">
@@ -61,17 +71,12 @@ export default function Route({
         </div>
       </div>
 
-      <Tabs
-        items={[
-          { label: "活動報告", href: `/${session.id}/conclusion` },
-          { label: "内容", href: `/${session.id}` },
-          { label: "意見", href: `/${session.id}/opinion` },
-          { label: "レポート", href: `/${session.id}/report` },
-        ]}
-      />
+      <Tabs items={items} />
 
       <div className="flex-1 bg-[#F2F2F7] p-4">
-        <Outlet context={{ session, user } satisfies SessionRouteContext} />
+        <Outlet
+          context={{ session, user, report } satisfies SessionRouteContext}
+        />
         <div className="fixed right-4 bottom-4 z-10">
           <CreateOpinionButton to={`/create/${session.id}/opinion`} />
         </div>

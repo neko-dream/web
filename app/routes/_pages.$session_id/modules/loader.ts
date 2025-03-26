@@ -16,6 +16,18 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     headers: request.headers,
   });
 
+  const { data: report } = await api.GET(
+    "/talksessions/{talkSessionId}/report",
+    {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionId: params.session_id!,
+        },
+      },
+    },
+  );
+
   if (!session) {
     throw notfound();
   }
@@ -23,5 +35,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return {
     session,
     user,
+    report,
   };
 };
