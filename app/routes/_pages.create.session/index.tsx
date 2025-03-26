@@ -22,22 +22,23 @@ export { loader } from "./modules/loader";
 export default function Page({
   loaderData: { restrictions },
 }: Route.ComponentProps) {
-  const thumbnailRef = useRef<File>();
+  const thumbnailRef = useRef<string>();
   const { form, fields } = useCreateSessionForm({
-    thumbnail: thumbnailRef.current,
+    thumbnailURL: thumbnailRef.current,
   });
   const descriptionControl = useInputControl(fields.description);
 
   const handleImageUploader = async (file: File) => {
-    if (!thumbnailRef.current) {
-      thumbnailRef.current = file;
-    }
     const { data } = await api.POST("/images", {
       credentials: "include",
       body: {
         image: file as unknown as string,
       },
     });
+
+    if (!thumbnailRef.current) {
+      thumbnailRef.current = data?.url;
+    }
 
     return data?.url || "";
   };

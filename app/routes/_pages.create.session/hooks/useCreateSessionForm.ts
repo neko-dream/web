@@ -6,10 +6,10 @@ import { useNavigate } from "react-router";
 import dayjs from "dayjs";
 
 type Props = {
-  thumbnail?: File;
+  thumbnailURL?: string;
 };
 
-export const useCreateSessionForm = ({ thumbnail }: Props) => {
+export const useCreateSessionForm = ({ thumbnailURL }: Props) => {
   const navigate = useNavigate();
 
   return useCustomForm({
@@ -27,7 +27,7 @@ export const useCreateSessionForm = ({ thumbnail }: Props) => {
           ...value,
           scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
           restrictions,
-          thumbnailURL: thumbnail as unknown as string,
+          thumbnailURL,
         },
       });
 
