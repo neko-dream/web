@@ -59,12 +59,11 @@ export default function Page({
         // FIXME: ココアってる？
         // status={opinion.voteType}
         date={"2025/12/31 10:00"}
+        isJudgeButton
+        className="rounded-none"
         onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
         onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
         onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-        onClickMore={() => {}}
-        className="rounded-none"
-        isJudgeButton
       />
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
@@ -83,11 +82,10 @@ export default function Page({
                 }}
                 // status={myVoteType}
                 date={"2025/12/31 10:00"}
+                isJudgeButton
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
                 onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
                 onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-                onClickMore={() => {}}
-                isJudgeButton
               />
             </Fragment>
           );

@@ -12,9 +12,13 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     },
   });
 
+  const { data: reasons } = await api.GET("/opinions/report_reasons", {
+    headers: request.headers,
+  });
+
   if (!data) {
     return notfound();
   }
 
-  return { opinions: data.opinions };
+  return { opinions: data.opinions, reasons };
 };

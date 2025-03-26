@@ -1,30 +1,17 @@
+import { motion, AnimatePresence } from "framer-motion";
 import type { Dispatch, ReactNode, SetStateAction } from "react";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
-import { tv } from "tailwind-variants";
+import { useEffect } from "react";
 
-interface ModalProps {
+export type BaseModalProps = {
   isOpen: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
-}
+};
 
-const overlay = tv({
-  base: "fixed inset-0 z-50 flex items-center justify-center bg-black/50",
-  variants: {
-    state: {
-      open: "animate-fadeIn",
-      close: "animate-fadeOut",
-    },
-  },
-});
-
-export const Modal = ({ isOpen, onOpenChange, children }: ModalProps) => {
-  const [isClosing, setIsClosing] = useState(false);
-
+export const Modal = ({ isOpen, onOpenChange, children }: BaseModalProps) => {
   const handleEscape = (e: KeyboardEvent) => {
     if (isOpen && e.key === "Escape") {
-      handleClose();
+      onOpenChange(false);
     }
   };
 
@@ -35,30 +22,37 @@ export const Modal = ({ isOpen, onOpenChange, children }: ModalProps) => {
     };
   });
 
-  if (!isOpen) {
-    return null;
-  }
-
-  const handleClose = () => {
-    setIsClosing(true);
-    window.setTimeout(() => {
-      onOpenChange(false);
-      setIsClosing(false);
-    }, 200);
-  };
-
-  return createPortal(
-    <button
-      className={overlay({ state: isClosing ? "close" : "open" })}
-      onClick={handleClose}
-    >
-      <button
-        className="mx-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white shadow-xl"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="p-4">{children}</div>
-      </button>
-    </button>,
-    document.body,
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.5 }}
+            exit={{ opacity: 0 }}
+            onClick={() => onOpenChange(false)}
+            className="fixed inset-0 z-40 bg-black"
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.75, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.75, y: 20 }}
+            transition={{
+              type: "spring",
+              duration: 0.2,
+              bounce: 0.3,
+            }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
+          >
+            <button
+              className="mx-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4">{children}</div>
+            </button>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
   );
 };

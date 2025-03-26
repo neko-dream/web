@@ -6,6 +6,8 @@ import { User } from "~/features/user/types";
 import { Avatar } from "../Avatar";
 import { Button } from "../Button";
 import { OpinionCount } from "../OpinionCount";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import { LineChart, Notification } from "../Icons";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
@@ -19,7 +21,8 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
   onClickAgree?: () => void;
   onClickDisagree?: () => void;
   onClickPass?: () => void;
-  onClickMore?: () => void;
+  onClickReport?: () => void;
+  onClickAnalytics?: () => void;
 };
 
 const card = tv({
@@ -39,7 +42,8 @@ export const Card = ({
   onClickAgree,
   onClickDisagree,
   onClickPass,
-  onClickMore,
+  onClickReport,
+  onClickAnalytics,
   ...props
 }: Props) => {
   return (
@@ -95,9 +99,41 @@ export const Card = ({
       </div>
 
       {isMoreButton && (
-        <button className="absolute top-4 right-4" onClick={onClickMore}>
-          <RiMore2Fill size={24} className="text-gray-600" />
-        </button>
+        <Popover>
+          <PopoverButton className="absolute top-4 right-4 cursor-pointer">
+            <RiMore2Fill size={24} className="text-gray-600" />
+          </PopoverButton>
+          <PopoverPanel
+            transition
+            anchor="bottom"
+            className="z-10 rounded-xl bg-white shadow-lg transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:-translate-y-1 data-[closed]:opacity-0"
+          >
+            {({ close }) => (
+              <div className="flex flex-col px-3 py-1">
+                <button
+                  onClick={() => {
+                    onClickAnalytics?.();
+                    close();
+                  }}
+                  className="flex cursor-pointer space-x-2 border-b border-gray-200 py-2 text-[#8E8E93]"
+                >
+                  <LineChart />
+                  <span>分析</span>
+                </button>
+                <button
+                  onClick={() => {
+                    onClickReport?.();
+                    close();
+                  }}
+                  className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
+                >
+                  <Notification />
+                  <span>通報</span>
+                </button>
+              </div>
+            )}
+          </PopoverPanel>
+        </Popover>
       )}
     </div>
   );

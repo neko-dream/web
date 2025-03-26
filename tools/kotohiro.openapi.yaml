@@ -94,6 +94,112 @@ paths:
       security:
         - apikey-header-SessionId: []
       x-ogen-operation-group: Vote
+  /opinions/{opinionID}/analysis:
+    get:
+      summary: 意見に投票したグループごとの割合
+      deprecated: false
+      description: ''
+      operationId: getOpinionAnalysis
+      tags:
+        - opinion
+      parameters:
+        - name: opinionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/opinionGroupRatio'
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Opinion
+  /opinions/{opinionID}/report:
+    post:
+      summary: 意見通報API
+      deprecated: false
+      description: ''
+      operationId: reportOpinion
+      tags:
+        - opinion
+      parameters:
+        - name: opinionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                reason:
+                  type: integer
+                  example: 1
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Opinion
   /opinions:
     post:
       summary: セッションに対して意見投稿 or 意見に対するリプライ
@@ -306,6 +412,49 @@ paths:
                 required:
                   - code
                   - message
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Opinion
+  /opinions/report_reasons:
+    get:
+      summary: 意見への通報理由一覧
+      deprecated: false
+      description: ''
+      operationId: getOpinionReportReasons
+      tags:
+        - opinion
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/reportReason'
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
               example:
                 code: GENERAL-000
                 message: INTERNAL SERVER ERROR.
@@ -1714,6 +1863,55 @@ paths:
                 message: INTERNAL SERVER ERROR.
           headers: {}
       security: []
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/restrictions:
+    get:
+      summary: セッションで満たしていない制限
+      deprecated: false
+      description: 特定のセッションで満たしていない条件があれば返す
+      operationId: getTalkSessionRestrictionSatisfied
+      tags:
+        - talk_session
+      parameters:
+        - name: talkSessionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items: *ref_6
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
       x-ogen-operation-group: TalkSession
   /user:
     put:
@@ -3257,6 +3455,37 @@ components:
       required:
         - policyVersion
         - consentGiven
+    reportReason:
+      type: object
+      properties:
+        reason_id:
+          type: integer
+          description: '1'
+        reason:
+          type: string
+          description: 不適切な内容
+      required:
+        - reason_id
+        - reason
+    opinionGroupRatio:
+      type: object
+      properties:
+        agreeCount:
+          type: integer
+        disagreeCount:
+          type: integer
+        passCount:
+          type: integer
+        groupId:
+          type: integer
+        groupName:
+          type: string
+      required:
+        - groupName
+        - groupId
+        - passCount
+        - disagreeCount
+        - agreeCount
   securitySchemes:
     apikey-header-SessionId:
       type: apiKey

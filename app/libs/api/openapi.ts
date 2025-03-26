@@ -21,6 +21,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/opinions/{opinionID}/analysis": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見に投票したグループごとの割合 */
+        get: operations["getOpinionAnalysis"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opinions/{opinionID}/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** 意見通報API */
+        post: operations["reportOpinion"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/opinions": {
         parameters: {
             query?: never;
@@ -68,6 +102,23 @@ export interface paths {
         };
         /** 意見に対するリプライ意見一覧 */
         get: operations["opinionComments2"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/opinions/report_reasons": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** 意見への通報理由一覧 */
+        get: operations["getOpinionReportReasons"];
         put?: never;
         post?: never;
         delete?: never;
@@ -335,6 +386,26 @@ export interface paths {
          * @description セッションの投稿制限に使用できるキーの一覧を返す
          */
         get: operations["getTalkSessionRestrictionKeys"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/talksessions/{talkSessionID}/restrictions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * セッションで満たしていない制限
+         * @description 特定のセッションで満たしていない条件があれば返す
+         */
+        get: operations["getTalkSessionRestrictionSatisfied"];
         put?: never;
         post?: never;
         delete?: never;
@@ -741,6 +812,19 @@ export interface components {
             /** @description 同意したか */
             consentGiven: boolean;
         };
+        reportReason: {
+            /** @description 1 */
+            reason_id: number;
+            /** @description 不適切な内容 */
+            reason: string;
+        };
+        opinionGroupRatio: {
+            agreeCount: number;
+            disagreeCount: number;
+            passCount: number;
+            groupId: number;
+            groupName: string;
+        };
     };
     responses: never;
     parameters: never;
@@ -800,6 +884,87 @@ export interface operations {
                         code: string;
                         message: string;
                     };
+                };
+            };
+        };
+    };
+    getOpinionAnalysis: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["opinionGroupRatio"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    reportOpinion: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                opinionID: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "multipart/form-data": {
+                    /** @example 1 */
+                    reason?: number;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
                 };
             };
         };
@@ -953,6 +1118,41 @@ export interface operations {
                         code: string;
                         message: string;
                     };
+                };
+            };
+        };
+    };
+    getOpinionReportReasons: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["reportReason"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
                 };
             };
         };
@@ -1858,6 +2058,43 @@ export interface operations {
             query?: never;
             header?: never;
             path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["restriction"][];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": Record<string, never>;
+                };
+            };
+        };
+    };
+    getTalkSessionRestrictionSatisfied: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                talkSessionID: string;
+            };
             cookie?: never;
         };
         requestBody?: never;
