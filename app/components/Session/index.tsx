@@ -28,10 +28,7 @@ export default function Session({ talkSession, opinionCount }: Props) {
 
         {/* アバター */}
         <div className="flex items-center space-x-2">
-          <Avatar
-            src={"https://placehold.jp/150x150.png"}
-            className="block h-5 w-5"
-          />
+          <Avatar src={talkSession.owner.iconURL} className="block h-5 w-5" />
           <p className="text-xs text-gray-500">
             {talkSession.owner.displayName}
           </p>
