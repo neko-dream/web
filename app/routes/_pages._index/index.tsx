@@ -1,23 +1,37 @@
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
-import { Arrow, AuthGoogle, AuthLine } from "~/components/Icons";
+import {
+  Arrow,
+  AuthGoogle,
+  AuthLine,
+  FaviconKotohiro,
+} from "~/components/Icons";
 import { TopicCard } from "./components/TopicCard";
 import { CarouselScroll } from "./components/CarouselScroll";
+import { memo } from "react";
+import "./index.css";
 
-export default function Index() {
+function Page() {
   return (
-    <div className="flex flex-col items-center justify-center py-32">
-      <div className="flex flex-col justify-center">
-        <div className="flex flex-col">
-          <div className="mx-auto text-4xl font-bold text-gray-900">
-            <p>ことひろ</p>
-          </div>
-          <div className="mt-6 text-center">
-            <p>ことひろは、言葉を重ねて</p>
-            <p>より良い意思決定を目指すサービスです</p>
-          </div>
+    <>
+      <div className="area">
+        <ul className="circles">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <li key={i}></li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-18 flex flex-col justify-center">
+        <div className="flex items-center justify-center">
+          <FaviconKotohiro className="w-20" />
+          <p className="ml-2 text-6xl font-black">ことひろ</p>
+        </div>
+        <div className="mt-2 text-center">
+          <p>ことひろは、言葉を重ねて</p>
+          <p>より良い意思決定を目指すサービスです</p>
         </div>
 
-        <div className="mx-auto mt-10 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
+        <div className="mx-auto mt-6 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
           <p className="primary-gradient text-center font-bold text-clip">
             ことひろに参加しよう
           </p>
@@ -75,7 +89,7 @@ export default function Index() {
         </div>
       </div>
 
-      <p className="primary-gradient mt-16 mb-4 text-2xl font-bold text-clip">
+      <p className="primary-gradient mt-16 mb-4 text-center text-2xl font-bold text-clip">
         注目のトピック
       </p>
 
@@ -84,6 +98,8 @@ export default function Index() {
           <TopicCard key={i} />
         ))}
       </CarouselScroll>
-    </div>
+    </>
   );
 }
+
+export default memo(Page);

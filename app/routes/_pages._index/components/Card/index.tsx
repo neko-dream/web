@@ -40,9 +40,15 @@ export const Card = ({
           <p className="mt-2 text-xs text-gray-300">あなたの意見</p>
           {/* 40pxはアバター分 */}
           <div className="mt-1 flex w-full justify-between">
-            <OpinionButton color={"disabled"}>違うかも</OpinionButton>
-            <OpinionButton color={"disabled"}>保留</OpinionButton>
-            <OpinionButton color={"disabled"}>良さそう</OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              違うかも
+            </OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              保留
+            </OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              良さそう
+            </OpinionButton>
           </div>
         </>
       </div>

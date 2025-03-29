@@ -3,7 +3,10 @@ import { Card } from "../Card";
 
 export const TopicCard = () => {
   return (
-    <div className="primary-gradient-30 h-[336px] w-[327px] cursor-pointer rounded-[24px] p-[2px] select-none">
+    <a
+      href="/#"
+      className="primary-gradient-30 block h-[336px] w-[327px] cursor-pointer rounded-[24px] p-[2px] select-none"
+    >
       <div className="flex h-[332px] w-[323px] flex-col items-start justify-start rounded-[22px] bg-[#F8F8FC] pt-4 pb-0">
         <p className="mx-4 font-bold">西山公園で野外ライブを開催したい！</p>
         <div className="mx-4 mt-4 box-border flex w-[-webkit-fill-available] justify-between border-b border-[#E5E5EA] pb-2">
@@ -44,6 +47,6 @@ export const TopicCard = () => {
           />
         </div>
       </div>
-    </div>
+    </a>
   );
 };
