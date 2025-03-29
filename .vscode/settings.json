@@ -6,5 +6,8 @@
   ],
   "workbench.editorAssociations": {
     "*.svg": "default"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
   }
 }
