@@ -9,6 +9,7 @@ import { TopicCard } from "./components/TopicCard";
 import { CarouselScroll } from "./components/CarouselScroll";
 import { memo } from "react";
 import "./index.css";
+import { Checkbox } from "~/components/Checkbox";
 
 function Page() {
   return (
@@ -40,11 +41,8 @@ function Page() {
           <p className="text-center text-xs">2つの方法から参加できます</p>
 
           <div className="mt-4 flex items-center">
-            <input
-              id="terms"
-              type="checkbox"
-              className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-lg border border-gray-400 text-blue-600 checked:border-blue-400 checked:bg-blue-500"
-            />
+            {/* FIXME:  */}
+            <Checkbox id="" label="" />
             <label
               htmlFor="terms"
               className="ms-2 text-sm font-medium text-gray-900"

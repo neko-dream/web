@@ -1,18 +1,19 @@
 import { ComponentProps } from "react";
 
 type Props = ComponentProps<"input"> & {
-  label: string;
+  label: React.ReactNode;
 };
 
 export const Checkbox = ({ id, label, ...props }: Props) => {
   return (
-    <div className="flex items-center">
+    <div className="flex w-fit cursor-pointer items-center gap-x-[4px] leading-none">
       <input
-        {...props}
+        id={id}
         type="checkbox"
-        className="h-4 w-4 rounded-sm border-gray-300 bg-gray-100 text-blue-600"
+        {...props}
+        className="relative h-[20px] w-[20px] cursor-pointer appearance-none rounded border border-[#CED4DA] checked:bg-[#4dabf7] [&:checked::after]:absolute [&:checked::after]:top-[5px] [&:checked::after]:left-[3px] [&:checked::after]:h-[6px] [&:checked::after]:w-[12px] [&:checked::after]:-rotate-45 [&:checked::after]:transform [&:checked::after]:border-b-2 [&:checked::after]:border-l-2 [&:checked::after]:border-white [&:checked::after]:content-['']"
       />
-      <label htmlFor={id} className="ms-2 text-sm font-medium text-gray-900">
+      <label htmlFor={id} className="text-sm font-medium text-gray-900">
         {label}
       </label>
     </div>
