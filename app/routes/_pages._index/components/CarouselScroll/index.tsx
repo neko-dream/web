@@ -31,7 +31,7 @@ export const CarouselScroll = ({
       }}
       pagination={{ clickable: true }}
       modules={[EffectCoverflow, Pagination]}
-      className="w-full"
+      className="mb-16 w-full"
     >
       {children.map((child, index) => (
         <SwiperSlide
