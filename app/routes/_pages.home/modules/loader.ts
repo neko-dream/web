@@ -37,5 +37,18 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     })
     .then((res) => res?.data || null);
 
-  return { $session };
+  // FIXME: 最初だけ
+  const $closeSession = api
+    .GET("/talksessions", {
+      headers: request.headers,
+      params: {
+        query: {
+          status: "finished",
+          limit: 100,
+        },
+      },
+    })
+    .then((res) => res?.data || null);
+
+  return { $session, $closeSession };
 };
