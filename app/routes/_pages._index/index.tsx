@@ -22,17 +22,19 @@ function Page() {
       </div>
 
       <div className="mt-18 flex flex-col justify-center">
-        <div className="flex items-center justify-center">
-          <FaviconKotohiro className="w-20" />
-          <p className="ml-2 text-6xl font-black">ことひろ</p>
+        <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
+          <span className="flex items-center">
+            <FaviconKotohiro className="w-20" />
+            <p className="ml-2 text-6xl font-black">ことひろ</p>
+          </span>
         </div>
-        <div className="mt-2 text-center">
+        <div className="mx-auto mt-2 inline-block rounded-md p-2 text-center backdrop-blur-[20px]">
           <p>ことひろは、言葉を重ねて</p>
           <p>より良い意思決定を目指すサービスです</p>
         </div>
 
         <div className="mx-auto mt-6 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
-          <p className="primary-gradient text-center font-bold text-clip">
+          <p className="primary-gradient mx-auto inline-block text-center font-bold text-clip">
             ことひろに参加しよう
           </p>
           <p className="text-center text-xs">2つの方法から参加できます</p>
@@ -50,7 +52,7 @@ function Page() {
               <a href="./#" className="text-[#007AFF]">
                 利用規約
               </a>
-              、
+              ・
               <a href="./#" className="text-[#007AFF]">
                 プライバシーポリシー
               </a>
@@ -89,9 +91,11 @@ function Page() {
         </div>
       </div>
 
-      <p className="primary-gradient mt-16 mb-4 text-center text-2xl font-bold text-clip">
-        注目のトピック
-      </p>
+      <div className="mt-16 mb-4 text-center">
+        <p className="primary-gradient inline-block p-2 text-2xl font-bold text-clip backdrop-blur-[20px]">
+          注目のトピック
+        </p>
+      </div>
 
       <CarouselScroll>
         {Array.from({ length: 5 }).map((_, i) => (
