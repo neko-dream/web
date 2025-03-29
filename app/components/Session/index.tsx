@@ -1,8 +1,8 @@
-import { RiMapPinLine } from "react-icons/ri";
 import { components } from "~/libs/api/openapi";
 import { Avatar } from "../Avatar";
 import { OpinionCount } from "../OpinionCount";
 import { JST } from "~/libs/date";
+import { ClockCircle, Environment } from "../Icons";
 
 type Props = {
   talkSession: components["schemas"]["talkSession"];
@@ -22,33 +22,35 @@ export default function Session({ talkSession, opinionCount }: Props) {
         alt="session thumbnail"
       />
 
-      <div className="ml-4 flex w-full flex-col space-y-1">
+      <div className="ml-4 flex w-full flex-col">
         {/* テーマ名 */}
-        <p className="font-bold">{talkSession.theme}</p>
+        <p className="line-clamp-1 font-bold">{talkSession.theme}</p>
 
         {/* アバター */}
-        <div className="flex items-center space-x-2">
+        <div className="mt-0.5 flex items-center space-x-2">
           <Avatar src={talkSession.owner.iconURL} className="block h-5 w-5" />
           <p className="text-xs text-gray-500">
             {talkSession.owner.displayName}
           </p>
         </div>
 
-        <div className="flex space-x-4">
-          {talkSession.city && (
-            <div className="flex w-full max-w-24 items-center space-x-1">
-              <RiMapPinLine className="text-gray-500" />
-              <p className="text-xs text-gray-500">{talkSession.city}</p>
-            </div>
-          )}
+        <div className="mt-0.5 flex space-x-4">
+          {/* FIXME:  */}
+          <div className="flex w-full max-w-24 items-center space-x-1">
+            <Environment className="text-gray-500" />
+            <p className="text-xs text-gray-500">{talkSession.city || "---"}</p>
+          </div>
 
-          {isFinished ? (
-            <p className="w-10 text-xs text-gray-500">終了</p>
-          ) : (
-            <p className="w-10 text-xs text-gray-500">
-              {JST(talkSession.scheduledEndTime).format("MM/DD")}
-            </p>
-          )}
+          <div className="flex">
+            <ClockCircle className="text-gray-500" />
+            {isFinished ? (
+              <p className="ml-1 w-14 text-xs text-gray-500">終了</p>
+            ) : (
+              <p className="ml-1 w-16 text-xs whitespace-nowrap text-gray-500">
+                {JST(talkSession.scheduledEndTime).format("MM/DDまで")}
+              </p>
+            )}
+          </div>
 
           <OpinionCount count={opinionCount} />
         </div>
