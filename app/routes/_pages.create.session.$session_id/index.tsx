@@ -1,0 +1,233 @@
+import {
+  getFormProps,
+  getInputProps,
+  useForm,
+  useInputControl,
+} from "@conform-to/react";
+import { Form, useNavigate } from "react-router";
+import { Button } from "~/components/Button";
+import { Heading } from "~/components/Heading";
+import { Input } from "~/components/Input";
+import { Label } from "~/components/Label";
+import { isFieldsError } from "~/libs/form";
+import type { Route } from "~/app/routes/_pages.create.session.$session_id/+types";
+import { Checkbox } from "~/components/Checkbox";
+import { Check } from "~/components/Icons";
+import { api } from "~/libs/api";
+import { useEffect, useRef, useState } from "react";
+import { RichTextEditor } from "~/features/rich-text-editor";
+import Select from "~/components/Select";
+import { parseWithValibot } from "conform-to-valibot";
+import { createSessionFormSchema } from "./schemas";
+import dayjs from "dayjs";
+import { toast } from "react-toastify";
+
+export { loader } from "./modules/loader";
+export { ErrorBoundary } from "./modules/ErrorBoundary";
+
+export default function Page({
+  loaderData: { restrictions, session, isEditMobe },
+}: Route.ComponentProps) {
+  const [isRestriction, setIsRestriction] = useState<boolean>(false);
+  const thumbnailRef = useRef<string>();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (session?.restrictions) {
+      setIsRestriction(true);
+    }
+  }, [session]);
+
+  const [form, fields] = useForm({
+    defaultValue: {
+      theme: session?.theme || "",
+      description: session?.description || "",
+      restrictions: session?.restrictions.map((r) => r.key) || [],
+      scheduledEndTime: dayjs(session?.scheduledEndTime).format("YYYY-MM-DD"),
+    },
+    onValidate: ({ formData }) => {
+      const parse = parseWithValibot(formData, {
+        schema: createSessionFormSchema,
+      });
+      return parse;
+    },
+    onSubmit: async (e, { submission }) => {
+      e.preventDefault();
+
+      if (submission?.status === "success") {
+        const value = submission.value;
+        const restrictions = Array.isArray(value.restrictions)
+          ? value.restrictions
+          : value.restrictions
+            ? [value.restrictions]
+            : [];
+
+        if (isEditMobe) {
+          const { error } = await api.PUT(`/talksessions/{talkSessionId}`, {
+            credentials: "include",
+            params: {
+              path: {
+                talkSessionId: session.id,
+              },
+            },
+            body: {
+              ...value,
+              scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
+              restrictions,
+              thumbnailURL: thumbnailRef.current,
+            },
+          });
+
+          if (error) {
+            toast.error(error.message);
+          } else {
+            toast.success("更新が完了しました");
+            navigate(`/session/${session?.id}`);
+          }
+          return;
+        }
+
+        const { error } = await api.POST("/talksessions", {
+          credentials: "include",
+          body: {
+            ...value,
+            scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
+            restrictions,
+            thumbnailURL: thumbnailRef.current,
+          },
+        });
+
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.success("登録が完了しました");
+          navigate("/home");
+        }
+      }
+    },
+  });
+
+  const descriptionControl = useInputControl(fields.description);
+
+  const handleImageUploader = async (file: File) => {
+    const { data } = await api.POST("/images", {
+      credentials: "include",
+      body: {
+        image: file as unknown as string,
+      },
+    });
+
+    if (!thumbnailRef.current) {
+      thumbnailRef.current = data?.url;
+    }
+
+    return data?.url || "";
+  };
+
+  return (
+    <div className="bg-mt-gray-200 flex flex-1 flex-col">
+      <Heading
+        title={isEditMobe ? "セッションを編集する" : "セッションを作成する"}
+        className="h-10"
+      />
+      <Form
+        {...getFormProps(form)}
+        onSubmit={form.onSubmit}
+        method="post"
+        className="m-4 mx-auto mb-16 w-full max-w-xl space-y-4 px-4"
+      >
+        <Label
+          title="タイトル"
+          errors={fields.theme.errors}
+          notes={["意見を聞きたいことを一行で書いてみよう"]}
+        >
+          <Input
+            {...getInputProps(fields.theme, { type: "text" })}
+            error={isFieldsError(fields.theme.errors)}
+            className="h-12 w-full px-4"
+            placeholder="記入する"
+          />
+        </Label>
+
+        <Label
+          title="ストーリー"
+          notes={["どうして聞きたいと思ったのか、みんなに伝えよう"]}
+        >
+          <RichTextEditor
+            defaultValue={session?.description}
+            onImageLoad={handleImageUploader}
+            onUpdate={descriptionControl.change}
+          />
+        </Label>
+
+        <Label title="募集事項" notes={["どんな人に参加してほしいか決めよう"]}>
+          <Select
+            options={[
+              {
+                title: "誰でもOK",
+                value: "all",
+              },
+              {
+                title: "範囲を指定",
+                value: "restriction",
+              },
+            ]}
+            defaultValue={session?.restrictions ? "restriction" : "all"}
+            onChange={(e) => {
+              setIsRestriction(e.currentTarget.value === "restriction");
+            }}
+          />
+          {isRestriction && (
+            <div className="mt-2 space-y-2">
+              {restrictions?.map((restriction, i) => {
+                const checked = session?.restrictions?.some(
+                  (r) => r.key === restriction.key,
+                );
+                return (
+                  <Checkbox
+                    {...getInputProps(fields.restrictions, {
+                      type: "checkbox",
+                    })}
+                    key={i}
+                    id={restriction.key}
+                    name="restrictions"
+                    value={restriction.key}
+                    label={restriction.description}
+                    defaultChecked={checked}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </Label>
+
+        <Label
+          title="募集期間"
+          notes={["具体的な場所が決まっていたら入力しよう"]}
+        >
+          <span className="relative">
+            <Input
+              {...getInputProps(fields.scheduledEndTime, {
+                type: "text",
+              })}
+              type="date"
+              className="h-12 w-full px-4"
+              placeholder="記入する"
+            />
+          </span>
+        </Label>
+
+        <Button
+          color="primary"
+          type="submit"
+          className="mx-auto !mt-12 flex items-center space-x-4"
+        >
+          <Check />
+          <span>
+            {isEditMobe ? "セッションを編集する" : "セッションを作成する"}
+          </span>
+        </Button>
+      </Form>
+    </div>
+  );
+}

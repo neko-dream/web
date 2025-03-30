@@ -104,7 +104,7 @@ export const Header = ({ $user }: Props) => {
                       </Link>
 
                       <Link
-                        to={"/create/session"}
+                        to={"/create/session/new"}
                         className={button({
                           className:
                             "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
