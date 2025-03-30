@@ -1,12 +1,13 @@
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { BaseModalProps } from ".";
+import { BaseModalProps } from "./types";
 
-export const HalfButtomModal = ({
+export const HalfButtomDialog = ({
   isOpen,
   onOpenChange,
   children,
 }: BaseModalProps) => {
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -36,6 +37,7 @@ export const HalfButtomModal = ({
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };

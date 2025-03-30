@@ -1,5 +1,4 @@
-import { HalfButtomModal } from "../modal/HalfButtomModal";
-import { BaseModalProps } from "../modal";
+import { HalfButtomDialog } from "../modal";
 import { Checkbox } from "~/components/Checkbox";
 import Textarea from "~/components/Textarea";
 import { Button } from "~/components/Button";
@@ -8,6 +7,7 @@ import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithValibot } from "conform-to-valibot";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
+import { BaseModalProps } from "../modal/types";
 
 type Props = Omit<BaseModalProps, "children"> & {
   reasons: { reason: string; reason_id: number }[];
@@ -33,7 +33,7 @@ export const ReportModal = ({ isOpen, onOpenChange, reasons }: Props) => {
   });
 
   return (
-    <HalfButtomModal isOpen={isOpen} onOpenChange={onOpenChange}>
+    <HalfButtomDialog isOpen={isOpen} onOpenChange={onOpenChange}>
       <h2 className="text-center text-lg font-bold">通報</h2>
       <Form {...getFormProps(form)} className="mx-auto mt-4 max-w-2xl">
         <p>通報理由</p>
@@ -60,6 +60,6 @@ export const ReportModal = ({ isOpen, onOpenChange, reasons }: Props) => {
           通報する
         </Button>
       </Form>
-    </HalfButtomModal>
+    </HalfButtomDialog>
   );
 };

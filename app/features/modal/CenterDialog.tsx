@@ -1,14 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
-import type { Dispatch, ReactNode, SetStateAction } from "react";
+import { createPortal } from "react-dom";
 import { useEffect } from "react";
+import { BaseModalProps } from "./types";
 
-export type BaseModalProps = {
-  isOpen: boolean;
-  onOpenChange: Dispatch<SetStateAction<boolean>>;
-  children: ReactNode;
-};
-
-export const Modal = ({ isOpen, onOpenChange, children }: BaseModalProps) => {
+export const CenterDialog = ({
+  isOpen,
+  onOpenChange,
+  children,
+}: BaseModalProps) => {
   const handleEscape = (e: KeyboardEvent) => {
     if (isOpen && e.key === "Escape") {
       onOpenChange(false);
@@ -22,7 +21,7 @@ export const Modal = ({ isOpen, onOpenChange, children }: BaseModalProps) => {
     };
   });
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
@@ -31,7 +30,7 @@ export const Modal = ({ isOpen, onOpenChange, children }: BaseModalProps) => {
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             onClick={() => onOpenChange(false)}
-            className="fixed inset-0 z-40 bg-black"
+            className="fixed inset-0 z-40 w-full bg-black"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.75, y: 20 }}
@@ -42,17 +41,13 @@ export const Modal = ({ isOpen, onOpenChange, children }: BaseModalProps) => {
               duration: 0.2,
               bounce: 0.3,
             }}
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 top-1/2 left-1/2 z-50 h-fit w-fit -translate-x-1/2 -translate-y-1/2"
           >
-            <button
-              className="mx-4 max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-lg bg-white shadow-xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-4">{children}</div>
-            </button>
+            <div className="rounded-lg bg-white p-2 shadow-xl">{children}</div>
           </motion.div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body,
   );
 };
