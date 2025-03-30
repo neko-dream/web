@@ -2,11 +2,16 @@ import { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const $opinions = await api.GET("/opinions/histories", {
+  const $session = await api.GET("/talksessions/opened", {
     headers: request.headers,
+    params: {
+      query: {
+        limit: 100,
+      },
+    },
   });
 
   return {
-    $opinions,
+    $session,
   };
 };

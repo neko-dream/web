@@ -41,12 +41,16 @@ export default function Page() {
   };
 
   return (
-    <div className="flex flex-1 flex-col items-center pb-12">
+    <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
       <div className="relative">
-        <Avatar src={preview} className="mt-12 h-16 w-16" />
-        <button
+        <Avatar
+          src={preview}
+          className="mt-12 h-24 w-24"
           onClick={handleUploadButtonClick}
-          className="absolute -right-2 -bottom-2 rounded-full bg-gray-400 p-1"
+        />
+        <button
+          className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full bg-gray-400"
+          onClick={handleUploadButtonClick}
         >
           <Camera />
         </button>

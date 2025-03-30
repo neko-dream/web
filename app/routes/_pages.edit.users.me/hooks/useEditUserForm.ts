@@ -36,7 +36,7 @@ export const useEditUserForm = ({ user }: Props) => {
         toast.error(error.message);
       } else {
         toast.success("登録情報の編集が完了しました");
-        navigate("/mypage");
+        navigate("/users/me");
       }
     },
   });
