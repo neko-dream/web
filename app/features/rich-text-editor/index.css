@@ -1,0 +1,25 @@
+.tiptap {
+  padding: 8px;
+}
+
+.tiptap a {
+  color: #007aff;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #4dabf7;
+  }
+}
+
+.tiptap p.is-empty::before {
+  color: #adb5bd;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+.ProseMirror:focus {
+  outline: none;
+}
