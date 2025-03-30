@@ -9,7 +9,7 @@ type Props = {
   opinionCount: number;
 };
 
-export default function Session({ talkSession, opinionCount }: Props) {
+export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
   const isFinished = JST(talkSession.scheduledEndTime).isBefore();
 
   return (

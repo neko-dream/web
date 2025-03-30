@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import type { Route } from "../_pages.users.me.histories/+types";
 import { loader } from "./modules/loader";
 import { Await, Link } from "react-router";
-import Session from "~/components/Session";
+import Session from "~/components/TalkSessionCard";
 
 export { loader };
 

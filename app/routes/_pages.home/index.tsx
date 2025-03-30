@@ -1,7 +1,7 @@
 import { Await, Link } from "react-router";
 import { Suspense } from "react";
 import Error from "~/components/Error";
-import Session from "~/components/Session";
+import Session from "~/components/TalkSessionCard";
 import { SessionSkeleton } from "./components/SessionSkeleton";
 import type { Route } from "../_pages.home/+types";
 
