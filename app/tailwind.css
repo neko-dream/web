@@ -49,6 +49,8 @@
   --color-mt-gray-200: #f2f2f7;
   /* disabeldな表現で使用 */
   --color-mt-gray-500: #adb5bd;
+  /* 注意書きで使用 */
+  --color-mt-gray-600: #868e96;
 
   /* Dark colors */
   --color-dark-50: #c1c2c5;
