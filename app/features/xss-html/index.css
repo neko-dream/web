@@ -1,0 +1,9 @@
+.html a {
+  color: #007aff;
+  text-decoration: underline;
+  cursor: pointer;
+
+  &:hover {
+    color: #4dabf7;
+  }
+}
