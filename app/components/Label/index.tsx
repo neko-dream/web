@@ -36,7 +36,7 @@ export const Label = ({
       </div>
       {notes &&
         notes.map((v, i) => (
-          <p key={i} className="text-sm text-gray-400">
+          <p key={i} className="text-mt-gray-600 text-sm">
             {v}
           </p>
         ))}
