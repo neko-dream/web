@@ -9,7 +9,7 @@ import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { Graph } from "~/features/graph/components";
 import { List } from "~/features/acordion";
-import { PieChart } from "~/components/Icons";
+import { Edit, PieChart } from "~/components/Icons";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
@@ -17,6 +17,8 @@ export { loader };
 export default function Route({
   loaderData: { session, user, report },
 }: Route.ComponentProps) {
+  const isOwner = session.owner.displayID === user?.displayId;
+
   const items = [
     { label: "活動報告", href: `/${session.id}/conclusion` },
     { label: "内容", href: `/${session.id}` },
@@ -30,7 +32,17 @@ export default function Route({
   return (
     <>
       <div className="flex flex-col space-y-2 px-4 py-2">
-        <p className="font-bold">{session.theme}</p>
+        <div className="flex">
+          <p className="font-bold">{session.theme}</p>
+          {isOwner && (
+            <Link
+              to={`/create/session/${session.id}`}
+              className="ml-2 cursor-pointer"
+            >
+              <Edit />
+            </Link>
+          )}
+        </div>
 
         <List
           className="bg-gray-100"
