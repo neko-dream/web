@@ -17,7 +17,7 @@ function Page() {
       <div className="area">
         <ul className="circles">
           {Array.from({ length: 20 }).map((_, i) => (
-            <li key={i}></li>
+            <li key={i} />
           ))}
         </ul>
       </div>
@@ -41,17 +41,27 @@ function Page() {
           <p className="text-center text-xs">2つの方法から参加できます</p>
 
           <div className="mt-4 flex items-center">
-            {/* FIXME:  */}
+            {/* FIXME: サーバーにデータを送るようにする */}
             <Checkbox id="" label="" />
             <label
               htmlFor="terms"
               className="ms-2 text-sm font-medium text-gray-900"
             >
-              <a href="./#" className="text-[#007AFF]">
+              <a
+                href="https://static.kotohiro.com/tos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mt-blue-600"
+              >
                 利用規約
               </a>
               ・
-              <a href="./#" className="text-[#007AFF]">
+              <a
+                href="https://static.kotohiro.com/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mt-blue-600"
+              >
                 プライバシーポリシー
               </a>
               に同意して始める
@@ -90,7 +100,7 @@ function Page() {
       </div>
 
       <div className="mt-16 mb-4 text-center">
-        <p className="primary-gradient inline-block p-2 text-2xl font-bold text-clip backdrop-blur-[20px]">
+        <p className="primary-gradient inline-block rounded-md p-2 text-2xl font-bold text-clip backdrop-blur-[20px]">
           注目のトピック
         </p>
       </div>
