@@ -51,6 +51,8 @@
   --color-mt-gray-500: #adb5bd;
   /* 注意書きで使用 */
   --color-mt-gray-600: #868e96;
+  /* リンクとかで使用 */
+  --color-mt-blue-600: #007aff;
 
   /* Dark colors */
   --color-dark-50: #c1c2c5;
