@@ -42,7 +42,7 @@ export const Header = ({ $user }: Props) => {
 
   const handleSearchDialogOpenChange = () =>
     setIsSearchDialogOpen((prev) => !prev);
-  const handleMenuButtonClick = () => setIsMenuDialogOpen(true);
+  const handleMenuButtonClick = () => setIsMenuDialogOpen((prev) => !prev);
 
   return (
     <>
