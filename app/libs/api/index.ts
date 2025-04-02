@@ -1,5 +1,5 @@
 import createClient from "openapi-fetch";
-import { paths } from "./openapi";
+import { paths } from "~/types/openapi";
 
 /**
  * objectを適切な形式に変換する

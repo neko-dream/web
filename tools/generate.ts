@@ -3,4 +3,4 @@
  */
 import { $ } from "bun";
 
-await $`npx openapi-typescript ./tools/kotohiro.openapi.yaml -o ./app/libs/api/openapi.ts`; // 1256
+await $`npx openapi-typescript ./tools/kotohiro.openapi.yaml -o ./app/types/openapi.ts`; // 1256
