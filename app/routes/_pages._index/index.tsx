@@ -26,7 +26,9 @@ function Page() {
         <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
           <span className="flex items-center">
             <FaviconKotohiro className="w-20" />
-            <p className="ml-2 text-6xl font-black">ことひろ</p>
+            <p className="font-cs-logo text-mt-gray-900 ml-2 text-6xl font-black tracking-[10px]">
+              ことひろ
+            </p>
           </span>
         </div>
         <div className="mx-auto mt-2 inline-block rounded-md p-2 text-center backdrop-blur-[20px]">
