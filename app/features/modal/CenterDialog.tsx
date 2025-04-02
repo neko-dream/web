@@ -1,13 +1,13 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import { useEffect } from "react";
-import { BaseModalProps } from "./types";
+import { ModalProps } from "./types";
 
 export const CenterDialog = ({
   isOpen,
   onOpenChange,
   children,
-}: BaseModalProps) => {
+}: ModalProps) => {
   const handleEscape = (e: KeyboardEvent) => {
     if (isOpen && e.key === "Escape") {
       onOpenChange(false);

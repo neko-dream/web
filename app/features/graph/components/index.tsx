@@ -1,4 +1,4 @@
-import { ComponentProps, createRef } from "react";
+import { ComponentProps, Fragment, useCallback } from "react";
 import { tv } from "tailwind-variants";
 
 const graph = tv({
@@ -16,7 +16,6 @@ import { Graphics as PixiGraphics } from "@pixi/graphics";
 import { TextStyle } from "@pixi/text";
 // import { Texture } from "@pixi/core";
 import { Stage, Graphics, Sprite, Text } from "@pixi/react";
-import { Fragment, useCallback } from "react";
 
 // const colorList = [0xff453a, 0xffd60a, 0xbf5af2, 0x30d158];
 const colorList = [

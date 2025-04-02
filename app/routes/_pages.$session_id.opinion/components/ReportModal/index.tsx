@@ -1,4 +1,3 @@
-import { HalfButtomDialog } from "../modal";
 import { Checkbox } from "~/components/Checkbox";
 import Textarea from "~/components/Textarea";
 import { Button } from "~/components/Button";
@@ -7,9 +6,10 @@ import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithValibot } from "conform-to-valibot";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
-import { BaseModalProps } from "../modal/types";
+import { ModalProps } from "~/features/modal/types";
+import { HalfButtomDialog } from "~/features/modal";
 
-type Props = Omit<BaseModalProps, "children"> & {
+type Props = Omit<ModalProps, "children"> & {
   reasons: { reason: string; reason_id: number }[];
 };
 

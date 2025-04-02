@@ -7,7 +7,7 @@ import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
 import { SessionRouteContext } from "../_pages.$session_id/types";
 import { OpinionType } from "~/features/opinion/types";
 import { useState } from "react";
-import { ReportModal } from "~/features/report/ReportModal";
+import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };

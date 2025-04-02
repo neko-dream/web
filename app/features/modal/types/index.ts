@@ -1,6 +1,6 @@
 import { Dispatch, ReactNode, SetStateAction } from "react";
 
-export type BaseModalProps = {
+export type ModalProps = {
   isOpen: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
   children: ReactNode;
