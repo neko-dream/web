@@ -9,6 +9,7 @@ import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
 import Graph from "~/features/graph/components";
 import { Arrow } from "~/components/Icons";
 import ReactMarkdown from "react-markdown";
+import { useEffect, useState } from "react";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
@@ -18,6 +19,7 @@ export default function Page({
 }: Route.ComponentProps) {
   const { session } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
+  const [windowWidth, setWindowWidth] = useState(374);
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
@@ -35,15 +37,27 @@ export default function Page({
     }
   };
 
+  useEffect(() => {
+    const _windowWidth = window.innerWidth;
+    setWindowWidth(_windowWidth);
+    const resize = () => {
+      const _windowWidth = window.innerWidth;
+      setWindowWidth(_windowWidth);
+    };
+    window.addEventListener("resize", resize);
+
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
   // グループ３が一番意見多そうなので、グループ３の意見を取得
   // ついでにインデックス順にする
   const positions = position?.positions
-    .filter((opinion) => {
-      return (
-        opinion.groupId === 3 &&
-        (opinion.perimeterIndex || opinion.perimeterIndex === 0)
-      );
-    })
+    // .filter((opinion) => {
+    //   return (
+    //     opinion.groupId === 3 &&
+    //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+    //   );
+    // })
     .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
 
   return (
@@ -70,6 +84,7 @@ export default function Page({
           polygons={positions}
           positions={position?.positions}
           myPosition={position?.myPosition}
+          windowWidth={windowWidth}
           selectGroupId={(id: number) => {
             console.log(id);
           }}
