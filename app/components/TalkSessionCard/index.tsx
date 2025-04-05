@@ -19,7 +19,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
       {/* FIXME: 画像のURLを修正してください */}
       <img
         src={talkSession.thumbnailURL || DefaultSessionIcon}
-        className="aspect-square h-16 w-16 rounded-2xl"
+        className="aspect-square h-16 w-16 rounded-2xl object-cover"
         alt="session thumbnail"
       />
 
