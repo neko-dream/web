@@ -40,32 +40,35 @@ export default function Page({
 
   return (
     <div className="flex flex-col space-y-2">
-      {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
-        return (
-          <Card
-            key={i}
-            href={`/opinion/${opinion.id}`}
-            title={opinion.title}
-            description={opinion.content}
-            user={{
-              displayID: "",
-              displayName: opinionUser.displayName,
-              iconURL: opinionUser.iconURL,
-            }}
-            // FIXME: サーバー対応待ち
-            status={myVoteType as OpinionType | undefined}
-            date={"2025/12/31 10:00"}
-            className="mx-auto w-full max-w-2xl"
-            isJudgeButton={user?.displayId !== opinionUser.displayID}
-            isMoreButton={user?.displayId !== opinionUser.displayID}
-            onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
-            onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
-            onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-            onClickReport={handleOpenModal}
-            onClickAnalytics={handleOpenModal}
-          />
-        );
-      })}
+      {opinions.map(
+        ({ opinion, user: opinionUser, myVoteType, replyCount }, i) => {
+          return (
+            <Card
+              key={i}
+              href={`/opinion/${opinion.id}`}
+              title={opinion.title}
+              description={opinion.content}
+              user={{
+                displayID: "",
+                displayName: opinionUser.displayName,
+                iconURL: opinionUser.iconURL,
+              }}
+              // FIXME: サーバー対応待ち
+              status={myVoteType as OpinionType | undefined}
+              date={"2025/12/31 10:00"}
+              className="mx-auto w-full max-w-2xl"
+              isJudgeButton={user?.displayId !== opinionUser.displayID}
+              isMoreButton={user?.displayId !== opinionUser.displayID}
+              onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
+              onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
+              onClickPass={() => handleSubmitVote(opinion.id, "pass")}
+              onClickReport={handleOpenModal}
+              onClickAnalytics={handleOpenModal}
+              opinionCount={replyCount}
+            />
+          );
+        },
+      )}
 
       <ReportModal
         isOpen={isOpen}
