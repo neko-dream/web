@@ -1,0 +1,19 @@
+diff --git a/src/utl/regex-util.mjs b/src/utl/regex-util.mjs
+index b474da32d14bfc4a6257cdbc7073f48c2c753751..359bfc7a0ea60bbc6a19bc478b75ae69c7a7e573 100644
+--- a/src/utl/regex-util.mjs
++++ b/src/utl/regex-util.mjs
+@@ -47,10 +47,13 @@ export function extractGroups(pFromRestriction, pActualPath) {
+  * groups from pExtractedgroups
+  */
+ export function replaceGroupPlaceholders(pString, pExtractedGroups) {
+-  return pExtractedGroups.reduce(
++  const path = pExtractedGroups.reduce(
+     (pAll, pThis, pIndex) =>
+       // eslint-disable-next-line security/detect-non-literal-regexp
+       pAll.replace(new RegExp(`\\$${pIndex}`, "g"), pThis),
+     pString,
+   );
++  
++  // $ マークをエスケープしてから返す
++  return path.replace(/\$/g, "\\$");
+ }

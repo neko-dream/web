@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-/* eslint-disable import/no-named-as-default */
 import { Link, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
@@ -8,8 +7,8 @@ import { Card } from "~/components/Card";
 import { Arrow } from "~/components/Icons";
 import Graph from "~/features/graph/components";
 import { postVote } from "~/features/opinion/libs/postVote";
-import type { SessionRouteContext } from "../_pages.$session_id/types";
 import { loader } from "./modules/loader";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };

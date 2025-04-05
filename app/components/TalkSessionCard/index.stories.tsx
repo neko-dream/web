@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createRoutesStub } from "react-router";
-import Session from "./index.ts";
+import Session from ".";
 
 const meta: Meta<typeof Session> = {
   component: Session,

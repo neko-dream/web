@@ -1,3 +1,3 @@
-export { CenterDialog } from "./CenterDialog.tsx";
-export { HalfButtomDialog } from "./HalfButtomDialog.tsx";
-export type { ModalProps } from "./types.ts";
+export { CenterDialog } from "./CenterDialog";
+export { HalfButtomDialog } from "./HalfButtomDialog";
+export type { ModalProps } from "./types";

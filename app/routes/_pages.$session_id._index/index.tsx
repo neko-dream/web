@@ -1,6 +1,6 @@
 import { useOutletContext } from "react-router";
 import { SanitizedHtml } from "~/features/xss-html";
-import type { SessionRouteContext } from "../_pages.$session_id/types.ts";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();

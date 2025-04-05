@@ -9,6 +9,7 @@
     "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
     "format": "bunx biome format --write ./app",
     "lint": "biome check .",
+    "deps": "bun depcruise --config .dependency-cruiser.cjs .",
     "storybook": "SB=1 storybook dev -p 6006",
     "storybook:build": "SB=1 storybook build",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
@@ -69,6 +70,7 @@
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
     "cross-env": "^7.0.3",
+    "dependency-cruiser": "^16.10.1",
     "postcss": "^8.4.49",
     "storybook": "^8.3.3",
     "tailwindcss": "^4.0.0",
@@ -99,5 +101,8 @@
         }
       ]
     }
+  },
+  "patchedDependencies": {
+    "dependency-cruiser@16.10.1": "patches/dependency-cruiser@16.10.1.patch"
   }
 }

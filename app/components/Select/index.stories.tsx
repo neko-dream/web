@@ -4,7 +4,7 @@ import prefectures from "~/assets/data/adress/prefectures.json";
 import birthday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import occupation from "~/assets/data/occupation.json";
-import Select from "./index.ts";
+import Select from ".";
 
 const meta: Meta<typeof Select> = {
   component: Select,

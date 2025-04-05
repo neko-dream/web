@@ -1,4 +1,4 @@
-import type { components } from "~/libs/api/openapi";
+import type { components } from "~/types/openapi";
 
 export type User = components["schemas"]["user"] &
   Partial<components["schemas"]["userDemographics"]>;

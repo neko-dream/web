@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { OpinionCount } from "./index.ts";
+import { OpinionCount } from ".";
 
 const meta: Meta<typeof OpinionCount> = {
   component: OpinionCount,

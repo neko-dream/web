@@ -4,8 +4,8 @@ import { toast } from "react-toastify";
 import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
 import { Card } from "~/components/Card";
 import { postVote } from "~/features/opinion/libs/postVote";
-import type { SessionRouteContext } from "../_pages.$session_id/types";
 import { ReportModal } from "./components/ReportModal";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";

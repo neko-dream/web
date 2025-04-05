@@ -8,7 +8,7 @@ import { JST } from "~/libs/date";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { OpinionCheckButton } from "./components/OpinionCheckButton";
-import type { SessionRouteContext } from "./types";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";

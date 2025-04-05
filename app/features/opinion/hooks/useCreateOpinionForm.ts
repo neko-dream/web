@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
-import { createOpinionFormSchema } from "../schemas/createOpinionFormSchema.ts";
+import { createOpinionFormSchema } from "../schemas/createOpinionFormSchema";
 
 type Props = {
   talkSessionID?: string;

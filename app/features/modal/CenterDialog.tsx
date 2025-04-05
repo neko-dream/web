@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
-import type { ModalProps } from "./types.ts";
+import type { ModalProps } from "./types";
 
 export const CenterDialog = ({
   isOpen,
