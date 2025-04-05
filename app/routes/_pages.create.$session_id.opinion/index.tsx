@@ -1,12 +1,12 @@
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { Form, useNavigate } from "react-router";
-import type { Route } from "~/app/routes/_pages.create.$session_id.opinion/+types";
 import { InfoCircle, PaperPlane } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import Textarea from "~/components/ui/textarea";
 import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
+import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 
 export { loader } from "./modules/loader";
 

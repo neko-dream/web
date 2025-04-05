@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
 import { Card } from "~/components/features/opinion-card";
+import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import type { SessionRouteContext } from "~/types/ctx";
 import { postVote } from "~/utils/vote";
 import { ReportModal } from "./components/ReportModal";

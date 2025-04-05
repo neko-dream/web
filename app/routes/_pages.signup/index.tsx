@@ -3,7 +3,6 @@ import { type ChangeEvent, useRef, useState } from "react";
 import { RiImage2Line } from "react-icons/ri";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
-import type { Route } from "~/app/routes/_pages.signup/+types";
 import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import AdressInputs from "~/components/features/input-adress";
@@ -14,6 +13,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
+import type { Route } from "~/react-router/_pages.signup/+types";
 import Uploadarea from "./components/Uploadarea";
 import { useCreateUserForm } from "./hooks/useCreateUserForm";
 

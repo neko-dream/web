@@ -9,7 +9,6 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import type { Route } from "~/app/routes/_pages.create.session.$session_id/+types";
 import { RichTextEditor } from "~/components/features/rich-text-editor";
 import { Check } from "~/components/icons";
 import { Button } from "~/components/ui/button";
@@ -20,6 +19,7 @@ import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
+import type { Route } from "~/react-router/_pages.create.session.$session_id/+types";
 import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";

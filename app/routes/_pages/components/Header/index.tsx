@@ -1,11 +1,11 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, Link, useLocation } from "react-router";
 import { tv } from "tailwind-variants";
-import type { Route } from "~/app/routes/_pages/+types/route";
 import LogoIcon from "~/assets/kotihiro.png";
 import { Close, Menu, PlusCircle, Search } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";
+import type { Route } from "~/react-router/_pages/+types/route";
 import { MenuDialog } from "../MenuDialog";
 import { SearchModal } from "../SearchModal";
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
 import { Graph } from "~/components/features/graph-opinion";
 import {
   ArrowDown,
@@ -14,6 +13,7 @@ import {
 } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Button, button } from "~/components/ui/button";
+import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
 import { postVote } from "~/utils/vote";
 import CardSwiper from "./components/CardSwiper";

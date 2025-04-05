@@ -2,7 +2,7 @@ import { Suspense } from "react";
 import { Await, Link } from "react-router";
 import Session from "~/components/features/talksession-card";
 import { ErrorView } from "~/components/layouts/error";
-import type { Route } from "../_pages.home/+types";
+import type { Route } from "~/react-router/_pages.home/+types";
 import { SessionSkeleton } from "./components/SessionSkeleton";
 
 export { loader } from "./modules/loader";

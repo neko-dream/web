@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import Graph from "~/components/features/graph-opinion";
 import { Left } from "~/components/icons";
 // import Graph from "~/features/opinion-graph/components";
-import type { Route } from "../_pages.report.$session_id/+types";
+import type { Route } from "~/react-router/_pages.report.$session_id/+types";
 
 export { loader } from "./modules/loader";
 

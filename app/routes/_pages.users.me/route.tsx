@@ -1,7 +1,7 @@
 import { Link, Outlet } from "react-router";
-import type { Route } from "~/app/routes/_pages.users.me/+types/route";
 import { Setting } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
+import type { Route } from "~/react-router/_pages.users.me/+types/route";
 import { Tabs } from "./components/Tabs";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
