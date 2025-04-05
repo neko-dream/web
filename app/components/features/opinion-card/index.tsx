@@ -1,4 +1,3 @@
-import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { type ComponentProps, createElement } from "react";
 import { RiMore2Fill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
@@ -8,6 +7,7 @@ import { LineChart, Notification } from "../../icons";
 import { Avatar } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import { OpinionCount } from "../../ui/opinion-count";
+import { Popover } from "../../ui/popover";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
@@ -101,42 +101,27 @@ export const Card = ({
       </div>
 
       {isMoreButton && (
-        <Popover>
-          <PopoverButton className="absolute top-4 right-4 cursor-pointer">
-            <RiMore2Fill size={24} className="text-gray-600" />
-          </PopoverButton>
-          <PopoverPanel
-            transition={true}
-            anchor="bottom"
-            className="data-[closed]:-translate-y-1 z-10 rounded-xl bg-white shadow-lg transition duration-200 ease-in-out [--anchor-gap:var(--spacing-5)] data-[closed]:opacity-0"
-          >
-            {({ close }) => (
-              <div className="flex flex-col px-3 py-1">
-                <button
-                  onClick={() => {
-                    onClickAnalytics?.();
-                    close();
-                  }}
-                  type="button"
-                  className="flex cursor-pointer space-x-2 border-gray-200 border-b py-2 text-[#8E8E93]"
-                >
-                  <LineChart />
-                  <span>分析</span>
-                </button>
-                <button
-                  onClick={() => {
-                    onClickReport?.();
-                    close();
-                  }}
-                  type="button"
-                  className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
-                >
-                  <Notification />
-                  <span>通報</span>
-                </button>
-              </div>
-            )}
-          </PopoverPanel>
+        <Popover
+          buttonLabel={<RiMore2Fill size={24} className="text-gray-600" />}
+        >
+          <div className="flex flex-col px-3 py-1">
+            <button
+              onClick={() => onClickAnalytics?.()}
+              type="button"
+              className="flex cursor-pointer space-x-2 border-gray-200 border-b py-2 text-[#8E8E93]"
+            >
+              <LineChart />
+              <span>分析</span>
+            </button>
+            <button
+              onClick={() => onClickReport?.()}
+              type="button"
+              className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
+            >
+              <Notification />
+              <span>通報</span>
+            </button>
+          </div>
         </Popover>
       )}
     </div>
