@@ -1,4 +1,4 @@
-import { ComponentProps, JSX, ReactNode } from "react";
+import type { ComponentProps, JSX, ReactNode } from "react";
 import { RiAlertFill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
 import Tip from "../Tip";
@@ -34,18 +34,17 @@ export const Label = ({
           <Tip required={required} optional={optional} />
         )}
       </div>
-      {notes &&
-        notes.map((v, i) => (
-          <p key={i} className="text-sm text-gray-400">
-            {v}
-          </p>
-        ))}
+      {notes?.map((v, i) => (
+        <p key={i} className="text-mt-gray-600 text-sm">
+          {v}
+        </p>
+      ))}
       {children}
       {errors?.map((v, i) => {
         return (
           <div key={i} className="flex items-center space-x-1">
             <RiAlertFill color="red" />
-            <p className="pt-0.5 text-xs text-red-500">{v}</p>
+            <p className="pt-0.5 text-red-500 text-xs">{v}</p>
           </div>
         );
       })}

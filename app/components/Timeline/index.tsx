@@ -1,4 +1,4 @@
-import { components } from "~/libs/api/openapi";
+import type { components } from "~/types/openapi";
 
 type Props = {
   timeline: components["schemas"]["actionItem"][];

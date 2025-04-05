@@ -1,6 +1,6 @@
 import {
   createPagesFunctionHandler,
-  createPagesFunctionHandlerParams,
+  type createPagesFunctionHandlerParams,
 } from "@react-router/cloudflare";
 import * as build from "../build/server";
 

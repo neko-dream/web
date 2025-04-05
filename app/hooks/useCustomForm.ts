@@ -1,9 +1,9 @@
-import { DefaultValue, useForm } from "@conform-to/react";
+import { type DefaultValue, useForm } from "@conform-to/react";
 import { parseWithValibot } from "conform-to-valibot";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { toast } from "react-toastify";
-import { ObjectEntries, ObjectSchema } from "valibot";
-import * as v from "valibot";
+import type { ObjectEntries, ObjectSchema } from "valibot";
+import type * as v from "valibot";
 import { deleteDashValues } from "~/libs/form";
 
 /**
@@ -15,7 +15,7 @@ type U = ObjectSchema<ObjectEntries, undefined>;
  * フォーム送信時の引数
  */
 type OnSubmitProps<T extends U> = {
-  e: React.FormEvent<HTMLFormElement>;
+  e: FormEvent<HTMLFormElement>;
   value: deleteDashValues<v.InferOutput<T>>;
 };
 
@@ -54,8 +54,7 @@ export const useCustomForm = <T extends U>({
 
       try {
         await onSubmit({ e, value: deleteDashValues(submission?.payload) });
-      } catch (e) {
-        console.error(e);
+      } catch (_e) {
         toast.error("エラーが発生しました");
       } finally {
         setLoading(false);
@@ -90,6 +89,6 @@ export const useCustomForm = <T extends U>({
 const handleDisabled = (value?: object, errors?: object) => {
   return (
     Object.keys(deleteDashValues(value)).length === 0 ||
-    Object.keys(errors || {}).length !== 0
+    Object.keys(errors || {}).length > 0
   );
 };

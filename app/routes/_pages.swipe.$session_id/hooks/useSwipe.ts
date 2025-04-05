@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useSprings } from "react-spring";
 import { useDrag } from "react-use-gesture";
-import { OpinionType } from "~/features/opinion/types";
-import { components } from "~/libs/api/openapi";
+import type { OpinionType } from "~/features/opinion/types";
+import type { components } from "~/types/openapi";
 import { animations } from "../libs/animations";
 
 type OnSwipeParam = {
@@ -30,6 +30,7 @@ export const useSwipe = ({ opinions, onSwipe }: Props) => {
   }));
 
   const bind = useDrag(
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     ({ args: [index], down, movement: [mx, my], velocity }) => {
       const trigger = velocity > 0.1;
       // MEMO: 閾値を超えたらスワイプしたとみなす
@@ -56,8 +57,11 @@ export const useSwipe = ({ opinions, onSwipe }: Props) => {
         }
       }
 
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
       api.start((i) => {
-        if (i !== index) return;
+        if (i !== index) {
+          return;
+        }
 
         const isGone = gone.has(index);
         // MEMO: スワイプしたカードの位置を計算

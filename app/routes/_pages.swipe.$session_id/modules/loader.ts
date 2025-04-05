@@ -1,9 +1,13 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { forbidden, notfound } from "~/libs/response";
 import { OPINIONS_LIMIT } from "../constants";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  if (!params.session_id) {
+    return notfound();
+  }
+
   const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
     headers: request.headers,
     params: {
@@ -19,7 +23,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       headers: request.headers,
       params: {
         path: {
-          talkSessionID: params.session_id!,
+          talkSessionID: params.session_id,
         },
         query: {
           limit: OPINIONS_LIMIT,
@@ -28,7 +32,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
-  if (!opinions || !session || error) {
+  if (!(opinions && session) || error) {
     if (error?.code.includes("AUTH")) {
       throw forbidden();
     }
@@ -36,5 +40,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  return { opinions, session };
+  return {
+    ...opinions,
+    session,
+  };
 };

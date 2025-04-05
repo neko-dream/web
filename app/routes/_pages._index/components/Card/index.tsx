@@ -1,8 +1,8 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 import { Avatar } from "~/components/Avatar";
 import { Button } from "~/components/Button";
-import { User } from "~/features/user/types";
+import type { User } from "~/features/user/types";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
@@ -27,8 +27,8 @@ export const Card = ({
 
       <div className="w-full">
         <div className="ml-2 block">
-          <p className="text-xs text-gray-300">{date}</p>
-          <p className="mt-1 line-clamp-3 text-sm text-[#4e4d4b]">
+          <p className="text-gray-300 text-xs">{date}</p>
+          <p className="mt-1 line-clamp-3 text-[#4e4d4b] text-sm">
             {description}
           </p>
         </div>
@@ -37,12 +37,18 @@ export const Card = ({
           {/* ライン */}
           <div className="mt-2 h-[1px] w-full bg-gray-200" />
 
-          <p className="mt-2 text-xs text-gray-300">あなたの意見</p>
+          <p className="mt-2 text-gray-300 text-xs">あなたの意見</p>
           {/* 40pxはアバター分 */}
           <div className="mt-1 flex w-full justify-between">
-            <OpinionButton color={"disabled"}>違うかも</OpinionButton>
-            <OpinionButton color={"disabled"}>保留</OpinionButton>
-            <OpinionButton color={"disabled"}>良さそう</OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              違うかも
+            </OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              保留
+            </OpinionButton>
+            <OpinionButton tabIndex={-1} color={"disabled"}>
+              良さそう
+            </OpinionButton>
           </div>
         </>
       </div>

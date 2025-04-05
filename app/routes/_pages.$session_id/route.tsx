@@ -1,26 +1,47 @@
 import { Link, Outlet } from "react-router";
-import { loader } from "./modules/loader";
-import { SessionRouteContext } from "./types";
-import { JST } from "~/libs/date";
-import { OpinionCheckButton } from "./components/OpinionCheckButton";
-import { Tabs } from "~/components/Tabs";
-import { Avatar } from "~/components/Avatar";
 import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
-import { CreateOpinionButton } from "./components/CreateOpinionButton";
-import { Graph } from "~/features/graph/components";
+import { Avatar } from "~/components/Avatar";
+import { Edit, PieChart } from "~/components/Icons";
 import { List } from "~/features/acordion";
-import { PieChart } from "~/components/Icons";
+import { Graph } from "~/features/graph/components";
+import { JST } from "~/libs/date";
+import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
+import { CreateOpinionButton } from "./components/CreateOpinionButton";
+import { OpinionCheckButton } from "./components/OpinionCheckButton";
+import type { SessionRouteContext } from "./types";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader };
+export { loader } from "./modules/loader";
 
-export default function Route({
-  loaderData: { session, user },
+export default function Layout({
+  loaderData: { session, user, report },
 }: Route.ComponentProps) {
+  const isOwner = session.owner.displayID === user?.displayID;
+
+  const items = [
+    { label: "活動報告", href: `/${session.id}/conclusion` },
+    { label: "内容", href: `/${session.id}` },
+    { label: "意見", href: `/${session.id}/opinion` },
+  ];
+
+  if (report) {
+    items.push({ label: "レポート", href: `/${session.id}/report` });
+  }
+
   return (
     <>
       <div className="flex flex-col space-y-2 px-4 py-2">
-        <p className="font-bold">{session.theme}</p>
+        <div className="flex">
+          <p className="font-bold">{session.theme}</p>
+          {isOwner && (
+            <Link
+              to={`/create/session/${session.id}`}
+              className="ml-2 cursor-pointer"
+            >
+              <Edit />
+            </Link>
+          )}
+        </div>
 
         <List
           className="bg-gray-100"
@@ -37,41 +58,36 @@ export default function Route({
         <Link
           to={`/swipe/${session.id}`}
           className="mx-auto mt-2 block"
-          viewTransition
+          viewTransition={true}
         >
           <OpinionCheckButton />
         </Link>
 
         <div className="flex items-center space-x-2">
           <Avatar src={session.owner.iconURL} className="h-6 w-6" />
-          <p className="line-clamp-1 w-48 text-sm text-gray-500">
+          <p className="line-clamp-1 w-48 text-gray-500 text-sm">
             {session.owner.displayName}
           </p>
         </div>
 
-        <p className="text-sm text-blue-500">未ログインも回答可能</p>
+        <p className="text-blue-500 text-sm">未ログインも回答可能</p>
 
         <div className="flex space-x-2">
           {session.city && (
-            <p className="text-sm text-gray-500">{session.city}</p>
+            <p className="text-gray-500 text-sm">{session.city}</p>
           )}
-          <p className="text-sm text-gray-500">
+          <p className="text-gray-500 text-sm">
             {JST(session.scheduledEndTime).format("MM/DD(ddd)まで")}
           </p>
         </div>
       </div>
 
-      <Tabs
-        items={[
-          { label: "活動報告", href: `/${session.id}/conclusion` },
-          { label: "内容", href: `/${session.id}` },
-          { label: "意見", href: `/${session.id}/opinion` },
-          { label: "レポート", href: `/${session.id}/report` },
-        ]}
-      />
+      <Tabs items={items} />
 
       <div className="flex-1 bg-[#F2F2F7] p-4">
-        <Outlet context={{ session, user } satisfies SessionRouteContext} />
+        <Outlet
+          context={{ session, user, report } satisfies SessionRouteContext}
+        />
         <div className="fixed right-4 bottom-4 z-10">
           <CreateOpinionButton to={`/create/${session.id}/opinion`} />
         </div>

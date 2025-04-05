@@ -1,30 +1,29 @@
-import { Form, useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
-import { loader } from "./modules/loader";
-import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
-import { Card } from "~/components/Card";
+import { getFormProps, getInputProps } from "@conform-to/react";
+import { useState } from "react";
 import { RiMore2Fill } from "react-icons/ri";
+import { Form, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
+import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
+import { Button } from "~/components/Button";
+import { Card } from "~/components/Card";
+import { Heading } from "~/components/Heading";
+import Textarea from "~/components/Textarea";
+import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
+import type { OpinionType } from "~/features/opinion/types";
+import { api } from "~/libs/api";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
-import { useState } from "react";
-import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
-import Textarea from "~/components/Textarea";
-import { Button } from "~/components/Button";
-import { getFormProps, getInputProps } from "@conform-to/react";
-import { api } from "~/libs/api";
-import { OpinionType } from "~/features/opinion/types";
 
-export { loader };
+export { loader } from "./modules/loader";
 
 export default function Page({
-  loaderData: { opinion, user, opinions },
+  loaderData: { currentUser, root, opinions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
   const handleSubmitVote = async (opinionID: string, status: OpinionType) => {
-    const { data } = await api.POST("/opinions/{opinionID}/votes", {
+    await api.POST("/opinions/{opinionID}/votes", {
       credentials: "include",
       params: {
         path: {
@@ -35,40 +34,31 @@ export default function Page({
         voteStatus: status,
       },
     });
-    console.log(data);
   };
 
   const { form, fields } = useCreateOpinionsForm({
-    parentOpinionID: opinion.id,
-    onFinishedProcess: () => {
-      console.log("onFinishedProcess");
-    },
+    parentOpinionID: root.opinion.id,
+    onFinishedProcess: () => {},
   });
 
   return (
     <>
       <Heading title="コメント一覧" onClick={() => navigate(-1)} />
       <Card
-        title={opinion.title}
-        description={opinion.content}
-        user={{
-          displayID: "",
-          displayName: user.displayName,
-          iconURL: user.iconURL,
-        }}
-        // FIXME: ココアってる？
-        // status={opinion.voteType}
-        date={"2025/12/31 10:00"}
-        onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
-        onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
-        onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-        onClickMore={() => {}}
+        title={root.opinion.title}
+        description={root.opinion.content}
+        user={root.user}
+        status={root.myVoteType}
+        date={root.opinion.postedAt}
+        isJudgeButton={currentUser?.displayID !== root.user.displayID}
+        onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
+        onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
+        onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
         className="rounded-none"
-        isJudgeButton
       />
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
-        {opinions.map(({ opinion, user: opinionUser }, i) => {
+        {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
           return (
             <Fragment key={i}>
               <RiMore2Fill size={24} className="ml-4 text-cyan-500" />
@@ -81,13 +71,12 @@ export default function Page({
                   displayName: opinionUser.displayName,
                   iconURL: opinionUser.iconURL,
                 }}
-                // status={myVoteType}
+                status={myVoteType}
                 date={"2025/12/31 10:00"}
+                isJudgeButton={currentUser?.displayID !== opinionUser.displayID}
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
                 onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
                 onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-                onClickMore={() => {}}
-                isJudgeButton
               />
             </Fragment>
           );
@@ -110,7 +99,7 @@ export default function Page({
             className="h-[270px]"
             placeholder="この意見についてどう思うか書いてみよう！"
           />
-          <Button color="primary" type="submit" className="mx-auto !mt-8 block">
+          <Button color="primary" type="submit" className="!mt-8 mx-auto block">
             <img src="" alt="" />
             <span>コメントを投稿する</span>
           </Button>

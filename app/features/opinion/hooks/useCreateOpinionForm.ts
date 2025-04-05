@@ -1,8 +1,8 @@
-import { useCustomForm } from "~/hooks/useCustomForm";
-import { createOpinionFormSchema } from "../schemas/createOpinionFormSchema";
-import { api } from "~/libs/api";
 import { toast } from "react-toastify";
+import { useCustomForm } from "~/hooks/useCustomForm";
+import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
+import { createOpinionFormSchema } from "../schemas/createOpinionFormSchema.ts";
 
 type Props = {
   talkSessionID?: string;
@@ -20,7 +20,7 @@ export const useCreateOpinionsForm = ({
     onSubmit: async ({ value }) => {
       const compressedPicture =
         value.picture &&
-        value.picture?.size !== 0 &&
+        value.picture?.size > 0 &&
         fileCompress(value.picture, 150);
 
       const { data, error } = await api.POST("/opinions", {

@@ -2,6 +2,11 @@
 
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: "Corporate";
+  src: url("Corporate-Logo-Bold-ver3.woff");
+}
+
 @layer utilities {
   body {
     margin: 0;
@@ -44,6 +49,18 @@
  * Mantine Custom CSS
  */
 @theme {
+  /* My Custom CSS */
+  --font-cs-logo: "Corporate";
+  /* 背景で使用 */
+  --color-mt-gray-200: #f2f2f7;
+  /* disabeldな表現で使用 */
+  --color-mt-gray-500: #adb5bd;
+  /* 注意書きで使用 */
+  --color-mt-gray-600: #868e96;
+  --color-mt-gray-900: #212529;
+  /* リンクとかで使用 */
+  --color-mt-blue-600: #007aff;
+
   /* Dark colors */
   --color-dark-50: #c1c2c5;
   --color-dark-100: #a6a7ab;

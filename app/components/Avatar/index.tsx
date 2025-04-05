@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"picture"> & {
@@ -12,7 +12,7 @@ const avator = tv({
 export const Avatar = ({ className, ...props }: Props) => {
   return (
     <picture {...props} className={avator({ className })}>
-      <source srcSet={props.src!} />
+      <source srcSet={props.src || ""} />
       <img
         src={"https://placehold.jp/150x150.png"}
         alt=""

@@ -1,4 +1,4 @@
-import { ComponentProps, ForwardedRef, forwardRef } from "react";
+import { type ComponentProps, type ForwardedRef, forwardRef } from "react";
 import { tv } from "tailwind-variants";
 
 type variants = "optional" | "required";

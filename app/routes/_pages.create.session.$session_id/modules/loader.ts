@@ -1,0 +1,37 @@
+import type { LoaderFunctionArgs } from "react-router";
+import { api } from "~/libs/api";
+import { notfound } from "~/libs/response";
+
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+  const { data: restrictions } = await api.GET("/talksessions/restrictions", {
+    headers: request.headers,
+  });
+
+  if (params.session_id === "new") {
+    return {
+      restrictions,
+    };
+  }
+
+  if (!params.session_id) {
+    throw notfound();
+  }
+
+  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+    params: {
+      path: {
+        talkSessionId: params.session_id,
+      },
+    },
+  });
+
+  if (!session) {
+    throw notfound();
+  }
+
+  return {
+    isEditMobe: true,
+    session,
+    restrictions,
+  };
+};

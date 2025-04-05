@@ -1,12 +1,12 @@
-import { getSelectProps, useForm } from "@conform-to/react";
+import { getSelectProps, type useForm } from "@conform-to/react";
 import { useControl } from "node_modules/@conform-to/react/integrations";
 import { useMemo } from "react";
-import * as v from "valibot";
+import type * as v from "valibot";
 import municipality from "~/assets/data/adress/municipality.json";
 import prefectures from "~/assets/data/adress/prefectures.json";
 import { Label } from "~/components/Label";
 import Select from "~/components/Select";
-import { adressFormSchema } from "~/features/user/schemas/form";
+import type { adressFormSchema } from "~/features/user/schemas/form";
 import { isCity, isFieldsError } from "~/libs/form";
 
 type Output = v.InferOutput<typeof adressFormSchema>;
@@ -27,16 +27,15 @@ export default function AdressInputs({ form, fields }: Props) {
         value: v,
         title: v,
       }));
-    } else {
-      return [];
     }
+    return [];
   }, [fields.prefecture.value]);
 
   const prefectureControl = useControl(fields.prefecture);
 
   return (
     <>
-      <Label title="都道府県" optional errors={fields.prefecture.errors}>
+      <Label title="都道府県" optional={true} errors={fields.prefecture.errors}>
         <Select
           {...getSelectProps(fields.prefecture)}
           onChange={(e) => {
@@ -55,7 +54,7 @@ export default function AdressInputs({ form, fields }: Props) {
         />
       </Label>
 
-      <Label title="市町村" optional errors={fields.city.errors}>
+      <Label title="市町村" optional={true} errors={fields.city.errors}>
         <Select
           {...getSelectProps(fields.city)}
           disabled={!fields.prefecture.value}

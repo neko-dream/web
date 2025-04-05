@@ -5,7 +5,7 @@ import Compressor from "compressorjs";
  */
 export const fileCompress = (
   file: File | Blob,
-  size: number = 300,
+  size = 300,
 ): Promise<File | Blob> => {
   return new Promise((resolve, reject) => {
     new Compressor(file, {

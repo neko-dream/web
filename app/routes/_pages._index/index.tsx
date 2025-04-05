@@ -1,43 +1,69 @@
+import { memo } from "react";
+import {
+  Arrow,
+  AuthGoogle,
+  AuthLine,
+  FaviconKotohiro,
+} from "~/components/Icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
-import { Arrow, AuthGoogle, AuthLine } from "~/components/Icons";
-import { TopicCard } from "./components/TopicCard";
 import { CarouselScroll } from "./components/CarouselScroll";
+import { TopicCard } from "./components/TopicCard";
+import "./index.css";
+import { Checkbox } from "~/components/Checkbox";
 
-export default function Index() {
+function Page() {
   return (
-    <div className="flex flex-col items-center justify-center py-32">
-      <div className="flex flex-col justify-center">
-        <div className="flex flex-col">
-          <div className="mx-auto text-4xl font-bold text-gray-900">
-            <p>ことひろ</p>
-          </div>
-          <div className="mt-6 text-center">
-            <p>ことひろは、言葉を重ねて</p>
-            <p>より良い意思決定を目指すサービスです</p>
-          </div>
+    <>
+      <div className="area">
+        <ul className="circles">
+          {Array.from({ length: 20 }).map((_, i) => (
+            <li key={i} />
+          ))}
+        </ul>
+      </div>
+
+      <div className="mt-18 flex flex-col justify-center">
+        <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
+          <span className="flex items-center">
+            <FaviconKotohiro className="w-20" />
+            <p className="ml-2 font-black font-cs-logo text-6xl text-mt-gray-900 tracking-[10px]">
+              ことひろ
+            </p>
+          </span>
+        </div>
+        <div className="mx-auto mt-2 inline-block rounded-md p-2 text-center backdrop-blur-[20px]">
+          <p>ことひろは、言葉を重ねて</p>
+          <p>より良い意思決定を目指すサービスです</p>
         </div>
 
-        <div className="mx-auto mt-10 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
-          <p className="primary-gradient text-center font-bold text-clip">
+        <div className="mx-auto mt-6 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
+          <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
             ことひろに参加しよう
           </p>
           <p className="text-center text-xs">2つの方法から参加できます</p>
 
           <div className="mt-4 flex items-center">
-            <input
-              id="terms"
-              type="checkbox"
-              className="h-5 w-5 shrink-0 cursor-pointer appearance-none rounded-lg border border-gray-400 text-blue-600 checked:border-blue-400 checked:bg-blue-500"
-            />
+            {/* FIXME: サーバーにデータを送るようにする */}
+            <Checkbox id="" label="" />
             <label
               htmlFor="terms"
-              className="ms-2 text-sm font-medium text-gray-900"
+              className="ms-2 font-medium text-gray-900 text-sm"
             >
-              <a href="./#" className="text-[#007AFF]">
+              <a
+                href="https://static.kotohiro.com/tos"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mt-blue-600"
+              >
                 利用規約
               </a>
-              、
-              <a href="./#" className="text-[#007AFF]">
+              ・
+              <a
+                href="https://static.kotohiro.com/privacy-policy"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-mt-blue-600"
+              >
                 プライバシーポリシー
               </a>
               に同意して始める
@@ -66,7 +92,7 @@ export default function Index() {
 
             <a
               href="/login"
-              className="mt-6 flex items-center space-x-2 text-sm font-bold text-gray-600"
+              className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
             >
               <span>アカウントをお持ちの方はこちら</span>
               <Arrow className="-rotate-90" />
@@ -75,15 +101,19 @@ export default function Index() {
         </div>
       </div>
 
-      <p className="primary-gradient mt-16 mb-4 text-2xl font-bold text-clip">
-        注目のトピック
-      </p>
+      <div className="mt-16 mb-4 text-center">
+        <p className="primary-gradient inline-block text-clip rounded-md p-2 font-bold text-2xl backdrop-blur-[20px]">
+          注目のトピック
+        </p>
+      </div>
 
       <CarouselScroll>
         {Array.from({ length: 5 }).map((_, i) => (
           <TopicCard key={i} />
         ))}
       </CarouselScroll>
-    </div>
+    </>
   );
 }
+
+export default memo(Page);

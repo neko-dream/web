@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Avatar } from ".";
+import { Avatar } from "./index.ts";
 
 const meta: Meta<typeof Avatar> = {
   component: Avatar,

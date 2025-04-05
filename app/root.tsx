@@ -1,6 +1,7 @@
 import type { LinksFunction } from "react-router";
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
 import "./tailwind.css";
+import type { ReactNode } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },
@@ -16,7 +17,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export function Layout({ children }: { children: React.ReactNode }) {
+export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <head>

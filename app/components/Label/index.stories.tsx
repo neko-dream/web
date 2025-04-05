@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Label } from ".";
-import { Input } from "../Input";
+import { Input } from "../Input.tsx";
+import { Label } from "./index.ts";
 
 const meta: Meta<typeof Label> = { component: Label };
 export default meta;
@@ -24,7 +24,7 @@ export const Errors: Story = {
   args: {
     optional: true,
     title: "あなたの立場",
-    children: <Input error />,
+    children: <Input error={true} />,
     errors: ["エラーが発生しました", "エラーが発生しました"],
   },
 };

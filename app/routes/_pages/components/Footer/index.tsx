@@ -58,15 +58,15 @@ const links = [
     items: [
       {
         name: "ことひろについて",
-        href: "#",
+        href: "about",
       },
       {
         name: "運営会社",
-        href: "#",
+        href: "company",
       },
       {
         name: "ニュース",
-        href: "#",
+        href: "news",
       },
     ],
   },

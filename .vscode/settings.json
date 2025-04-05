@@ -1,10 +1,14 @@
 {
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "tailwindCSS.experimental.classRegex": [
-    ["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ],
   "workbench.editorAssociations": {
     "*.svg": "default"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  // https://github.com/biomejs/biome/pull/1362#issuecomment-2409104140
+  "editor.codeActionsOnSave": {
+    "quickfix.biome": "explicit"
   }
 }

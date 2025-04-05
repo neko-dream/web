@@ -1,4 +1,4 @@
-import { ComponentProps, ForwardedRef, forwardRef } from "react";
+import { type ComponentProps, type ForwardedRef, forwardRef } from "react";
 import { tv } from "tailwind-variants";
 import { Arrow } from "../Icons";
 
@@ -33,12 +33,12 @@ function Select(
         ref={ref}
         className={base()}
         onChange={(e) => {
-          props.onChange && props.onChange(e);
+          props.onChange?.(e);
           e.currentTarget.style.color = "black";
         }}
         defaultValue={defaultValue || "0"}
       >
-        <option value="0" disabled className={placeholder()}>
+        <option value="0" disabled={true} className={placeholder()}>
           {placeholader || "選択する"}
         </option>
         <option value={"---"}>---</option>
@@ -50,7 +50,7 @@ function Select(
           );
         })}
       </select>
-      <Arrow className="absolute top-1/2 right-4 -translate-y-1/2" />
+      <Arrow className="-translate-y-1/2 absolute top-1/2 right-4" />
     </span>
   );
 }

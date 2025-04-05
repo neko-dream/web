@@ -1,25 +1,25 @@
-import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { useEffect, useState } from "react";
+import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
+import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
 import { Button, button } from "~/components/Button";
-import { OpinionType } from "~/features/opinion/types";
+import {
+  ArrowDown,
+  ArrowLeft,
+  ArrowRight,
+  InfoCircle,
+  Left,
+  PieChart,
+  PointUp,
+} from "~/components/Icons";
+import { List } from "~/features/acordion";
+import { Graph } from "~/features/graph/components";
+import { postVote } from "~/features/opinion/libs/postVote";
+import type { OpinionType } from "~/features/opinion/types";
 import CardSwiper from "./components/CardSwiper";
 import { useSwipe } from "./hooks/useSwipe";
 import { animations } from "./libs/animations";
 import { loader } from "./modules/loader";
-import { postVote } from "~/features/opinion/libs/postVote";
-import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
-import { Graph } from "~/features/graph/components";
-import { List } from "~/features/acordion";
-import {
-  Left,
-  PointUp,
-  ArrowDown,
-  ArrowLeft,
-  ArrowRight,
-  PieChart,
-  InfoCircle,
-} from "~/components/Icons";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
@@ -45,7 +45,9 @@ export default function Page({
 
       const current = opinions.length - swipe.gone.size;
       setTimeout(() => {
-        if (current === 0) setIsOpinionEnd(true);
+        if (current === 0) {
+          setIsOpinionEnd(true);
+        }
       }, 300);
     },
   });
@@ -53,12 +55,12 @@ export default function Page({
   const revalidate = useRevalidator();
 
   useEffect(() => {
-    if (!opinions.length) {
+    if (opinions.length === 0) {
       setIsOpinionEnd(true);
     }
   }, [opinions]);
 
-  if (!opinions.length) {
+  if (opinions.length === 0) {
     return (
       <div className="relative flex w-full flex-1 flex-col items-center justify-center">
         <p>全ての意見に意思表明しました🎉</p>
@@ -93,16 +95,20 @@ export default function Page({
     }
 
     setTimeout(() => {
-      if (current === 0) setIsOpinionEnd(true);
+      if (current === 0) {
+        setIsOpinionEnd(true);
+      }
     }, 300);
 
     swipe.api.start((i) => {
-      if (i !== current) return;
+      if (i !== current) {
+        return;
+      }
 
       swipe.gone.add(current);
 
       return {
-        x: v === "agree" ? 800 : v == "disagree" ? -800 : 0,
+        x: v === "agree" ? 800 : v === "disagree" ? -800 : 0,
         y: v === "pass" ? 800 : 0,
         scale: 1,
         config: { friction: 50, tension: 200 },
@@ -139,11 +145,12 @@ export default function Page({
   return (
     <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
       <button
-        className="cursor-pointerp-2 flex w-full bg-white p-2 text-[18px] font-bold"
+        type="button"
+        className="flex w-full cursor-pointerp-2 bg-white p-2 font-bold text-[18px]"
         onClick={() => navigate(-1)}
       >
         <Left className="text-black" />
-        <span className="mx-auto -translate-x-[13.5px]">{session.theme}</span>
+        <span className="-translate-x-[13.5px] mx-auto">{session.theme}</span>
       </button>
 
       <List
@@ -163,10 +170,11 @@ export default function Page({
       </div>
 
       <div className="relative mt-4 h-[160px]">
-        <PointUp className="absolute left-1/2 mt-1 -translate-x-3/5" />
+        <PointUp className="-translate-x-3/5 absolute left-1/2 mt-1" />
 
         <div className="absolute top-6 right-3/5 flex flex-col items-center">
           <button
+            type="button"
             onClick={() => handleSubmitVote("disagree")}
             className="rounded-full border border-pink-400 p-1"
           >
@@ -175,8 +183,9 @@ export default function Page({
           <p className="mt-1 text-pink-400">違うかも</p>
         </div>
 
-        <div className="absolute top-24 left-1/2 flex -translate-x-1/2 flex-col items-center">
+        <div className="-translate-x-1/2 absolute top-24 left-1/2 flex flex-col items-center">
           <button
+            type="button"
             onClick={() => handleSubmitVote("pass")}
             className="rounded-full border border-indigo-400 p-1"
           >
@@ -187,6 +196,7 @@ export default function Page({
 
         <div className="absolute top-6 left-3/5 flex flex-col items-center">
           <button
+            type="button"
             onClick={() => handleSubmitVote("agree")}
             className="rounded-full border border-cyan-400 p-1"
           >
@@ -198,7 +208,7 @@ export default function Page({
 
       <Link
         to="#"
-        className="mt-4 flex items-center justify-center text-sm text-blue-500"
+        className="mt-4 flex items-center justify-center text-blue-500 text-sm"
       >
         <InfoCircle />
         <span>この画面の操作ヒント</span>

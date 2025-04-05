@@ -1,12 +1,12 @@
+import { getFormProps, getInputProps } from "@conform-to/react";
 import { Form, useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
 import type { Route } from "~/app/routes/_pages.create.$session_id.opinion/+types";
+import { Button } from "~/components/Button";
+import { Heading } from "~/components/Heading";
+import { InfoCircle, PaperPlane } from "~/components/Icons";
 import { Label } from "~/components/Label";
 import Textarea from "~/components/Textarea";
 import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
-import { getFormProps, getInputProps } from "@conform-to/react";
-import { Button } from "~/components/Button";
-import { InfoCircle, PaperPlane } from "~/components/Icons";
 
 export { loader } from "./modules/loader";
 
@@ -16,7 +16,7 @@ export default function Page({
   const navigate = useNavigate();
 
   const { form, fields, isDisabled } = useCreateOpinionsForm({
-    talkSessionID: session.id!,
+    talkSessionID: session.id,
     onFinishedProcess: () => {
       navigate(`/${session.id}/opinion`);
     },
@@ -33,7 +33,7 @@ export default function Page({
       >
         <p className="text-gray-500">{session.theme}</p>
         <Label title="あなたの意見" className="mt-4">
-          <div className="flex items-center space-x-1 text-sm font-bold text-blue-500">
+          <div className="flex items-center space-x-1 font-bold text-blue-500 text-sm">
             <InfoCircle />
             <p>投稿のルール</p>
           </div>
@@ -45,7 +45,7 @@ export default function Page({
         <Button
           color="primary"
           type="submit"
-          className="mx-auto !mt-12 flex items-center space-x-4"
+          className="!mt-12 mx-auto flex items-center space-x-4"
           disabled={isDisabled}
         >
           <PaperPlane />
