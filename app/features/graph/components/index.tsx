@@ -358,7 +358,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
     // const ref = createRef<any>();
     // maskRefs.current.push(ref);
 
-    console.log("iconURL: " + iconURL);
+    // console.log("iconURL: " + iconURL);
     avatarWithZindex.push([
       // eslint-disable-next-line react/jsx-key
       <Graphics
@@ -373,7 +373,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
       ></Graphics>,
       zIndex + 10,
     ]);
-    console.log(iconURL);
+    // console.log(iconURL);
 
     avatarWithZindex.push([
       // eslint-disable-next-line react/jsx-key
@@ -471,7 +471,7 @@ const RotatedRoundedRect = ({
       rotation={rotation} // 回転（ラジアン）
       pointerdown={() => {
         // selectGroupId(colorIdx);
-        console.log("click!!!!");
+        // console.log("click!!!!");
         // selectGroupId(groupid)
       }}
       eventMode="static"
@@ -990,7 +990,7 @@ const Circle = ({
       draw={drawGroupCircle}
       pointerdown={() => {
         // selectGroupId(colorIdx);
-        console.log("click!!!!");
+        // console.log("click!!!!");
       }}
       eventMode="static"
     />
