@@ -1,8 +1,9 @@
-import { components } from "~/libs/api/openapi";
 import { Avatar } from "../Avatar";
 import { OpinionCount } from "../OpinionCount";
 import { JST } from "~/libs/date";
 import { ClockCircle, Environment } from "../Icons";
+import { components } from "~/types/openapi";
+import DefaultSessionIcon from "~/assets/default/session.webp";
 
 type Props = {
   talkSession: components["schemas"]["talkSession"];
@@ -17,7 +18,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
       {/* サムネイル */}
       {/* FIXME: 画像のURLを修正してください */}
       <img
-        src={talkSession.thumbnailURL || "https://placehold.jp/150x150.png"}
+        src={talkSession.thumbnailURL || DefaultSessionIcon}
         className="aspect-square h-16 w-16 rounded-2xl"
         alt="session thumbnail"
       />
