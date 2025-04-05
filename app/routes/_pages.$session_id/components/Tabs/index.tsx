@@ -14,10 +14,10 @@ const tabs = tv({
 });
 
 const link = tv({
-  base: "relative flex h-full w-20 items-center justify-center text-sm font-bold text-gray-400",
+  base: "relative flex h-full w-20 items-center justify-center font-bold text-gray-400 text-sm",
   variants: {
     isActive: {
-      true: "text-black before:absolute before:bottom-0 before:left-1/2 before:h-1 before:w-3/4 before:-translate-x-1/2 before:transform before:rounded-full before:bg-cyan-500",
+      true: "before:-translate-x-1/2 text-black before:absolute before:bottom-0 before:left-1/2 before:h-1 before:w-3/4 before:transform before:rounded-full before:bg-cyan-500",
     },
   },
 });

@@ -8,11 +8,11 @@ type Props = ComponentProps<"button"> & {
 };
 
 const heading = tv({
-  base: "flex w-full cursor-pointer items-center bg-gradient-to-r from-[#FF3B30] from-0% via-[#5856D6] via-50% to-[#32ADE6] to-100% p-2 text-[18px] font-bold text-white",
+  base: "flex w-full cursor-pointer items-center bg-gradient-to-r from-0% from-[#FF3B30] via-50% via-[#5856D6] to-100% to-[#32ADE6] p-2 font-bold text-[18px] text-white",
 });
 
 const text = tv({
-  base: "mx-auto -translate-x-[13.5px]",
+  base: "-translate-x-[13.5px] mx-auto",
   variants: {
     isLeftIcon: {
       false: "translate-x-0",

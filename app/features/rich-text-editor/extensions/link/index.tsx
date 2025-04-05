@@ -15,7 +15,7 @@ export const CustomaizedLink = Link.configure({
 });
 
 const linkIcon = tv({
-  base: "fill-mt-gray-600 h-5 w-5",
+  base: "h-5 w-5 fill-mt-gray-600",
   variants: {
     active: { true: "fill-blue-400" },
   },
