@@ -99,17 +99,13 @@ export default function Page({
               key={i}
               title={opinion.title}
               description={opinion.content}
-              user={{
-                displayID: "",
-                displayName: opinionUser.displayName,
-                iconURL: opinionUser.iconURL,
-              }}
+              user={opinionUser}
               status={myVoteType}
-              className="mx-auto w-full max-w-2xl"
-              date={"2025/12/31 10:00"}
+              date={opinion.postedAt}
               onClickAgree={() => handleSubmitVote("", "agree")}
               onClickDisagree={() => handleSubmitVote("", "disagree")}
               onClickPass={() => handleSubmitVote("", "pass")}
+              className="mx-auto w-full max-w-2xl"
             />
           );
         })}

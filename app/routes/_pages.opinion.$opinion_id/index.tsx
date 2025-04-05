@@ -18,7 +18,7 @@ import { OpinionType } from "~/features/opinion/types";
 export { loader };
 
 export default function Page({
-  loaderData: { opinion, user, opinions },
+  loaderData: { currentUser, root, opinions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function Page({
   };
 
   const { form, fields } = useCreateOpinionsForm({
-    parentOpinionID: opinion.id,
+    parentOpinionID: root.opinion.id,
     onFinishedProcess: () => {
       console.log("onFinishedProcess");
     },
@@ -49,20 +49,16 @@ export default function Page({
     <>
       <Heading title="コメント一覧" onClick={() => navigate(-1)} />
       <Card
-        title={opinion.title}
-        description={opinion.content}
-        user={{
-          displayID: "",
-          displayName: user.displayName,
-          iconURL: user.iconURL,
-        }}
-        status={opinion.voteType}
-        date={"2025/12/31 10:00"}
-        isJudgeButton
+        title={root.opinion.title}
+        description={root.opinion.content}
+        user={root.user}
+        status={root.myVoteType}
+        date={root.opinion.postedAt}
+        isJudgeButton={currentUser?.displayID !== root.user.displayID}
+        onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
+        onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
+        onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
         className="rounded-none"
-        onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
-        onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
-        onClickPass={() => handleSubmitVote(opinion.id, "pass")}
       />
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
@@ -81,7 +77,7 @@ export default function Page({
                 }}
                 status={myVoteType}
                 date={"2025/12/31 10:00"}
-                isJudgeButton
+                isJudgeButton={currentUser?.displayID !== opinionUser.displayID}
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
                 onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
                 onClickPass={() => handleSubmitVote(opinion.id, "pass")}

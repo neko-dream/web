@@ -16,7 +16,7 @@ export { loader } from "./modules/loader";
 export default function Route({
   loaderData: { session, user, report },
 }: Route.ComponentProps) {
-  const isOwner = session.owner.displayID === user?.displayId;
+  const isOwner = session.owner.displayID === user?.displayID;
 
   const items = [
     { label: "活動報告", href: `/${session.id}/conclusion` },

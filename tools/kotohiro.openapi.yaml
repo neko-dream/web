@@ -2536,7 +2536,7 @@ paths:
                   jti:
                     type: string
                     description: JWT ID
-                  displayId:
+                  displayID:
                     type: string
                     description: ユーザーID
                   displayName:
@@ -3336,7 +3336,7 @@ components:
         jti:
           type: string
           description: JWT ID
-        displayId:
+        displayID:
           type: string
           description: ユーザーID
         displayName:

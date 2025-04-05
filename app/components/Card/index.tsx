@@ -8,6 +8,7 @@ import { Button } from "../Button";
 import { OpinionCount } from "../OpinionCount";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import { LineChart, Notification } from "../Icons";
+import { JST } from "~/libs/date";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
@@ -56,7 +57,9 @@ export const Card = ({
           { className: "ml-2 block", href: href },
           <>
             <p className="mt-1 text-xs text-gray-400">{user.displayName}</p>
-            <p className="mt-1 text-xs text-gray-300">{date}</p>
+            <p className="mt-1 text-xs text-gray-300">
+              {JST(date).format("YYYY/MM/DD HH:mm")}
+            </p>
             <p className="mt-2 line-clamp-3 text-[#4e4d4b]">{description}</p>
 
             {opinionCount > 0 && (

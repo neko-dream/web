@@ -3,7 +3,7 @@ import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  const { data: opinion } = await api.GET("/opinions/{opinionID}", {
+  const { data: root } = await api.GET("/opinions/{opinionID}", {
     headers: request.headers,
     params: {
       path: {
@@ -21,12 +21,17 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     },
   });
 
-  if (!opinion || !opinions) {
+  const { data: currentUser } = await api.GET("/auth/token/info", {
+    headers: request.headers,
+  });
+
+  if (!root || !opinions) {
     return notfound();
   }
 
   return {
-    ...opinion,
+    root,
+    currentUser,
     opinions: opinions.opinions,
   };
 };

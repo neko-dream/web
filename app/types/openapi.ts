@@ -744,7 +744,7 @@ export interface components {
             /** @description JWT ID */
             jti: string;
             /** @description ユーザーID */
-            displayId?: string;
+            displayID?: string;
             /** @description ユーザー名 */
             displayName?: string;
             /** @description アイコンURL */
@@ -2537,7 +2537,7 @@ export interface operations {
                         /** @description JWT ID */
                         jti: string;
                         /** @description ユーザーID */
-                        displayId?: string;
+                        displayID?: string;
                         /** @description ユーザー名 */
                         displayName?: string;
                         /** @description アイコンURL */

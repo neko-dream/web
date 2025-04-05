@@ -47,16 +47,12 @@ export default function Page({
               href={`/opinion/${opinion.id}`}
               title={opinion.title}
               description={opinion.content}
-              user={{
-                displayID: "",
-                displayName: opinionUser.displayName,
-                iconURL: opinionUser.iconURL,
-              }}
+              user={opinionUser}
               status={myVoteType}
-              date={"2025/12/31 10:00"}
+              date={opinion.postedAt}
               className="mx-auto w-full max-w-2xl"
-              isJudgeButton={user?.displayId !== opinionUser.displayID}
-              isMoreButton={user?.displayId !== opinionUser.displayID}
+              isJudgeButton={user?.displayID !== opinionUser.displayID}
+              isMoreButton={user?.displayID !== opinionUser.displayID}
               onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
               onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
               onClickPass={() => handleSubmitVote(opinion.id, "pass")}
