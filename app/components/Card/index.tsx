@@ -38,7 +38,7 @@ export const Card = ({
   href,
   isJudgeButton,
   isMoreButton,
-  opinionCount,
+  opinionCount = 0,
   onClickAgree,
   onClickDisagree,
   onClickPass,
@@ -59,7 +59,7 @@ export const Card = ({
             <p className="mt-1 text-xs text-gray-300">{date}</p>
             <p className="mt-2 line-clamp-3 text-[#4e4d4b]">{description}</p>
 
-            {opinionCount && (
+            {opinionCount > 0 && (
               <div className="mt-2">
                 <OpinionCount count={opinionCount} />
               </div>
