@@ -1,10 +1,9 @@
 import { Suspense } from "react";
-import type { Route } from "../_pages.users.me.histories/+types";
-import { loader } from "./modules/loader";
 import { Await, Link } from "react-router";
 import Session from "~/components/TalkSessionCard";
+import type { Route } from "../_pages.users.me.histories/+types";
 
-export { loader };
+export { loader } from "./modules/loader";
 
 export default function Page({
   loaderData: { $session },
@@ -20,7 +19,7 @@ export default function Page({
                   to={`/${session.talkSession.id}`}
                   className="block rounded-md bg-white p-2"
                   key={i}
-                  viewTransition
+                  viewTransition={true}
                 >
                   <Session {...session} />
                 </Link>

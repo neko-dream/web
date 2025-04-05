@@ -1,15 +1,14 @@
+import { useState } from "react";
 import { useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import { Card } from "~/components/Card";
-import { loader } from "./modules/loader";
-import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
-import { SessionRouteContext } from "../_pages.$session_id/types";
-import { useState } from "react";
+import { Card } from "~/components/Card";
+import { postVote } from "~/features/opinion/libs/postVote";
+import type { SessionRouteContext } from "../_pages.$session_id/types";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader };
+export { loader } from "./modules/loader";
 
 export default function Page({
   loaderData: { opinions, reasons },

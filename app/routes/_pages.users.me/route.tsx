@@ -1,13 +1,13 @@
 import { Link, Outlet } from "react-router";
+import type { Route } from "~/app/routes/_pages.users.me/+types/route";
 import { Avatar } from "~/components/Avatar";
 import { Setting } from "~/components/Icons";
-import type { Route } from "~/app/routes/_pages.users.me/+types/route";
 import { Tabs } from "./components/Tabs";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
-export default function Page({ loaderData: { user } }: Route.ComponentProps) {
+export default function Layout({ loaderData: { user } }: Route.ComponentProps) {
   return (
     <>
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center pt-4">
@@ -24,7 +24,7 @@ export default function Page({ loaderData: { user } }: Route.ComponentProps) {
           ]}
         />
       </div>
-      <div className="bg-mt-gray-200 h-full w-full flex-1">
+      <div className="h-full w-full flex-1 bg-mt-gray-200">
         <Outlet />
       </div>
     </>

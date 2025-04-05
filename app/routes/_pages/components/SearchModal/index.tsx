@@ -1,8 +1,8 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRef } from "react";
-import { input } from "~/components/Input";
+import { useNavigate } from "react-router";
 import { SearchWhite } from "~/components/Icons";
+import { input } from "~/components/Input";
 
 type Props = {
   open: boolean;
@@ -79,6 +79,7 @@ export const SearchModal = ({ open, onOpenChange }: Props) => {
                   ref={inputRef}
                 />
                 <button
+                  type="button"
                   onClick={handleSubmit}
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-blue-500 hover:opacity-80"
                 >

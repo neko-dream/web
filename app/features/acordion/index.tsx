@@ -1,7 +1,7 @@
-import { ReactNode, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import ArrowIcon from "~/assets/icons/arrow.svg";
+import { AnimatePresence, motion } from "framer-motion";
+import { type ReactNode, useState } from "react";
 import { tv } from "tailwind-variants";
+import ArrowIcon from "~/assets/icons/arrow.svg";
 
 type ListProps = {
   title: ReactNode;

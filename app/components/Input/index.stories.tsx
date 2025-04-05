@@ -20,7 +20,7 @@ export const WithIcon: Story = {
   },
 };
 
-export const Error: Story = {
+export const DefaultError: Story = {
   args: {
     placeholder: "意見を一言で(タイトル)",
     error: true,

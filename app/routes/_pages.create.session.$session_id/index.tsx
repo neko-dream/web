@@ -4,23 +4,23 @@ import {
   useForm,
   useInputControl,
 } from "@conform-to/react";
+import { parseWithValibot } from "conform-to-valibot";
+import dayjs from "dayjs";
+import { useEffect, useRef, useState } from "react";
 import { Form, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import type { Route } from "~/app/routes/_pages.create.session.$session_id/+types";
 import { Button } from "~/components/Button";
+import { Checkbox } from "~/components/Checkbox";
 import { Heading } from "~/components/Heading";
+import { Check } from "~/components/Icons";
 import { Input } from "~/components/Input";
 import { Label } from "~/components/Label";
-import { isFieldsError } from "~/libs/form";
-import type { Route } from "~/app/routes/_pages.create.session.$session_id/+types";
-import { Checkbox } from "~/components/Checkbox";
-import { Check } from "~/components/Icons";
-import { api } from "~/libs/api";
-import { useEffect, useRef, useState } from "react";
-import { RichTextEditor } from "~/features/rich-text-editor";
 import Select from "~/components/Select";
-import { parseWithValibot } from "conform-to-valibot";
+import { RichTextEditor } from "~/features/rich-text-editor";
+import { api } from "~/libs/api";
+import { isFieldsError } from "~/libs/form";
 import { createSessionFormSchema } from "./schemas";
-import dayjs from "dayjs";
-import { toast } from "react-toastify";
 
 export { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -54,41 +54,25 @@ export default function Page({
     onSubmit: async (e, { submission }) => {
       e.preventDefault();
 
-      if (submission?.status === "success") {
-        const value = submission.value;
-        const restrictions = Array.isArray(value.restrictions)
-          ? value.restrictions
-          : value.restrictions
-            ? [value.restrictions]
-            : [];
+      if (submission?.status !== "success") {
+        return;
+      }
 
-        if (isEditMobe) {
-          const { error } = await api.PUT(`/talksessions/{talkSessionId}`, {
-            credentials: "include",
-            params: {
-              path: {
-                talkSessionId: session.id,
-              },
-            },
-            body: {
-              ...value,
-              scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
-              restrictions,
-              thumbnailURL: thumbnailRef.current,
-            },
-          });
+      const value = submission.value;
+      const restrictions = Array.isArray(value.restrictions)
+        ? value.restrictions
+        : value.restrictions
+          ? [value.restrictions]
+          : [];
 
-          if (error) {
-            toast.error(error.message);
-          } else {
-            toast.success("更新が完了しました");
-            navigate(`/session/${session?.id}`);
-          }
-          return;
-        }
-
-        const { error } = await api.POST("/talksessions", {
+      if (isEditMobe) {
+        const { error } = await api.PUT("/talksessions/{talkSessionId}", {
           credentials: "include",
+          params: {
+            path: {
+              talkSessionId: session.id,
+            },
+          },
           body: {
             ...value,
             scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
@@ -100,9 +84,27 @@ export default function Page({
         if (error) {
           toast.error(error.message);
         } else {
-          toast.success("登録が完了しました");
-          navigate("/home");
+          toast.success("更新が完了しました");
+          navigate(`/session/${session?.id}`);
         }
+        return;
+      }
+
+      const { error } = await api.POST("/talksessions", {
+        credentials: "include",
+        body: {
+          ...value,
+          scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
+          restrictions,
+          thumbnailURL: thumbnailRef.current,
+        },
+      });
+
+      if (error) {
+        toast.error(error.message);
+      } else {
+        toast.success("登録が完了しました");
+        navigate("/home");
       }
     },
   });
@@ -125,7 +127,7 @@ export default function Page({
   };
 
   return (
-    <div className="bg-mt-gray-200 flex flex-1 flex-col">
+    <div className="flex flex-1 flex-col bg-mt-gray-200">
       <Heading
         title={isEditMobe ? "セッションを編集する" : "セッションを作成する"}
         className="h-10"
@@ -220,7 +222,7 @@ export default function Page({
         <Button
           color="primary"
           type="submit"
-          className="mx-auto !mt-12 flex items-center space-x-4"
+          className="!mt-12 mx-auto flex items-center space-x-4"
         >
           <Check />
           <span>

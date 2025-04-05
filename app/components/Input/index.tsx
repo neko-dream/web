@@ -1,4 +1,4 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"input"> & {

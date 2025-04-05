@@ -1,16 +1,18 @@
 import { Outlet } from "react-router";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loader } from "./modules/loader";
 import type { Route } from "~/app/routes/_pages/+types/route";
-import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
+import { Header } from "./components/Header";
+import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";
 export { loader };
 
-export default function Route({ loaderData: { $user } }: Route.ComponentProps) {
+export default function Layout({
+  loaderData: { $user },
+}: Route.ComponentProps) {
   return (
     <>
       {/* 実際に見えるコンテンツ */}

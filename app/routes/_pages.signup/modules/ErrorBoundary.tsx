@@ -1,20 +1,20 @@
-import { isRouteErrorResponse, Link, useRouteError } from "react-router";
-import Error from "~/components/Error";
-import { JSX } from "react";
+import type { JSX } from "react";
+import { Link, isRouteErrorResponse, useRouteError } from "react-router";
+import ErrorView from "~/components/Error";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
     return (
-      <Error>
+      <ErrorView>
         <p>ログイン後使用可能です！</p>
         <Link to={"/"} className="mt-2 text-blue-500 underline">
           ログイン画面へ
         </Link>
-      </Error>
+      </ErrorView>
     );
   }
 
-  return <Error />;
+  return <ErrorView />;
 }

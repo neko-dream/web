@@ -11,11 +11,11 @@ export const Graph = ({ className, ...props }: ComponentProps<"div">) => {
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "@pixi/events";
-import * as PIXI from "pixi.js";
 import { Graphics as PixiGraphics } from "@pixi/graphics";
-import { TextStyle } from "@pixi/text";
 // import { Texture } from "@pixi/core";
-import { Stage, Graphics, Sprite, Text } from "@pixi/react";
+import { Graphics, Sprite, Stage, Text } from "@pixi/react";
+import { TextStyle } from "@pixi/text";
+import * as PIXI from "pixi.js";
 
 // const colorList = [0xff453a, 0xffd60a, 0xbf5af2, 0x30d158];
 const colorList = [
@@ -914,7 +914,7 @@ const drawAutoRoundedPolygon = (
 const RoundedPolygon = ({
   points,
   color,
-  groupId,
+  groupid,
   selectGroupId,
 }: {
   points: PolygonPoints;
@@ -955,7 +955,7 @@ const Circle = ({
   singlePoint,
   circleSize = 10,
   color,
-  groupId,
+  groupid,
   selectGroupId,
 }: {
   singlePoint: any;

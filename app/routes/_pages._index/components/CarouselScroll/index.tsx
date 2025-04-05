@@ -1,11 +1,12 @@
-import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
+import type { ReactNode } from "react";
 
 type Props = {
-  children: React.ReactNode[];
+  children: ReactNode[];
   gap?: number;
   cardWidth?: number;
 };

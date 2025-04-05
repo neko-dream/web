@@ -1,21 +1,21 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
+import { type ChangeEvent, useRef, useState } from "react";
+import { RiImage2Line } from "react-icons/ri";
 import { Form } from "react-router";
-import { ChangeEvent, useRef, useState } from "react";
+import { toast } from "react-toastify";
+import type { Route } from "~/app/routes/_pages.signup/+types";
 import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import { Button } from "~/components/Button";
+import { Heading } from "~/components/Heading";
+import { Check } from "~/components/Icons";
 import { Input } from "~/components/Input";
 import { Label } from "~/components/Label";
 import Select from "~/components/Select";
 import AdressInputs from "~/features/form/components/AdressInputs";
-import { useCreateUserForm } from "./hooks/useCreateUserForm";
-import { toast } from "react-toastify";
 import { isFieldsError } from "~/libs/form";
-import { Heading } from "~/components/Heading";
 import Uploadarea from "./components/Uploadarea";
-import { RiImage2Line } from "react-icons/ri";
-import { Check } from "~/components/Icons";
-import type { Route } from "~/app/routes/_pages.signup/+types";
+import { useCreateUserForm } from "./hooks/useCreateUserForm";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -58,7 +58,7 @@ export default function Page({
           <Button
             type="button"
             color="disabled"
-            className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 text-sm font-normal"
+            className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 font-normal text-sm"
             onClick={handleOpenFiler}
           >
             <RiImage2Line className="text-gray-400" size={20} />
@@ -66,7 +66,11 @@ export default function Page({
           </Button>
         </div>
 
-        <Label title="ユーザー名" required errors={fields.displayName.errors}>
+        <Label
+          title="ユーザー名"
+          required={true}
+          errors={fields.displayName.errors}
+        >
           <Input
             {...getInputProps(fields.displayName, { type: "text" })}
             error={isFieldsError(fields.displayName.errors)}
@@ -76,7 +80,11 @@ export default function Page({
         </Label>
 
         {!isEmailVerified && (
-          <Label title="メールアドレス" required errors={fields.email.errors}>
+          <Label
+            title="メールアドレス"
+            required={true}
+            errors={fields.email.errors}
+          >
             <Input
               {...getInputProps(fields.email, { type: "text" })}
               error={isFieldsError(fields.email.errors)}
@@ -86,7 +94,11 @@ export default function Page({
           </Label>
         )}
 
-        <Label title="ユーザーID" required errors={fields.displayID.errors}>
+        <Label
+          title="ユーザーID"
+          required={true}
+          errors={fields.displayID.errors}
+        >
           <Input
             {...getInputProps(fields.displayID, { type: "text" })}
             error={isFieldsError(fields.displayID.errors)}
@@ -95,7 +107,7 @@ export default function Page({
           />
         </Label>
 
-        <Label title="性別" optional errors={fields.gender.errors}>
+        <Label title="性別" optional={true} errors={fields.gender.errors}>
           <Select
             {...getSelectProps(fields.gender)}
             error={isFieldsError(fields.gender.errors)}
@@ -103,7 +115,11 @@ export default function Page({
           />
         </Label>
 
-        <Label title="誕生年" optional errors={fields.yearOfBirth.errors}>
+        <Label
+          title="誕生年"
+          optional={true}
+          errors={fields.yearOfBirth.errors}
+        >
           <Select
             {...getSelectProps(fields.yearOfBirth)}
             error={isFieldsError(fields.yearOfBirth.errors)}
@@ -122,14 +138,14 @@ export default function Page({
           {...getInputProps(fields.icon, { type: "file" })}
           ref={inputFileRef}
           accept="image/png,image/jpeg"
-          hidden
+          hidden={true}
           onChange={handleOnChangeInputFile}
         />
 
         <Button
           color="primary"
           type="submit"
-          className="mx-auto !mt-12 flex items-center justify-center space-x-2"
+          className="!mt-12 mx-auto flex items-center justify-center space-x-2"
           disabled={isDisabled}
         >
           <Check />

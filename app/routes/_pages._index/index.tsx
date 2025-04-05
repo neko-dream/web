@@ -1,13 +1,13 @@
-import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
+import { memo } from "react";
 import {
   Arrow,
   AuthGoogle,
   AuthLine,
   FaviconKotohiro,
 } from "~/components/Icons";
-import { TopicCard } from "./components/TopicCard";
+import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { CarouselScroll } from "./components/CarouselScroll";
-import { memo } from "react";
+import { TopicCard } from "./components/TopicCard";
 import "./index.css";
 import { Checkbox } from "~/components/Checkbox";
 
@@ -26,7 +26,7 @@ function Page() {
         <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
           <span className="flex items-center">
             <FaviconKotohiro className="w-20" />
-            <p className="font-cs-logo text-mt-gray-900 ml-2 text-6xl font-black tracking-[10px]">
+            <p className="ml-2 font-black font-cs-logo text-6xl text-mt-gray-900 tracking-[10px]">
               ことひろ
             </p>
           </span>
@@ -37,7 +37,7 @@ function Page() {
         </div>
 
         <div className="mx-auto mt-6 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
-          <p className="primary-gradient mx-auto inline-block text-center font-bold text-clip">
+          <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
             ことひろに参加しよう
           </p>
           <p className="text-center text-xs">2つの方法から参加できます</p>
@@ -47,7 +47,7 @@ function Page() {
             <Checkbox id="" label="" />
             <label
               htmlFor="terms"
-              className="ms-2 text-sm font-medium text-gray-900"
+              className="ms-2 font-medium text-gray-900 text-sm"
             >
               <a
                 href="https://static.kotohiro.com/tos"
@@ -92,7 +92,7 @@ function Page() {
 
             <a
               href="/login"
-              className="mt-6 flex items-center space-x-2 text-sm font-bold text-gray-600"
+              className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
             >
               <span>アカウントをお持ちの方はこちら</span>
               <Arrow className="-rotate-90" />
@@ -102,7 +102,7 @@ function Page() {
       </div>
 
       <div className="mt-16 mb-4 text-center">
-        <p className="primary-gradient inline-block rounded-md p-2 text-2xl font-bold text-clip backdrop-blur-[20px]">
+        <p className="primary-gradient inline-block text-clip rounded-md p-2 font-bold text-2xl backdrop-blur-[20px]">
           注目のトピック
         </p>
       </div>

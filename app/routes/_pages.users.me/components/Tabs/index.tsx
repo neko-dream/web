@@ -1,5 +1,5 @@
+import type { ComponentProps } from "react";
 import { NavLink } from "react-router";
-import { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"div"> & {
@@ -37,7 +37,7 @@ export const Tabs = ({ className, items, ...props }: Props) => {
             className={({ isActive }) => link({ isActive: isActive })}
             prefetch="viewport"
             replace={true}
-            viewTransition
+            viewTransition={true}
           >
             {label}
           </NavLink>

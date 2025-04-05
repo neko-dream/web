@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 /* eslint-disable import/no-named-as-default */
 import { Link, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import { Card } from "~/components/Card";
-import { loader } from "./modules/loader";
-import { SessionRouteContext } from "../_pages.$session_id/types";
-import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
-import Graph from "~/features/graph/components";
+import { Card } from "~/components/Card";
 import { Arrow } from "~/components/Icons";
-import ReactMarkdown from "react-markdown";
-import { useEffect, useState } from "react";
+import Graph from "~/features/graph/components";
+import { postVote } from "~/features/opinion/libs/postVote";
+import type { SessionRouteContext } from "../_pages.$session_id/types";
+import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
@@ -65,14 +65,14 @@ export default function Page({
       <div className="mx-auto w-full max-w-2xl rounded-md bg-white p-2">
         <div className="flex items-center space-x-2">
           <img src="/icon.png" alt="" className="m-1 h-7" />
-          <p className="text-xs text-gray-500">ことひろAIレポート</p>
+          <p className="text-gray-500 text-xs">ことひろAIレポート</p>
         </div>
-        <article className="mt-1 line-clamp-4 text-sm text-gray-800">
+        <article className="mt-1 line-clamp-4 text-gray-800 text-sm">
           <ReactMarkdown>{report}</ReactMarkdown>
         </article>
         <Link
           to={`/report/${session.id}`}
-          className="m-2 flex items-center justify-end text-xs text-blue-400"
+          className="m-2 flex items-center justify-end text-blue-400 text-xs"
         >
           <span className="mr-1">詳しくみる</span>
           <Arrow className="rotate-270 text-blue-400" />
@@ -85,9 +85,7 @@ export default function Page({
           positions={position?.positions}
           myPosition={position?.myPosition}
           windowWidth={windowWidth}
-          selectGroupId={(id: number) => {
-            console.log(id);
-          }}
+          selectGroupId={(_id: number) => {}}
         />
       </div>
 

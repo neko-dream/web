@@ -1,6 +1,6 @@
 import { animated, to } from "@react-spring/web";
 import { Card } from "~/components/Card";
-import { useSwipe } from "../../hooks/useSwipe";
+import type { useSwipe } from "../../hooks/useSwipe.ts";
 
 const trans = (r: number, s: number) =>
   `rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
@@ -53,7 +53,7 @@ export default function CardSwiper(props: Props) {
             />
             <animated.p
               style={{ display: disagreeDisplay }}
-              className="absolute z-10 w-full p-4 text-end text-2xl font-bold text-white select-none"
+              className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
             >
               違うかも
             </animated.p>
@@ -68,7 +68,7 @@ export default function CardSwiper(props: Props) {
             />
             <animated.p
               style={{ display: agreeDisplay }}
-              className="absolute z-10 w-full p-4 text-2xl font-bold text-white select-none"
+              className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
             >
               いいかも
             </animated.p>
@@ -82,7 +82,7 @@ export default function CardSwiper(props: Props) {
                 iconURL: props.opinions[i].user.iconURL || "",
               }}
               date={"2025/12/31 10:00"}
-              className="pointer-events-none bg-white select-none"
+              className="pointer-events-none select-none bg-white"
             />
           </animated.div>
         </animated.div>

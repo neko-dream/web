@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
@@ -13,10 +13,14 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     };
   }
 
+  if (!params.session_id) {
+    throw notfound();
+  }
+
   const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
     params: {
       path: {
-        talkSessionId: params.session_id!,
+        talkSessionId: params.session_id,
       },
     },
   });

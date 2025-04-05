@@ -1,10 +1,10 @@
-import { JSX } from "react";
+import type { JSX, ReactNode } from "react";
 
 type Props = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-export default function Error({ children }: Props): JSX.Element {
+export default function ErrorView({ children }: Props): JSX.Element {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
       {children ? (

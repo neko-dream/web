@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Error from ".";
+import ErrorView from ".";
 
-const meta: Meta<typeof Error> = {
-  component: Error,
+const meta: Meta<typeof ErrorView> = {
+  component: ErrorView,
 };
 export default meta;
-type Story = StoryObj<typeof Error>;
+type Story = StoryObj<typeof ErrorView>;
 
 export const Default: Story = {};

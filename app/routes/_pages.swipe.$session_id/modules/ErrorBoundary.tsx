@@ -1,29 +1,29 @@
-import { JSX } from "react";
-import { isRouteErrorResponse, Link, useRouteError } from "react-router";
+import type { JSX } from "react";
+import { Link, isRouteErrorResponse, useRouteError } from "react-router";
 import { button } from "~/components/Button";
-import Error from "~/components/Error";
+import ErrorView from "~/components/Error";
 import { forbidden } from "~/libs/response";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
 
   if (!isRouteErrorResponse(error)) {
-    return <Error />;
+    return <ErrorView />;
   }
 
   if (error.status === forbidden.code) {
     return (
-      <Error>
+      <ErrorView>
         <p className="text-gray-700">
           このページはログインすることで見れます🙇‍♀️
         </p>
-        <div className="mt-4"></div>
-      </Error>
+        <div className="mt-4" />
+      </ErrorView>
     );
   }
 
   return (
-    <Error>
+    <ErrorView>
       <p className="text-gray-700">正常にデータを取得できませんでした🙇‍♀️</p>
       <Link
         to={"../opinion"}
@@ -34,6 +34,6 @@ export function ErrorBoundary(): JSX.Element {
       >
         みんなの意見を見る
       </Link>
-    </Error>
+    </ErrorView>
   );
 }

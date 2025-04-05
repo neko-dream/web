@@ -1,21 +1,20 @@
-import { Form, useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
-import { loader } from "./modules/loader";
-import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
-import { Card } from "~/components/Card";
+import { getFormProps, getInputProps } from "@conform-to/react";
+import { useState } from "react";
 import { RiMore2Fill } from "react-icons/ri";
+import { Form, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
+import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
+import { Button } from "~/components/Button";
+import { Card } from "~/components/Card";
+import { Heading } from "~/components/Heading";
+import Textarea from "~/components/Textarea";
+import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
+import type { OpinionType } from "~/features/opinion/types";
+import { api } from "~/libs/api";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
-import { useState } from "react";
-import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
-import Textarea from "~/components/Textarea";
-import { Button } from "~/components/Button";
-import { getFormProps, getInputProps } from "@conform-to/react";
-import { api } from "~/libs/api";
-import { OpinionType } from "~/features/opinion/types";
 
-export { loader };
+export { loader } from "./modules/loader";
 
 export default function Page({
   loaderData: { currentUser, root, opinions },
@@ -24,7 +23,7 @@ export default function Page({
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
   const handleSubmitVote = async (opinionID: string, status: OpinionType) => {
-    const { data } = await api.POST("/opinions/{opinionID}/votes", {
+    await api.POST("/opinions/{opinionID}/votes", {
       credentials: "include",
       params: {
         path: {
@@ -35,14 +34,11 @@ export default function Page({
         voteStatus: status,
       },
     });
-    console.log(data);
   };
 
   const { form, fields } = useCreateOpinionsForm({
     parentOpinionID: root.opinion.id,
-    onFinishedProcess: () => {
-      console.log("onFinishedProcess");
-    },
+    onFinishedProcess: () => {},
   });
 
   return (
@@ -103,7 +99,7 @@ export default function Page({
             className="h-[270px]"
             placeholder="この意見についてどう思うか書いてみよう！"
           />
-          <Button color="primary" type="submit" className="mx-auto !mt-8 block">
+          <Button color="primary" type="submit" className="!mt-8 mx-auto block">
             <img src="" alt="" />
             <span>コメントを投稿する</span>
           </Button>

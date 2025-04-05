@@ -1,11 +1,11 @@
-import { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 
-type variants = "primary" | "agree" | "disagree" | "pass" | "disabled";
+type Variants = "primary" | "agree" | "disagree" | "pass" | "disabled";
 
 export type Button = ComponentProps<"button"> & {
   children: ReactNode;
-  color?: variants;
+  color?: Variants;
 };
 
 export const button = tv({
@@ -17,7 +17,7 @@ export const button = tv({
       disagree: "border-[#FF2D55] bg-[#FF2D55]",
       pass: "border-[#AF52DE] bg-[#AF52DE]",
       disabled: "border-2 border-gray-200 bg-white text-gray-300",
-    } satisfies { [x in variants]: string },
+    } satisfies { [X in Variants]: string },
     outline: {
       true: "border border-solid bg-white text-gray-800",
     },

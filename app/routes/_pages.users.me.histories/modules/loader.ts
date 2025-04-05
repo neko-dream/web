@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

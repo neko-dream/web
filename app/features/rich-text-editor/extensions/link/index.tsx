@@ -1,11 +1,11 @@
-import { Editor } from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { Link } from "@tiptap/extension-link";
 import { useRef, useState } from "react";
 import { tv } from "tailwind-variants";
 import { Button } from "~/components/Button";
 import { Link as LinkIcon } from "~/components/Icons";
-import { isURL } from "~/libs/isURL";
 import { CenterDialog } from "~/features/modal";
+import { isURL } from "~/libs/isURL";
 
 export const CustomaizedLink = Link.configure({
   openOnClick: true,

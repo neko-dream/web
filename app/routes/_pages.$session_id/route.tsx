@@ -1,19 +1,19 @@
 import { Link, Outlet } from "react-router";
-import { SessionRouteContext } from "./types";
-import { JST } from "~/libs/date";
-import { OpinionCheckButton } from "./components/OpinionCheckButton";
-import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
-import { Avatar } from "~/components/Avatar";
 import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
-import { CreateOpinionButton } from "./components/CreateOpinionButton";
-import { Graph } from "~/features/graph/components";
-import { List } from "~/features/acordion";
+import { Avatar } from "~/components/Avatar";
 import { Edit, PieChart } from "~/components/Icons";
+import { List } from "~/features/acordion";
+import { Graph } from "~/features/graph/components";
+import { JST } from "~/libs/date";
+import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
+import { CreateOpinionButton } from "./components/CreateOpinionButton";
+import { OpinionCheckButton } from "./components/OpinionCheckButton";
+import type { SessionRouteContext } from "./types";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
-export default function Route({
+export default function Layout({
   loaderData: { session, user, report },
 }: Route.ComponentProps) {
   const isOwner = session.owner.displayID === user?.displayID;
@@ -58,25 +58,25 @@ export default function Route({
         <Link
           to={`/swipe/${session.id}`}
           className="mx-auto mt-2 block"
-          viewTransition
+          viewTransition={true}
         >
           <OpinionCheckButton />
         </Link>
 
         <div className="flex items-center space-x-2">
           <Avatar src={session.owner.iconURL} className="h-6 w-6" />
-          <p className="line-clamp-1 w-48 text-sm text-gray-500">
+          <p className="line-clamp-1 w-48 text-gray-500 text-sm">
             {session.owner.displayName}
           </p>
         </div>
 
-        <p className="text-sm text-blue-500">未ログインも回答可能</p>
+        <p className="text-blue-500 text-sm">未ログインも回答可能</p>
 
         <div className="flex space-x-2">
           {session.city && (
-            <p className="text-sm text-gray-500">{session.city}</p>
+            <p className="text-gray-500 text-sm">{session.city}</p>
           )}
-          <p className="text-sm text-gray-500">
+          <p className="text-gray-500 text-sm">
             {JST(session.scheduledEndTime).format("MM/DD(ddd)まで")}
           </p>
         </div>

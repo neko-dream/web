@@ -1,4 +1,4 @@
-import { MetaFunction } from "react-router";
+import type { MetaFunction } from "react-router";
 
 type Props = {
   title?: string;

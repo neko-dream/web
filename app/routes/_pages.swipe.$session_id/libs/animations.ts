@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const height = "calc(100% - 136px - 24px)";
+const _height = "calc(100% - 136px - 24px)";
 
 export const animations = {
   to: () => ({

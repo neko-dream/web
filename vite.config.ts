@@ -1,10 +1,12 @@
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import fs from "node:fs";
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import fs from "fs";
-import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async ({ mode }) => {

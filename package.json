@@ -7,12 +7,12 @@
     "dev": "react-router dev",
     "build": "react-router build",
     "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
-    "format": "prettier --write ./app/**",
-    "lint": "eslint --ignore-path .gitignore --cache --cache-location ./node_modules/.cache/eslint .",
+    "format": "bunx biome format --write ./app",
+    "lint": "biome check .",
     "storybook": "SB=1 storybook dev -p 6006",
     "storybook:build": "SB=1 storybook build",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
-    "icongen": "bunx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && prettier --write app/components/Icons/**/*.tsx"
+    "icongen": "bunx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && bunx biome format --write ./app/components/Icons"
   },
   "dependencies": {
     "@conform-to/react": "^1.2.2",
@@ -54,6 +54,7 @@
     "xss": "^1.0.15"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@cloudflare/workers-types": "^4.20241112.0",
     "@react-router/dev": "^7.1.3",
     "@storybook/addon-essentials": "^8.3.3",
@@ -64,28 +65,39 @@
     "@svgr/cli": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",
     "@svgr/plugin-svgo": "^8.1.0",
-    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/bun": "^1.1.11",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.7.4",
-    "@typescript-eslint/parser": "^6.7.4",
     "cross-env": "^7.0.3",
-    "eslint": "^8.38.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
-    "eslint-plugin-import": "^2.28.1",
-    "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-react": "^7.33.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-storybook": "^0.9.0",
     "postcss": "^8.4.49",
-    "prettier": "^3.3.3",
-    "prettier-plugin-tailwindcss": "^0.6.11",
     "storybook": "^8.3.3",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^5.1.4",
     "wrangler": "^3.87.0"
+  },
+  "svgr": {
+    "plugins": ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+    "jsxRuntime": "automatic",
+    "noDimensions": true,
+    "typescript": true,
+    "prettier": false,
+    "svgoConfig": {
+      "plugins": [
+        {
+          "name": "preset-default",
+          "params": {
+            "overrides": {
+              "removeViewBox": false,
+              "cleanupIds": {
+                "remove": true,
+                "minify": false
+              }
+            }
+          }
+        }
+      ]
+    }
   }
 }

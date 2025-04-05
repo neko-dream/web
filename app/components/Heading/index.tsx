@@ -1,4 +1,4 @@
-import { ComponentProps, ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 import { Left } from "../Icons";
 

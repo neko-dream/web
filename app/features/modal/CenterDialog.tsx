@@ -1,7 +1,7 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { createPortal } from "react-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
-import { ModalProps } from "./types";
+import { createPortal } from "react-dom";
+import type { ModalProps } from "./types.ts";
 
 export const CenterDialog = ({
   isOpen,
@@ -45,7 +45,7 @@ export const CenterDialog = ({
               duration: 0.2,
               bounce: 0.3,
             }}
-            className="fixed inset-0 top-1/2 left-1/2 z-50 h-fit w-fit -translate-x-1/2 -translate-y-1/2"
+            className="-translate-x-1/2 -translate-y-1/2 fixed inset-0 top-1/2 left-1/2 z-50 h-fit w-fit"
           >
             <div className="rounded-lg bg-white p-2 shadow-xl">{children}</div>
           </motion.div>

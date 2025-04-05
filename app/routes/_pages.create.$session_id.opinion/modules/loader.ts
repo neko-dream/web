@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 

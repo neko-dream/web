@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useCustomForm } from "~/hooks/useCustomForm";
 import { userEditFormSchema } from "~/features/user/schemas/form";
+import type { User } from "~/features/user/types";
+import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
-import { User } from "~/features/user/types";
 
 type Props = {
   user: User;
@@ -22,7 +22,7 @@ export const useEditUserForm = ({ user }: Props) => {
     } as never,
     onSubmit: async ({ value }) => {
       const compressIcon =
-        value.icon && value.icon?.size !== 0 && fileCompress(value.icon);
+        value.icon && value.icon?.size > 0 && fileCompress(value.icon);
 
       const { error } = await api.PUT("/user", {
         credentials: "include",

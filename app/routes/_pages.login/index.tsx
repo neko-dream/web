@@ -1,10 +1,10 @@
-import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/Icons";
+import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 
 export default function Index() {
   return (
     <div className="mx-auto mt-10 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8">
-      <p className="primary-gradient text-center font-bold text-clip">
+      <p className="primary-gradient text-clip text-center font-bold">
         ことひろにログイン
       </p>
       <p className="text-center text-xs">2つの方法からログインできます</p>
@@ -28,7 +28,7 @@ export default function Index() {
         </a>
         <a
           href="/"
-          className="mt-6 flex items-center space-x-2 text-sm font-bold text-gray-600"
+          className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
         >
           <span>新規登録はこちら</span>
           <Arrow className="-rotate-90" />

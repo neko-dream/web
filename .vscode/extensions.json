@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
+    "biomejs.biome",
     "be5invis.toml",
     "bradlc.vscode-tailwindcss",
     "github.vscode-github-actions",

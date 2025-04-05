@@ -1,5 +1,5 @@
-import { LoaderFunctionArgs } from "react-router";
-import { User } from "~/features/user/types";
+import type { LoaderFunctionArgs } from "react-router";
+import type { User } from "~/features/user/types";
 import { api } from "~/libs/api";
 
 /**

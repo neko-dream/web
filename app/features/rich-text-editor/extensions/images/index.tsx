@@ -1,4 +1,4 @@
-import { Editor } from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { useRef } from "react";
 import { Picture } from "~/components/Icons";
 
@@ -15,14 +15,13 @@ export const CustomaizedImageToolbarItem = ({ editor, onImageLoad }: Props) => {
   return (
     <>
       <button onClick={handleClick} type="button" className="cursor-pointer">
-        <Picture className="fill-mt-gray-600 h-5 w-5" />
+        <Picture className="h-5 w-5 fill-mt-gray-600" />
       </button>
       <input
         ref={inputRef}
         type="file"
         className="hidden"
         onChange={async (e) => {
-          console.log(e);
           if (
             !e.target.files ||
             e.target.files.length === 0 ||

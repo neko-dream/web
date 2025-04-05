@@ -1,5 +1,5 @@
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
-import { LoaderFunctionArgs } from "react-router";
 import { forbidden } from "~/libs/response";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {

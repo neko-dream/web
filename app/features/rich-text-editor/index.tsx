@@ -1,13 +1,13 @@
-import { EditorContent, useEditor } from "@tiptap/react";
 import { Code } from "@tiptap/extension-code";
 import { Document } from "@tiptap/extension-document";
 import { Paragraph } from "@tiptap/extension-paragraph";
 import { Text } from "@tiptap/extension-text";
-import { CustomaizedLink, CustomaizedLinkToolbarItem } from "./extensions/link";
-import { ImageResize } from "tiptap-extension-resize-image";
-import { CustomaizedImageToolbarItem } from "./extensions/images";
+import { EditorContent, useEditor } from "@tiptap/react";
 import { useEffect } from "react";
+import { ImageResize } from "tiptap-extension-resize-image";
 import { CustomaizedDropcursor } from "./extensions/dropcursor";
+import { CustomaizedImageToolbarItem } from "./extensions/images";
+import { CustomaizedLink, CustomaizedLinkToolbarItem } from "./extensions/link";
 import "./index.css";
 
 type Props = {
@@ -41,7 +41,9 @@ export const RichTextEditor = ({
     });
   }, [editor, onUpdate]);
 
-  if (!editor) return null;
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="rounded border border-gray-300 bg-white">

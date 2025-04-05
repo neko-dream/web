@@ -1,21 +1,21 @@
-import { JSX } from "react";
+import type { JSX } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
-import Error from "~/components/Error";
+import ErrorView from "~/components/Error";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
 
   if (isRouteErrorResponse(error)) {
     return (
-      <Error>
+      <ErrorView>
         <p>お探しの意見は</p>
         <p>見つかりませんでした...</p>
-        <p className="mt-2 text-xs text-gray-700">
+        <p className="mt-2 text-gray-700 text-xs">
           右上の 🔍 からトークセッションは探せるよ！
         </p>
-      </Error>
+      </ErrorView>
     );
   }
 
-  return <Error />;
+  return <ErrorView />;
 }

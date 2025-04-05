@@ -1,4 +1,4 @@
-import { HeadersArgs } from "react-router";
+import type { HeadersArgs } from "react-router";
 
 /**
  * loader の戻り値をページの Cache-Control header にセットする

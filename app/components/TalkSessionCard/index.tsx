@@ -1,9 +1,9 @@
-import { Avatar } from "../Avatar";
-import { OpinionCount } from "../OpinionCount";
-import { JST } from "~/libs/date";
-import { ClockCircle, Environment } from "../Icons";
-import { components } from "~/types/openapi";
 import DefaultSessionIcon from "~/assets/default/session.webp";
+import { JST } from "~/libs/date";
+import type { components } from "~/types/openapi";
+import { Avatar } from "../Avatar";
+import { ClockCircle, Environment } from "../Icons";
+import { OpinionCount } from "../OpinionCount";
 
 type Props = {
   talkSession: components["schemas"]["talkSession"];
@@ -30,7 +30,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
         {/* アバター */}
         <div className="mt-0.5 flex items-center space-x-2">
           <Avatar src={talkSession.owner.iconURL} className="block h-5 w-5" />
-          <p className="text-xs text-gray-500">
+          <p className="text-gray-500 text-xs">
             {talkSession.owner.displayName}
           </p>
         </div>
@@ -39,15 +39,15 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
           {/* FIXME:  */}
           <div className="flex w-full max-w-24 items-center space-x-1">
             <Environment className="text-gray-500" />
-            <p className="text-xs text-gray-500">{talkSession.city || "---"}</p>
+            <p className="text-gray-500 text-xs">{talkSession.city || "---"}</p>
           </div>
 
           <div className="flex">
             <ClockCircle className="text-gray-500" />
             {isFinished ? (
-              <p className="ml-1 w-14 text-xs text-gray-500">終了</p>
+              <p className="ml-1 w-14 text-gray-500 text-xs">終了</p>
             ) : (
-              <p className="ml-1 w-16 text-xs whitespace-nowrap text-gray-500">
+              <p className="ml-1 w-16 whitespace-nowrap text-gray-500 text-xs">
                 {JST(talkSession.scheduledEndTime).format("MM/DDまで")}
               </p>
             )}

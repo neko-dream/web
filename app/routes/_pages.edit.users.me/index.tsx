@@ -1,18 +1,18 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
+import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { Form, useLoaderData } from "react-router";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
 import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import { Avatar } from "~/components/Avatar";
 import { Button } from "~/components/Button";
+import { Camera } from "~/components/Icons";
 import { Input } from "~/components/Input";
 import { Label } from "~/components/Label";
 import Select from "~/components/Select";
 import AdressInputs from "~/features/form/components/AdressInputs";
-import { loader } from "./modules/loader";
-import { useEditUserForm } from "./hooks/useEditUserForm";
 import { isFieldsError } from "~/libs/form";
-import { Camera } from "~/components/Icons";
+import { useEditUserForm } from "./hooks/useEditUserForm";
+import { loader } from "./modules/loader";
 
 export { loader };
 
@@ -49,6 +49,7 @@ export default function Page() {
           onClick={handleUploadButtonClick}
         />
         <button
+          type="button"
           className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full bg-gray-400"
           onClick={handleUploadButtonClick}
         >
@@ -59,9 +60,13 @@ export default function Page() {
         {...getFormProps(form)}
         method="post"
         onSubmit={form.onSubmit}
-        className="last-child:m-0 mt-8 w-full space-y-4 px-6"
+        className="mt-8 w-full space-y-4 px-6 last-child:m-0"
       >
-        <Label title="ユーザー名" required errors={fields.displayName.errors}>
+        <Label
+          title="ユーザー名"
+          required={true}
+          errors={fields.displayName.errors}
+        >
           <Input
             {...getInputProps(fields.displayName, { type: "text" })}
             error={isFieldsError(fields.displayName.errors)}
@@ -70,7 +75,7 @@ export default function Page() {
           />
         </Label>
 
-        <Label title="性別" optional errors={fields.gender.errors}>
+        <Label title="性別" optional={true} errors={fields.gender.errors}>
           <Select
             {...getSelectProps(fields.gender)}
             error={isFieldsError(fields.gender.errors)}
@@ -78,7 +83,11 @@ export default function Page() {
           />
         </Label>
 
-        <Label title="誕生年" optional errors={fields.yearOfBirth.errors}>
+        <Label
+          title="誕生年"
+          optional={true}
+          errors={fields.yearOfBirth.errors}
+        >
           <Select
             {...getSelectProps(fields.yearOfBirth)}
             error={isFieldsError(fields.yearOfBirth.errors)}
@@ -97,14 +106,14 @@ export default function Page() {
           {...getInputProps(fields.icon, { type: "file" })}
           ref={inputFileRef}
           accept="image/png, image/jpeg"
-          hidden
+          hidden={true}
           onChange={handleOnChangeInputFile}
         />
 
         <Button
           color="primary"
           type="submit"
-          className="mx-auto !mt-12 block"
+          className="!mt-12 mx-auto block"
           disabled={isDisabled}
         >
           保存する

@@ -1,9 +1,9 @@
-import { Await, Link } from "react-router";
 import { Suspense } from "react";
-import Error from "~/components/Error";
+import { Await, Link } from "react-router";
+import ErrorView from "~/components/Error";
 import Session from "~/components/TalkSessionCard";
-import { SessionSkeleton } from "./components/SessionSkeleton";
 import type { Route } from "../_pages.home/+types";
+import { SessionSkeleton } from "./components/SessionSkeleton";
 
 export { loader } from "./modules/loader";
 
@@ -15,21 +15,21 @@ export default function Page({
       <Suspense fallback={<SessionSkeleton />}>
         <Await resolve={$session}>
           {(data) => {
-            if (!data?.talkSessions.length) {
+            if (data?.talkSessions.length === 0) {
               return (
-                <Error>
+                <ErrorView>
                   <p>お探しのトークセッションは </p>
                   <p>見つかりませんでした...</p>
-                  <p className="mt-2 text-xs text-gray-700">
+                  <p className="mt-2 text-gray-700 text-xs">
                     右上の 🔍 から探せるよ！
                   </p>
-                </Error>
+                </ErrorView>
               );
             }
 
             return (
               <>
-                <h2 className="mx-4 mt-6 text-xl font-bold">
+                <h2 className="mx-4 mt-6 font-bold text-xl">
                   注目のセッション
                 </h2>
                 <div className="mt-4 space-y-6 px-4">
@@ -38,7 +38,7 @@ export default function Page({
                       to={`/${session.talkSession.id}`}
                       className="block"
                       key={i}
-                      viewTransition
+                      viewTransition={true}
                     >
                       <Session {...session} />
                     </Link>
@@ -55,7 +55,7 @@ export default function Page({
           {(data) => {
             return (
               <>
-                <h2 className="mx-4 mt-12 text-xl font-bold">
+                <h2 className="mx-4 mt-12 font-bold text-xl">
                   終了したセッション
                 </h2>
                 <div className="mt-4 space-y-6 px-4">
@@ -64,7 +64,7 @@ export default function Page({
                       to={`/${session.talkSession.id}`}
                       className="block hover:opacity-80"
                       key={i}
-                      viewTransition
+                      viewTransition={true}
                     >
                       <Session {...session} />
                     </Link>

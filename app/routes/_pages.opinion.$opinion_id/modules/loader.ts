@@ -1,13 +1,17 @@
-import { LoaderFunctionArgs } from "react-router";
+import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+  if (!params.opinion_id) {
+    return notfound();
+  }
+
   const { data: root } = await api.GET("/opinions/{opinionID}", {
     headers: request.headers,
     params: {
       path: {
-        opinionID: params.opinion_id!,
+        opinionID: params.opinion_id,
       },
     },
   });
@@ -16,7 +20,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     headers: request.headers,
     params: {
       path: {
-        opinionID: params.opinion_id!,
+        opinionID: params.opinion_id,
       },
     },
   });
@@ -25,7 +29,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     headers: request.headers,
   });
 
-  if (!root || !opinions) {
+  if (!(root && opinions)) {
     return notfound();
   }
 

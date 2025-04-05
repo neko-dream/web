@@ -1,6 +1,6 @@
-import Error from "~/components/Error";
-import { JSX } from "react";
+import type { JSX } from "react";
+import ErrorView from "~/components/Error";
 
 export function ErrorBoundary(): JSX.Element {
-  return <Error />;
+  return <ErrorView />;
 }

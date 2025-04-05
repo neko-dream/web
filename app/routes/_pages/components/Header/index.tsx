@@ -1,13 +1,13 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, Link, useLocation } from "react-router";
+import { tv } from "tailwind-variants";
+import type { Route } from "~/app/routes/_pages/+types/route";
 import LogoIcon from "~/assets/kotihiro.png";
 import { Avatar, AvatarSkeleton } from "~/components/Avatar";
-import type { Route } from "~/app/routes/_pages/+types/route";
 import { button } from "~/components/Button";
 import { Close, Menu, PlusCircle, Search } from "~/components/Icons";
-import { SearchModal } from "../SearchModal";
 import { MenuDialog } from "../MenuDialog";
-import { tv } from "tailwind-variants";
+import { SearchModal } from "../SearchModal";
 
 type Props = Route.ComponentProps["loaderData"];
 
@@ -66,6 +66,7 @@ export const Header = ({ $user }: Props) => {
 
           {ignoreParsonalIconPages.includes(location.pathname) && (
             <button
+              type="button"
               className="ml-auto cursor-pointer"
               onClick={handleMenuButtonClick}
             >
@@ -94,6 +95,7 @@ export const Header = ({ $user }: Props) => {
                   return (
                     <div className="flex space-x-4">
                       <button
+                        type="button"
                         onClick={handleSearchDialogOpenChange}
                         className="cursor-pointer"
                       >
