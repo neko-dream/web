@@ -36,5 +36,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  return { opinions, session };
+  return {
+    ...opinions,
+    session,
+  };
 };
