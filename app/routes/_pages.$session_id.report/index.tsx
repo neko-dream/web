@@ -7,8 +7,8 @@ import { Card } from "~/components/Card";
 import { Arrow } from "~/components/Icons";
 import Graph from "~/features/graph/components";
 import { postVote } from "~/features/opinion/libs/postVote";
-import { loader } from "./modules/loader";
 import type { SessionRouteContext } from "~/types/ctx";
+import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };

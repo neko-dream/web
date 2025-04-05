@@ -7,8 +7,9 @@
   "files.associations": {
     "*.css": "tailwindcss"
   },
-  // https://github.com/biomejs/biome/pull/1362#issuecomment-2409104140
   "editor.codeActionsOnSave": {
-    "quickfix.biome": "explicit"
+    // https://github.com/biomejs/biome/pull/1362#issuecomment-2409104140
+    "quickfix.biome": "explicit",
+    "source.organizeImports.biome": "explicit"
   }
 }
