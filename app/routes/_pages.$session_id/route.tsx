@@ -1,9 +1,8 @@
 import { Link, Outlet } from "react-router";
-import { loader } from "./modules/loader";
 import { SessionRouteContext } from "./types";
 import { JST } from "~/libs/date";
 import { OpinionCheckButton } from "./components/OpinionCheckButton";
-import { Tabs } from "~/components/Tabs";
+import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import { Avatar } from "~/components/Avatar";
 import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
@@ -12,7 +11,7 @@ import { List } from "~/features/acordion";
 import { Edit, PieChart } from "~/components/Icons";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader };
+export { loader } from "./modules/loader";
 
 export default function Route({
   loaderData: { session, user, report },
