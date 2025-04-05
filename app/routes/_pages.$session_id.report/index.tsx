@@ -104,7 +104,7 @@ export default function Page({
                 displayName: opinionUser.displayName,
                 iconURL: opinionUser.iconURL,
               }}
-              status={myVoteType as never}
+              status={myVoteType}
               className="mx-auto w-full max-w-2xl"
               date={"2025/12/31 10:00"}
               onClickAgree={() => handleSubmitVote("", "agree")}

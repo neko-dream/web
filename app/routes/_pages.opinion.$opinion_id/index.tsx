@@ -56,8 +56,7 @@ export default function Page({
           displayName: user.displayName,
           iconURL: user.iconURL,
         }}
-        // FIXME: ココアってる？
-        // status={opinion.voteType}
+        status={opinion.voteType}
         date={"2025/12/31 10:00"}
         isJudgeButton
         className="rounded-none"
@@ -67,7 +66,7 @@ export default function Page({
       />
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
-        {opinions.map(({ opinion, user: opinionUser }, i) => {
+        {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
           return (
             <Fragment key={i}>
               <RiMore2Fill size={24} className="ml-4 text-cyan-500" />
@@ -80,7 +79,7 @@ export default function Page({
                   displayName: opinionUser.displayName,
                   iconURL: opinionUser.iconURL,
                 }}
-                // status={myVoteType}
+                status={myVoteType}
                 date={"2025/12/31 10:00"}
                 isJudgeButton
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}

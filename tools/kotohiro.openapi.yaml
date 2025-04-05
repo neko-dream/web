@@ -167,6 +167,11 @@ paths:
                 reason:
                   type: integer
                   example: 1
+                content:
+                  type: string
+                  description: その他の場合のみ理由のテキスト
+                  example: ''
+                  nullable: true
       responses:
         '200':
           description: ''
@@ -323,6 +328,10 @@ paths:
                     description: 作成ユーザー
                   myVoteType:
                     type: string
+                    enum:
+                      - agree
+                      - disagree
+                      - pass
                     nullable: true
                 required:
                   - opinion
@@ -373,6 +382,10 @@ paths:
                         user: *ref_1
                         myVoteType:
                           type: string
+                          enum:
+                            - agree
+                            - disagree
+                            - pass
                           nullable: true
                       required:
                         - opinion
@@ -550,7 +563,9 @@ paths:
     get:
       summary: スワイプ用のエンドポイント
       deprecated: false
-      description: セッションの中からまだ投票していない意見をランダムに取得する
+      description: |-
+        セッションの中からまだ投票していない意見をランダムに取得する
+        remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
       operationId: swipe_opinions
       tags:
         - opinion
@@ -575,18 +590,26 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    opinion: *ref_0
-                    user: *ref_1
-                    replyCount:
-                      type: integer
-                  required:
-                    - opinion
-                    - user
-                    - replyCount
+                type: object
+                properties:
+                  opinions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        replyCount:
+                          type: integer
+                        opinion: *ref_0
+                        user: *ref_1
+                      required:
+                        - replyCount
+                        - opinion
+                        - user
+                  remainingCount:
+                    type: integer
+                required:
+                  - opinions
+                  - remainingCount
           headers: {}
         '400':
           description: ''
@@ -780,6 +803,10 @@ paths:
                           type: integer
                         myVoteType:
                           type: string
+                          enum:
+                            - pass
+                            - disagree
+                            - agree
                           nullable: true
                       required:
                         - opinion
@@ -1528,6 +1555,10 @@ paths:
                         user: *ref_1
                         myVoteType:
                           type: string
+                          enum:
+                            - agree
+                            - disagree
+                            - pass
                           nullable: true
                       required:
                         - opinion
@@ -3257,6 +3288,10 @@ components:
         voteType:
           type: string
           description: 意見投稿主の意見。ルート意見の場合はここには何も入らない
+          enum:
+            - disagree
+            - agree
+            - pass
           nullable: true
         pictureURL:
           type: string

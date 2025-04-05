@@ -5,7 +5,6 @@ import { loader } from "./modules/loader";
 import { postVote } from "~/features/opinion/libs/postVote";
 import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
 import { SessionRouteContext } from "../_pages.$session_id/types";
-import { OpinionType } from "~/features/opinion/types";
 import { useState } from "react";
 import { ReportModal } from "./components/ReportModal";
 
@@ -53,8 +52,7 @@ export default function Page({
                 displayName: opinionUser.displayName,
                 iconURL: opinionUser.iconURL,
               }}
-              // FIXME: サーバー対応待ち
-              status={myVoteType as OpinionType | undefined}
+              status={myVoteType}
               date={"2025/12/31 10:00"}
               className="mx-auto w-full max-w-2xl"
               isJudgeButton={user?.displayId !== opinionUser.displayID}

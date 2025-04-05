@@ -154,6 +154,7 @@ export interface paths {
         /**
          * スワイプ用のエンドポイント
          * @description セッションの中からまだ投票していない意見をランダムに取得する
+         *     remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
          */
         get: operations["swipe_opinions"];
         put?: never;
@@ -712,8 +713,11 @@ export interface components {
             content: string;
             /** @description 親の意見ID。ルートならば無し */
             parentID?: string;
-            /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
-            voteType?: string | null;
+            /**
+             * @description 意見投稿主の意見。ルート意見の場合はここには何も入らない
+             * @enum {string|null}
+             */
+            voteType?: "disagree" | "agree" | "pass" | null;
             /** @description 画像が返る場合もある */
             pictureURL?: string | null;
             /** @description 参考文献URL */
@@ -939,6 +943,11 @@ export interface operations {
                 "multipart/form-data": {
                     /** @example 1 */
                     reason?: number;
+                    /**
+                     * @description その他の場合のみ理由のテキスト
+                     * @example
+                     */
+                    content?: string | null;
                 };
             };
         };
@@ -1057,7 +1066,8 @@ export interface operations {
                         opinion: components["schemas"]["opinion"];
                         /** @description 作成ユーザー */
                         user: components["schemas"]["user"];
-                        myVoteType?: string | null;
+                        /** @enum {string|null} */
+                        myVoteType?: "agree" | "disagree" | "pass" | null;
                     };
                 };
             };
@@ -1093,7 +1103,8 @@ export interface operations {
                             opinion: components["schemas"]["opinion"];
                             /** @description 作成ユーザー */
                             user: components["schemas"]["user"];
-                            myVoteType?: string | null;
+                            /** @enum {string|null} */
+                            myVoteType?: "agree" | "disagree" | "pass" | null;
                         }[];
                     };
                 };
@@ -1232,11 +1243,14 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
-                        opinion: components["schemas"]["opinion"];
-                        /** @description 作成ユーザー */
-                        user: components["schemas"]["user"];
-                        replyCount: number;
-                    }[];
+                        opinions: {
+                            replyCount: number;
+                            opinion: components["schemas"]["opinion"];
+                            /** @description 作成ユーザー */
+                            user: components["schemas"]["user"];
+                        }[];
+                        remainingCount: number;
+                    };
                 };
             };
             400: {
@@ -1291,7 +1305,8 @@ export interface operations {
                             /** @description 作成ユーザー */
                             user: components["schemas"]["user"];
                             replyCount: number;
-                            myVoteType?: string | null;
+                            /** @enum {string|null} */
+                            myVoteType?: "pass" | "disagree" | "agree" | null;
                         }[];
                         pagination: {
                             totalCount: number;
@@ -1843,7 +1858,8 @@ export interface operations {
                             opinion: components["schemas"]["opinion"];
                             /** @description 作成ユーザー */
                             user: components["schemas"]["user"];
-                            myVoteType?: string | null;
+                            /** @enum {string|null} */
+                            myVoteType?: "agree" | "disagree" | "pass" | null;
                         }[];
                     };
                 };

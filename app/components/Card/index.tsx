@@ -11,7 +11,7 @@ import { LineChart, Notification } from "../Icons";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
-  status?: OpinionType;
+  status?: OpinionType | null;
   href?: string;
   user: User;
   date: string;
