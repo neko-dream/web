@@ -21,6 +21,10 @@ export const CenterDialog = ({
     };
   });
 
+  if (typeof document === "undefined") {
+    return null;
+  }
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (

@@ -1,12 +1,16 @@
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ModalProps } from "./types";
+import { ModalProps } from ".";
 
 export const HalfButtomDialog = ({
   isOpen,
   onOpenChange,
   children,
 }: ModalProps) => {
+  if (typeof document === "undefined") {
+    return null;
+  }
+
   return createPortal(
     <AnimatePresence>
       {isOpen && (
