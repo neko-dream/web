@@ -1,5 +1,5 @@
 import { animated, to } from "@react-spring/web";
-import { Card } from "~/components/Card";
+import { Card } from "~/components/features/opinion-card/index.js";
 import type { useSwipe } from "../../hooks/useSwipe.ts";
 
 const trans = (r: number, s: number) =>

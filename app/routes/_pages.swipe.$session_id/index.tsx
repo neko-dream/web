@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import type { Route } from "~/app/routes/_pages.swipe.$session_id/+types";
-import { Button, button } from "~/components/Button";
+import { Graph } from "~/components/features/graph-opinion";
 import {
   ArrowDown,
   ArrowLeft,
@@ -11,11 +11,11 @@ import {
   Left,
   PieChart,
   PointUp,
-} from "~/components/Icons";
-import { List } from "~/features/acordion";
-import { Graph } from "~/features/graph/components";
-import { postVote } from "~/features/opinion/libs/postVote";
-import type { OpinionType } from "~/features/opinion/types";
+} from "~/components/icons";
+import { List } from "~/components/ui/acordion";
+import { Button, button } from "~/components/ui/button";
+import type { VoteType } from "~/types";
+import { postVote } from "~/utils/vote";
 import CardSwiper from "./components/CardSwiper";
 import { useSwipe } from "./hooks/useSwipe";
 import { animations } from "./libs/animations";
@@ -74,7 +74,7 @@ export default function Page({
     );
   }
 
-  const handleSubmitVote = async (v: OpinionType) => {
+  const handleSubmitVote = async (v: VoteType) => {
     const current = opinions.length - swipe.gone.size - 1;
     // MEMO: すべてのカードをスワイプした場合は何もしない
     if (current < 0) {

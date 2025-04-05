@@ -3,14 +3,13 @@ import { parseWithValibot } from "conform-to-valibot";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
 import * as v from "valibot";
-import { Button } from "~/components/Button";
-import { Checkbox } from "~/components/Checkbox";
-import Textarea from "~/components/Textarea";
-import { HalfButtomDialog } from "~/features/modal";
-import type { ModalProps } from "~/features/modal/types";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { HalfButtomDialog, type ModalProps } from "~/components/ui/modal";
+import Textarea from "~/components/ui/textarea";
 
 type Props = Omit<ModalProps, "children"> & {
-  reasons: { reason: string; reason_id: number }[];
+  reasons: { reason: string; reasonID: number }[];
 };
 
 const schema = v.object({
@@ -36,14 +35,14 @@ export const ReportModal = ({ isOpen, onOpenChange, reasons }: Props) => {
       <Form {...getFormProps(form)} className="mx-auto mt-4 max-w-2xl">
         <p>通報理由</p>
         <div className="mt-2 space-y-1">
-          {reasons?.map(({ reason, reason_id }, i) => {
+          {reasons?.map(({ reason, reasonID }, i) => {
             return (
               <Checkbox
                 {...getInputProps(fields.reason, { type: "checkbox" })}
                 key={i}
                 name="reason"
-                id={`${reason_id}`}
-                value={reason_id}
+                id={`${reasonID}`}
+                value={reasonID}
                 label={reason}
               />
             );

@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { userEditFormSchema } from "~/features/user/schemas/form";
-import type { User } from "~/features/user/types";
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
+import { userEditFormSchema } from "~/schemas/users";
+import type { UserType } from "~/types";
 
 type Props = {
-  user: User;
+  user: UserType;
 };
 
 export const useEditUserForm = ({ user }: Props) => {

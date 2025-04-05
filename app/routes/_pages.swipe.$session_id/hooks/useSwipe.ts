@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useSprings } from "react-spring";
 import { useDrag } from "react-use-gesture";
-import type { OpinionType } from "~/features/opinion/types";
+import type { VoteType } from "~/types";
 import type { components } from "~/types/openapi";
 import { animations } from "../libs/animations";
 
 type OnSwipeParam = {
   opinionID: string;
-  opinionStatus: OpinionType;
+  opinionStatus: VoteType;
 };
 
 type Props = {

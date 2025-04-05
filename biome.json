@@ -17,7 +17,10 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["app/features/graph/components/index.tsx"],
+    "ignore": [
+      "app/components/features/graph-opinion",
+      "tools/kotohiro.openapi.yaml"
+    ],
     "rules": {
       "all": true,
       "nursery": {

@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import type { Route } from "~/app/routes/_pages.$session_id.opinion/+types";
-import { Card } from "~/components/Card";
-import { postVote } from "~/features/opinion/libs/postVote";
+import { Card } from "~/components/features/opinion-card";
 import type { SessionRouteContext } from "~/types/ctx";
+import { postVote } from "~/utils/vote";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";

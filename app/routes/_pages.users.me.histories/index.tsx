@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Await, Link } from "react-router";
-import Session from "~/components/TalkSessionCard";
+import Session from "~/components/features/talksession-card";
 import type { Route } from "../_pages.users.me.histories/+types";
 
 export { loader } from "./modules/loader";

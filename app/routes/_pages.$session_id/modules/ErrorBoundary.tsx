@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { isRouteErrorResponse, useRouteError } from "react-router";
-import ErrorView from "~/components/Error";
+import { ErrorView } from "~/components/layouts/error";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();

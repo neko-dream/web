@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { Link, isRouteErrorResponse, useRouteError } from "react-router";
-import { button } from "~/components/Button";
-import ErrorView from "~/components/Error";
+import { ErrorView } from "~/components/layouts/error";
+import { button } from "~/components/ui/button";
 import { forbidden } from "~/libs/response";
 
 export function ErrorBoundary(): JSX.Element {

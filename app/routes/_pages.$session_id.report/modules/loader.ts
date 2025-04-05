@@ -8,12 +8,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   }
 
   const { data: report } = await api.GET(
-    "/talksessions/{talkSessionId}/report",
+    "/talksessions/{talkSessionID}/report",
     {
       headers: request.headers,
       params: {
         path: {
-          talkSessionId: params.session_id,
+          talkSessionID: params.session_id,
         },
       },
     },
@@ -29,12 +29,12 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   });
 
   const { data: position } = await api.GET(
-    "/talksessions/{talkSessionId}/analysis",
+    "/talksessions/{talkSessionID}/analysis",
     {
       headers: request.headers,
       params: {
         path: {
-          talkSessionId: params.session_id,
+          talkSessionID: params.session_id,
         },
       },
     },

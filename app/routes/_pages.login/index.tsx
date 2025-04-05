@@ -1,4 +1,4 @@
-import { Arrow, AuthGoogle, AuthLine } from "~/components/Icons";
+import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 
 export default function Index() {

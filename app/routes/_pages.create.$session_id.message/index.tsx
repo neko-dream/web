@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
+import { Heading } from "~/components/ui/heading";
 
 export default function Page() {
   const navigate = useNavigate();

@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   // 認証済みなら /home にリダイレクト
-  if (data?.isVerify) {
+  if (data?.isRegistered) {
     throw redirect("/home");
   }
 

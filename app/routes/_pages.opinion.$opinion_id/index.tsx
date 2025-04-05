@@ -4,13 +4,13 @@ import { RiMore2Fill } from "react-icons/ri";
 import { Form, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
 import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
-import { Button } from "~/components/Button";
-import { Card } from "~/components/Card";
-import { Heading } from "~/components/Heading";
-import Textarea from "~/components/Textarea";
-import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
-import type { OpinionType } from "~/features/opinion/types";
+import { Card } from "~/components/features/opinion-card";
+import { Button } from "~/components/ui/button";
+import { Heading } from "~/components/ui/heading";
+import Textarea from "~/components/ui/textarea";
+import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
 import { api } from "~/libs/api";
+import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
 
@@ -22,7 +22,7 @@ export default function Page({
   const navigate = useNavigate();
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
-  const handleSubmitVote = async (opinionID: string, status: OpinionType) => {
+  const handleSubmitVote = async (opinionID: string, status: VoteType) => {
     await api.POST("/opinions/{opinionID}/votes", {
       credentials: "include",
       params: {

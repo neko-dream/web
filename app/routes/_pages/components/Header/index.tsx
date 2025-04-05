@@ -3,9 +3,9 @@ import { Await, Link, useLocation } from "react-router";
 import { tv } from "tailwind-variants";
 import type { Route } from "~/app/routes/_pages/+types/route";
 import LogoIcon from "~/assets/kotihiro.png";
-import { Avatar, AvatarSkeleton } from "~/components/Avatar";
-import { button } from "~/components/Button";
-import { Close, Menu, PlusCircle, Search } from "~/components/Icons";
+import { Close, Menu, PlusCircle, Search } from "~/components/icons";
+import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
+import { button } from "~/components/ui/button";
 import { MenuDialog } from "../MenuDialog";
 import { SearchModal } from "../SearchModal";
 
@@ -78,7 +78,7 @@ export const Header = ({ $user }: Props) => {
             <Suspense fallback={<AvatarSkeleton />}>
               <Await resolve={$user}>
                 {(user) => {
-                  if (!user?.isVerify) {
+                  if (!user?.isRegistered) {
                     return (
                       <Link
                         to={"/"}

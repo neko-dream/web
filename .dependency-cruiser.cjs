@@ -10,7 +10,13 @@ module.exports = {
     {
       name: "機能ディレクトリから他の機能ディレクトリへの依存は禁止しています",
       severity: "error",
-      from: { path: "(^app/features/)([^/]+)/" },
+      from: { path: "(^app/components/features/)([^/]+)/" },
+      to: { path: "^$1", pathNot: "$1$2" },
+    },
+    {
+      name: "機能ディレクトリから他の機能ディレクトリへの依存は禁止しています",
+      severity: "error",
+      from: { path: "(^app/components/ui/)([^/]+)/" },
       to: { path: "^$1", pathNot: "$1$2" },
     },
   ],

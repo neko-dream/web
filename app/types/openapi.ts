@@ -21,23 +21,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/opinions/{opinionID}/analysis": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 意見に投票したグループごとの割合 */
-    get: operations["getOpinionAnalysis"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/opinions/{opinionID}/report": {
     parameters: {
       query?: never;
@@ -49,6 +32,23 @@ export interface paths {
     put?: never;
     /** 意見通報API */
     post: operations["reportOpinion"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions/{opinionID}/analysis": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 意見に投票したグループごとの割合 */
+    get: operations["getOpinionAnalysis"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -203,7 +203,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionId}": {
+  "/talksessions/{talkSessionID}": {
     parameters: {
       query?: never;
       header?: never;
@@ -248,7 +248,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionId}/analysis": {
+  "/talksessions/{talkSessionID}/analysis": {
     parameters: {
       query?: never;
       header?: never;
@@ -265,7 +265,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionId}/report": {
+  "/talksessions/{talkSessionID}/report": {
     parameters: {
       query?: never;
       header?: never;
@@ -407,6 +407,23 @@ export interface paths {
      * @description 特定のセッションで満たしていない条件があれば返す
      */
     get: operations["getTalkSessionRestrictionSatisfied"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/reports": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 通報一覧 */
+    get: operations["getReportsForTalkSession"];
     put?: never;
     post?: never;
     delete?: never;
@@ -750,7 +767,7 @@ export interface components {
       /** @description アイコンURL */
       iconURL?: string;
       /** @description ユーザ登録済みか */
-      isVerify: boolean;
+      isRegistered: boolean;
       isEmailVerified: boolean;
     };
     offsetPagination: {
@@ -818,7 +835,7 @@ export interface components {
     };
     reportReason: {
       /** @description 1 */
-      reason_id: number;
+      reasonID: number;
       /** @description 不適切な内容 */
       reason: string;
     };
@@ -826,8 +843,20 @@ export interface components {
       agreeCount: number;
       disagreeCount: number;
       passCount: number;
-      groupId: number;
+      groupID: number;
       groupName: string;
+    };
+    reportDetail: {
+      reportID: string;
+      opinion: components["schemas"]["opinion"];
+      /** @description 作成ユーザー */
+      user: components["schemas"]["user"];
+      reasons: {
+        reason: string;
+        content?: string | null;
+      }[];
+      /** @description この意見が通報を受けた回数 */
+      reportCount: number;
     };
   };
   responses: never;
@@ -892,43 +921,6 @@ export interface operations {
       };
     };
   };
-  getOpinionAnalysis: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["opinionGroupRatio"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
   reportOpinion: {
     parameters: {
       query?: never;
@@ -958,6 +950,43 @@ export interface operations {
         };
         content: {
           "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpinionAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["opinionGroupRatio"][];
         };
       };
       400: {
@@ -1436,7 +1465,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        talkSessionId: string;
+        talkSessionID: string;
       };
       cookie?: never;
     };
@@ -1468,7 +1497,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        talkSessionId: string;
+        talkSessionID: string;
       };
       cookie?: never;
     };
@@ -1477,7 +1506,10 @@ export interface operations {
         "multipart/form-data": {
           /** @example  */
           theme: string;
-          /** @example  */
+          /**
+           * Format: date-time
+           * @example
+           */
           scheduledEndTime: string;
           /**
            * @description 緯度
@@ -1504,6 +1536,18 @@ export interface operations {
            * @example
            */
           description?: string | null;
+          /**
+           * @description サムネイルURL。文中から一番最初の画像URLをサムネとする。
+           * @example
+           */
+          thumbnailURL?: string;
+          /**
+           * @description 投稿制限のキー
+           * @example [
+           *       "demographics.city"
+           *     ]
+           */
+          restrictions?: string[];
         };
       };
     };
@@ -1704,7 +1748,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        talkSessionId: string;
+        talkSessionID: string;
       };
       cookie?: never;
     };
@@ -1762,7 +1806,7 @@ export interface operations {
       query?: never;
       header?: never;
       path: {
-        talkSessionId: string;
+        talkSessionID: string;
       };
       cookie?: never;
     };
@@ -2121,6 +2165,45 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["restriction"][];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getReportsForTalkSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            reports: components["schemas"]["reportDetail"][];
+          };
         };
       };
       400: {
@@ -2543,7 +2626,7 @@ export interface operations {
             /** @description アイコンURL */
             iconURL?: string;
             /** @description ユーザ登録済みか */
-            isVerify: boolean;
+            isRegistered: boolean;
             isEmailVerified: boolean;
           };
         };

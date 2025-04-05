@@ -7,31 +7,31 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
     headers: request.headers,
     params: {
       path: {
-        talkSessionId: params.session_id || "",
+        talkSessionID: params.session_id || "",
       },
     },
   });
 
-  const { data } = await api.GET("/talksessions/{talkSessionId}/report", {
+  const { data } = await api.GET("/talksessions/{talkSessionID}/report", {
     headers: request.headers,
     params: {
       path: {
-        talkSessionId: params.session_id,
+        talkSessionID: params.session_id,
       },
     },
   });
 
   const { data: position } = await api.GET(
-    "/talksessions/{talkSessionId}/analysis",
+    "/talksessions/{talkSessionID}/analysis",
     {
       headers: request.headers,
       params: {
         path: {
-          talkSessionId: params.session_id,
+          talkSessionID: params.session_id,
         },
       },
     },

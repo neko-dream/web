@@ -1,5 +1,5 @@
 import { Link, useOutletContext } from "react-router";
-import { button } from "~/components/Button";
+import { button } from "~/components/ui/button";
 import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {

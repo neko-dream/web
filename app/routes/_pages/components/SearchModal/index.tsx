@@ -1,8 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
-import { SearchWhite } from "~/components/Icons";
-import { input } from "~/components/Input";
+import { SearchWhite } from "~/components/icons";
+import { input } from "~/components/ui/input";
 
 type Props = {
   open: boolean;

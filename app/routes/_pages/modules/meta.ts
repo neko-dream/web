@@ -1,4 +1,4 @@
-import { generateMetaTag } from "~/utils/generateMetaTag";
+import { generateMetaTag } from "~/utils/metatag";
 
 export const meta = generateMetaTag({
   title: "ことひろ",

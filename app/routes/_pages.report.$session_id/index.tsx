@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useNavigate } from "react-router";
-import { Left } from "~/components/Icons";
-import Graph from "~/features/graph/components";
+import Graph from "~/components/features/graph-opinion";
+import { Left } from "~/components/icons";
+// import Graph from "~/features/opinion-graph/components";
 import type { Route } from "../_pages.report.$session_id/+types";
 
 export { loader } from "./modules/loader";

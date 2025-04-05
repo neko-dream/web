@@ -3,11 +3,11 @@ import ReactMarkdown from "react-markdown";
 import { Link, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import type { Route } from "~/app/routes/_pages.$session_id.report/+types";
-import { Card } from "~/components/Card";
-import { Arrow } from "~/components/Icons";
-import Graph from "~/features/graph/components";
-import { postVote } from "~/features/opinion/libs/postVote";
+import Graph from "~/components/features/graph-opinion";
+import { Card } from "~/components/features/opinion-card";
+import { Arrow } from "~/components/icons";
 import type { SessionRouteContext } from "~/types/ctx";
+import { postVote } from "~/utils/vote";
 import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -70,7 +70,7 @@ export default function Page({
           <ReactMarkdown>{report}</ReactMarkdown>
         </article>
         <Link
-          to={`/report/${session.id}`}
+          to={`/report/${session}`}
           className="m-2 flex items-center justify-end text-blue-400 text-xs"
         >
           <span className="mr-1">詳しくみる</span>

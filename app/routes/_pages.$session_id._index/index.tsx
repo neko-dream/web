@@ -1,5 +1,5 @@
 import { useOutletContext } from "react-router";
-import { SanitizedHtml } from "~/features/xss-html";
+import { SanitizedHtml } from "~/components/features/xss-html";
 import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {

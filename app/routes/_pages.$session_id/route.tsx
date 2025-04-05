@@ -1,9 +1,9 @@
 import { Link, Outlet } from "react-router";
 import type { Route } from "~/app/routes/_pages.$session_id/+types/route";
-import { Avatar } from "~/components/Avatar";
-import { Edit, PieChart } from "~/components/Icons";
-import { List } from "~/features/acordion";
-import { Graph } from "~/features/graph/components";
+import { Graph } from "~/components/features/graph-opinion";
+import { Edit, PieChart } from "~/components/icons";
+import { List } from "~/components/ui/acordion";
+import { Avatar } from "~/components/ui/avatar";
 import { JST } from "~/libs/date";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
