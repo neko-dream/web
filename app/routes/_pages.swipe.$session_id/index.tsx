@@ -5,8 +5,8 @@ import { Link, useNavigate, useParams, useRevalidator } from "react-router";
 import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
 import { useDrag } from "react-use-gesture";
-import { Graph } from "~/components/features/graph-opinion";
 import { Card } from "~/components/features/opinion-card/index.js";
+import { Graph } from "~/components/features/opinion-graph";
 import {
   ArrowDown,
   ArrowLeft,

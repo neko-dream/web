@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router";
-import { Graph } from "~/components/features/graph-opinion";
+import { Graph } from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Avatar } from "~/components/ui/avatar";

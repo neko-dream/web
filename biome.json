@@ -18,7 +18,7 @@
   "linter": {
     "enabled": true,
     "ignore": [
-      "app/components/features/graph-opinion",
+      "app/components/features/opinion-graph",
       "tools/kotohiro.openapi.yaml"
     ],
     "rules": {
