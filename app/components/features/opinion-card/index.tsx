@@ -1,9 +1,8 @@
 import { type ComponentProps, createElement } from "react";
-import { RiMore2Fill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
 import { JST } from "~/libs/date";
 import type { UserType, VoteType } from "~/types";
-import { LineChart, Notification } from "../../icons";
+import { LineChart, More, Notification } from "../../icons";
 import { Avatar } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import { OpinionCount } from "../../ui/opinion-count";
@@ -101,9 +100,7 @@ export const Card = ({
       </div>
 
       {isMoreButton && (
-        <Popover
-          buttonLabel={<RiMore2Fill size={24} className="text-gray-600" />}
-        >
+        <Popover buttonLabel={<More className="w-6 text-gray-600" />}>
           <div className="flex flex-col px-3 py-1">
             <button
               onClick={() => onClickAnalytics?.()}

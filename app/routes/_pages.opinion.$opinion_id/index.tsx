@@ -1,9 +1,9 @@
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { useState } from "react";
-import { RiMore2Fill } from "react-icons/ri";
 import { Form, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
 import { Card } from "~/components/features/opinion-card";
+import { More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import Textarea from "~/components/ui/textarea";
@@ -58,22 +58,18 @@ export default function Page({
       />
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
-        {opinions.map(({ opinion, user: opinionUser, myVoteType }, i) => {
+        {opinions.map(({ opinion, user, myVoteType }, i) => {
           return (
             <Fragment key={i}>
-              <RiMore2Fill size={24} className="ml-4 text-cyan-500" />
+              <More className="ml-4 w-6 text-cyan-500" />
               <Card
                 key={i}
                 title={opinion.title}
                 description={opinion.content}
-                user={{
-                  displayID: "",
-                  displayName: opinionUser.displayName,
-                  iconURL: opinionUser.iconURL,
-                }}
+                user={user}
                 status={myVoteType}
-                date={"2025/12/31 10:00"}
-                isJudgeButton={currentUser?.displayID !== opinionUser.displayID}
+                date={opinion.postedAt}
+                isJudgeButton={currentUser?.displayID !== user.displayID}
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
                 onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
                 onClickPass={() => handleSubmitVote(opinion.id, "pass")}

@@ -1,12 +1,11 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
 import { type ChangeEvent, useRef, useState } from "react";
-import { RiImage2Line } from "react-icons/ri";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
 import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import AdressInputs from "~/components/features/input-adress";
-import { Check } from "~/components/icons";
+import { Check, Photo } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
@@ -61,7 +60,7 @@ export default function Page({
             className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 font-normal text-sm"
             onClick={handleOpenFiler}
           >
-            <RiImage2Line className="text-gray-400" size={20} />
+            <Photo className="w-5 text-gray-400" />
             <span className="text-gray-400">変更</span>
           </Button>
         </div>

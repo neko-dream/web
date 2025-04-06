@@ -1,6 +1,6 @@
 import { Link, Outlet } from "react-router";
 import { Graph } from "~/components/features/graph-opinion";
-import { Edit, PieChart } from "~/components/icons";
+import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Avatar } from "~/components/ui/avatar";
 import { JST } from "~/libs/date";
@@ -70,7 +70,15 @@ export default function Layout({
           </p>
         </div>
 
-        <p className="text-blue-500 text-sm">未ログインも回答可能</p>
+        <p className="text-blue-500 text-sm">
+          {session.restrictions.length === 0 ? (
+            <>
+              <Notification />
+            </>
+          ) : (
+            "制限あるかも"
+          )}
+        </p>
 
         <div className="flex space-x-2">
           {session.city && (

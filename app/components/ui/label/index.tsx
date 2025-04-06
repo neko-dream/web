@@ -1,5 +1,4 @@
 import type { ComponentProps, JSX, ReactNode } from "react";
-import { RiAlertFill } from "react-icons/ri";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"div"> & {
@@ -42,7 +41,6 @@ export const Label = ({
       {errors?.map((v, i) => {
         return (
           <div key={i} className="flex items-center space-x-1">
-            <RiAlertFill color="red" />
             <p className="pt-0.5 text-red-500 text-xs">{v}</p>
           </div>
         );
