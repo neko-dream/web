@@ -1,9 +1,8 @@
 import DefaultSessionIcon from "~/assets/default/session.webp";
 import { JST } from "~/libs/date";
 import type { components } from "~/types/openapi";
-import { ClockCircle, Environment } from "../../icons";
+import { ClockCircle, Environment, Message } from "../../icons";
 import { Avatar } from "../../ui/avatar";
-import { OpinionCount } from "../../ui/opinion-count";
 
 type Props = {
   talkSession: components["schemas"]["talkSession"];
@@ -51,7 +50,12 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
             )}
           </div>
 
-          <OpinionCount count={opinionCount} />
+          <div className="flex items-center space-x-1">
+            <Message className="text-blue-500" />
+            <p className="font-bold text-blue-500 text-xs">
+              {opinionCount < 99 ? opinionCount : "99+"} 件
+            </p>
+          </div>
         </div>
       </div>
     </div>

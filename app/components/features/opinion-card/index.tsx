@@ -2,10 +2,9 @@ import { type ComponentProps, createElement } from "react";
 import { tv } from "tailwind-variants";
 import { JST } from "~/libs/date";
 import type { UserType, VoteType } from "~/types";
-import { LineChart, More, Notification } from "../../icons";
+import { LineChart, Message, More, Notification } from "../../icons";
 import { Avatar } from "../../ui/avatar";
 import { Button } from "../../ui/button";
-import { OpinionCount } from "../../ui/opinion-count";
 import { Popover } from "../../ui/popover";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
@@ -61,8 +60,11 @@ export const Card = ({
             <p className="mt-2 line-clamp-3 text-[#4e4d4b]">{description}</p>
 
             {opinionCount > 0 && (
-              <div className="mt-2">
-                <OpinionCount count={opinionCount} />
+              <div className="flex items-center space-x-1">
+                <Message className="text-blue-500" />
+                <p className="font-bold text-blue-500 text-xs">
+                  {opinionCount < 99 ? opinionCount : "99+"} 件
+                </p>
               </div>
             )}
           </>,
