@@ -70,7 +70,7 @@ export default function Page({
           <ReactMarkdown>{report}</ReactMarkdown>
         </article>
         <Link
-          to={`/report/${session}`}
+          to={`/report/${session.id}`}
           className="m-2 flex items-center justify-end text-blue-400 text-xs"
         >
           <span className="mr-1">詳しくみる</span>
