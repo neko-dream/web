@@ -9,6 +9,7 @@ import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { OpinionCheckButton } from "./components/OpinionCheckButton";
+import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -70,15 +71,26 @@ export default function Layout({
           </p>
         </div>
 
-        <p className="text-blue-500 text-sm">
+        <div className="text-blue-500 text-sm">
           {session.restrictions.length === 0 ? (
-            <>
-              <Notification />
-            </>
+            <div className="flex items-center ">
+              <Notification className="fill-mt-blue-600" />
+              <p className="ml-2">誰でも参加OK</p>
+            </div>
           ) : (
-            "制限あるかも"
+            <div className="flex items-center">
+              <p className="rounded bg-mt-blue-50 px-2 py-1">入力済対象</p>
+              {session.restrictions.map(({ description, key }, i) => {
+                return (
+                  <p className="ml-2 flex space-x-1" key={i}>
+                    <span>{RESTRICTIONS_ICON_MAP[key]}</span>
+                    <span>{description}</span>
+                  </p>
+                );
+              })}
+            </div>
           )}
-        </p>
+        </div>
 
         <div className="flex space-x-2">
           {session.city && (
