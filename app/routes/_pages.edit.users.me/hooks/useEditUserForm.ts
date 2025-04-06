@@ -15,11 +15,10 @@ export const useEditUserForm = ({ user }: Props) => {
 
   return useCustomForm({
     schema: userEditFormSchema,
-    // FIXME: null と undefined の違いで起こる
     defaultValue: {
       ...user,
       icon: undefined,
-    } as never,
+    },
     onSubmit: async ({ value }) => {
       const compressIcon =
         value.icon && value.icon?.size > 0 && fileCompress(value.icon);

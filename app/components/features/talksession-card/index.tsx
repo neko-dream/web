@@ -16,7 +16,6 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
   return (
     <div className="flex">
       {/* サムネイル */}
-      {/* FIXME: 画像のURLを修正してください */}
       <img
         src={talkSession.thumbnailURL || DefaultSessionIcon}
         className="aspect-square h-16 w-16 rounded-2xl object-cover"
@@ -36,7 +35,6 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
         </div>
 
         <div className="mt-0.5 flex space-x-4">
-          {/* FIXME:  */}
           <div className="flex w-full max-w-24 items-center space-x-1">
             <Environment className="text-gray-500" />
             <p className="text-gray-500 text-xs">{talkSession.city || "---"}</p>
