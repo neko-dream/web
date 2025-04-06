@@ -19,9 +19,7 @@ export const TopicCard = () => {
             あと40日
           </p>
         </div>
-        <p className="primary-gradient mx-4 mt-2 text-clip font-bold">
-          みんなの意見
-        </p>
+        <p className="primary-gradient mx-4 mt-2 font-bold">みんなの意見</p>
         <div className="mt-2 w-full overflow-hidden rounded-sm">
           <Card
             description="つつじ祭りとやると楽しそう？"

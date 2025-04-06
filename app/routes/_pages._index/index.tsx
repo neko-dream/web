@@ -37,7 +37,7 @@ function Page() {
         </div>
 
         <div className="mx-auto mt-6 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8 shadow-lg">
-          <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
+          <p className="primary-gradient mx-auto inline-block text-center font-bold">
             ことひろに参加しよう
           </p>
           <p className="text-center text-xs">2つの方法から参加できます</p>
@@ -102,7 +102,7 @@ function Page() {
       </div>
 
       <div className="mt-16 mb-4 text-center">
-        <p className="primary-gradient inline-block text-clip rounded-md p-2 font-bold text-2xl backdrop-blur-[20px]">
+        <p className="primary-gradient inline-block rounded-md p-2 font-bold text-2xl backdrop-blur-[20px]">
           注目のトピック
         </p>
       </div>
