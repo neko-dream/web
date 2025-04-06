@@ -15,9 +15,6 @@
       #5856d6 50%,
       #32ade6 100%
     );
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
   }
   .primary-gradient-30 {
     background-image: linear-gradient(
@@ -26,6 +23,8 @@
       #5856d64a 50%,
       #32ade652 100%
     );
+  }
+  .text-clip {
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
