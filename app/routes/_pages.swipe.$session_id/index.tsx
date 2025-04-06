@@ -1,7 +1,12 @@
-import { useEffect, useState } from "react";
+import { animated, to } from "@react-spring/web";
+import { useEffect } from "react";
+import { useState } from "react";
 import { Link, useNavigate, useParams, useRevalidator } from "react-router";
+import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
+import { useDrag } from "react-use-gesture";
 import { Graph } from "~/components/features/graph-opinion";
+import { Card } from "~/components/features/opinion-card/index.js";
 import {
   ArrowDown,
   ArrowLeft,
@@ -15,14 +20,147 @@ import { List } from "~/components/ui/acordion";
 import { Button, button } from "~/components/ui/button";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
+import type { components } from "~/types/openapi";
 import { postVote } from "~/utils/vote";
-import CardSwiper from "./components/CardSwiper";
-import { useSwipe } from "./hooks/useSwipe";
-import { animations } from "./libs/animations";
 import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
+
+type OnSwipeParam = {
+  opinionID: string;
+  opinionStatus: VoteType;
+};
+
+type Props = {
+  opinions: {
+    opinion: components["schemas"]["opinion"];
+    user: components["schemas"]["user"];
+    replyCount: number;
+  }[];
+  onSwipe: ({ opinionID, opinionStatus }: OnSwipeParam) => void;
+};
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const _height = "calc(100% - 136px - 24px)";
+
+const trans = (r: number, s: number) =>
+  `rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
+
+export const animations = {
+  to: () => ({
+    w: "80%",
+    x: 0,
+    zIndex: 0,
+    left: "10%",
+    scale: 1,
+  }),
+  from: () => ({
+    w: "100%",
+    x: 0,
+    y: -1000,
+    zIndex: 0,
+    left: "10%",
+    rot: 0,
+    scale: 1.5,
+    backgroundColor: "transparent",
+    agreeDisplay: "none",
+    disagreeDisplay: "none",
+    opacity: 0,
+  }),
+  init: () => ({
+    w: "80%",
+    x: 0,
+    left: "10%",
+    zIndex: 0,
+    delay: undefined,
+  }),
+};
+
+export const useSwipe = ({ opinions, onSwipe }: Props) => {
+  const [gone] = useState(() => new Set<number>());
+
+  const [item, api] = useSprings(opinions.length, (i) => ({
+    ...animations.to(),
+    y: i,
+    delay: i,
+    from: animations.from(),
+  }));
+
+  const bind = useDrag(
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+    ({ args: [index], down, movement: [mx, my], velocity }) => {
+      const trigger = velocity > 0.1;
+      // MEMO: 閾値を超えたらスワイプしたとみなす
+      const xdir = mx > 100 ? 1 : mx < -100 ? -1 : 0;
+      const ydir = my > 100 ? 1 : my < -100 ? -1 : 0;
+
+      // MEMO: スワイプしたカードをコールバックに渡す
+      if (!down && trigger) {
+        const opinionID = opinions[opinions.length - gone.size - 1].opinion.id;
+        if (xdir >= 1) {
+          onSwipe({ opinionID, opinionStatus: "agree" });
+        } else if (xdir <= -1) {
+          onSwipe({ opinionID, opinionStatus: "disagree" });
+        }
+        if (ydir >= 1) {
+          onSwipe({ opinionID, opinionStatus: "pass" });
+        }
+      }
+
+      // MEMO: ydir || xidr が 0 でない場合はどこかにスワイプしている
+      if (!down && trigger && (ydir !== 0 || xdir !== 0)) {
+        if (ydir !== -1) {
+          gone.add(index);
+        }
+      }
+
+      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+      api.start((i) => {
+        if (i !== index) {
+          return;
+        }
+
+        const isGone = gone.has(index);
+        // MEMO: スワイプしたカードの位置を計算
+        const x = isGone ? (200 + window.innerWidth) * xdir : down ? mx : 0;
+        const y = isGone ? (200 + window.innerHeight) * ydir : down ? my : 0;
+        const rot = down ? mx / 100 + (isGone ? xdir * 10 * velocity : 0) : 0;
+
+        const config = {
+          friction: 50,
+          tension: down ? 800 : isGone ? 200 : 500,
+        };
+
+        // 透かし
+        let backgroundColor = x > 10 ? "blue" : x < -10 ? "red" : "transparent";
+        backgroundColor = y < -100 ? "transparent" : backgroundColor;
+        const opacity = x > 10 ? mx / 400 : x < -10 ? -mx / 400 : 0;
+
+        return {
+          ...animations.init(),
+          y,
+          x,
+          rot,
+          backgroundColor,
+          opacity,
+          agreeDisplay: x > 10 && y > -100 ? "block" : "none",
+          disagreeDisplay: x < -10 ? "block" : "none",
+          zIndex: down ? 100 : 0,
+          config,
+        };
+      });
+    },
+  );
+
+  return {
+    gone,
+    item,
+    api,
+    bind,
+    opinions,
+  };
+};
 
 export default function Page({
   loaderData: { opinions, session },
@@ -166,7 +304,83 @@ export default function Page({
       </List>
 
       <div className="relative mt-4 h-[168px]">
-        <CardSwiper {...swipe} />
+        {swipe.item?.map(
+          (
+            {
+              x,
+              y,
+              w,
+              left,
+              rot,
+              scale,
+              zIndex,
+              backgroundColor,
+              disagreeDisplay,
+              agreeDisplay,
+              opacity,
+            },
+            i,
+          ) => {
+            return (
+              <animated.div
+                className="absolute block touch-none will-change-transform"
+                key={i}
+                style={{
+                  x,
+                  y,
+                  width: w,
+                  left,
+                  zIndex,
+                }}
+              >
+                <animated.div
+                  {...swipe.bind(i)}
+                  style={{ transform: to([rot, scale], trans) }}
+                  className="w-full"
+                >
+                  {/* 重なり */}
+                  <animated.div
+                    style={{
+                      backgroundColor,
+                      display: disagreeDisplay,
+                      opacity,
+                    }}
+                    className="absolute z-10 h-full w-full rounded"
+                  />
+                  <animated.p
+                    style={{ display: disagreeDisplay }}
+                    className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
+                  >
+                    違うかも
+                  </animated.p>
+
+                  <animated.div
+                    style={{
+                      backgroundColor,
+                      display: agreeDisplay,
+                      opacity,
+                    }}
+                    className="absolute z-10 h-full w-full rounded"
+                  />
+                  <animated.p
+                    style={{ display: agreeDisplay }}
+                    className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
+                  >
+                    いいかも
+                  </animated.p>
+
+                  <Card
+                    title={swipe.opinions[i].opinion.title || ""}
+                    description={swipe.opinions[i].opinion.content || ""}
+                    user={swipe.opinions[i].user}
+                    date={"2025/12/31 10:00"}
+                    className="pointer-events-none select-none bg-white"
+                  />
+                </animated.div>
+              </animated.div>
+            );
+          },
+        )}
       </div>
 
       <div className="relative mt-4 h-[160px]">
