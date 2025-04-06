@@ -11,7 +11,5 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     throw forbidden();
   }
 
-  return {
-    user: data.user,
-  };
+  return data;
 };
