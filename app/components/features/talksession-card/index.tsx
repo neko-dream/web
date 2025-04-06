@@ -44,8 +44,8 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
             {isFinished ? (
               <p className="ml-1 w-14 text-gray-500 text-xs">終了</p>
             ) : (
-              <p className="ml-1 w-16 whitespace-nowrap text-gray-500 text-xs">
-                {JST(talkSession.scheduledEndTime).format("MM/DDまで")}
+              <p className="ml-1 w-14 whitespace-nowrap text-gray-500 text-xs">
+                {JST(talkSession.scheduledEndTime).format("M/Dまで")}
               </p>
             )}
           </div>
