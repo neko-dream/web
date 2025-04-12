@@ -1,12 +1,12 @@
-import { useRevalidator } from "react-router";
-import { toast } from "react-toastify";
 import { Alert } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
-import { api } from "~/libs/api";
 import { JST } from "~/libs/date";
 import type { components } from "~/types/openapi";
 
-type Props = components["schemas"]["reportDetail"];
+type Props = components["schemas"]["reportDetail"] & {
+  onSubmitDelete: (id: string) => void;
+  onSubmitHold: (id: string) => void;
+};
 
 export const ReportCard = ({
   opinion,
@@ -14,32 +14,9 @@ export const ReportCard = ({
   reportCount,
   user,
   status,
+  onSubmitDelete,
+  onSubmitHold,
 }: Props) => {
-  const { revalidate } = useRevalidator();
-
-  const onSubmit = async (action: "hold" | "deleted") => {
-    const res = await api.POST("/opinions/{opinionID}/reports/solve", {
-      credentials: "include",
-      params: {
-        path: {
-          opinionID: opinion.id,
-        },
-      },
-      body: {
-        action,
-      },
-    });
-    if (res.response.status === 200) {
-      toast.success("通報を処理しました");
-      revalidate();
-    } else {
-      toast.error("通報の処理に失敗しました");
-    }
-  };
-
-  const handleSubmitHold = () => onSubmit("hold");
-  const handleSubmitDelete = () => onSubmit("deleted");
-
   return (
     <div className="rounded-xl bg-white p-2 ">
       <div className="flex items-center font-bold text-mt-red">
@@ -64,7 +41,7 @@ export const ReportCard = ({
               <button
                 type="button"
                 className="cursor-pointer rounded-full border border-[#8E8E93] px-4 py-2 font-semibold text-[#8E8E93] text-xl"
-                onClick={handleSubmitHold}
+                onClick={() => onSubmitHold(opinion.id)}
               >
                 保留にする
               </button>
@@ -73,7 +50,7 @@ export const ReportCard = ({
               <button
                 type="button"
                 className="cursor-pointer rounded-full border border-mt-red px-4 py-2 font-semibold text-mt-red text-xl"
-                onClick={handleSubmitDelete}
+                onClick={() => onSubmitDelete(opinion.id)}
               >
                 削除する
               </button>
