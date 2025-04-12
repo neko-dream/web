@@ -47,7 +47,7 @@ export default function Page({
 
   return (
     <>
-      <div className="mx-auto flex max-w-4xl justify-center space-x-6">
+      <div className="mx-auto flex max-w-4xl justify-center">
         <div className="w-full">
           <Suspense fallback={<OpinionCardSkeleton />}>
             <Await resolve={$opinions}>
@@ -113,7 +113,7 @@ export default function Page({
               );
 
               return (
-                <div className="hidden rounded bg-white p-2 md:block">
+                <div className="ml-4 hidden min-w-[391px] rounded bg-white p-2 md:block">
                   <Graph
                     polygons={positions}
                     positions={data?.positions}
