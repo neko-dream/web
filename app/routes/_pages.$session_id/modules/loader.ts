@@ -7,7 +7,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
+  const $session = api.GET("/talksessions/{talkSessionID}", {
     headers: request.headers,
     params: {
       path: {
@@ -16,7 +16,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
-  const $remainingCount = await api
+  const $remainingCount = api
     .GET("/talksessions/{talkSessionID}/swipe_opinions", {
       headers: request.headers,
       params: {
@@ -29,21 +29,14 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       return data?.remainingCount;
     });
 
-  const { data: user } = await api.GET("/auth/token/info", {
+  const $reports = api.GET("/talksessions/{talkSessionID}/report", {
     headers: request.headers,
-  });
-
-  const { data: report } = await api.GET(
-    "/talksessions/{talkSessionID}/report",
-    {
-      headers: request.headers,
-      params: {
-        path: {
-          talkSessionID: params.session_id,
-        },
+    params: {
+      path: {
+        talkSessionID: params.session_id,
       },
     },
-  );
+  });
 
   /**
    * 制限項目の中で足りていない項目を取得
@@ -85,14 +78,9 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
-  if (!session) {
-    throw notfound();
-  }
-
   return {
-    session,
-    user,
-    report,
+    $session,
+    $reports,
     $remainingCount,
     $restrictions,
   };

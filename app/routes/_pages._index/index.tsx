@@ -6,6 +6,8 @@ import "./index.css";
 import { Link } from "react-router";
 import { Checkbox } from "~/components/ui/checkbox";
 
+export { meta } from "./modules/meta";
+
 export default function Page() {
   return (
     <>

@@ -3,7 +3,7 @@ import { tv } from "tailwind-variants";
 import { JST } from "~/libs/date";
 import type { UserType, VoteType } from "~/types";
 import { LineChart, Message, More, Notification } from "../../icons";
-import { Avatar } from "../../ui/avatar";
+import { Avatar, AvatarSkeleton } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import { Popover } from "../../ui/popover";
 
@@ -26,6 +26,19 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
 const card = tv({
   base: "relative flex rounded-md bg-white p-2 pb-4",
 });
+
+export const OpinionCardSkeleton = () => {
+  return (
+    <div className="flex animate-pulse items-center space-x-2 rounded-md bg-gray-100 p-2 pb-4">
+      <AvatarSkeleton />
+      <div className="w-full">
+        <div className="h-4 w-[80%] rounded bg-gray-100" />
+        <div className="mt-1 h-4 w-[60%] rounded bg-gray-100" />
+        <div className="mt-2 h-4 w-[90%] rounded bg-gray-100" />
+      </div>
+    </div>
+  );
+};
 
 export const Card = ({
   user,

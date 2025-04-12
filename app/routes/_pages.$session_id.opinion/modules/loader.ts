@@ -2,12 +2,16 @@ import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const loader = ({ params, request }: LoaderFunctionArgs) => {
   if (!params.session_id) {
     return notfound();
   }
 
-  const { data } = await api.GET("/talksessions/{talkSessionID}/opinions", {
+  const $user = api.GET("/auth/token/info", {
+    headers: request.headers,
+  });
+
+  const $opinions = api.GET("/talksessions/{talkSessionID}/opinions", {
     headers: request.headers,
     params: {
       path: {
@@ -16,13 +20,18 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     },
   });
 
-  const { data: reasons } = await api.GET("/opinions/report_reasons", {
+  const $reasons = api.GET("/opinions/report_reasons", {
     headers: request.headers,
   });
 
-  if (!data) {
-    return notfound();
-  }
+  const $position = api.GET("/talksessions/{talkSessionID}/analysis", {
+    headers: request.headers,
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
 
-  return { opinions: data.opinions, reasons };
+  return { $opinions, $reasons, $user, $position };
 };

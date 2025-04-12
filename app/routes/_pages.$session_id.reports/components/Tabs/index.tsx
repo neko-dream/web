@@ -11,7 +11,7 @@ type Props = {
 
 export const Tabs = ({ tabs, activeTab, onChange }: Props) => {
   return (
-    <div className="flex items-center justify-center space-x-4 rounded-full bg-white">
+    <div className="mx-auto flex w-full max-w-2xl items-center justify-center space-x-4 rounded-full bg-white">
       {tabs.map((tab) => (
         <button
           type="button"

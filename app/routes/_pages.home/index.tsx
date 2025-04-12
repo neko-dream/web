@@ -12,7 +12,14 @@ export default function Page({
 }: Route.ComponentProps) {
   return (
     <div className="mx-auto mb-16 w-full max-w-2xl">
-      <Suspense fallback={<SessionSkeleton />}>
+      <Suspense
+        fallback={
+          <>
+            <h2 className="mx-4 mt-6 font-bold text-xl">注目のセッション</h2>
+            <SessionSkeleton />
+          </>
+        }
+      >
         <Await resolve={$session}>
           {(data) => {
             if (data?.talkSessions.length === 0) {

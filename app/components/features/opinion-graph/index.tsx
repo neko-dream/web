@@ -26,7 +26,7 @@ const colorList = [
 const groupNames = Array.from({ length: 8 }, (_, i) =>
   String.fromCharCode(65 + i),
 );
-const backgroundColor = 0xf2f2f7;
+
 const axisColor = 0xe5e5ea;
 
 const paddingX = 30;
@@ -485,6 +485,7 @@ type Props = {
   myPosition: any;
   windowWidth: any;
   selectGroupId: any;
+  background?: number;
 };
 
 const RotatedRoundedRect = ({
@@ -533,7 +534,13 @@ const RotatedRoundedRect = ({
   );
 };
 
-const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
+const Dots = ({
+  positions,
+  myPosition,
+  windowWidth,
+  selectGroupId,
+  background = 0xf2f2f7,
+}: Props) => {
   let _minX = 100000000000;
   let _minY = 100000000000;
   let _maxX = -100000000000;
@@ -884,7 +891,7 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
     <Stage
       width={width}
       height={height}
-      options={{ backgroundColor: backgroundColor }}
+      options={{ backgroundColor: background }}
     >
       <Axes
         width={width}

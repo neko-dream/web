@@ -10,6 +10,15 @@ export const generateMetaTag = ({ title, description, ogp }: Props) => {
   const meta: MetaFunction = () => {
     return [
       {
+        title: title || "ことひろ",
+      },
+      {
+        name: "description",
+        content:
+          description ||
+          "ことひろは、言葉を重ねてより良い意思決定を目指すサービスです",
+      },
+      {
         property: "og:title",
         content: title || "ことひろ",
       },
@@ -23,7 +32,6 @@ export const generateMetaTag = ({ title, description, ogp }: Props) => {
       },
       {
         property: "og:image",
-        // WIP
         content: ogp || "/ogp.png",
       },
       {

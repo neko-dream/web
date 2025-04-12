@@ -19,6 +19,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
         src={talkSession.thumbnailURL || DefaultSessionIcon}
         className="aspect-square h-16 w-16 rounded-2xl object-cover"
         alt="session thumbnail"
+        loading="lazy"
       />
 
       <div className="ml-4 flex w-full flex-col">

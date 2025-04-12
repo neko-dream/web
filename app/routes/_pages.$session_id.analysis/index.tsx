@@ -85,6 +85,7 @@ export default function Page({
           myPosition={position?.myPosition}
           windowWidth={windowWidth}
           selectGroupId={(_id: number) => {}}
+          background={0xf2f2f7}
         />
       </div>
 

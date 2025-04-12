@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import { ToastContainer, Zoom } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Route } from "~/react-router/_pages/+types/route";
+import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
@@ -17,7 +18,7 @@ export default function Layout({
       {/* 実際に見えるコンテンツ */}
       <Header $user={$user} />
       <main className="flex min-h-[calc(100vh-48px)] flex-col">
-        <Outlet />
+        <Outlet context={{ $user } satisfies RouteContext} />
       </main>
       <Footer />
 
