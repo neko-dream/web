@@ -1,7 +1,7 @@
 import { animated, to } from "@react-spring/web";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useNavigate, useParams, useRevalidator } from "react-router";
+import { Link, useParams, useRevalidator } from "react-router";
 import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
 import { useDrag } from "react-use-gesture";
@@ -167,7 +167,6 @@ export default function Page({
 }: Route.ComponentProps) {
   const [isOpinionEnd, setIsOpinionEnd] = useState<boolean>(false);
   const params = useParams();
-  const navigate = useNavigate();
 
   const swipe = useSwipe({
     opinions,
@@ -282,14 +281,13 @@ export default function Page({
 
   return (
     <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
-      <button
-        type="button"
-        className="flex w-full cursor-pointerp-2 bg-white p-2 font-bold text-[18px]"
-        onClick={() => navigate(-1)}
+      <Link
+        className="flex w-full cursor-pointerp-2 items-center bg-white p-2 font-bold text-[18px]"
+        to={`/${session?.id}/analysis`}
       >
         <Left className="text-black" />
-        <span className="-translate-x-[13.5px] mx-auto">{session.theme}</span>
-      </button>
+        <span className="-translate-x-[13.5px] mx-auto">{session?.theme}</span>
+      </Link>
       <List
         className="m-2"
         title={

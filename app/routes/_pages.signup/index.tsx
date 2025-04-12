@@ -40,11 +40,7 @@ export default function Page({
 
   return (
     <>
-      <Heading
-        title="アカウントを作成する"
-        className="cursor-default"
-        isLeftIcon={false}
-      />
+      <Heading title="アカウントを作成する" />
 
       <Form
         {...getFormProps(form)}

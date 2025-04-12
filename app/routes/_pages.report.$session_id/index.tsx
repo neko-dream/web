@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 import Graph from "~/components/features/opinion-graph";
 import { Left } from "~/components/icons";
 import type { Route } from "~/react-router/_pages.report.$session_id/+types";
@@ -10,8 +10,6 @@ export { loader } from "./modules/loader";
 export default function Page({
   loaderData: { report, session, position },
 }: Route.ComponentProps) {
-  const navigate = useNavigate();
-
   const [windowWidth, setWindowWidth] = useState(374);
 
   useEffect(() => {
@@ -39,14 +37,13 @@ export default function Page({
 
   return (
     <div className="flex-1 bg-[#F2F2F7]">
-      <button
-        type="button"
-        className="flex w-full cursor-pointerp-2 bg-white p-2 font-bold text-[18px]"
-        onClick={() => navigate(-1)}
+      <Link
+        className="flex w-full cursor-pointerp-2 items-center bg-white p-2 font-bold text-[18px]"
+        to={`/${session?.id}/analysis`}
       >
         <Left className="text-black" />
         <span className="-translate-x-[13.5px] mx-auto">{session?.theme}</span>
-      </button>
+      </Link>
 
       <div className="mt-2 flex justify-center">
         <Graph
