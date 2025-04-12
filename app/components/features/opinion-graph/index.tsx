@@ -583,7 +583,7 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
   const dots =
     positions.map(
       (v: {
-        displayId: string;
+        displayID: string;
         groupId: string;
         posX: number;
         posY: any;
@@ -616,7 +616,8 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
         const centerY = height / 2;
         // const centerX = 0;
         // const centerY = 0;
-        if (myPosition?.displayId === v?.displayId && !isUsedMyPosition) {
+
+        if (myPosition?.displayID === v?.displayID && !isUsedMyPosition) {
           // radius = 0.07; // 10 // 自分の位置の画像のサイズを変更する(倍率)
           radius = 1.5;
           isUsedMyPosition = true;
