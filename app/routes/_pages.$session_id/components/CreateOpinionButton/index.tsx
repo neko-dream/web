@@ -1,13 +1,13 @@
-import { Link } from "react-router";
+import type { ComponentProps } from "react";
+import { Button } from "~/components/ui/button";
 
-type Props = {
-  to: string;
-};
+type Props = ComponentProps<"button">;
 
-export const CreateOpinionButton = ({ to }: Props) => {
+export const CreateOpinionButton = (props: Props) => {
   return (
-    <Link
-      to={to}
+    <Button
+      {...props}
+      color="agree"
       className="flex rounded-xl bg-blue-500 p-3 text-white shadow-lg"
     >
       <svg
@@ -29,6 +29,6 @@ export const CreateOpinionButton = ({ to }: Props) => {
         </g>
       </svg>
       <span className="ml-2">意見を書いてみる</span>
-    </Link>
+    </Button>
   );
 };

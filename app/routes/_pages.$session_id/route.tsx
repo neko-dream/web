@@ -1,4 +1,5 @@
-import { Link, Outlet } from "react-router";
+import { type MouseEvent, useEffect, useState } from "react";
+import { Link, Outlet, useNavigate } from "react-router";
 import { Graph } from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
@@ -8,6 +9,7 @@ import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
+import { DemographicsModal } from "./components/DemographicsModal";
 import { OpinionCheckButton } from "./components/OpinionCheckButton";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
@@ -15,8 +17,16 @@ export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
 export default function Layout({
-  loaderData: { session, user, report },
+  loaderData: { session, user, report, $restrictions },
 }: Route.ComponentProps) {
+  const [isDemographicsDialogOpen, setIsDemographicsDialogOpen] =
+    useState(false);
+  const [isRequestDemographics, setIsRequestDemographics] = useState<
+    boolean | null
+  >(null);
+
+  const navigate = useNavigate();
+
   const isOwner = session.owner.displayID === user?.displayID;
 
   const items = [
@@ -28,6 +38,24 @@ export default function Layout({
   if (report) {
     items.push({ label: "レポート", href: `/${session.id}/report` });
   }
+
+  useEffect(() => {
+    $restrictions.then((restrictions) => {
+      const hasRequiredRestrictions = restrictions.some(
+        (restriction) => restriction.required,
+      );
+      setIsRequestDemographics(hasRequiredRestrictions);
+    });
+  }, []);
+
+  const handleDemographicsDialogOpen = (e: MouseEvent) => {
+    e.preventDefault();
+    if (isRequestDemographics) {
+      setIsDemographicsDialogOpen(true);
+    } else {
+      navigate(`/create/${session.id}/opinion`);
+    }
+  };
 
   return (
     <>
@@ -109,9 +137,19 @@ export default function Layout({
           context={{ session, user, report } satisfies SessionRouteContext}
         />
         <div className="fixed right-4 bottom-4 z-10">
-          <CreateOpinionButton to={`/create/${session.id}/opinion`} />
+          <CreateOpinionButton
+            disabled={isRequestDemographics === null}
+            onClick={handleDemographicsDialogOpen}
+          />
         </div>
       </div>
+
+      <DemographicsModal
+        $restrictions={$restrictions}
+        sessionID={session.id}
+        isOpen={isDemographicsDialogOpen}
+        onOpenChange={setIsDemographicsDialogOpen}
+      />
     </>
   );
 }

@@ -32,6 +32,46 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
+  /**
+   * 制限項目の中で足りていない項目を取得
+   */
+  const $restrictionsRequired = api.GET(
+    "/talksessions/{talkSessionID}/restrictions",
+    {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
+      },
+    },
+  );
+
+  /**
+   * 制限項目リストの配列の中に足りていないフラグを仕込む処理
+   */
+  const $restrictions = $restrictionsRequired.then(
+    async ({ data: requiredRestrictions }) => {
+      const { data: restrictions } = await api.GET(
+        "/talksessions/restrictions",
+        {
+          headers: request.headers,
+        },
+      );
+      // 制限項目がなければ制限するものはない
+      if (!restrictions) {
+        return [];
+      }
+      const requiredKeys = requiredRestrictions?.map(({ key }) => key);
+      return restrictions?.map((restriction) => {
+        return {
+          ...restriction,
+          required: requiredKeys?.includes(restriction.key),
+        };
+      });
+    },
+  );
+
   if (!session) {
     throw notfound();
   }
@@ -40,5 +80,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     session,
     user,
     report,
+    $restrictions,
   };
 };

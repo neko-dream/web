@@ -51,6 +51,7 @@
   /* リンクとかで使用 */
   --color-mt-blue-50: #e7f5ff;
   --color-mt-blue-600: #007aff;
+  --color-mt-disabled: #aeaeb2;
 
   /**
    * Mantine Custom CSS

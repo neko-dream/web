@@ -35,7 +35,8 @@
       "suspicious": {
         "noReactSpecificProps": "off",
         "noEmptyBlockStatements": "off",
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "useErrorMessage": "off"
       },
       "style": {
         "useNamingConvention": "off",
