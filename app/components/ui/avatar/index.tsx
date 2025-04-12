@@ -6,7 +6,7 @@ type Props = ComponentProps<"picture"> & {
 };
 
 const avator = tv({
-  base: "block h-10 w-10 rounded-full bg-slate-500",
+  base: "block h-10 w-10 rounded-full",
 });
 
 export const Avatar = ({ className, ...props }: Props) => {
@@ -14,7 +14,7 @@ export const Avatar = ({ className, ...props }: Props) => {
     <picture {...props} className={avator({ className })}>
       <source srcSet={props.src || ""} />
       <img
-        src={"https://placehold.jp/150x150.png"}
+        src={"/default_icon.png"}
         alt=""
         className="aspect-square w-full rounded-full object-cover"
       />

@@ -20,6 +20,7 @@ export { default as InfoCircle } from "./InfoCircle";
 export { default as Left } from "./Left";
 export { default as LineChart } from "./LineChart";
 export { default as Link } from "./Link";
+export { default as Logo } from "./Logo";
 export { default as Menu } from "./Menu";
 export { default as Message } from "./Message";
 export { default as More } from "./More";

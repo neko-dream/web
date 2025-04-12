@@ -1,10 +1,5 @@
 import { memo } from "react";
-import {
-  Arrow,
-  AuthGoogle,
-  AuthLine,
-  FaviconKotohiro,
-} from "~/components/icons";
+import { Arrow, AuthGoogle, AuthLine, Logo } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { CarouselScroll } from "./components/CarouselScroll";
 import { TopicCard } from "./components/TopicCard";
@@ -25,10 +20,7 @@ function Page() {
       <div className="mt-18 flex flex-col justify-center">
         <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
           <span className="flex items-center">
-            <FaviconKotohiro className="w-20" />
-            <p className="ml-2 font-black font-cs-logo text-6xl text-mt-gray-900 tracking-[10px]">
-              ことひろ
-            </p>
+            <Logo className="-translate-x-2 size-[500px] h-30 w-[380px]" />
           </span>
         </div>
         <div className="mx-auto mt-2 inline-block rounded-md p-2 text-center backdrop-blur-[20px]">
