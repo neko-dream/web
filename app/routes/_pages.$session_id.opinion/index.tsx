@@ -20,7 +20,7 @@ export default function Page({
   const [selectOpinionID, setSelectOpinionID] = useState<string>("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
 
-  const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
+  const handleVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
       opinionID,
       voteStatus: voteStatus as never,
@@ -47,8 +47,8 @@ export default function Page({
 
   return (
     <>
-      <div className="mx-auto flex max-w-4xl justify-center">
-        <div className="w-full">
+      <div className="mx-auto flex max-w-4xl items-start justify-center">
+        <div className="w-full space-y-2">
           <Suspense fallback={<OpinionCardSkeleton />}>
             <Await resolve={$opinions}>
               {({ data: { opinions } = { opinions: [] } }) => (
@@ -87,11 +87,9 @@ export default function Page({
                           className="mx-auto w-full"
                           isJudgeButton={user?.displayID !== displayID}
                           isMoreButton={user?.displayID !== displayID}
-                          onClickAgree={() => handleSubmitVote(id, "agree")}
-                          onClickDisagree={() =>
-                            handleSubmitVote(id, "disagree")
-                          }
-                          onClickPass={() => handleSubmitVote(id, "pass")}
+                          onClickAgree={() => handleVote(id, "agree")}
+                          onClickDisagree={() => handleVote(id, "disagree")}
+                          onClickPass={() => handleVote(id, "pass")}
                           onClickReport={() => handleOpenModal(id)}
                           onClickAnalytics={() => handleAnalyticsModal(id)}
                           opinionCount={replyCount}

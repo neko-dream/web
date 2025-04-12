@@ -19,7 +19,7 @@ export default function Page({
   const windowWidth = useWindowResize(374);
 
   return (
-    <div className="mx-auto flex max-w-4xl">
+    <div className="mx-auto flex max-w-4xl items-start">
       <div className="w-full">
         <div className="mx-auto w-full max-w-2xl rounded-md bg-white p-2">
           <div className="flex items-center space-x-2">
@@ -44,7 +44,7 @@ export default function Page({
           </Link>
         </div>
 
-        <div className="mt-2 flex flex-col space-y-4">
+        <div className="mt-2 flex flex-col space-y-2">
           <Suspense>
             <Await resolve={$opinions}>
               {({ data }) => {

@@ -38,6 +38,7 @@ export const Tabs = ({ className, items, ...props }: Props) => {
             prefetch="viewport"
             replace={true}
             viewTransition={true}
+            preventScrollReset={true}
           >
             {label}
           </NavLink>
