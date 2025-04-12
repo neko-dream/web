@@ -41,7 +41,6 @@ export default function Page({
     parentOpinionID: root.opinion.id,
     onFinishedProcess: () => {},
   });
-  console.log(root.opinion.isDeleted);
 
   return (
     <>

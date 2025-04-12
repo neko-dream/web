@@ -6,6 +6,7 @@ import { Card } from "~/components/features/opinion-card";
 import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import type { SessionRouteContext } from "~/types/ctx";
 import { postVote } from "~/utils/vote";
+import { AnalyticsModal } from "./components/AnalyticsModal";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -17,7 +18,8 @@ export default function Page({
   const { user } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
   const [isOpen, setIsOpen] = useState(false);
-  const [reportOpinionID, setReportOpinionID] = useState<string>("");
+  const [selectOpinionID, setSelectOpinionID] = useState<string>("");
+  const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
@@ -36,7 +38,12 @@ export default function Page({
 
   const handleOpenModal = (opinionID: string) => {
     setIsOpen(true);
-    setReportOpinionID(opinionID);
+    setSelectOpinionID(opinionID);
+  };
+
+  const handleAnalyticsModal = (opinionID: string) => {
+    setIsAnalayticsDialogOpen(true);
+    setSelectOpinionID(opinionID);
   };
 
   return (
@@ -72,18 +79,24 @@ export default function Page({
               onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
               onClickPass={() => handleSubmitVote(opinion.id, "pass")}
               onClickReport={() => handleOpenModal(opinion.id)}
-              onClickAnalytics={console.log}
+              onClickAnalytics={() => handleAnalyticsModal(opinion.id)}
               opinionCount={replyCount}
             />
           );
         },
       )}
 
+      <AnalyticsModal
+        isOpen={isAnalayticsDialogOpen}
+        onOpenChange={setIsAnalayticsDialogOpen}
+        opinionID={selectOpinionID}
+      />
+
       <ReportModal
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         reasons={reasons || []}
-        opinionID={reportOpinionID}
+        opinionID={selectOpinionID}
       />
     </div>
   );
