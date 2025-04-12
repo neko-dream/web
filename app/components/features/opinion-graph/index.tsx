@@ -1,4 +1,4 @@
-import { ComponentProps, Fragment, useCallback } from "react";
+import { ComponentProps, Fragment, useCallback, useRef } from "react";
 import { tv } from "tailwind-variants";
 
 const graph = tv({
@@ -289,6 +289,57 @@ const posToSegmenetDistance = (
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
+  const maskRef = useRef<any>()
+  if (myPositionData.x !== null) {
+    const drawCircleMask = useCallback(
+      (
+        g: {
+          clear: () => void;
+          beginFill: (arg0: number) => void;
+          drawCircle: (arg0: number, arg1: number, arg2: number) => void;
+          endFill: () => void;
+        },
+        color: number = 0x64748b,
+        radius: number = 11,
+      ) => {
+        g.clear();
+        g.beginFill(color);
+        g.drawCircle(0, 0, radius);
+        g.endFill();
+      },
+      [],
+    );
+    return <Fragment>
+      <Graphics
+        x={myPositionData.x}
+        y={myPositionData.y}
+        zIndex={3}
+        draw={(graphics) =>
+          drawCircleMask(graphics)
+        }
+        ref={maskRef}
+      ></Graphics>
+      <Sprite
+          // userのデフォルトアイコンを設定する
+          image={myPositionData.iconURL ??  "/icon.png"}
+          x={myPositionData.x}
+          y={myPositionData.y}
+          zIndex={5}
+          scale={[0.1, 0.1]}
+          anchor={[0.5, 0.5]}
+          mask={maskRef.current}
+          pointerdown={() => {
+            // selectGroupId(colorIdx);
+          }}
+          eventMode="static"
+        />
+    </Fragment>
+  } else {
+    return <></>
+  }
+}
+
 const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
   let avatarWithZindex: any[][] = [];
 
@@ -296,6 +347,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
   // console.log(dots);
   // console.log(myPositionData);
   // console.log(selectGroupId);
+  // const [masks, setMask] = useState<any[]>([]);
 
   const drawAvatarBackground = useCallback(
     (g: {
@@ -381,6 +433,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
         <Sprite
           // image={images[colorIdx]}
           image={"/avatar-circle/avatar-circle-red.png"}
+          // image={iconURL ??  "/icon.png"}
           x={x}
           y={y}
           zIndex={zIndex + 10}
@@ -397,6 +450,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
     ]);
   };
 
+  // const [masks, setMask] = useState<any[]>([]);
   dots.forEach(
     (dot: {
       x: any;
@@ -577,6 +631,8 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
           } else {
             myPositionData["y"] = y;
           }
+
+          myPositionData["iconURL"] = v.iconURL
           // myPositionData["x"] =
           //   (v.posX - _minX) * ((width - 30) / originalWidth) + 15;
           // myPositionData["y"] =
@@ -849,6 +905,11 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
       ></AvatarPlot> */}
       <RectPlot differentPoints={resultDifferenctPoints}></RectPlot>
       <GroupCirclePlot singlePoints={resultSinglePoints}></GroupCirclePlot>
+      <MyPositionPlot
+        dots={dots}
+        myPositionData={myPositionData}
+        selectGroupId={selectGroupId}
+      ></MyPositionPlot>
       <LabelsPlot labels={labels}></LabelsPlot>
     </Stage>
   );
