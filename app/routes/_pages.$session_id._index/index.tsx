@@ -5,5 +5,9 @@ import type { SessionRouteContext } from "~/types/ctx";
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();
 
-  return <SanitizedHtml html={session.description || ""} />;
+  return (
+    <div className="mx-auto max-w-4xl">
+      <SanitizedHtml html={session.description || ""} />
+    </div>
+  );
 }
