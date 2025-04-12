@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 
@@ -26,13 +27,13 @@ export default function Index() {
           <AuthLine />
           <span className="mx-auto font-bold text-white">LINEでログイン</span>
         </a>
-        <a
-          href="/"
+        <Link
+          to="/"
           className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
         >
           <span>新規登録はこちら</span>
           <Arrow className="-rotate-90" />
-        </a>
+        </Link>
       </div>
     </div>
   );

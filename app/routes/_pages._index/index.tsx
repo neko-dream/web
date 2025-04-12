@@ -3,6 +3,7 @@ import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { CarouselScroll } from "./components/CarouselScroll";
 import { TopicCard } from "./components/TopicCard";
 import "./index.css";
+import { Link } from "react-router";
 import { Checkbox } from "~/components/ui/checkbox";
 
 export default function Page() {
@@ -81,13 +82,13 @@ export default function Page() {
               </span>
             </a>
 
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
             >
               <span>アカウントをお持ちの方はこちら</span>
               <Arrow className="-rotate-90" />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
