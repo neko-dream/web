@@ -2,6 +2,7 @@ import { getFormProps, getInputProps } from "@conform-to/react";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { Fragment } from "react/jsx-runtime";
+import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card } from "~/components/features/opinion-card";
 import { More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
@@ -40,25 +41,47 @@ export default function Page({
     parentOpinionID: root.opinion.id,
     onFinishedProcess: () => {},
   });
+  console.log(root.opinion.isDeleted);
 
   return (
     <>
       <Heading title="コメント一覧" onClick={() => navigate(-1)} />
-      <Card
-        title={root.opinion.title}
-        description={root.opinion.content}
-        user={root.user}
-        status={root.myVoteType}
-        date={root.opinion.postedAt}
-        isJudgeButton={currentUser?.displayID !== root.user.displayID}
-        onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
-        onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
-        onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
-        className="rounded-none"
-      />
+      {root.opinion.isDeleted ? (
+        <DeletedOpinionCard
+          title={root.opinion.title}
+          description={root.opinion.content}
+          status={root.myVoteType}
+          date={root.opinion.postedAt}
+        />
+      ) : (
+        <Card
+          title={root.opinion.title}
+          description={root.opinion.content}
+          user={root.user}
+          status={root.myVoteType}
+          date={root.opinion.postedAt}
+          isJudgeButton={currentUser?.displayID !== root.user.displayID}
+          onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
+          onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
+          onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
+          className="rounded-none"
+        />
+      )}
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
         {opinions.map(({ opinion, user, myVoteType }, i) => {
+          if (opinion.isDeleted) {
+            return (
+              <DeletedOpinionCard
+                key={i}
+                href={`/opinion/${opinion.id}`}
+                title={opinion.title}
+                description={opinion.content}
+                status={myVoteType}
+                date={opinion.postedAt}
+              />
+            );
+          }
           return (
             <Fragment key={i}>
               <More className="ml-4 w-6 text-cyan-500" />
@@ -79,11 +102,13 @@ export default function Page({
         })}
       </div>
 
-      <div className="fixed right-4 bottom-4 z-10">
-        <CreateOpinionButton
-          onClick={() => setIsCreateOpinionModalOpen(true)}
-        />
-      </div>
+      {!root.opinion.isDeleted && (
+        <div className="fixed right-4 bottom-4 z-10">
+          <CreateOpinionButton
+            onClick={() => setIsCreateOpinionModalOpen(true)}
+          />
+        </div>
+      )}
 
       <CreateOpinionModal
         isOpen={isCreateOpinionModal}

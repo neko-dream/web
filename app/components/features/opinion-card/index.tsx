@@ -60,10 +60,10 @@ export const Card = ({
             <p className="mt-2 line-clamp-3 text-[#4e4d4b]">{description}</p>
 
             {opinionCount > 0 && (
-              <div className="flex items-center space-x-1">
+              <div className="mt-1 flex items-center space-x-1">
                 <Message className="text-blue-500" />
-                <p className="font-bold text-blue-500 text-xs">
-                  {opinionCount < 99 ? opinionCount : "99+"} 件
+                <p className="font-bold text-blue-500 text-xs ">
+                  コメント{opinionCount < 99 ? opinionCount : "99+"}件
                 </p>
               </div>
             )}

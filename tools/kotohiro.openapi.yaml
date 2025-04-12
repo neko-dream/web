@@ -671,97 +671,6 @@ paths:
       security:
         - apikey-header-SessionId: []
       x-ogen-operation-group: Vote
-  /talksessions/{talkSessionID}/swipe_opinions:
-    get:
-      summary: スワイプ用のエンドポイント
-      deprecated: true
-      description: |-
-        セッションの中からまだ投票していない意見をランダムに取得する
-        remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
-      operationId: swipe_opinions
-      tags:
-        - opinion
-      parameters:
-        - name: talkSessionID
-          in: path
-          description: ''
-          required: true
-          schema:
-            type: string
-        - name: limit
-          in: query
-          description: ''
-          required: false
-          schema:
-            type: integer
-            default: 10
-            nullable: true
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  opinions:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        replyCount:
-                          type: integer
-                        opinion: *ref_0
-                        user: *ref_1
-                      required:
-                        - replyCount
-                        - opinion
-                        - user
-                  remainingCount:
-                    type: integer
-                required:
-                  - opinions
-                  - remainingCount
-          headers: {}
-        '400':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-                required:
-                  - code
-                  - message
-              example:
-                code: GENERAL-000
-                message: INTERNAL SERVER ERROR.
-          headers: {}
-        '500':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  code:
-                    type: string
-                  message:
-                    type: string
-                required:
-                  - code
-                  - message
-              example:
-                code: GENERAL-000
-                message: INTERNAL SERVER ERROR.
-          headers: {}
-      security:
-        - apikey-header-SessionId: []
-      x-ogen-operation-group: Opinion
   /talksessions/{talkSessionID}/opinions:
     post:
       summary: セッションに対して意見投稿
@@ -1006,6 +915,97 @@ paths:
                 message: INTERNAL SERVER ERROR.
           headers: {}
       security: []
+      x-ogen-operation-group: Opinion
+  /talksessions/{talkSessionID}/swipe_opinions:
+    get:
+      summary: スワイプ用のエンドポイント
+      deprecated: false
+      description: |-
+        セッションの中からまだ投票していない意見をランダムに取得する
+        remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
+      operationId: swipe_opinions
+      tags:
+        - opinion
+      parameters:
+        - name: talkSessionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          description: ''
+          required: false
+          schema:
+            type: integer
+            default: 10
+            nullable: true
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  opinions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        replyCount:
+                          type: integer
+                        opinion: *ref_0
+                        user: *ref_1
+                      required:
+                        - replyCount
+                        - opinion
+                        - user
+                  remainingCount:
+                    type: integer
+                required:
+                  - opinions
+                  - remainingCount
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
       x-ogen-operation-group: Opinion
   /talksessions/{talkSessionID}:
     get:
@@ -3554,10 +3554,13 @@ components:
           description: 参考文献URL
         postedAt:
           type: string
+        isDeleted:
+          type: boolean
       required:
         - content
         - id
         - postedAt
+        - isDeleted
     location:
       type: object
       properties:

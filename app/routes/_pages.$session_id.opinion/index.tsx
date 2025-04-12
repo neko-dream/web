@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
+import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card } from "~/components/features/opinion-card";
 import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import type { SessionRouteContext } from "~/types/ctx";
@@ -42,6 +43,19 @@ export default function Page({
     <div className="flex flex-col space-y-2">
       {opinions.map(
         ({ opinion, user: opinionUser, myVoteType, replyCount }, i) => {
+          if (opinion.isDeleted) {
+            return (
+              <DeletedOpinionCard
+                key={i}
+                href={`/opinion/${opinion.id}`}
+                description={opinion.content}
+                date={opinion.postedAt}
+                opinionCount={replyCount}
+                className="mx-auto w-full max-w-2xl"
+              />
+            );
+          }
+
           return (
             <Card
               key={i}

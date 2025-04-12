@@ -184,28 +184,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionID}/swipe_opinions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * スワイプ用のエンドポイント
-     * @deprecated
-     * @description セッションの中からまだ投票していない意見をランダムに取得する
-     *     remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
-     */
-    get: operations["swipe_opinions"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/talksessions/{talkSessionID}/opinions": {
     parameters: {
       query?: never;
@@ -240,6 +218,27 @@ export interface paths {
      * @deprecated
      */
     get: operations["getOpinionDetail"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/swipe_opinions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * スワイプ用のエンドポイント
+     * @description セッションの中からまだ投票していない意見をランダムに取得する
+     *     remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
+     */
+    get: operations["swipe_opinions"];
     put?: never;
     post?: never;
     delete?: never;
@@ -805,6 +804,7 @@ export interface components {
       /** @description 参考文献URL */
       referenceURL?: string;
       postedAt: string;
+      isDeleted: boolean;
     };
     location: {
       /** @description 緯度 */
@@ -1403,59 +1403,6 @@ export interface operations {
       };
     };
   };
-  swipe_opinions: {
-    parameters: {
-      query?: {
-        limit?: number;
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              replyCount: number;
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-            }[];
-            remainingCount: number;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
   getOpinionsForTalkSession: {
     parameters: {
       query?: {
@@ -1606,6 +1553,59 @@ export interface operations {
         };
         content: {
           "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  swipe_opinions: {
+    parameters: {
+      query?: {
+        limit?: number;
+      };
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            opinions: {
+              replyCount: number;
+              opinion: components["schemas"]["opinion"];
+              /** @description 作成ユーザー */
+              user: components["schemas"]["user"];
+            }[];
+            remainingCount: number;
+          };
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
         };
       };
     };
