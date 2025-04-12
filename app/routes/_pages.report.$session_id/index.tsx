@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router";
 import Graph from "~/components/features/opinion-graph";
 import { Left } from "~/components/icons";
+import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.report.$session_id/+types";
 
 export { loader } from "./modules/loader";
@@ -10,19 +10,7 @@ export { loader } from "./modules/loader";
 export default function Page({
   loaderData: { report, session, position },
 }: Route.ComponentProps) {
-  const [windowWidth, setWindowWidth] = useState(374);
-
-  useEffect(() => {
-    const _windowWidth = window.innerWidth;
-    setWindowWidth(_windowWidth);
-    const resize = () => {
-      const _windowWidth = window.innerWidth;
-      setWindowWidth(_windowWidth);
-    };
-    window.addEventListener("resize", resize);
-
-    return () => window.removeEventListener("resize", resize);
-  }, []);
+  const windowWidth = useWindowResize(374);
 
   // グループ３が一番意見多そうなので、グループ３の意見を取得
   // ついでにインデックス順にする
