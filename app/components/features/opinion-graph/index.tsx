@@ -290,7 +290,7 @@ const posToSegmenetDistance = (
 };
 
 const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
-  const maskRef = useRef<any>()
+  const maskRef = useRef<any>();
   if (myPositionData.x !== null) {
     const drawCircleMask = useCallback(
       (
@@ -310,19 +310,18 @@ const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
       },
       [],
     );
-    return <Fragment>
-      <Graphics
-        x={myPositionData.x}
-        y={myPositionData.y}
-        zIndex={3}
-        draw={(graphics) =>
-          drawCircleMask(graphics)
-        }
-        ref={maskRef}
-      ></Graphics>
-      <Sprite
+    return (
+      <Fragment>
+        <Graphics
+          x={myPositionData.x}
+          y={myPositionData.y}
+          zIndex={3}
+          draw={(graphics) => drawCircleMask(graphics)}
+          ref={maskRef}
+        ></Graphics>
+        <Sprite
           // userのデフォルトアイコンを設定する
-          image={myPositionData.iconURL ??  "/icon.png"}
+          image={myPositionData.iconURL ?? "/icon.png"}
           x={myPositionData.x}
           y={myPositionData.y}
           zIndex={5}
@@ -334,11 +333,12 @@ const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
           }}
           eventMode="static"
         />
-    </Fragment>
+      </Fragment>
+    );
   } else {
-    return <></>
+    return <></>;
   }
-}
+};
 
 const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
   let avatarWithZindex: any[][] = [];
@@ -632,7 +632,7 @@ const Dots = ({ positions, myPosition, windowWidth, selectGroupId }: Props) => {
             myPositionData["y"] = y;
           }
 
-          myPositionData["iconURL"] = v.iconURL
+          myPositionData["iconURL"] = v.iconURL;
           // myPositionData["x"] =
           //   (v.posX - _minX) * ((width - 30) / originalWidth) + 15;
           // myPositionData["y"] =
