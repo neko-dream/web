@@ -204,7 +204,7 @@ export default function Page({
         <p>全ての意見に意思表明しました🎉</p>
         <Link
           to={`/${params.id}`}
-          className={button({ color: "primary", className: "mt-4" })}
+          className={button({ color: "primary", className: "mt-4 block" })}
         >
           みんなの意見を見る
         </Link>
@@ -290,7 +290,6 @@ export default function Page({
         <Left className="text-black" />
         <span className="-translate-x-[13.5px] mx-auto">{session.theme}</span>
       </button>
-
       <List
         className="m-2"
         title={
@@ -303,7 +302,12 @@ export default function Page({
         <Graph className="mt-2" />
       </List>
 
-      <div className="relative mt-4 h-[168px]">
+      <p className="mx-2 mt-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
+        <span className="mr-2">意見</span>
+        {swipe.gone.size} / {swipe.item.length}
+      </p>
+
+      <div className="relative mt-2 h-[168px]">
         {swipe.item?.map(
           (
             {
@@ -323,7 +327,7 @@ export default function Page({
           ) => {
             return (
               <animated.div
-                className="absolute block touch-none will-change-transform"
+                className="absolute block cursor-pointer touch-none will-change-transform"
                 key={i}
                 style={{
                   x,
@@ -382,7 +386,6 @@ export default function Page({
           },
         )}
       </div>
-
       <div className="relative mt-4 h-[160px]">
         <PointUp className="-translate-x-3/5 absolute left-1/2 mt-1" />
 
@@ -390,9 +393,9 @@ export default function Page({
           <button
             type="button"
             onClick={() => handleSubmitVote("disagree")}
-            className="rounded-full border border-pink-400 p-1"
+            className="cursor-pointer rounded-full bg-[#FF2D55] p-2 shadow-cs-normal"
           >
-            <ArrowLeft />
+            <ArrowLeft className="fill-white" />
           </button>
           <p className="mt-1 text-pink-400">違うかも</p>
         </div>
@@ -401,9 +404,9 @@ export default function Page({
           <button
             type="button"
             onClick={() => handleSubmitVote("pass")}
-            className="rounded-full border border-indigo-400 p-1"
+            className="cursor-pointer rounded-full bg-[#5856D6] p-2 shadow-cs-normal"
           >
-            <ArrowDown />
+            <ArrowDown className="fill-white" />
           </button>
           <p className="mt-1 text-indigo-400">保留</p>
         </div>
@@ -412,14 +415,13 @@ export default function Page({
           <button
             type="button"
             onClick={() => handleSubmitVote("agree")}
-            className="rounded-full border border-cyan-400 p-1"
+            className="cursor-pointer rounded-full bg-[#32ADE6] p-2 shadow-cs-normal"
           >
-            <ArrowRight />
+            <ArrowRight className="fill-white" />
           </button>
           <p className="mt-1 text-cyan-400">良さそう</p>
         </div>
       </div>
-
       <Link
         to="#"
         className="mt-4 flex items-center justify-center text-blue-500 text-sm"
