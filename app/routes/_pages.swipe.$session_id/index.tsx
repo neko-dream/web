@@ -302,7 +302,7 @@ export default function Page({
         <Graph className="mt-2" />
       </List>
 
-      <p className="mx-2 mt-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
+      <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
         <span className="mr-2">意見</span>
         {swipe.gone.size} / {swipe.item.length}
       </p>
