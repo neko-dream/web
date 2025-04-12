@@ -47,7 +47,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    border-radius: 50px;
     border: 5px solid transparent;
     background: linear-gradient(
         90deg,
@@ -80,6 +79,7 @@
   --color-mt-blue-600: #007aff;
   --color-mt-disabled: #aeaeb2;
   --color-mt-red: #ff3b30;
+  --shadow-cs-normal: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
   /**
    * Mantine Custom CSS

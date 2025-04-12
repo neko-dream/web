@@ -16,6 +16,19 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
+  const $remainingCount = await api
+    .GET("/talksessions/{talkSessionID}/swipe_opinions", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
+      },
+    })
+    .then(({ data }) => {
+      return data?.remainingCount;
+    });
+
   const { data: user } = await api.GET("/auth/token/info", {
     headers: request.headers,
   });
@@ -80,6 +93,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     session,
     user,
     report,
+    $remainingCount,
     $restrictions,
   };
 };

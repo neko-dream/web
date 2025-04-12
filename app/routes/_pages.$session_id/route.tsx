@@ -1,5 +1,5 @@
-import { type MouseEvent, useEffect, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router";
+import { type MouseEvent, Suspense, useEffect, useState } from "react";
+import { Await, Link, Outlet, useNavigate } from "react-router";
 import { Graph } from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
@@ -10,14 +10,14 @@ import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { DemographicsModal } from "./components/DemographicsModal";
-import { OpinionCheckButton } from "./components/OpinionCheckButton";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
+export { shouldRevalidate } from "./modules/shouldRevalidate";
 
 export default function Layout({
-  loaderData: { session, user, report, $restrictions },
+  loaderData: { session, user, report, $restrictions, $remainingCount },
 }: Route.ComponentProps) {
   const [isDemographicsDialogOpen, setIsDemographicsDialogOpen] =
     useState(false);
@@ -87,10 +87,26 @@ export default function Layout({
 
         <Link
           to={`/swipe/${session.id}`}
-          className="mx-auto mt-2 block"
+          className="relative mx-auto mt-2 h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
           viewTransition={true}
         >
-          <OpinionCheckButton />
+          <span className="primary-gradient mt-1 inline-block text-clip">
+            みんなの意見を見る
+          </span>
+          <Suspense>
+            <Await resolve={$remainingCount}>
+              {(count) => {
+                if (count === 0) {
+                  return null;
+                }
+                return (
+                  <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
+                    {count}
+                  </span>
+                );
+              }}
+            </Await>
+          </Suspense>
         </Link>
 
         <div className="flex items-center space-x-2">
