@@ -1,4 +1,3 @@
-import { memo } from "react";
 import { Arrow, AuthGoogle, AuthLine, Logo } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { CarouselScroll } from "./components/CarouselScroll";
@@ -6,7 +5,7 @@ import { TopicCard } from "./components/TopicCard";
 import "./index.css";
 import { Checkbox } from "~/components/ui/checkbox";
 
-function Page() {
+export default function Page() {
   return (
     <>
       <div className="area">
@@ -107,5 +106,3 @@ function Page() {
     </>
   );
 }
-
-export default memo(Page);

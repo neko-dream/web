@@ -4,7 +4,7 @@ import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 export default function Index() {
   return (
     <div className="mx-auto mt-10 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8">
-      <p className="primary-gradient text-center font-bold">
+      <p className="primary-gradient text-clip text-center font-bold">
         ことひろにログイン
       </p>
       <p className="text-center text-xs">2つの方法からログインできます</p>
