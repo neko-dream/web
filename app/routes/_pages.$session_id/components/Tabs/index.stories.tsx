@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { createRoutesStub } from "react-router";
-import { Tabs } from "./index.ts";
+import { Tabs } from ".";
 
 const meta: Meta<typeof Tabs> = {
   component: Tabs,

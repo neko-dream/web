@@ -17,7 +17,10 @@
   },
   "linter": {
     "enabled": true,
-    "ignore": ["app/features/graph/components/index.tsx"],
+    "ignore": [
+      "app/components/features/opinion-graph",
+      "tools/kotohiro.openapi.yaml"
+    ],
     "rules": {
       "all": true,
       "nursery": {
@@ -32,7 +35,8 @@
       "suspicious": {
         "noReactSpecificProps": "off",
         "noEmptyBlockStatements": "off",
-        "noArrayIndexKey": "off"
+        "noArrayIndexKey": "off",
+        "useErrorMessage": "off"
       },
       "style": {
         "useNamingConvention": "off",
@@ -47,7 +51,8 @@
       "correctness": {
         "useImportExtensions": "off",
         "noUndeclaredDependencies": "off",
-        "noUndeclaredVariables": "off"
+        "noUndeclaredVariables": "off",
+        "useExhaustiveDependencies": "off"
       },
       "performance": {
         "noBarrelFile": "off"

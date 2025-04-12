@@ -1,4 +1,4 @@
-name: Lint
+name: Unit Tests
 
 on:
   pull_request:
@@ -6,9 +6,13 @@ on:
       - opened
       - synchronize
 
+concurrency:
+  group: test-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  lint:
-    name: Run Lint
+  test:
+    name: Run Unit Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +27,11 @@ jobs:
       - name: Install dependencies
         run: bun install
 
+      - name: Run typecheck
+        run: bun typecheck
+
       - name: Run Lint
-        run: bun run lint
+        run: bun lint
+
+      - name: Run Dependency Check
+        run: bun deps

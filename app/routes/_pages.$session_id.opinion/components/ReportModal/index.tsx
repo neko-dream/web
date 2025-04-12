@@ -3,30 +3,54 @@ import { parseWithValibot } from "conform-to-valibot";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
 import * as v from "valibot";
-import { Button } from "~/components/Button";
-import { Checkbox } from "~/components/Checkbox";
-import Textarea from "~/components/Textarea";
-import { HalfButtomDialog } from "~/features/modal";
-import type { ModalProps } from "~/features/modal/types";
+import { Button } from "~/components/ui/button";
+import { HalfButtomDialog, type ModalProps } from "~/components/ui/modal";
+import Textarea from "~/components/ui/textarea";
+import { api } from "~/libs/api";
 
 type Props = Omit<ModalProps, "children"> & {
-  reasons: { reason: string; reason_id: number }[];
+  reasons: { reason: string; reasonID: number }[];
+  opinionID: string;
 };
 
 const schema = v.object({
-  reason: v.optional(v.union([v.array(v.number()), v.number()])),
+  reason: v.number(),
   content: v.string(),
 });
 
-export const ReportModal = ({ isOpen, onOpenChange, reasons }: Props) => {
+export const ReportModal = ({
+  isOpen,
+  opinionID,
+  onOpenChange,
+  reasons,
+}: Props) => {
   const [form, fields] = useForm({
     onValidate: ({ formData }) => {
       const parse = parseWithValibot(formData, { schema });
       return parse;
     },
-    onSubmit: () => {
-      toast("通報しました");
-      onOpenChange(false);
+    onSubmit: async (e, { submission }) => {
+      e.preventDefault();
+      if (submission?.status !== "success") {
+        return;
+      }
+      const res = await api.POST("/opinions/{opinionID}/report", {
+        credentials: "include",
+        params: {
+          path: {
+            opinionID: opinionID,
+          },
+        },
+        body: {
+          reason: submission.value.reason,
+        },
+      });
+      if (res.response.status === 200) {
+        toast.success("通報しました");
+        onOpenChange(false);
+      } else {
+        toast.error("通報に失敗しました");
+      }
     },
   });
 
@@ -36,16 +60,31 @@ export const ReportModal = ({ isOpen, onOpenChange, reasons }: Props) => {
       <Form {...getFormProps(form)} className="mx-auto mt-4 max-w-2xl">
         <p>通報理由</p>
         <div className="mt-2 space-y-1">
-          {reasons?.map(({ reason, reason_id }, i) => {
+          {/* {reasons?.map(({ reason, reasonID }, i) => {
             return (
               <Checkbox
                 {...getInputProps(fields.reason, { type: "checkbox" })}
                 key={i}
                 name="reason"
-                id={`${reason_id}`}
-                value={reason_id}
+                id={`${reasonID}`}
+                value={reasonID}
                 label={reason}
               />
+            );
+          })} */}
+          {reasons?.map(({ reason, reasonID }, i) => {
+            return (
+              <div key={i} className="flex items-center space-x-2">
+                <input
+                  {...getInputProps(fields.reason, { type: "radio" })}
+                  id={`reason-${reasonID}`}
+                  value={reasonID}
+                  className="h-4 w-4"
+                />
+                <label htmlFor={`reason-${reasonID}`} className="text-sm">
+                  {reason}
+                </label>
+              </div>
             );
           })}
         </div>

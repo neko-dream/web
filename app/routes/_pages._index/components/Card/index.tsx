@@ -1,12 +1,12 @@
 import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
-import { Avatar } from "~/components/Avatar";
-import { Button } from "~/components/Button";
-import type { User } from "~/features/user/types";
+import { Avatar } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
+import type { UserType } from "~/types";
 
 type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
-  user: User;
+  user: UserType;
   date: string;
 };
 

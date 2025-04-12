@@ -3,4 +3,5 @@
  */
 import { $ } from "bun";
 
-await $`npx openapi-typescript ./tools/kotohiro.openapi.yaml -o ./app/types/openapi.ts`; // 1256
+await $`bunx openapi-typescript ./tools/kotohiro.openapi.yaml -o ./app/types/openapi.ts`;
+await $`bunx biome format --write ./app/types/openapi.ts`;

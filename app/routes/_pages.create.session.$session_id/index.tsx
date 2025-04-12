@@ -9,17 +9,17 @@ import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import type { Route } from "~/app/routes/_pages.create.session.$session_id/+types";
-import { Button } from "~/components/Button";
-import { Checkbox } from "~/components/Checkbox";
-import { Heading } from "~/components/Heading";
-import { Check } from "~/components/Icons";
-import { Input } from "~/components/Input";
-import { Label } from "~/components/Label";
-import Select from "~/components/Select";
-import { RichTextEditor } from "~/features/rich-text-editor";
+import { RichTextEditor } from "~/components/features/rich-text-editor";
+import { Check } from "~/components/icons";
+import { Button } from "~/components/ui/button";
+import { Checkbox } from "~/components/ui/checkbox";
+import { Heading } from "~/components/ui/heading";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import Select from "~/components/ui/select";
 import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
+import type { Route } from "~/react-router/_pages.create.session.$session_id/+types";
 import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";
@@ -66,11 +66,11 @@ export default function Page({
           : [];
 
       if (isEditMobe) {
-        const { error } = await api.PUT("/talksessions/{talkSessionId}", {
+        const { error } = await api.PUT("/talksessions/{talkSessionID}", {
           credentials: "include",
           params: {
             path: {
-              talkSessionId: session.id,
+              talkSessionID: session.id,
             },
           },
           body: {

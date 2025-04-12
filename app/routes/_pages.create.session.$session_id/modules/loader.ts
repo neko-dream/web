@@ -17,10 +17,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
     params: {
       path: {
-        talkSessionId: params.session_id,
+        talkSessionID: params.session_id,
       },
     },
   });

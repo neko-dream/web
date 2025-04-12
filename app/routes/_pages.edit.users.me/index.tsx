@@ -1,24 +1,30 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
-import { Form, useLoaderData } from "react-router";
+import { Form } from "react-router";
 import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
-import { Avatar } from "~/components/Avatar";
-import { Button } from "~/components/Button";
-import { Camera } from "~/components/Icons";
-import { Input } from "~/components/Input";
-import { Label } from "~/components/Label";
-import Select from "~/components/Select";
-import AdressInputs from "~/features/form/components/AdressInputs";
+import AdressInputs from "~/components/features/input-adress";
+import { Camera } from "~/components/icons";
+import { Avatar } from "~/components/ui/avatar";
+import { Button } from "~/components/ui/button";
+import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
+import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
+import type { Route } from "~/react-router/_pages.edit.users.me/+types";
 import { useEditUserForm } from "./hooks/useEditUserForm";
-import { loader } from "./modules/loader";
 
-export { loader };
+export { loader } from "./modules/loader";
 
-export default function Page() {
-  const { user } = useLoaderData<typeof loader>();
-  const { form, fields, isDisabled } = useEditUserForm({ user });
+export default function Page({
+  loaderData: { user, demographics },
+}: Route.ComponentProps) {
+  const { form, fields, isDisabled } = useEditUserForm({
+    user: {
+      ...user,
+      ...demographics,
+    },
+  });
 
   const [preview, setPreview] = useState<string>();
   const inputFileRef = useRef<HTMLInputElement>(null);

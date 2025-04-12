@@ -1,4 +1,4 @@
-import { ClockCircle, Environment } from "~/components/Icons";
+import { ClockCircle, Environment } from "~/components/icons";
 import { Card } from "../Card";
 
 export const TopicCard = () => {

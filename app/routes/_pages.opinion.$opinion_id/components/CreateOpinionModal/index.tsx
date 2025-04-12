@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import type { ReactNode } from "react";
-import { InfoCircle } from "~/components/Icons";
+import { InfoCircle } from "~/components/icons";
 
 type Props = {
   isOpen: boolean;

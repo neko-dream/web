@@ -7,38 +7,81 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+  const $session = api.GET("/talksessions/{talkSessionID}", {
     headers: request.headers,
     params: {
       path: {
-        talkSessionId: params.session_id,
+        talkSessionID: params.session_id,
       },
     },
   });
 
-  const { data: user } = await api.GET("/auth/token/info", {
+  const $remainingCount = api
+    .GET("/talksessions/{talkSessionID}/swipe_opinions", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
+      },
+    })
+    .then(({ data }) => {
+      return data?.remainingCount;
+    });
+
+  const $reports = api.GET("/talksessions/{talkSessionID}/report", {
     headers: request.headers,
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
   });
 
-  const { data: report } = await api.GET(
-    "/talksessions/{talkSessionId}/report",
+  /**
+   * 制限項目の中で足りていない項目を取得
+   */
+  const $restrictionsRequired = api.GET(
+    "/talksessions/{talkSessionID}/restrictions",
     {
       headers: request.headers,
       params: {
         path: {
-          talkSessionId: params.session_id,
+          talkSessionID: params.session_id,
         },
       },
     },
   );
 
-  if (!session) {
-    throw notfound();
-  }
+  /**
+   * 制限項目リストの配列の中に足りていないフラグを仕込む処理
+   */
+  const $restrictions = $restrictionsRequired.then(
+    async ({ data: requiredRestrictions }) => {
+      const { data: restrictions } = await api.GET(
+        "/talksessions/restrictions",
+        {
+          headers: request.headers,
+        },
+      );
+      // 制限項目がなければ制限するものはない
+      if (!restrictions) {
+        return [];
+      }
+      const requiredKeys = requiredRestrictions?.map(({ key }) => key);
+      return restrictions?.map((restriction) => {
+        return {
+          ...restriction,
+          required: requiredKeys?.includes(restriction.key),
+        };
+      });
+    },
+  );
 
   return {
-    session,
-    user,
-    report,
+    $session,
+    $reports,
+    $remainingCount,
+    $restrictions,
   };
 };

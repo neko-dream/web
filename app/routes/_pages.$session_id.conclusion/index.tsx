@@ -1,12 +1,12 @@
 import { Link, useOutletContext } from "react-router";
-import { button } from "~/components/Button";
-import type { SessionRouteContext } from "../_pages.$session_id/types";
+import { button } from "~/components/ui/button";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-2xl">
       <div className="justify-center space-y-2 rounded-xl bg-white p-4">
         <p className="font-bold text-gray-400">メッセージ</p>
         <p className="text-gray-400 text-sm">
@@ -42,6 +42,6 @@ export default function Page() {
           </Link>
         </span>
       </div>
-    </>
+    </div>
   );
 }

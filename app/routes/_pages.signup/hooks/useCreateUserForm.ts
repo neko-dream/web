@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import {
-  signupFormSchema,
-  singupFormWithEmailSchema,
-} from "~/features/user/schemas/form";
+
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
+import { signupFormSchema, singupFormWithEmailSchema } from "~/schemas/users";
 
 export const useCreateUserForm = (widthEmail: boolean) => {
   const navigate = useNavigate();

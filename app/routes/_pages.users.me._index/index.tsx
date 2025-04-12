@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Await } from "react-router";
-import type { Route } from "~/app/routes/_pages.users.me._index/+types";
-import { Card } from "~/components/Card";
+import { Card } from "~/components/features/opinion-card";
+import type { Route } from "~/react-router/_pages.users.me._index/+types";
 
 export { loader } from "./modules/loader";
 

@@ -3,11 +3,11 @@ import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { data: session } = await api.GET("/talksessions/{talkSessionId}", {
+  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
     headers: request.headers,
     params: {
       path: {
-        talkSessionId: params.session_id || "",
+        talkSessionID: params.session_id || "",
       },
     },
   });
