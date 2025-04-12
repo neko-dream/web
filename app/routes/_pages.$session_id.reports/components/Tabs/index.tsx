@@ -1,0 +1,35 @@
+type Tab = {
+  label: string;
+  value: string;
+};
+
+type Props = {
+  tabs: Tab[];
+  activeTab: string;
+  onChange: (value: string) => void;
+};
+
+export const Tabs = ({ tabs, activeTab, onChange }: Props) => {
+  return (
+    <div className="flex items-center justify-center space-x-4 rounded-full bg-white">
+      {tabs.map((tab) => (
+        <button
+          type="button"
+          key={tab.value}
+          onClick={() => onChange(tab.value)}
+          className={`relative flex-1 cursor-pointer rounded-full px-4 py-3 font-bold text-sm ${
+            activeTab === tab.value ? "border-gradient" : "text-[#C7C7CC]"
+          }`}
+        >
+          <span
+            className={
+              activeTab === tab.value ? "primary-gradient text-clip" : ""
+            }
+          >
+            {tab.label}
+          </span>
+        </button>
+      ))}
+    </div>
+  );
+};

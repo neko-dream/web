@@ -1,4 +1,5 @@
 export { default as FaviconKotohiro } from "./FaviconKotohiro";
+export { default as Alert } from "./Alert";
 export { default as ArrowDown } from "./ArrowDown";
 export { default as ArrowLeft } from "./ArrowLeft";
 export { default as ArrowRight } from "./ArrowRight";

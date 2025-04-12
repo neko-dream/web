@@ -36,8 +36,9 @@ export default function Layout({
   ];
 
   if (report) {
-    items.push({ label: "レポート", href: `/${session.id}/report` });
+    items.push({ label: "レポート", href: `/${session.id}/analysis` });
   }
+  items.push({ label: "通報", href: `/${session.id}/reports` });
 
   useEffect(() => {
     $restrictions.then((restrictions) => {

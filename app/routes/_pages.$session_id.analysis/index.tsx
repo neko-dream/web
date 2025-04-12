@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Card } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { Arrow } from "~/components/icons";
-import type { Route } from "~/react-router/_pages.$session_id.report/+types";
+import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
 import type { SessionRouteContext } from "~/types/ctx";
 import { postVote } from "~/utils/vote";
 import { loader } from "./modules/loader";

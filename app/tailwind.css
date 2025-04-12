@@ -36,6 +36,33 @@
   .hidden-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  .border-gradient {
+    position: relative;
+    display: inline-block;
+  }
+  .border-gradient::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50px;
+    border: 5px solid transparent;
+    background: linear-gradient(
+        90deg,
+        #ff3a304e 0%,
+        #5856d64a 50%,
+        #32ade652 100%
+      )
+      border-box border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0) border-box;
+    -webkit-mask-composite: destination-out;
+    mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0)
+      border-box;
+    mask-composite: exclude;
+  }
 }
 
 @theme {
@@ -52,6 +79,7 @@
   --color-mt-blue-50: #e7f5ff;
   --color-mt-blue-600: #007aff;
   --color-mt-disabled: #aeaeb2;
+  --color-mt-red: #ff3b30;
 
   /**
    * Mantine Custom CSS

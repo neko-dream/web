@@ -16,6 +16,7 @@ export default function Page({
   const { user } = useOutletContext<SessionRouteContext>();
   const { revalidate } = useRevalidator();
   const [isOpen, setIsOpen] = useState(false);
+  const [reportOpinionID, setReportOpinionID] = useState<string>("");
 
   const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
@@ -32,8 +33,9 @@ export default function Page({
     }
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (opinionID: string) => {
     setIsOpen(true);
+    setReportOpinionID(opinionID);
   };
 
   return (
@@ -55,8 +57,8 @@ export default function Page({
               onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
               onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
               onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-              onClickReport={handleOpenModal}
-              onClickAnalytics={handleOpenModal}
+              onClickReport={() => handleOpenModal(opinion.id)}
+              onClickAnalytics={console.log}
               opinionCount={replyCount}
             />
           );
@@ -67,6 +69,7 @@ export default function Page({
         isOpen={isOpen}
         onOpenChange={setIsOpen}
         reasons={reasons || []}
+        opinionID={reportOpinionID}
       />
     </div>
   );
