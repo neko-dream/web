@@ -18,7 +18,7 @@ export default function Page() {
       </div>
 
       <div className="mt-18 flex flex-col justify-center">
-        <div className="mx-auto inline-block items-center justify-center rounded-md p-2 backdrop-blur-[20px]">
+        <div className="mx-auto inline-block items-center justify-center rounded-md backdrop-blur-[20px]">
           <span className="flex items-center">
             <Logo className="-translate-x-2 size-[500px] h-30 w-[380px]" />
           </span>
