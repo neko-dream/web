@@ -78,7 +78,7 @@ const Contents = ({
 
   useEffect(() => {
     $user.then((user) => {
-      if (session.owner.displayID === user?.displayID) {
+      if (session.owner.displayID !== user?.displayID) {
         return;
       }
       const ownerTabs = [
