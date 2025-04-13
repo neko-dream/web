@@ -6,10 +6,11 @@ import {
   useNavigate,
   useOutletContext,
 } from "react-router";
-import { Graph } from "~/components/features/opinion-graph";
+import Graph from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Avatar } from "~/components/ui/avatar";
+import { useWindowResize } from "~/hooks/useWindowResize";
 import { JST } from "~/libs/date";
 import { notfound } from "~/libs/response";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
@@ -63,6 +64,7 @@ const Contents = ({
   $restrictions,
   $user,
   $remainingCount,
+  $positions,
 }: Props) => {
   const [isDemograDialogOpen, setIsDemograDialogOpen] = useState(false);
   const [isRequestDemogra, setIsRequestDemogra] = useState<boolean>();
@@ -74,6 +76,7 @@ const Contents = ({
   ];
 
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
+  const windowWidth = useWindowResize(374);
 
   const navigate = useNavigate();
 
@@ -142,7 +145,25 @@ const Contents = ({
             </div>
           }
         >
-          <Graph className="mt-2" />
+          <Suspense>
+            <Await resolve={$positions}>
+              {({ data }) => {
+                return (
+                  <div className="flex w-full justify-center rounded bg-white p-2 md:block">
+                    <Graph
+                      polygons={data?.positions}
+                      positions={data?.positions}
+                      myPosition={data?.myPosition}
+                      // 両方のpadding分
+                      windowWidth={windowWidth - 64}
+                      selectGroupId={(_id: number) => {}}
+                      background={0xffffff}
+                    />
+                  </div>
+                );
+              }}
+            </Await>
+          </Suspense>
         </List>
 
         <Suspense>

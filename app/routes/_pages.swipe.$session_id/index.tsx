@@ -1,12 +1,12 @@
 import { animated, to } from "@react-spring/web";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useState } from "react";
-import { Link, useParams } from "react-router";
+import { Await, Link, useParams } from "react-router";
 import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
 import { useDrag } from "react-use-gesture";
 import { Card } from "~/components/features/opinion-card/index.js";
-import { Graph } from "~/components/features/opinion-graph";
+import Graph from "~/components/features/opinion-graph";
 import {
   ArrowDown,
   ArrowLeft,
@@ -18,6 +18,7 @@ import {
 } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { button } from "~/components/ui/button";
+import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
 import type { components } from "~/types/openapi";
@@ -162,9 +163,10 @@ export const useSwipe = ({ opinions, onSwipe }: Props) => {
 };
 
 export default function Page({
-  loaderData: { opinions, session },
+  loaderData: { opinions, session, $positions },
 }: Route.ComponentProps) {
   const [isOpinionEnd, setIsOpinionEnd] = useState<boolean>(false);
+  const windowWidth = useWindowResize(374);
   const params = useParams();
 
   const swipe = useSwipe({
@@ -284,7 +286,25 @@ export default function Page({
             </div>
           }
         >
-          <Graph className="mt-2" />
+          <Suspense>
+            <Await resolve={$positions}>
+              {({ data }) => {
+                return (
+                  <div className="flex w-full justify-center rounded bg-white p-2">
+                    <Graph
+                      polygons={data?.positions}
+                      positions={data?.positions}
+                      myPosition={data?.myPosition}
+                      // 両方のpadding分
+                      windowWidth={windowWidth - 64}
+                      selectGroupId={(_id: number) => {}}
+                      background={0xffffff}
+                    />
+                  </div>
+                );
+              }}
+            </Await>
+          </Suspense>
         </List>
       </span>
 

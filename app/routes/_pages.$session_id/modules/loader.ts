@@ -53,6 +53,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
+  const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
+    headers: request.headers,
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
+
   /**
    * 制限項目リストの配列の中に足りていないフラグを仕込む処理
    */
@@ -83,5 +92,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     $reports,
     $remainingCount,
     $restrictions,
+    $positions,
   };
 };

@@ -14,7 +14,7 @@ export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
 export default function Page({
-  loaderData: { $opinions, $reasons, $user, $position },
+  loaderData: { $opinions, $reasons, $user, $positions },
 }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
   const [isOpen, setIsOpen] = useState(false);
@@ -121,20 +121,17 @@ export default function Page({
           </Suspense>
         </div>
 
+        {/* PCで表示するようのグラフ */}
         <Suspense>
-          <Await resolve={$position}>
+          <Await resolve={$positions}>
             {({ data }) => {
-              const positions = data?.positions.sort(
-                (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
-              );
-
               return (
-                <div className="ml-4 hidden min-w-[391px] rounded bg-white p-2 md:block">
+                <div className="ml-4 hidden min-w-[346px] rounded bg-white p-2 md:block">
                   <Graph
-                    polygons={positions}
+                    polygons={data?.positions}
                     positions={data?.positions}
                     myPosition={data?.myPosition}
-                    windowWidth={350}
+                    windowWidth={330}
                     selectGroupId={(_id: number) => {}}
                     background={0xffffff}
                   />

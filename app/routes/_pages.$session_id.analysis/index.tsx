@@ -44,6 +44,26 @@ export default function Page({
           </Link>
         </div>
 
+        {/* モバイルで表示するようのグラフ */}
+        <Suspense>
+          <Await resolve={$positions}>
+            {({ data }) => {
+              return (
+                <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
+                  <Graph
+                    polygons={data?.positions}
+                    positions={data?.positions}
+                    myPosition={data?.myPosition}
+                    windowWidth={windowWidth - 48}
+                    selectGroupId={(_id: number) => {}}
+                    background={0xffffff}
+                  />
+                </div>
+              );
+            }}
+          </Await>
+        </Suspense>
+
         <div className="mt-2 flex flex-col space-y-2">
           <Suspense>
             <Await resolve={$opinions}>
@@ -70,29 +90,17 @@ export default function Page({
         </div>
       </div>
 
+      {/* PCで表示するようのグラフ */}
       <Suspense>
         <Await resolve={$positions}>
           {({ data }) => {
-            // グループ３が一番意見多そうなので、グループ３の意見を取得
-            // ついでにインデックス順にする
-            const positions = data?.positions
-              // .filter((opinion) => {
-              //   return (
-              //     opinion.groupId === 3 &&
-              //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
-              //   );
-              // })
-              .sort(
-                (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
-              );
-
             return (
-              <div className="ml-4 hidden min-w-[391px] rounded bg-white p-2 md:block">
+              <div className="ml-4 hidden min-w-[346px] rounded bg-white p-2 md:block">
                 <Graph
-                  polygons={positions}
+                  polygons={data?.positions}
                   positions={data?.positions}
                   myPosition={data?.myPosition}
-                  windowWidth={windowWidth < 768 ? windowWidth : 180}
+                  windowWidth={330}
                   selectGroupId={(_id: number) => {}}
                   background={0xffffff}
                 />

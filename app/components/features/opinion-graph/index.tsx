@@ -5,10 +5,6 @@ const graph = tv({
   base: "h-60 w-full bg-blue-300",
 });
 
-export const Graph = ({ className, ...props }: ComponentProps<"div">) => {
-  return <div {...props} className={graph({ className })} />;
-};
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "@pixi/events";
 import { Graphics as PixiGraphics } from "@pixi/graphics";
@@ -594,7 +590,7 @@ const Dots = ({
   // const windowWidth = window.innerWidth;
   // グラフサイズに関わる
   const maxWidth = 656;
-  const minWidth = 375;
+  const minWidth = 310;
 
   const width = Math.min(maxWidth, Math.max(windowWidth, minWidth));
 
