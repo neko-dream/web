@@ -116,7 +116,7 @@ const Contents = ({
           <Suspense>
             <Await resolve={$user}>
               {(user) => {
-                if (!user) {
+                if (user?.displayID !== session.owner.displayID) {
                   return null;
                 }
                 return (
