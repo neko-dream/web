@@ -1,7 +1,6 @@
 import { Suspense } from "react";
 import { Await, Link } from "react-router";
 import Session from "~/components/features/talksession-card";
-import { ErrorView } from "~/components/layouts/error";
 import type { Route } from "~/react-router/_pages.home/+types";
 import { SessionSkeleton } from "./components/SessionSkeleton";
 
@@ -9,7 +8,7 @@ export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({
-  loaderData: { $session, $closeSession },
+  loaderData: { $session, $closeSession, theme },
 }: Route.ComponentProps) {
   return (
     <div className="mx-auto mb-16 w-full max-w-4xl">
@@ -25,13 +24,19 @@ export default function Page({
           {(data) => {
             if (data?.talkSessions.length === 0) {
               return (
-                <ErrorView>
-                  <p>お探しのトークセッションは </p>
-                  <p>見つかりませんでした...</p>
-                  <p className="mt-2 text-gray-700 text-xs">
-                    右上の 🔍 から探せるよ！
+                <div className="mt-4 space-y-2 p-4">
+                  <p>【{theme}】に一致するセッションが見つかりませんでした。</p>
+                  <p className="primary-gradient inline-block text-clip font-semibold">
+                    再検索のヒント
                   </p>
-                </ErrorView>
+                  <p className="text-[#8E8E93]">
+                    ・誤字、脱字がないか確認してみてください
+                    <br />
+                    ・言葉の区切り方を変えてみてください
+                    <br />
+                    ・似たキーワードを入れてみてください
+                  </p>
+                </div>
               );
             }
 
