@@ -541,10 +541,9 @@ const Dots = ({
   selectGroupId,
   background = 0xf2f2f7,
 }: Props) => {
-
   if (positions.length === 0 || !positions) {
     // ここにグラフのempty stateをいい感じに表示する
-    return <></>
+    return <></>;
   }
 
   let _minX = 100000000000;
