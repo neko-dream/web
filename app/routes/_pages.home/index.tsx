@@ -12,7 +12,7 @@ export default function Page({
   loaderData: { $session, $closeSession },
 }: Route.ComponentProps) {
   return (
-    <div className="mx-auto mb-16 w-full max-w-2xl">
+    <div className="mx-auto mb-16 w-full max-w-4xl">
       <Suspense
         fallback={
           <>
