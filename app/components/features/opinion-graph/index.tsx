@@ -291,7 +291,7 @@ const posToSegmenetDistance = (
 
 const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
   const maskRef = useRef<any>();
-  if (myPositionData.x !== null) {
+  if (!!myPositionData.x) {
     const drawCircleMask = useCallback(
       (
         g: {
@@ -541,6 +541,12 @@ const Dots = ({
   selectGroupId,
   background = 0xf2f2f7,
 }: Props) => {
+
+  if (positions.length === 0 || !positions) {
+    // ここにグラフのempty stateをいい感じに表示する
+    return <></>
+  }
+
   let _minX = 100000000000;
   let _minY = 100000000000;
   let _maxX = -100000000000;
