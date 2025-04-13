@@ -22,6 +22,7 @@ import { RESTRICTIONS_ICON_MAP } from "./constants";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 export { shouldRevalidate } from "./modules/shouldRevalidate";
+export { meta } from "./modules/meta";
 
 type Tab = {
   label: string;

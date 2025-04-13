@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 
-export default function Index() {
+export default function Page() {
   return (
     <div className="mx-auto mt-10 flex w-[350px] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8">
       <p className="primary-gradient text-clip text-center font-bold">

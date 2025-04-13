@@ -6,6 +6,7 @@ import type { Route } from "~/react-router/_pages.home/+types";
 import { SessionSkeleton } from "./components/SessionSkeleton";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { $session, $closeSession },

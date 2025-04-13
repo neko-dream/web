@@ -24,6 +24,7 @@ import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { restrictions, session, isEditMobe },

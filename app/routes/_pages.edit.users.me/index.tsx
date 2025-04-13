@@ -15,6 +15,7 @@ import type { Route } from "~/react-router/_pages.edit.users.me/+types";
 import { useEditUserForm } from "./hooks/useEditUserForm";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { user, demographics },

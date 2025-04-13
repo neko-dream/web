@@ -12,6 +12,7 @@ import type { Route } from "~/react-router/_pages.request.demographics.$session_
 import { useEditUserForm } from "./hooks/useEditUserForm";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { returnPage, user, demographics, sessionID },

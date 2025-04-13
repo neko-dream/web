@@ -9,6 +9,7 @@ import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
 import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { session },

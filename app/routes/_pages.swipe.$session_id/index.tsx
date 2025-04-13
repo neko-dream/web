@@ -22,10 +22,10 @@ import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
 import type { components } from "~/types/openapi";
 import { postVote } from "~/utils/vote";
-import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader };
+export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 type OnSwipeParam = {
   opinionID: string;

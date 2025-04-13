@@ -6,6 +6,7 @@ import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.report.$session_id/+types";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { report, session, position },
