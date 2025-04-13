@@ -541,6 +541,22 @@ const Dots = ({
   selectGroupId,
   background = 0xf2f2f7,
 }: Props) => {
+  // グループ３が一番意見多そうなので、グループ３の意見を取得
+  // ついでにインデックス順にする
+  // const positions = data?.positions
+  // .filter((opinion) => {
+  //   return (
+  //     opinion.groupId === 3 &&
+  //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+  //   );
+  // })
+  // .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
+  // グラフの外に出ていたソートしていた処理を統一するためにここに入れました。
+
+  positions = positions.sort(
+    (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
+  );
+
   if (positions.length === 0 || !positions) {
     // ここにグラフのempty stateをいい感じに表示する
     return <></>;
