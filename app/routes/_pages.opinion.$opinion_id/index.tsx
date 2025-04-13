@@ -1,6 +1,6 @@
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { useState } from "react";
-import { Form, useNavigate } from "react-router";
+import { Form } from "react-router";
 import { Fragment } from "react/jsx-runtime";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card } from "~/components/features/opinion-card";
@@ -16,11 +16,11 @@ import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { currentUser, root, opinions },
 }: Route.ComponentProps) {
-  const navigate = useNavigate();
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
   const handleSubmitVote = async (opinionID: string, status: VoteType) => {
@@ -44,7 +44,8 @@ export default function Page({
 
   return (
     <>
-      <Heading title="コメント一覧" onClick={() => navigate(-1)} />
+      {/* FIXME: 意見IDからセッションのIDが欲しい */}
+      <Heading title="コメント一覧" />
       {root.opinion.isDeleted ? (
         <DeletedOpinionCard
           title={root.opinion.title}

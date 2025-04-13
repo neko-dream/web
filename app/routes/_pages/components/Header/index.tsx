@@ -14,7 +14,7 @@ type Props = Route.ComponentProps["loaderData"];
 const ignoreParsonalIconPages = ["/", "/signup", "/about", "/contact"];
 
 const header = tv({
-  base: "fixed z-30 w-full shadow",
+  base: "fixed z-30 w-full border-gray-100 border-b-2",
   variants: {
     isDialogOpen: {
       true: "shadow-none",

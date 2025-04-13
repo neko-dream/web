@@ -9,6 +9,7 @@ import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
 import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { session },
@@ -24,12 +25,12 @@ export default function Page({
 
   return (
     <div className="flex flex-1 flex-col bg-[#F2F2F7]">
-      <Heading title="意見を書いてみる" onClick={() => navigate(-1)} />
+      <Heading title="意見を書いてみる" to={`/${session.id}`} isLink={true} />
 
       <Form
         {...getFormProps(form)}
         onSubmit={form.onSubmit}
-        className="p-4 pb-16"
+        className="mx-auto w-full max-w-2xl p-4 pb-16"
       >
         <p className="text-gray-500">{session.theme}</p>
         <Label title="あなたの意見" className="mt-4">

@@ -24,12 +24,26 @@ export default function Layout({
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer
-        position="top-center"
+        position="bottom-center"
         autoClose={3000}
         pauseOnFocusLoss={false}
         hideProgressBar={true}
         transition={Zoom}
         draggable={true}
+        theme="dark"
+        style={{
+          maxWidth: "360px",
+          width: "90%",
+          marginLeft: "auto",
+          marginRight: "auto",
+          left: 0,
+          right: 0,
+          bottom: "20px",
+        }}
+        toastStyle={{
+          borderRadius: "10px",
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+        }}
       />
     </>
   );

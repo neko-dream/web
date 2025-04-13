@@ -49,5 +49,5 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     })
     .then((res) => res?.data || null);
 
-  return { $session, $closeSession };
+  return { $session, $closeSession, theme: setTheme(request.url) };
 };

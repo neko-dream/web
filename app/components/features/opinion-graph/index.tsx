@@ -5,10 +5,6 @@ const graph = tv({
   base: "h-60 w-full bg-blue-300",
 });
 
-export const Graph = ({ className, ...props }: ComponentProps<"div">) => {
-  return <div {...props} className={graph({ className })} />;
-};
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import "@pixi/events";
 import { Graphics as PixiGraphics } from "@pixi/graphics";
@@ -291,7 +287,7 @@ const posToSegmenetDistance = (
 
 const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
   const maskRef = useRef<any>();
-  if (myPositionData.x !== null) {
+  if (!!myPositionData.x) {
     const drawCircleMask = useCallback(
       (
         g: {
@@ -541,6 +537,27 @@ const Dots = ({
   selectGroupId,
   background = 0xf2f2f7,
 }: Props) => {
+  // グループ３が一番意見多そうなので、グループ３の意見を取得
+  // ついでにインデックス順にする
+  // const positions = data?.positions
+  // .filter((opinion) => {
+  //   return (
+  //     opinion.groupId === 3 &&
+  //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+  //   );
+  // })
+  // .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
+  // グラフの外に出ていたソートしていた処理を統一するためにここに入れました。
+
+  positions = positions.sort(
+    (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
+  );
+
+  if (positions.length === 0 || !positions) {
+    // ここにグラフのempty stateをいい感じに表示する
+    return <></>;
+  }
+
   let _minX = 100000000000;
   let _minY = 100000000000;
   let _maxX = -100000000000;
@@ -573,7 +590,7 @@ const Dots = ({
   // const windowWidth = window.innerWidth;
   // グラフサイズに関わる
   const maxWidth = 656;
-  const minWidth = 375;
+  const minWidth = 310;
 
   const width = Math.min(maxWidth, Math.max(windowWidth, minWidth));
 

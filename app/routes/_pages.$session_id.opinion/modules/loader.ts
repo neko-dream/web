@@ -24,7 +24,7 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
     headers: request.headers,
   });
 
-  const $position = api.GET("/talksessions/{talkSessionID}/analysis", {
+  const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
     headers: request.headers,
     params: {
       path: {
@@ -33,5 +33,5 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
     },
   });
 
-  return { $opinions, $reasons, $user, $position };
+  return { $opinions, $reasons, $user, $positions };
 };

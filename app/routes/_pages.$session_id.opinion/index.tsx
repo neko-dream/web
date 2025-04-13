@@ -7,20 +7,22 @@ import Graph from "~/components/features/opinion-graph";
 import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import { postVote } from "~/utils/vote";
 import { AnalyticsModal } from "./components/AnalyticsModal";
+import { GroupTabs } from "./components/GroupTabs";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 
 export default function Page({
-  loaderData: { $opinions, $reasons, $user, $position },
+  loaderData: { $opinions, $reasons, $user, $positions },
 }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState<string>("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("a");
 
-  const handleSubmitVote = async (opinionID: string, voteStatus: string) => {
+  const handleVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
       opinionID,
       voteStatus: voteStatus as never,
@@ -47,14 +49,14 @@ export default function Page({
 
   return (
     <>
-      <div className="mx-auto flex max-w-4xl justify-center">
-        <div className="w-full">
+      <div className="mx-auto flex max-w-4xl items-start justify-center">
+        <div className="w-full space-y-2">
           <Suspense fallback={<OpinionCardSkeleton />}>
             <Await resolve={$opinions}>
               {({ data: { opinions } = { opinions: [] } }) => (
                 <Await resolve={$user}>
                   {({ data: user }) => {
-                    return opinions.map((props, i) => {
+                    const opinionCardList = opinions.map((props, i) => {
                       const {
                         opinion: { id, ...opinion },
                         user: { displayID, displayName, iconURL },
@@ -87,17 +89,31 @@ export default function Page({
                           className="mx-auto w-full"
                           isJudgeButton={user?.displayID !== displayID}
                           isMoreButton={user?.displayID !== displayID}
-                          onClickAgree={() => handleSubmitVote(id, "agree")}
-                          onClickDisagree={() =>
-                            handleSubmitVote(id, "disagree")
-                          }
-                          onClickPass={() => handleSubmitVote(id, "pass")}
+                          onClickAgree={() => handleVote(id, "agree")}
+                          onClickDisagree={() => handleVote(id, "disagree")}
+                          onClickPass={() => handleVote(id, "pass")}
                           onClickReport={() => handleOpenModal(id)}
                           onClickAnalytics={() => handleAnalyticsModal(id)}
                           opinionCount={replyCount}
                         />
                       );
                     });
+
+                    return (
+                      <>
+                        {/* FIXME: サーバーと繋げてぽよ */}
+                        <GroupTabs
+                          tabs={[
+                            { label: "Aグループ", value: "a" },
+                            { label: "Bグループ", value: "b" },
+                            { label: "Cグループ", value: "c" },
+                          ]}
+                          activeTab={activeTab}
+                          onChange={setActiveTab}
+                        />
+                        {opinionCardList}
+                      </>
+                    );
                   }}
                 </Await>
               )}
@@ -105,20 +121,17 @@ export default function Page({
           </Suspense>
         </div>
 
+        {/* PCで表示するようのグラフ */}
         <Suspense>
-          <Await resolve={$position}>
+          <Await resolve={$positions}>
             {({ data }) => {
-              const positions = data?.positions.sort(
-                (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
-              );
-
               return (
-                <div className="ml-4 hidden min-w-[391px] rounded bg-white p-2 md:block">
+                <div className="ml-4 hidden min-w-[346px] rounded bg-white p-2 md:block">
                   <Graph
-                    polygons={positions}
+                    polygons={data?.positions}
                     positions={data?.positions}
                     myPosition={data?.myPosition}
-                    windowWidth={350}
+                    windowWidth={330}
                     selectGroupId={(_id: number) => {}}
                     background={0xffffff}
                   />

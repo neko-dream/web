@@ -18,6 +18,7 @@ import { useCreateUserForm } from "./hooks/useCreateUserForm";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { isEmailVerified },
@@ -40,11 +41,7 @@ export default function Page({
 
   return (
     <>
-      <Heading
-        title="アカウントを作成する"
-        className="cursor-default"
-        isLeftIcon={false}
-      />
+      <Heading title="アカウントを作成する" />
 
       <Form
         {...getFormProps(form)}

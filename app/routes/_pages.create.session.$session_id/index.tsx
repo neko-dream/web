@@ -24,6 +24,7 @@ import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { restrictions, session, isEditMobe },
@@ -131,6 +132,8 @@ export default function Page({
       <Heading
         title={isEditMobe ? "セッションを編集する" : "セッションを作成する"}
         className="h-10"
+        to={isEditMobe ? `/${session.id}` : "/home"}
+        isLink={true}
       />
       <Form
         {...getFormProps(form)}

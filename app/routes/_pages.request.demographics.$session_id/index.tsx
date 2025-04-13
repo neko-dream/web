@@ -12,6 +12,7 @@ import type { Route } from "~/react-router/_pages.request.demographics.$session_
 import { useEditUserForm } from "./hooks/useEditUserForm";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { returnPage, user, demographics, sessionID },
@@ -27,7 +28,11 @@ export default function Page({
 
   return (
     <div>
-      <Heading title="情報入力" />
+      <Heading
+        to={`/${sessionID}/${returnPage}`}
+        title="情報入力"
+        isLink={true}
+      />
 
       <Form
         {...getFormProps(form)}

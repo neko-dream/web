@@ -6,10 +6,11 @@ import {
   useNavigate,
   useOutletContext,
 } from "react-router";
-import { Graph } from "~/components/features/opinion-graph";
+import Graph from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Avatar } from "~/components/ui/avatar";
+import { useWindowResize } from "~/hooks/useWindowResize";
 import { JST } from "~/libs/date";
 import { notfound } from "~/libs/response";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
@@ -22,6 +23,7 @@ import { RESTRICTIONS_ICON_MAP } from "./constants";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 export { shouldRevalidate } from "./modules/shouldRevalidate";
+export { meta } from "./modules/meta";
 
 type Tab = {
   label: string;
@@ -62,6 +64,7 @@ const Contents = ({
   $restrictions,
   $user,
   $remainingCount,
+  $positions,
 }: Props) => {
   const [isDemograDialogOpen, setIsDemograDialogOpen] = useState(false);
   const [isRequestDemogra, setIsRequestDemogra] = useState<boolean>();
@@ -73,12 +76,13 @@ const Contents = ({
   ];
 
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
+  const windowWidth = useWindowResize(374);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     $user.then((user) => {
-      if (session.owner.displayID === user?.displayID) {
+      if (session.owner.displayID !== user?.displayID) {
         return;
       }
       const ownerTabs = [
@@ -116,7 +120,7 @@ const Contents = ({
           <Suspense>
             <Await resolve={$user}>
               {(user) => {
-                if (!user) {
+                if (user?.displayID !== session.owner.displayID) {
                   return null;
                 }
                 return (
@@ -141,32 +145,57 @@ const Contents = ({
             </div>
           }
         >
-          <Graph className="mt-2" />
-        </List>
-
-        <Link
-          to={`/swipe/${session.id}`}
-          className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
-          viewTransition={true}
-        >
-          <span className="primary-gradient mt-1 inline-block text-clip">
-            みんなの意見を見る
-          </span>
           <Suspense>
-            <Await resolve={$remainingCount}>
-              {(count) => {
-                if (count === 0) {
-                  return null;
-                }
+            <Await resolve={$positions}>
+              {({ data }) => {
                 return (
-                  <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
-                    {count}
-                  </span>
+                  <div className="flex w-full justify-center rounded bg-white p-2 md:block">
+                    <Graph
+                      polygons={data?.positions}
+                      positions={data?.positions}
+                      myPosition={data?.myPosition}
+                      // 両方のpadding分
+                      windowWidth={windowWidth - 64}
+                      selectGroupId={(_id: number) => {}}
+                      background={0xffffff}
+                    />
+                  </div>
                 );
               }}
             </Await>
           </Suspense>
-        </Link>
+        </List>
+
+        <Suspense>
+          <Await resolve={$remainingCount}>
+            {(count) => {
+              return (
+                <Await resolve={$user}>
+                  {(user) => {
+                    if (!(user && count)) {
+                      return;
+                    }
+
+                    return (
+                      <Link
+                        to={`/swipe/${session.id}`}
+                        className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
+                        viewTransition={true}
+                      >
+                        <span className="primary-gradient mt-1 inline-block text-clip">
+                          みんなの意見を見る
+                        </span>
+                        <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
+                          {count}
+                        </span>
+                      </Link>
+                    );
+                  }}
+                </Await>
+              );
+            }}
+          </Await>
+        </Suspense>
 
         <div className="flex items-center space-x-2">
           <Avatar src={session.owner.iconURL} className="h-6 w-6" />

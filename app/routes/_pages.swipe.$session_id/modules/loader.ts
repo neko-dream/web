@@ -32,6 +32,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
+  const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
+    headers: request.headers,
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
+
   if (!(opinions && session) || error) {
     if (error?.code.includes("AUTH")) {
       throw forbidden();
@@ -43,5 +52,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return {
     ...opinions,
     session,
+    $positions,
   };
 };
