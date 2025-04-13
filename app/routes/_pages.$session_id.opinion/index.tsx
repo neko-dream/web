@@ -7,6 +7,7 @@ import Graph from "~/components/features/opinion-graph";
 import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import { postVote } from "~/utils/vote";
 import { AnalyticsModal } from "./components/AnalyticsModal";
+import { GroupTabs } from "./components/GroupTabs";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -19,6 +20,7 @@ export default function Page({
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState<string>("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("a");
 
   const handleVote = async (opinionID: string, voteStatus: string) => {
     const { data, error } = await postVote({
@@ -54,7 +56,7 @@ export default function Page({
               {({ data: { opinions } = { opinions: [] } }) => (
                 <Await resolve={$user}>
                   {({ data: user }) => {
-                    return opinions.map((props, i) => {
+                    const opinionCardList = opinions.map((props, i) => {
                       const {
                         opinion: { id, ...opinion },
                         user: { displayID, displayName, iconURL },
@@ -96,6 +98,22 @@ export default function Page({
                         />
                       );
                     });
+
+                    return (
+                      <>
+                        {/* FIXME: サーバーと繋げてぽよ */}
+                        <GroupTabs
+                          tabs={[
+                            { label: "Aグループ", value: "a" },
+                            { label: "Bグループ", value: "b" },
+                            { label: "Cグループ", value: "c" },
+                          ]}
+                          activeTab={activeTab}
+                          onChange={setActiveTab}
+                        />
+                        {opinionCardList}
+                      </>
+                    );
                   }}
                 </Await>
               )}
