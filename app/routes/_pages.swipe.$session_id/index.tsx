@@ -1,7 +1,7 @@
 import { animated, to } from "@react-spring/web";
 import { useEffect } from "react";
 import { useState } from "react";
-import { Link, useParams, useRevalidator } from "react-router";
+import { Link, useParams } from "react-router";
 import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
 import { useDrag } from "react-use-gesture";
@@ -17,7 +17,7 @@ import {
   PointUp,
 } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
-import { Button, button } from "~/components/ui/button";
+import { button } from "~/components/ui/button";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
 import type { components } from "~/types/openapi";
@@ -41,26 +41,26 @@ type Props = {
   onSwipe: ({ opinionID, opinionStatus }: OnSwipeParam) => void;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const _height = "calc(100% - 136px - 24px)";
-
 const trans = (r: number, s: number) =>
   `rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
 
-export const animations = {
+const animations = {
   to: () => ({
-    w: "80%",
+    w: "96%",
+    h: "144px",
     x: 0,
+    y: 0,
     zIndex: 0,
-    left: "10%",
+    left: "2%",
     scale: 1,
   }),
   from: () => ({
-    w: "100%",
+    w: "96%",
+    h: "144px",
     x: 0,
     y: -1000,
     zIndex: 0,
-    left: "10%",
+    left: "2%",
     rot: 0,
     scale: 1.5,
     backgroundColor: "transparent",
@@ -69,21 +69,20 @@ export const animations = {
     opacity: 0,
   }),
   init: () => ({
-    w: "80%",
+    w: "96%",
+    h: "144px",
     x: 0,
-    left: "10%",
+    y: 0,
+    left: "2%",
     zIndex: 0,
-    delay: undefined,
   }),
 };
 
 export const useSwipe = ({ opinions, onSwipe }: Props) => {
   const [gone] = useState(() => new Set<number>());
 
-  const [item, api] = useSprings(opinions.length, (i) => ({
+  const [item, api] = useSprings(opinions.length, () => ({
     ...animations.to(),
-    y: i,
-    delay: i,
     from: animations.from(),
   }));
 
@@ -189,8 +188,6 @@ export default function Page({
     },
   });
 
-  const revalidate = useRevalidator();
-
   useEffect(() => {
     if (opinions.length === 0) {
       setIsOpinionEnd(true);
@@ -253,26 +250,14 @@ export default function Page({
     });
   };
 
-  const handleRevalidate = () => {
-    setIsOpinionEnd(false);
-    revalidate.revalidate();
-    swipe.gone.clear();
-    swipe.api.start((i) => ({
-      ...animations.to(),
-      y: i * 6,
-      delay: i * 50,
-      from: animations.from(),
-    }));
-  };
-
   if (isOpinionEnd) {
     return (
       <div className="relative flex w-full flex-1 flex-col items-center justify-center space-y-4">
         <p>{opinions.length}件の意見に意思表明しました🎉</p>
-        <Button color="primary" onClick={handleRevalidate}>
-          さらに意思表明する
-        </Button>
-        <Link to={`/${params.id}`} className={button({ color: "primary" })}>
+        <Link
+          to={`/${params.id}`}
+          className={button({ color: "primary", className: "block" })}
+        >
           みんなの意見を見る
         </Link>
       </div>
@@ -288,30 +273,34 @@ export default function Page({
         <Left className="text-black" />
         <span className="-translate-x-[13.5px] mx-auto">{session?.theme}</span>
       </Link>
-      <List
-        className="m-2"
-        title={
-          <div className="flex items-center space-x-2">
-            <PieChart />
-            <p>参加者のグラフ</p>
-          </div>
-        }
-      >
-        <Graph className="mt-2" />
-      </List>
+
+      <span className="mx-[2%] block">
+        <List
+          className="m-2 mx-auto max-w-3xl"
+          title={
+            <div className="flex items-center space-x-2">
+              <PieChart />
+              <p>参加者のグラフ</p>
+            </div>
+          }
+        >
+          <Graph className="mt-2" />
+        </List>
+      </span>
 
       <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
         <span className="mr-2">意見</span>
         {swipe.gone.size} / {swipe.item.length}
       </p>
 
-      <div className="relative mt-2 h-[168px]">
+      <div className="relative mx-auto mt-2 h-[168px] w-full max-w-3xl">
         {swipe.item?.map(
           (
             {
               x,
               y,
               w,
+              h,
               left,
               rot,
               scale,
@@ -325,11 +314,12 @@ export default function Page({
           ) => {
             return (
               <animated.div
-                className="absolute block cursor-pointer touch-none will-change-transform"
+                className="absolute block cursor-pointer touch-none rounded bg-white will-change-transform"
                 key={i}
                 style={{
                   x,
                   y,
+                  height: h,
                   width: w,
                   left,
                   zIndex,
@@ -347,7 +337,7 @@ export default function Page({
                       display: disagreeDisplay,
                       opacity,
                     }}
-                    className="absolute z-10 h-full w-full rounded"
+                    className="absolute z-10 h-[144px] w-full rounded"
                   />
                   <animated.p
                     style={{ display: disagreeDisplay }}
@@ -362,7 +352,7 @@ export default function Page({
                       display: agreeDisplay,
                       opacity,
                     }}
-                    className="absolute z-10 h-full w-full rounded"
+                    className="absolute z-10 h-[144px] w-full rounded"
                   />
                   <animated.p
                     style={{ display: agreeDisplay }}
@@ -376,7 +366,7 @@ export default function Page({
                     description={swipe.opinions[i].opinion.content || ""}
                     user={swipe.opinions[i].user}
                     date={"2025/12/31 10:00"}
-                    className="pointer-events-none select-none bg-white"
+                    className="pointer-events-none select-none"
                   />
                 </animated.div>
               </animated.div>
