@@ -144,29 +144,29 @@ const Contents = ({
           <Graph className="mt-2" />
         </List>
 
-        <Link
-          to={`/swipe/${session.id}`}
-          className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
-          viewTransition={true}
-        >
-          <span className="primary-gradient mt-1 inline-block text-clip">
-            みんなの意見を見る
-          </span>
-          <Suspense>
-            <Await resolve={$remainingCount}>
-              {(count) => {
-                if (count === 0) {
-                  return null;
-                }
-                return (
+        <Suspense>
+          <Await resolve={$remainingCount}>
+            {(count) => {
+              if (count === 0) {
+                return null;
+              }
+              return (
+                <Link
+                  to={`/swipe/${session.id}`}
+                  className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
+                  viewTransition={true}
+                >
+                  <span className="primary-gradient mt-1 inline-block text-clip">
+                    みんなの意見を見る
+                  </span>
                   <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
                     {count}
                   </span>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </Link>
+                </Link>
+              );
+            }}
+          </Await>
+        </Suspense>
 
         <div className="flex items-center space-x-2">
           <Avatar src={session.owner.iconURL} className="h-6 w-6" />
