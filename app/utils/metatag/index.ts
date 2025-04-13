@@ -5,7 +5,7 @@ type Props = {
 };
 
 export const generateMetaTag = ({ title, description, ogp }: Props) => {
-  return [
+  return () => [
     {
       title: title || "ことひろ",
     },
