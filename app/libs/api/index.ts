@@ -31,6 +31,10 @@ export const api = createClient<paths>({
      */
     headers.set("accept-encoding", "gzip");
 
+    const res = fetch(init, { headers });
+
+    (async () => (await res).clone().json())().then((e) => [console.log(e), console.log(init.url)])
+
     return fetch(init, { headers });
   },
 });
