@@ -21,23 +21,6 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/opinions/{opinionID}/reports/solve": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** 通報を解決 */
-    post: operations["solveOpinionReport"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
   "/opinions/{opinionID}/reports": {
     parameters: {
       query?: never;
@@ -52,6 +35,23 @@ export interface paths {
     get: operations["getOpinionReports"];
     put?: never;
     post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions/{opinionID}/reports/solve": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** 通報を解決 */
+    post: operations["solveOpinionReport"];
     delete?: never;
     options?: never;
     head?: never;
@@ -282,6 +282,24 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/talksessions/{talkSessionID}/consent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** セッションに同意しているか */
+    get: operations["hasConsent"];
+    put?: never;
+    /** セッションへの同意 */
+    post: operations["consentTalkSession"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/talksessions": {
     parameters: {
       query?: never;
@@ -496,6 +514,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/password/change": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** パスワード変更 */
+    put: operations["changePassword"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/user": {
     parameters: {
       query?: never;
@@ -671,6 +706,40 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/password/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** パスワードによるログイン */
+    post: operations["passwordLogin"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/password/register": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** パスワードによる登録（devのみ） */
+    post: operations["passwordRegister"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/test": {
     parameters: {
       query?: never;
@@ -737,6 +806,90 @@ export interface paths {
     put?: never;
     /** 最新のポリシーに同意する */
     post: operations["policyConsent"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 所属組織一覧 */
+    get: operations["getOrganizations"];
+    put?: never;
+    /**
+     * 組織作成（運営ユーザーのみ）
+     * @description 組織を作成できる。
+     *     これを作れるユーザーはDBを直接叩いて作るしかない。
+     *
+     *     OrgType
+     *     - 1: 通常
+     *     - 2: 自治体
+     *     - 3: 議員
+     */
+    post: operations["createOrganizations"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/{organizationID}/invite": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * 組織ユーザー招待（運営ユーザーのみ）
+     * @description Role
+     *     - 1: Member
+     *     - 2: Admin
+     *     - 3: Owner
+     */
+    post: operations["inviteOrganization"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/{organizationID}/invite_user": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** 組織にユーザーを追加 */
+    post: operations["inviteOrganizationForUser"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/health": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** ヘルスチェック */
+    get: operations["health"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -834,6 +987,10 @@ export interface components {
       /** @description ユーザ登録済みか */
       isRegistered: boolean;
       isEmailVerified: boolean;
+      /** @description アカウントの種類。組織がなければ空 */
+      orgType?: number | null;
+      /** @description パスワードの更新が必要かどうか */
+      requiredPasswordChange: boolean;
     };
     offsetPagination: {
       totalCount: number;
@@ -841,19 +998,25 @@ export interface components {
       limit: number;
     };
     userDemographics: {
-      /** @description 誕生年 */
-      yearOfBirth?: number | null;
+      /**
+       * 20001010
+       * @description 生年月日
+       */
+      dateOfBirth?: number | null;
       /**
        * 性別
        * @description 性別
        */
       gender?: string | null;
       /**
-       * 市区町村
-       * @description 市区町村
+       * 市町村
+       * @description 市町村
        */
       city?: string | null;
-      /** @description 都道府県 */
+      /**
+       * 都道府県
+       * @description 都道府県
+       */
       prefecture?: string | null;
     };
     userGroupPosition: {
@@ -924,6 +1087,19 @@ export interface components {
       /** @description この意見が通報を受けた回数 */
       reportCount: number;
     };
+    organization: {
+      /** @description 組織ID */
+      ID: string;
+      /** @description 組織名 */
+      Name: string;
+      /** @description 組織のタイプ */
+      Type: number;
+      /** @description ロール */
+      Role: number;
+    };
+    success: {
+      message: string;
+    };
   };
   responses: never;
   parameters: never;
@@ -987,6 +1163,43 @@ export interface operations {
       };
     };
   };
+  getOpinionReports: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["reportDetail"];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   solveOpinionReport: {
     parameters: {
       query?: never;
@@ -1014,43 +1227,6 @@ export interface operations {
         };
         content: {
           "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getOpinionReports: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["reportDetail"];
         };
       };
       400: {
@@ -1189,6 +1365,11 @@ export interface operations {
            * @example
            */
           picture?: string;
+          /**
+           * @description シード意見かどうか
+           * @example
+           */
+          isSeed?: boolean;
         };
       };
     };
@@ -1749,6 +1930,82 @@ export interface operations {
           "application/json": {
             count: number;
           };
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  hasConsent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            hasConsent: boolean;
+          };
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  consentTalkSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
         };
       };
       400: {
@@ -2417,6 +2674,47 @@ export interface operations {
       };
     };
   };
+  changePassword: {
+    parameters: {
+      query: {
+        id_or_email: string;
+        /** @description 古いパスワード */
+        old_password: string;
+        /** @description 新たなパスワード */
+        new_password: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   get_user_info: {
     parameters: {
       query?: never;
@@ -2476,10 +2774,10 @@ export interface operations {
            */
           deleteIcon?: boolean | null;
           /**
-           * @description 生まれ年
+           * @description 生年月日
            * @example 0
            */
-          yearOfBirth?: number | null;
+          dateOfBirth?: number | null;
           /**
            * @description 性別
            * @example
@@ -2487,7 +2785,7 @@ export interface operations {
            */
           gender?: "男性" | "女性" | "その他" | "回答しない" | null;
           /**
-           * @description 市区町村
+           * @description 市町村
            * @example
            */
           city?: string | null;
@@ -2568,11 +2866,11 @@ export interface operations {
            */
           icon?: string;
           /**
-           * @description 生まれ年
+           * @description 生年月日
            * @default 0
            * @example 0
            */
-          yearOfBirth?: number | null;
+          dateOfBirth?: number | null;
           /**
            * @description 性別
            * @default preferNotToSay
@@ -2821,6 +3119,10 @@ export interface operations {
             /** @description ユーザ登録済みか */
             isRegistered: boolean;
             isEmailVerified: boolean;
+            /** @description アカウントの種類。組織がなければ空 */
+            orgType?: number | null;
+            /** @description パスワードの更新が必要かどうか */
+            requiredPasswordChange: boolean;
           };
         };
       };
@@ -3081,6 +3383,96 @@ export interface operations {
       };
     };
   };
+  passwordLogin: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @example  */
+          id_or_email: string;
+          /** @example  */
+          password: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  passwordRegister: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @example  */
+          id: string;
+          /** @example  */
+          password: string;
+          /** @example  */
+          email: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   test: {
     parameters: {
       query?: never;
@@ -3268,6 +3660,217 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["policyConsentStatus"];
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOrganizations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** @description 所属組織 */
+            organizations: components["schemas"]["organization"][];
+          };
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  createOrganizations: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @example  */
+          name: string;
+          /** @example 0 */
+          orgType?: number;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  inviteOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @example 0 */
+          role: number;
+          /** @example  */
+          email: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  inviteOrganizationForUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        organizationID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: {
+      content: {
+        "multipart/form-data": {
+          /** @example 0 */
+          role: number;
+          /** @example  */
+          displayID: string;
+        };
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            success: boolean;
+          };
+        };
+      };
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  health: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
         };
       };
       400: {

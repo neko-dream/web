@@ -8,11 +8,13 @@ tags:
   - name: opinion
   - name: talk_session
   - name: timeline
-  - name: user
   - name: auth
+  - name: user
   - name: test
   - name: image
   - name: policy
+  - name: organization
+  - name: health
 paths:
   /opinions/{opinionID}/votes:
     post:
@@ -94,6 +96,54 @@ paths:
       security:
         - apikey-header-SessionId: []
       x-ogen-operation-group: Vote
+  /opinions/{opinionID}/reports:
+    get:
+      summary: 意見に対する通報取得
+      deprecated: false
+      description: セッション作成者しか取得できない
+      operationId: getOpinionReports
+      tags:
+        - opinion
+      parameters:
+        - name: opinionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema: &ref_7
+                $ref: '#/components/schemas/reportDetail'
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Opinion
   /opinions/{opinionID}/reports/solve:
     post:
       summary: 通報を解決
@@ -131,54 +181,6 @@ paths:
               schema:
                 type: object
                 properties: {}
-          headers: {}
-        '400':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-              example:
-                code: GENERAL-000
-                message: INTERNAL SERVER ERROR.
-          headers: {}
-        '500':
-          description: ''
-          content:
-            application/json:
-              schema:
-                type: object
-                properties: {}
-              example:
-                code: GENERAL-000
-                message: INTERNAL SERVER ERROR.
-          headers: {}
-      security:
-        - apikey-header-SessionId: []
-      x-ogen-operation-group: Opinion
-  /opinions/{opinionID}/reports:
-    get:
-      summary: 意見に対する通報取得
-      deprecated: false
-      description: セッション作成者しか取得できない
-      operationId: getOpinionReports
-      tags:
-        - opinion
-      parameters:
-        - name: opinionID
-          in: path
-          description: ''
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: ''
-          content:
-            application/json:
-              schema: &ref_7
-                $ref: '#/components/schemas/reportDetail'
           headers: {}
         '400':
           description: ''
@@ -360,6 +362,10 @@ paths:
                   type: string
                   format: binary
                   description: 参考画像。4MiBまで
+                  example: ''
+                isSeed:
+                  type: boolean
+                  description: シード意見かどうか
                   example: ''
               required:
                 - opinionContent
@@ -1185,6 +1191,107 @@ paths:
                     type: integer
                 required:
                   - count
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/consent:
+    post:
+      summary: セッションへの同意
+      deprecated: false
+      description: ''
+      operationId: consentTalkSession
+      tags:
+        - talk_session
+      parameters:
+        - name: talkSessionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: TalkSession
+    get:
+      summary: セッションに同意しているか
+      deprecated: false
+      description: ''
+      operationId: hasConsent
+      tags:
+        - talk_session
+      parameters:
+        - name: talkSessionID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  hasConsent:
+                    type: boolean
+                required:
+                  - hasConsent
           headers: {}
         '400':
           description: ''
@@ -2196,6 +2303,67 @@ paths:
       security:
         - apikey-header-SessionId: []
       x-ogen-operation-group: TalkSession
+  /auth/password/change:
+    put:
+      summary: パスワード変更
+      deprecated: false
+      description: ''
+      operationId: changePassword
+      tags:
+        - auth
+      parameters:
+        - name: id_or_email
+          in: query
+          description: ''
+          required: true
+          schema:
+            type: string
+        - name: old_password
+          in: query
+          description: 古いパスワード
+          required: true
+          schema:
+            type: string
+        - name: new_password
+          in: query
+          description: 新たなパスワード
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Auth
   /user:
     put:
       summary: ユーザー情報の変更
@@ -2226,9 +2394,9 @@ paths:
                   default: false
                   example: 'false'
                   nullable: true
-                yearOfBirth:
+                dateOfBirth:
                   type: integer
-                  description: 生まれ年
+                  description: 生年月日
                   example: 0
                   nullable: true
                 gender:
@@ -2243,7 +2411,7 @@ paths:
                   nullable: true
                 city:
                   type: string
-                  description: 市区町村
+                  description: 市町村
                   example: ''
                   nullable: true
                 prefecture:
@@ -2388,10 +2556,10 @@ paths:
                   type: string
                   description: ユーザーアイコン
                   example: ''
-                yearOfBirth:
+                dateOfBirth:
                   type: integer
                   default: 0
-                  description: 生まれ年
+                  description: 生年月日
                   example: 0
                   nullable: true
                 gender:
@@ -2802,6 +2970,13 @@ paths:
                     description: ユーザ登録済みか
                   isEmailVerified:
                     type: boolean
+                  orgType:
+                    type: integer
+                    description: アカウントの種類。組織がなければ空
+                    nullable: true
+                  requiredPasswordChange:
+                    type: boolean
+                    description: パスワードの更新が必要かどうか
                 required:
                   - aud
                   - exp
@@ -2811,6 +2986,7 @@ paths:
                   - jti
                   - isRegistered
                   - isEmailVerified
+                  - requiredPasswordChange
           headers: {}
         '400':
           description: ''
@@ -3179,6 +3355,124 @@ paths:
           headers: {}
       security: []
       x-ogen-operation-group: Auth
+  /auth/password/login:
+    post:
+      summary: パスワードによるログイン
+      deprecated: false
+      description: ''
+      operationId: passwordLogin
+      tags:
+        - auth
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id_or_email:
+                  example: ''
+                  type: string
+                password:
+                  type: string
+                  example: ''
+              required:
+                - id_or_email
+                - password
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Auth
+  /auth/password/register:
+    post:
+      summary: パスワードによる登録（devのみ）
+      deprecated: false
+      description: ''
+      operationId: passwordRegister
+      tags:
+        - auth
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                id:
+                  example: ''
+                  type: string
+                password:
+                  example: ''
+                  type: string
+                email:
+                  example: ''
+                  type: string
+              required:
+                - id
+                - password
+                - email
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Auth
   /test:
     get:
       summary: OpenAPIテスト用
@@ -3434,6 +3728,297 @@ paths:
       security:
         - apikey-header-SessionId: []
       x-ogen-operation-group: Policy
+  /organizations:
+    post:
+      summary: 組織作成（運営ユーザーのみ）
+      deprecated: false
+      description: |-
+        組織を作成できる。
+        これを作れるユーザーはDBを直接叩いて作るしかない。
+
+        OrgType
+        - 1: 通常
+        - 2: 自治体
+        - 3: 議員
+      operationId: createOrganizations
+      tags:
+        - organization
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  example: ''
+                  type: string
+                orgType:
+                  type: integer
+                  example: 0
+              required:
+                - name
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Organization
+    get:
+      summary: 所属組織一覧
+      deprecated: false
+      description: ''
+      operationId: getOrganizations
+      tags:
+        - organization
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  organizations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/organization'
+                    description: 所属組織
+                required:
+                  - organizations
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Organization
+  /organizations/{organizationID}/invite:
+    post:
+      summary: 組織ユーザー招待（運営ユーザーのみ）
+      deprecated: false
+      description: |-
+        Role
+        - 1: Member
+        - 2: Admin
+        - 3: Owner
+      operationId: inviteOrganization
+      tags:
+        - organization
+      parameters:
+        - name: organizationID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: integer
+                  example: 0
+                email:
+                  example: ''
+                  type: string
+              required:
+                - role
+                - email
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Organization
+  /organizations/{organizationID}/invite_user:
+    post:
+      summary: 組織にユーザーを追加
+      deprecated: false
+      description: ''
+      operationId: inviteOrganizationForUser
+      tags:
+        - organization
+      parameters:
+        - name: organizationID
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                role:
+                  type: number
+                  example: 0
+                displayID:
+                  type: string
+                  example: ''
+              required:
+                - role
+                - displayID
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                required:
+                  - success
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security:
+        - apikey-header-SessionId: []
+      x-ogen-operation-group: Organization
+  /health:
+    get:
+      summary: ヘルスチェック
+      deprecated: false
+      description: ''
+      operationId: health
+      tags:
+        - health
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+          headers: {}
+        '400':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+        '500':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+                properties: {}
+              example:
+                code: GENERAL-000
+                message: INTERNAL SERVER ERROR.
+          headers: {}
+      security: []
+      x-ogen-operation-group: Health
 components:
   schemas:
     talkSession:
@@ -3605,6 +4190,13 @@ components:
           description: ユーザ登録済みか
         isEmailVerified:
           type: boolean
+        orgType:
+          type: integer
+          description: アカウントの種類。組織がなければ空
+          nullable: true
+        requiredPasswordChange:
+          type: boolean
+          description: パスワードの更新が必要かどうか
       required:
         - aud
         - exp
@@ -3614,6 +4206,7 @@ components:
         - jti
         - isRegistered
         - isEmailVerified
+        - requiredPasswordChange
     offsetPagination:
       type: object
       properties:
@@ -3630,9 +4223,10 @@ components:
     userDemographics:
       type: object
       properties:
-        yearOfBirth:
+        dateOfBirth:
           type: integer
-          description: 誕生年
+          description: 生年月日
+          title: '20001010'
           nullable: true
         gender:
           type: string
@@ -3641,12 +4235,13 @@ components:
           nullable: true
         city:
           type: string
-          title: 市区町村
-          description: 市区町村
+          title: 市町村
+          description: 市町村
           nullable: true
         prefecture:
           type: string
           description: 都道府県
+          title: 都道府県
           nullable: true
     userGroupPosition:
       type: object
@@ -3808,6 +4403,33 @@ components:
         - reasons
         - reportCount
         - status
+    organization:
+      type: object
+      properties:
+        ID:
+          type: string
+          description: 組織ID
+        Name:
+          type: string
+          description: 組織名
+        Type:
+          type: integer
+          description: 組織のタイプ
+        Role:
+          type: integer
+          description: ロール
+      required:
+        - ID
+        - Name
+        - Type
+        - Role
+    success:
+      type: object
+      properties:
+        message:
+          type: string
+      required:
+        - message
   securitySchemes:
     apikey-header-SessionId:
       type: apiKey

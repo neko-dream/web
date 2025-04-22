@@ -68,6 +68,10 @@ const links = [
         name: "ニュース",
         href: "news",
       },
+      {
+        name: "電子広告",
+        href: "notice",
+      },
     ],
   },
 ];
