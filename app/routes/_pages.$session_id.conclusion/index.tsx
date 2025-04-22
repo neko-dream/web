@@ -1,15 +1,15 @@
 import { Link, useOutletContext } from "react-router";
-import { button } from "~/components/Button";
-import { SessionRouteContext } from "../_pages.$session_id/types";
+import { button } from "~/components/ui/button";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();
 
   return (
-    <>
+    <div className="mx-auto w-full max-w-2xl">
       <div className="justify-center space-y-2 rounded-xl bg-white p-4">
         <p className="font-bold text-gray-400">メッセージ</p>
-        <p className="text-sm text-gray-400">
+        <p className="text-gray-400 text-sm">
           セッションに参加してくれた人たちに向けて、お礼のメッセージや今後の意気込みを伝えよう！
         </p>
         <span className="flex justify-center">
@@ -27,7 +27,7 @@ export default function Page() {
 
       <div className="mt-4 justify-center space-y-2 rounded-xl bg-white p-4">
         <p className="font-bold text-gray-400">ロードマップ</p>
-        <p className="text-sm text-gray-400">
+        <p className="text-gray-400 text-sm">
           セッションを終えた今、活動を進める道標になるロードマップを記入しよう！
         </p>
         <span className="flex justify-center">
@@ -42,6 +42,6 @@ export default function Page() {
           </Link>
         </span>
       </div>
-    </>
+    </div>
   );
 }

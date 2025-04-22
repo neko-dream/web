@@ -1,14 +1,15 @@
-import { Form, useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
-import type { Route } from "~/app/routes/_pages.create.$session_id.opinion/+types";
-import { Label } from "~/components/Label";
-import Textarea from "~/components/Textarea";
-import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
 import { getFormProps, getInputProps } from "@conform-to/react";
-import { Button } from "~/components/Button";
-import { InfoCircle, PaperPlane } from "~/components/Icons";
+import { Form, useNavigate } from "react-router";
+import { InfoCircle, PaperPlane } from "~/components/icons";
+import { Button } from "~/components/ui/button";
+import { Heading } from "~/components/ui/heading";
+import { Label } from "~/components/ui/label";
+import Textarea from "~/components/ui/textarea";
+import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
+import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 
 export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
   loaderData: { session },
@@ -16,7 +17,7 @@ export default function Page({
   const navigate = useNavigate();
 
   const { form, fields, isDisabled } = useCreateOpinionsForm({
-    talkSessionID: session.id!,
+    talkSessionID: session.id,
     onFinishedProcess: () => {
       navigate(`/${session.id}/opinion`);
     },
@@ -24,16 +25,16 @@ export default function Page({
 
   return (
     <div className="flex flex-1 flex-col bg-[#F2F2F7]">
-      <Heading title="意見を書いてみる" onClick={() => navigate(-1)} />
+      <Heading title="意見を書いてみる" to={`/${session.id}`} isLink={true} />
 
       <Form
         {...getFormProps(form)}
         onSubmit={form.onSubmit}
-        className="p-4 pb-16"
+        className="mx-auto w-full max-w-2xl p-4 pb-16"
       >
         <p className="text-gray-500">{session.theme}</p>
         <Label title="あなたの意見" className="mt-4">
-          <div className="flex items-center space-x-1 text-sm font-bold text-blue-500">
+          <div className="flex items-center space-x-1 font-bold text-blue-500 text-sm">
             <InfoCircle />
             <p>投稿のルール</p>
           </div>
@@ -45,7 +46,7 @@ export default function Page({
         <Button
           color="primary"
           type="submit"
-          className="mx-auto !mt-12 flex items-center space-x-4"
+          className="!mt-12 mx-auto flex items-center space-x-4"
           disabled={isDisabled}
         >
           <PaperPlane />

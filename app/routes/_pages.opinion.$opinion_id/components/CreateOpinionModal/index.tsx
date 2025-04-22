@@ -1,6 +1,6 @@
-import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode } from "react";
-import { InfoCircle } from "~/components/Icons";
+import { AnimatePresence, motion } from "framer-motion";
+import type { ReactNode } from "react";
+import { InfoCircle } from "~/components/icons";
 
 type Props = {
   isOpen: boolean;
@@ -31,9 +31,9 @@ export const CreateOpinionModal = ({ isOpen, onClose, children }: Props) => {
             className="fixed right-0 bottom-0 left-0 z-50 rounded-t-2xl bg-white p-4 shadow-lg"
           >
             <div className="flex items-center justify-between">
-              <h2 className="mx-auto text-lg font-bold">コメント</h2>
+              <h2 className="mx-auto font-bold text-lg">コメント</h2>
             </div>
-            <div className="mt-1 flex items-center space-x-1 text-sm font-bold text-blue-500">
+            <div className="mt-1 flex items-center space-x-1 font-bold text-blue-500 text-sm">
               <InfoCircle />
               <p>投稿のルール</p>
             </div>

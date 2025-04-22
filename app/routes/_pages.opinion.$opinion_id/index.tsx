@@ -1,30 +1,30 @@
-import { Form, useNavigate } from "react-router";
-import { Heading } from "~/components/Heading";
-import { loader } from "./modules/loader";
-import type { Route } from "~/app/routes/_pages.opinion.$opinion_id/+types";
-import { Card } from "~/components/Card";
-import { RiMore2Fill } from "react-icons/ri";
+import { getFormProps, getInputProps } from "@conform-to/react";
+import { useState } from "react";
+import { Form } from "react-router";
 import { Fragment } from "react/jsx-runtime";
+import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
+import { Card } from "~/components/features/opinion-card";
+import { More } from "~/components/icons";
+import { Button } from "~/components/ui/button";
+import { Heading } from "~/components/ui/heading";
+import Textarea from "~/components/ui/textarea";
+import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
+import { api } from "~/libs/api";
+import type { Route } from "~/react-router/_pages.opinion.$opinion_id/+types";
+import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
-import { useState } from "react";
-import { useCreateOpinionsForm } from "~/features/opinion/hooks/useCreateOpinionForm";
-import Textarea from "~/components/Textarea";
-import { Button } from "~/components/Button";
-import { getFormProps, getInputProps } from "@conform-to/react";
-import { api } from "~/libs/api";
-import { OpinionType } from "~/features/opinion/types";
 
-export { loader };
+export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
 export default function Page({
-  loaderData: { opinion, user, opinions },
+  loaderData: { currentUser, root, opinions },
 }: Route.ComponentProps) {
-  const navigate = useNavigate();
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
-  const handleSubmitVote = async (opinionID: string, status: OpinionType) => {
-    const { data } = await api.POST("/opinions/{opinionID}/votes", {
+  const handleSubmitVote = async (opinionID: string, status: VoteType) => {
+    await api.POST("/opinions/{opinionID}/votes", {
       credentials: "include",
       params: {
         path: {
@@ -35,70 +35,80 @@ export default function Page({
         voteStatus: status,
       },
     });
-    console.log(data);
   };
 
   const { form, fields } = useCreateOpinionsForm({
-    parentOpinionID: opinion.id,
-    onFinishedProcess: () => {
-      console.log("onFinishedProcess");
-    },
+    parentOpinionID: root.opinion.id,
+    onFinishedProcess: () => {},
   });
 
   return (
     <>
-      <Heading title="コメント一覧" onClick={() => navigate(-1)} />
-      <Card
-        title={opinion.title}
-        description={opinion.content}
-        user={{
-          displayID: "",
-          displayName: user.displayName,
-          iconURL: user.iconURL,
-        }}
-        // FIXME: ココアってる？
-        // status={opinion.voteType}
-        date={"2025/12/31 10:00"}
-        onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
-        onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
-        onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-        onClickMore={() => {}}
-        className="rounded-none"
-        isJudgeButton
-      />
+      {/* FIXME: 意見IDからセッションのIDが欲しい */}
+      <Heading title="コメント一覧" />
+      {root.opinion.isDeleted ? (
+        <DeletedOpinionCard
+          title={root.opinion.title}
+          description={root.opinion.content}
+          status={root.myVoteType}
+          date={root.opinion.postedAt}
+        />
+      ) : (
+        <Card
+          title={root.opinion.title}
+          description={root.opinion.content}
+          user={root.user}
+          status={root.myVoteType}
+          date={root.opinion.postedAt}
+          isJudgeButton={currentUser?.displayID !== root.user.displayID}
+          onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
+          onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
+          onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
+          className="rounded-none"
+        />
+      )}
 
       <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
-        {opinions.map(({ opinion, user: opinionUser }, i) => {
+        {opinions.map(({ opinion, user, myVoteType }, i) => {
+          if (opinion.isDeleted) {
+            return (
+              <DeletedOpinionCard
+                key={i}
+                href={`/opinion/${opinion.id}`}
+                title={opinion.title}
+                description={opinion.content}
+                status={myVoteType}
+                date={opinion.postedAt}
+              />
+            );
+          }
           return (
             <Fragment key={i}>
-              <RiMore2Fill size={24} className="ml-4 text-cyan-500" />
+              <More className="ml-4 w-6 text-cyan-500" />
               <Card
                 key={i}
                 title={opinion.title}
                 description={opinion.content}
-                user={{
-                  displayID: "",
-                  displayName: opinionUser.displayName,
-                  iconURL: opinionUser.iconURL,
-                }}
-                // status={myVoteType}
-                date={"2025/12/31 10:00"}
+                user={user}
+                status={myVoteType}
+                date={opinion.postedAt}
+                isJudgeButton={currentUser?.displayID !== user.displayID}
                 onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
                 onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
                 onClickPass={() => handleSubmitVote(opinion.id, "pass")}
-                onClickMore={() => {}}
-                isJudgeButton
               />
             </Fragment>
           );
         })}
       </div>
 
-      <div className="fixed right-4 bottom-4 z-10">
-        <CreateOpinionButton
-          onClick={() => setIsCreateOpinionModalOpen(true)}
-        />
-      </div>
+      {!root.opinion.isDeleted && (
+        <div className="fixed right-4 bottom-4 z-10">
+          <CreateOpinionButton
+            onClick={() => setIsCreateOpinionModalOpen(true)}
+          />
+        </div>
+      )}
 
       <CreateOpinionModal
         isOpen={isCreateOpinionModal}
@@ -110,7 +120,7 @@ export default function Page({
             className="h-[270px]"
             placeholder="この意見についてどう思うか書いてみよう！"
           />
-          <Button color="primary" type="submit" className="mx-auto !mt-8 block">
+          <Button color="primary" type="submit" className="!mt-8 mx-auto block">
             <img src="" alt="" />
             <span>コメントを投稿する</span>
           </Button>

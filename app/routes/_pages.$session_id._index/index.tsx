@@ -1,10 +1,13 @@
 import { useOutletContext } from "react-router";
-import { SessionRouteContext } from "../_pages.$session_id/types";
-import xss from "xss";
+import { SanitizedHtml } from "~/components/features/xss-html";
+import type { SessionRouteContext } from "~/types/ctx";
 
 export default function Page() {
   const { session } = useOutletContext<SessionRouteContext>();
-  const sanitizedHtml = xss(session.description || "");
 
-  return <article dangerouslySetInnerHTML={{ __html: sanitizedHtml || "" }} />;
+  return (
+    <div className="mx-auto max-w-4xl">
+      <SanitizedHtml html={session.description || ""} />
+    </div>
+  );
 }

@@ -1,51 +1,93 @@
-import { Await, Link, useLoaderData } from "react-router";
 import { Suspense } from "react";
-import Error from "~/components/Error";
-import Session from "~/components/Session";
-import { loader } from "./modules/loader";
+import { Await, Link } from "react-router";
+import Session from "~/components/features/talksession-card";
+import type { Route } from "~/react-router/_pages.home/+types";
 import { SessionSkeleton } from "./components/SessionSkeleton";
-import { headers } from "./modules/headers";
 
-export { loader, headers };
+export { loader } from "./modules/loader";
+export { meta } from "./modules/meta";
 
-export default function Page() {
-  const { $session } = useLoaderData<typeof loader>();
-
+export default function Page({
+  loaderData: { $session, $closeSession, theme },
+}: Route.ComponentProps) {
   return (
-    <>
-      <h2 className="mx-4 mt-4 text-xl font-bold">注目のセッション</h2>
-      <Suspense fallback={<SessionSkeleton />}>
+    <div className="mx-auto mb-16 w-full max-w-4xl">
+      <Suspense
+        fallback={
+          <>
+            <h2 className="mx-4 mt-6 font-bold text-xl">注目のセッション</h2>
+            <SessionSkeleton />
+          </>
+        }
+      >
         <Await resolve={$session}>
           {(data) => {
-            if (!data?.talkSessions.length) {
+            if (data?.talkSessions.length === 0) {
               return (
-                <Error>
-                  <p>お探しのトークセッションは </p>
-                  <p>見つかりませんでした...</p>
-                  <p className="mt-2 text-xs text-gray-700">
-                    右上の 🔍 から探せるよ！
+                <div className="mt-4 space-y-2 p-4">
+                  <p>【{theme}】に一致するセッションが見つかりませんでした。</p>
+                  <p className="primary-gradient inline-block text-clip font-semibold">
+                    再検索のヒント
                   </p>
-                </Error>
+                  <p className="text-[#8E8E93]">
+                    ・誤字、脱字がないか確認してみてください
+                    <br />
+                    ・言葉の区切り方を変えてみてください
+                    <br />
+                    ・似たキーワードを入れてみてください
+                  </p>
+                </div>
               );
             }
 
             return (
-              <div className="mt-4 space-y-6 px-4">
-                {data?.talkSessions.map((session, i) => (
-                  <Link
-                    to={`/${session.talkSession.id}`}
-                    className="block"
-                    key={i}
-                    viewTransition
-                  >
-                    <Session {...session} />
-                  </Link>
-                ))}
-              </div>
+              <>
+                <h2 className="mx-4 mt-6 font-bold text-xl">
+                  注目のセッション
+                </h2>
+                <div className="mt-4 space-y-6 px-4">
+                  {data?.talkSessions.map((session, i) => (
+                    <Link
+                      to={`/${session.talkSession.id}`}
+                      className="block"
+                      key={i}
+                      viewTransition={true}
+                    >
+                      <Session {...session} />
+                    </Link>
+                  ))}
+                </div>
+              </>
             );
           }}
         </Await>
       </Suspense>
-    </>
+
+      <Suspense fallback={<SessionSkeleton />}>
+        <Await resolve={$closeSession}>
+          {(data) => {
+            return (
+              <>
+                <h2 className="mx-4 mt-12 font-bold text-xl">
+                  終了したセッション
+                </h2>
+                <div className="mt-4 space-y-6 px-4">
+                  {data?.talkSessions.map((session, i) => (
+                    <Link
+                      to={`/${session.talkSession.id}`}
+                      className="block hover:opacity-80"
+                      key={i}
+                      viewTransition={true}
+                    >
+                      <Session {...session} />
+                    </Link>
+                  ))}
+                </div>
+              </>
+            );
+          }}
+        </Await>
+      </Suspense>
+    </div>
   );
 }

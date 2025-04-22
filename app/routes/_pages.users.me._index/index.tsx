@@ -1,20 +1,35 @@
-import { Link, useLoaderData } from "react-router";
-import { Avatar } from "~/components/Avatar";
-import { loader } from "./modules/loader";
-import { Setting } from "~/components/Icons";
+import { Suspense } from "react";
+import { Await } from "react-router";
+import { Card } from "~/components/features/opinion-card";
+import type { Route } from "~/react-router/_pages.users.me._index/+types";
 
-export { loader };
+export { loader } from "./modules/loader";
 
-export default function Page() {
-  const { user } = useLoaderData<typeof loader>();
-
+export default function Page({
+  loaderData: { $opinions },
+}: Route.ComponentProps) {
   return (
-    <div className="mt-2 flex flex-1 flex-col items-center">
-      <Link to={"/users/me/edit"} className="mr-2 ml-auto">
-        <Setting />
-      </Link>
-      <Avatar src={user.iconURL} className="mt-2 h-16 w-16" />
-      <p className="text-2xl">{user.displayName}</p>
-    </div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <Await resolve={$opinions}>
+        {({ data }) => {
+          return data?.opinions.map(({ opinion, user }, i) => {
+            return (
+              <Card
+                key={i}
+                title={opinion.title}
+                description={opinion.content}
+                user={{
+                  displayID: "",
+                  displayName: user.displayName,
+                  iconURL: user.iconURL,
+                }}
+                className="mx-auto w-full max-w-2xl"
+                date={"2025/12/31 10:00"}
+              />
+            );
+          });
+        }}
+      </Await>
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
-import { ComponentProps } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
-import { DefaultAvatar } from "~/components/Icons";
+import { DefaultAvatar } from "~/components/icons";
 
 type Props = ComponentProps<"button"> & {
   className?: string;
@@ -16,7 +16,7 @@ export default function Uploadarea({ className, preview, ...props }: Props) {
         <img
           src={preview}
           alt=""
-          className="h-[72px] w-[72px] rounded-full border border-gray-300"
+          className="h-[72px] w-[72px] rounded-full border border-gray-300 object-cover"
         />
       ) : (
         <DefaultAvatar />

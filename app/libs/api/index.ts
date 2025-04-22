@@ -1,5 +1,5 @@
 import createClient from "openapi-fetch";
-import { paths } from "./openapi";
+import type { paths } from "~/types/openapi";
 
 /**
  * objectを適切な形式に変換する
@@ -7,7 +7,9 @@ import { paths } from "./openapi";
 const convertFormData = (params: object): URLSearchParams | FormData => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(params)) {
-    value && formData.append(key, value);
+    if (value) {
+      formData.append(key, `${value}`);
+    }
   }
   return formData;
 };
@@ -18,7 +20,7 @@ const convertFormData = (params: object): URLSearchParams | FormData => {
 export const api = createClient<paths>({
   baseUrl: API_URL,
   bodySerializer: (body) => body && convertFormData(body),
-  fetch: async (init) => {
+  fetch: (init) => {
     const headers = new Headers(init.headers);
 
     /**
@@ -29,17 +31,6 @@ export const api = createClient<paths>({
      */
     headers.set("accept-encoding", "gzip");
 
-    const response = fetch(init, {
-      headers,
-    });
-    trace(response);
-    return response;
+    return fetch(init, { headers });
   },
 });
-
-const trace = async (response: Promise<Response>) => {
-  const res = await response;
-  if (!res.ok) {
-    console.error(res);
-  }
-};

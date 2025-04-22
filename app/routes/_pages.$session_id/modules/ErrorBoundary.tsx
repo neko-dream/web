@@ -1,19 +1,19 @@
-import { isRouteErrorResponse, useRouteError } from "react-router";
-import Error from "~/components/Error";
-import { JSX } from "react";
+import type { JSX } from "react";
+import { useRouteError } from "react-router";
+import { ErrorView } from "~/components/layouts/error";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
+  if (error instanceof Response && error.status === 404) {
     return (
-      <Error>
+      <ErrorView>
         <p>お探しのトークセッションは </p>
         <p>見つかりませんでした...</p>
-        <p className="mt-2 text-xs text-gray-700">右上の 🔍 から探せるよ！</p>
-      </Error>
+        <p className="mt-2 text-gray-700 text-xs">右上の 🔍 から探せるよ！</p>
+      </ErrorView>
     );
   }
 
-  return <Error />;
+  return <ErrorView />;
 }

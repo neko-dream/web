@@ -1,4 +1,4 @@
-import { LoaderFunctionArgs, redirect } from "react-router";
+import { type LoaderFunctionArgs, redirect } from "react-router";
 import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
@@ -12,7 +12,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   }
 
   // 認証済みなら /home にリダイレクト
-  if (data?.isVerify) {
+  if (data?.isRegistered) {
     throw redirect("/home");
   }
 

@@ -1,5 +1,3 @@
-import type { EntryContext } from "react-router";
-import { ServerRouter } from "react-router";
 import { isbot } from "isbot";
 /**
  * React19にすれば治る
@@ -7,6 +5,8 @@ import { isbot } from "isbot";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import { renderToReadableStream } from "react-dom/server.browser";
+import type { EntryContext } from "react-router";
+import { ServerRouter } from "react-router";
 
 export default async function handleRequest(
   request: Request,
@@ -18,9 +18,7 @@ export default async function handleRequest(
     <ServerRouter context={reactRouterContext} url={request.url} />,
     {
       signal: request.signal,
-      onError(error: unknown) {
-        // Log streaming rendering errors from inside the shell
-        console.error(error);
+      onError(_error: unknown) {
         responseStatusCode = 500;
       },
     },

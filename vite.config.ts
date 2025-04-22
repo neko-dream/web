@@ -1,13 +1,15 @@
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import fs from "node:fs";
+// biome-ignore lint/correctness/noNodejsModules: <explanation>
+import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import fs from "fs";
-import path from "path";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ mode }) => {
   // Storybookの時はStorybook用の設定を返す
   if (process.env.SB) {
     return {
@@ -15,7 +17,7 @@ export default defineConfig(async () => {
     };
   }
 
-  if (!process.env.CF_ENV) {
+  if (mode === "production" && !process.env.CF_ENV) {
     throw new Error("CF_ENV must be defined");
   }
   const proxy = await getPlatformProxy({

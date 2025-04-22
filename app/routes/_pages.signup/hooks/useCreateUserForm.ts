@@ -1,12 +1,10 @@
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
+
 import { useCustomForm } from "~/hooks/useCustomForm";
-import {
-  signupFormSchema,
-  singupFormWithEmailSchema,
-} from "~/features/user/schemas/form";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
+import { signupFormSchema, singupFormWithEmailSchema } from "~/schemas/users";
 
 export const useCreateUserForm = (widthEmail: boolean) => {
   const navigate = useNavigate();
@@ -15,7 +13,7 @@ export const useCreateUserForm = (widthEmail: boolean) => {
     schema: widthEmail ? singupFormWithEmailSchema : signupFormSchema,
     onSubmit: async ({ value }) => {
       const compressIcon =
-        value.icon && value.icon?.size !== 0 && fileCompress(value.icon);
+        value.icon && value.icon?.size > 0 && fileCompress(value.icon);
 
       const { error } = await api.POST("/user", {
         credentials: "include",

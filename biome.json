@@ -1,0 +1,62 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git"
+  },
+  "files": {
+    "ignore": [".react-router", "worker-configuration.d.ts"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2
+  },
+  "organizeImports": {
+    "enabled": true
+  },
+  "linter": {
+    "enabled": true,
+    "ignore": [
+      "app/components/features/opinion-graph",
+      "tools/kotohiro.openapi.yaml"
+    ],
+    "rules": {
+      "all": true,
+      "nursery": {
+        "useSortedClasses": {
+          "level": "warn",
+          "fix": "safe",
+          "options": {
+            "functions": ["tv"]
+          }
+        }
+      },
+      "suspicious": {
+        "noReactSpecificProps": "off",
+        "noEmptyBlockStatements": "off",
+        "noArrayIndexKey": "off",
+        "useErrorMessage": "off"
+      },
+      "style": {
+        "useNamingConvention": "off",
+        "noDefaultExport": "off",
+        "useFilenamingConvention": "off",
+        "noNamespaceImport": "off",
+        "noParameterAssign": "off"
+      },
+      "a11y": {
+        "noSvgWithoutTitle": "off"
+      },
+      "correctness": {
+        "useImportExtensions": "off",
+        "noUndeclaredDependencies": "off",
+        "noUndeclaredVariables": "off",
+        "useExhaustiveDependencies": "off"
+      },
+      "performance": {
+        "noBarrelFile": "off"
+      }
+    }
+  }
+}

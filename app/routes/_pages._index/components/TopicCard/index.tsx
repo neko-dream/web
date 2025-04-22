@@ -1,12 +1,15 @@
-import { ClockCircle, Environment } from "~/components/Icons";
+import { ClockCircle, Environment } from "~/components/icons";
 import { Card } from "../Card";
 
 export const TopicCard = () => {
   return (
-    <div className="primary-gradient-30 h-[336px] w-[327px] cursor-pointer rounded-[24px] p-[2px] select-none">
+    <a
+      href="/#"
+      className="primary-gradient-30 block h-[336px] w-[327px] cursor-pointer select-none rounded-[24px] p-[2px]"
+    >
       <div className="flex h-[332px] w-[323px] flex-col items-start justify-start rounded-[22px] bg-[#F8F8FC] pt-4 pb-0">
         <p className="mx-4 font-bold">西山公園で野外ライブを開催したい！</p>
-        <div className="mx-4 mt-4 box-border flex w-[-webkit-fill-available] justify-between border-b border-[#E5E5EA] pb-2">
+        <div className="mx-4 mt-4 box-border flex w-[-webkit-fill-available] justify-between border-[#E5E5EA] border-b pb-2">
           <p className="flex w-28 text-xs">
             <Environment />
             鯖江
@@ -16,7 +19,7 @@ export const TopicCard = () => {
             あと40日
           </p>
         </div>
-        <p className="primary-gradient mx-4 mt-2 font-bold text-clip">
+        <p className="primary-gradient mx-4 mt-2 text-clip font-bold">
           みんなの意見
         </p>
         <div className="mt-2 w-full overflow-hidden rounded-sm">
@@ -44,6 +47,6 @@ export const TopicCard = () => {
           />
         </div>
       </div>
-    </div>
+    </a>
   );
 };
