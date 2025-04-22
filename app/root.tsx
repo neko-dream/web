@@ -19,7 +19,7 @@ export function Layout({ children }: { children: ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="relative">
         {children}
         <ScrollRestoration />
         <Scripts />

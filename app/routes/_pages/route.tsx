@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { ToastContainer, Zoom } from "react-toastify";
+import { Slide, ToastContainer, } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
@@ -25,22 +25,21 @@ export default function Layout({
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer
         position="bottom-center"
-        autoClose={3000}
+        autoClose={6000}
         pauseOnFocusLoss={false}
         hideProgressBar={true}
-        transition={Zoom}
+        transition={Slide}
         draggable={true}
         theme="dark"
         style={{
-          maxWidth: "360px",
-          width: "90%",
-          marginLeft: "auto",
-          marginRight: "auto",
-          left: 0,
-          right: 0,
-          bottom: "20px",
+          maxWidth: "600px",
+          width: "100%",
+          padding: "0 10px",
         }}
         toastStyle={{
+          maxWidth: "600px",
+          width: "100%",
+          marginBottom: "10px",
           borderRadius: "10px",
           backgroundColor: "rgba(0, 0, 0, 0.8)",
         }}
