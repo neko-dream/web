@@ -1,6 +1,7 @@
 import { getFormProps, getInputProps } from "@conform-to/react";
 import { useState } from "react";
-import { Form } from "react-router";
+import { Form, useRevalidator } from "react-router";
+import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card } from "~/components/features/opinion-card";
@@ -9,7 +10,7 @@ import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import Textarea from "~/components/ui/textarea";
 import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
-import { api } from "~/libs/api";
+import { useVote } from "~/hooks/useVote";
 import type { Route } from "~/react-router/_pages.opinion.$opinion_id/+types";
 import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
@@ -21,20 +22,19 @@ export { meta } from "./modules/meta";
 export default function Page({
   loaderData: { currentUser, root, opinions },
 }: Route.ComponentProps) {
+  const { revalidate } = useRevalidator();
+  // FIXME: 正しいセッションIDを渡す
+  const { vote } = useVote({ sessionID: "fa" });
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
-  const handleSubmitVote = async (opinionID: string, status: VoteType) => {
-    await api.POST("/opinions/{opinionID}/votes", {
-      credentials: "include",
-      params: {
-        path: {
-          opinionID,
-        },
-      },
-      body: {
-        voteStatus: status,
-      },
-    });
+  const handleVote = async (opinionID: string, status: VoteType) => {
+    const result = await vote({ opinionID, status });
+    if (result === "success") {
+      toast.success("意思表明を行いました");
+      revalidate();
+    } else if (result === "error") {
+      toast.error("意思表明に失敗しました");
+    }
   };
 
   const { form, fields } = useCreateOpinionsForm({
@@ -61,9 +61,9 @@ export default function Page({
           status={root.myVoteType}
           date={root.opinion.postedAt}
           isJudgeButton={currentUser?.displayID !== root.user.displayID}
-          onClickAgree={() => handleSubmitVote(root.opinion.id, "agree")}
-          onClickDisagree={() => handleSubmitVote(root.opinion.id, "disagree")}
-          onClickPass={() => handleSubmitVote(root.opinion.id, "pass")}
+          onClickAgree={() => handleVote(root.opinion.id, "agree")}
+          onClickDisagree={() => handleVote(root.opinion.id, "disagree")}
+          onClickPass={() => handleVote(root.opinion.id, "pass")}
           className="rounded-none"
         />
       )}
@@ -93,9 +93,9 @@ export default function Page({
                 status={myVoteType}
                 date={opinion.postedAt}
                 isJudgeButton={currentUser?.displayID !== user.displayID}
-                onClickAgree={() => handleSubmitVote(opinion.id, "agree")}
-                onClickDisagree={() => handleSubmitVote(opinion.id, "disagree")}
-                onClickPass={() => handleSubmitVote(opinion.id, "pass")}
+                onClickAgree={() => handleVote(opinion.id, "agree")}
+                onClickDisagree={() => handleVote(opinion.id, "disagree")}
+                onClickPass={() => handleVote(opinion.id, "pass")}
               />
             </Fragment>
           );
