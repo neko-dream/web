@@ -23,51 +23,56 @@ export const useVote = ({ sessionID }: Props) => {
   );
 
   const check = async () => {
-    if (!window.localStorage.getItem(sessionID)) {
-      // セッションに同意しているかどうか
-      const { data } = await api.GET("/talksessions/{talkSessionID}/consent", {
+    //　同意済みなら何もしない
+    if (window.localStorage.getItem(`satisfied-${sessionID}`)) {
+      return "satisfied";
+    }
+
+    // セッションに同意しているかどうか
+    const { data } = await api.GET("/talksessions/{talkSessionID}/consent", {
+      credentials: "include",
+      params: {
+        path: {
+          talkSessionID: sessionID,
+        },
+      },
+    });
+
+    // デモぐらが足りていなければデモグラのフラグを立てる
+    const { data: restrictionsRequired } = await api.GET(
+      "/talksessions/{talkSessionID}/restrictions",
+      {
         credentials: "include",
         params: {
           path: {
             talkSessionID: sessionID,
           },
         },
-      });
+      },
+    );
 
-      // デモぐらが足りていなければデモグラのフラグを立てる
-      const { data: restrictionsRequired } = await api.GET(
-        "/talksessions/{talkSessionID}/restrictions",
-        {
-          credentials: "include",
-          params: {
-            path: {
-              talkSessionID: sessionID,
-            },
-          },
-        },
-      );
+    // 同意モーダルだけ出してデモグラモーダルは出さない
+    const onlyConsent = !data?.hasConsent;
 
-      // 同意モーダルだけ出してデモグラモーダルは出さない
-      const onlyConsent = !data?.hasConsent;
+    //
+    const onlyDemograpy =
+      restrictionsRequired && restrictionsRequired?.length > 0;
 
-      //
-      const onlyDemograpy =
-        restrictionsRequired && restrictionsRequired?.length > 0;
-
-      if (onlyConsent && onlyDemograpy) {
-        setIsRequestModal(["consent", "demography"]);
-        return "non-satisfied";
-      }
-      if (onlyConsent) {
-        setIsRequestModal(["consent"]);
-        return "non-satisfied";
-      }
-      if (onlyDemograpy) {
-        setIsRequestModal(["demography"]);
-        return "non-satisfied";
-      }
-      return "satisfied";
+    if (onlyConsent && onlyDemograpy) {
+      setIsRequestModal(["consent", "demography"]);
+      return "non-satisfied";
     }
+    if (onlyConsent) {
+      setIsRequestModal(["consent"]);
+      return "non-satisfied";
+    }
+    if (onlyDemograpy) {
+      setIsRequestModal(["demography"]);
+      return "non-satisfied";
+    }
+
+    window.localStorage.setItem(`satisfied-${sessionID}`, "true");
+    return "satisfied";
   };
 
   const vote = async ({
@@ -82,7 +87,7 @@ export const useVote = ({ sessionID }: Props) => {
       return "pending";
     }
 
-    const { data } = await api.POST("/opinions/{opinionID}/votes", {
+    const { data, error } = await api.POST("/opinions/{opinionID}/votes", {
       credentials: "include",
       params: {
         path: {
@@ -93,6 +98,11 @@ export const useVote = ({ sessionID }: Props) => {
         voteStatus: status,
       },
     });
+
+    if (error?.code === "restriction_not_satisfied") {
+      setIsRequestModal(["demography"]);
+      return "pending";
+    }
 
     if (data) {
       return "success";
