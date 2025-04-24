@@ -46,7 +46,7 @@ export const DemographicsModal = ({
               <div className="mt-4 flex flex-col space-y-4">
                 <Link
                   className="cursor-pointer text-center font-bold text-mt-blue-600"
-                  to={`/request/demographics/${sessionID}?page=opinion`}
+                  to={`/request/demographics/${sessionID}`}
                 >
                   情報を入力・認証する
                 </Link>
