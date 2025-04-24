@@ -65,7 +65,6 @@ type Props = Omit<Route.ComponentProps["loaderData"], "$session"> & {
 const Contents = ({
   session,
   $restrictions,
-  $restrictionsRequired,
   $user,
   $remainingCount,
   $positions,

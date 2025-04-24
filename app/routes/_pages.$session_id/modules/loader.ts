@@ -82,7 +82,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     $session,
     $remainingCount,
     $restrictions,
-    $restrictionsRequired,
     $positions,
   };
 };
