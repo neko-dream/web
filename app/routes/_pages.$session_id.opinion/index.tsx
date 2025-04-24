@@ -9,7 +9,6 @@ import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
 import type { VoteType } from "~/types";
 import type { SessionRouteContext } from "~/types/ctx";
 import { AnalyticsModal } from "./components/AnalyticsModal";
-import { GroupTabs } from "./components/GroupTabs";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -102,7 +101,7 @@ export default function Page({
                     return (
                       <>
                         {/* FIXME: サーバーと繋げてぽよ */}
-                        <GroupTabs
+                        {/* <GroupTabs
                           tabs={[
                             { label: "Aグループ", value: "a" },
                             { label: "Bグループ", value: "b" },
@@ -110,7 +109,7 @@ export default function Page({
                           ]}
                           activeTab={activeTab}
                           onChange={setActiveTab}
-                        />
+                        /> */}
                         {opinionCardList}
                       </>
                     );
