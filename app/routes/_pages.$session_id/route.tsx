@@ -91,7 +91,8 @@ const Contents = ({
       }
       const ownerTabs = [
         ...tabs,
-        { label: "活動報告", href: `/${session.id}/conclusion` },
+        // FIXME: ここは一旦コメントアウト
+        // { label: "活動報告", href: `/${session.id}/conclusion` },
         { label: "通報", href: `/${session.id}/reports` },
       ];
       setTabItems(ownerTabs);
@@ -142,19 +143,23 @@ const Contents = ({
           </Suspense>
         </div>
 
-        <List
-          className="block bg-gray-100 md:hidden"
-          title={
-            <div className="flex items-center space-x-2">
-              <PieChart />
-              <p>参加者のグラフ</p>
-            </div>
-          }
-        >
-          <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                return (
+        <Suspense>
+          <Await resolve={$positions}>
+            {({ data }) => {
+              if (data?.positions.length === 0) {
+                return null;
+              }
+
+              return (
+                <List
+                  className="block bg-gray-100 md:hidden"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <PieChart />
+                      <p>参加者のグラフ</p>
+                    </div>
+                  }
+                >
                   <div className="flex w-full justify-center rounded bg-white p-2 md:block">
                     <Graph
                       polygons={data?.positions}
@@ -166,11 +171,11 @@ const Contents = ({
                       background={0xffffff}
                     />
                   </div>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </List>
+                </List>
+              );
+            }}
+          </Await>
+        </Suspense>
 
         <Suspense>
           <Await resolve={$remainingCount}>
