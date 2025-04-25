@@ -101,7 +101,7 @@ export const Card = ({
                 onClick={onClickPass}
                 color={status === "pass" ? "pass" : "disabled"}
               >
-                保留
+                パス
               </OpinionButton>
               <OpinionButton
                 onClick={onClickAgree}

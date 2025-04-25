@@ -24,7 +24,7 @@ type Props = Omit<ModalProps, "children"> & {
 const voteJPmap = {
   agree: "良さそう",
   disagree: "違うかも",
-  pass: "保留",
+  pass: "パス",
 };
 
 export const AnalyticsModal = (props: Props) => {
@@ -149,7 +149,7 @@ export const AnalyticsModal = (props: Props) => {
           違うかも
         </OpinionButton>
         <OpinionButton color="pass" onClick={() => setSelectVoteType("pass")}>
-          保留
+          パス
         </OpinionButton>
         <OpinionButton color="agree" onClick={() => setSelectVoteType("agree")}>
           良さそう
