@@ -416,7 +416,7 @@ export default function Page({
           >
             <ArrowDown className="fill-white" />
           </button>
-          <p className="mt-1 text-indigo-400">保留</p>
+          <p className="mt-1 text-indigo-400">パス</p>
         </div>
 
         <div className="absolute top-6 left-3/5 flex flex-col items-center">

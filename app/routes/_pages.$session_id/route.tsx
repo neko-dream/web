@@ -10,14 +10,17 @@ import Graph from "~/components/features/opinion-graph";
 import { Edit, Notification, PieChart } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
 import { Avatar } from "~/components/ui/avatar";
+import { useSatisfiedStore, useVote } from "~/hooks/useVote";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import { JST } from "~/libs/date";
 import { notfound } from "~/libs/response";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { RouteContext, SessionRouteContext } from "~/types/ctx";
+import { ConsentModal } from "./components/ConsentModal";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { DemographicsModal } from "./components/DemographicsModal";
+import { RequestsModal } from "./components/RequestsModal";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -66,19 +69,19 @@ const Contents = ({
   $remainingCount,
   $positions,
 }: Props) => {
-  const [isDemograDialogOpen, setIsDemograDialogOpen] = useState(false);
-  const [isRequestDemogra, setIsRequestDemogra] = useState<boolean>();
-
   const tabs = [
     { label: "内容", href: `/${session.id}` },
     { label: "意見", href: `/${session.id}/opinion` },
     { label: "レポート", href: `/${session.id}/analysis` },
   ];
 
+  const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
   const windowWidth = useWindowResize(374);
-
-  const navigate = useNavigate();
+  const { check } = useVote({ sessionID: session.id });
+  const { isRequestModal, setIsRequestModal } = useSatisfiedStore(
+    (state) => state,
+  );
 
   useEffect(() => {
     $user.then((user) => {
@@ -87,28 +90,31 @@ const Contents = ({
       }
       const ownerTabs = [
         ...tabs,
-        { label: "活動報告", href: `/${session.id}/conclusion` },
+        // FIXME: ここは一旦コメントアウト
+        // { label: "活動報告", href: `/${session.id}/conclusion` },
         { label: "通報", href: `/${session.id}/reports` },
       ];
       setTabItems(ownerTabs);
     });
   }, []);
 
-  useEffect(() => {
-    $restrictions.then((restrictions) => {
-      const hasRequiredRestrictions = restrictions.some(
-        (restriction) => restriction.required,
-      );
-      setIsRequestDemogra(hasRequiredRestrictions);
-    });
-  }, []);
+  const handleCloseRequestModal = () => {
+    setIsRequestModal([]);
+  };
 
-  const handleDemographicsDialogOpen = (e: MouseEvent) => {
+  const handleMoveCreateOpinionPage = async (e: MouseEvent) => {
     e.preventDefault();
-    if (isRequestDemogra) {
-      setIsDemograDialogOpen(true);
-    } else {
+    const result = await check();
+    if (result === "satisfied") {
       navigate(`/create/${session.id}/opinion`);
+    }
+  };
+
+  const handleMoveSwipePage = async (e: MouseEvent) => {
+    e.preventDefault();
+    const result = await check();
+    if (result === "satisfied") {
+      navigate(`/swipe/${session.id}`);
     }
   };
 
@@ -136,19 +142,23 @@ const Contents = ({
           </Suspense>
         </div>
 
-        <List
-          className="block bg-gray-100 md:hidden"
-          title={
-            <div className="flex items-center space-x-2">
-              <PieChart />
-              <p>参加者のグラフ</p>
-            </div>
-          }
-        >
-          <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                return (
+        <Suspense>
+          <Await resolve={$positions}>
+            {({ data }) => {
+              if (data?.positions.length === 0) {
+                return null;
+              }
+
+              return (
+                <List
+                  className="block bg-gray-100 md:hidden"
+                  title={
+                    <div className="flex items-center space-x-2">
+                      <PieChart />
+                      <p>参加者のグラフ</p>
+                    </div>
+                  }
+                >
                   <div className="flex w-full justify-center rounded bg-white p-2 md:block">
                     <Graph
                       polygons={data?.positions}
@@ -160,11 +170,11 @@ const Contents = ({
                       background={0xffffff}
                     />
                   </div>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </List>
+                </List>
+              );
+            }}
+          </Await>
+        </Suspense>
 
         <Suspense>
           <Await resolve={$remainingCount}>
@@ -177,18 +187,18 @@ const Contents = ({
                     }
 
                     return (
-                      <Link
-                        to={`/swipe/${session.id}`}
-                        className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] border-gradient p-2 text-center before:rounded-2xl"
-                        viewTransition={true}
+                      <button
+                        type="button"
+                        onClick={handleMoveSwipePage}
+                        className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
                       >
-                        <span className="primary-gradient mt-1 inline-block text-clip">
+                        <span className="primary-gradient inline-block text-clip">
                           みんなの意見を見る
                         </span>
                         <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
                           {count}
                         </span>
-                      </Link>
+                      </button>
                     );
                   }}
                 </Await>
@@ -250,19 +260,37 @@ const Contents = ({
           </Await>
         </Suspense>
         <div className="fixed right-4 bottom-4 z-10">
-          <CreateOpinionButton
-            disabled={isRequestDemogra === null}
-            onClick={handleDemographicsDialogOpen}
-          />
+          <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
         </div>
       </div>
 
-      <DemographicsModal
-        $restrictions={$restrictions}
+      <RequestsModal
+        isOpen={isRequestModal.length > 0}
+        onOpenChange={() => setIsRequestModal([])}
         sessionID={session.id}
-        isOpen={isDemograDialogOpen}
-        onOpenChange={setIsDemograDialogOpen}
-      />
+      >
+        {(state, next) => {
+          if (state === "consent") {
+            return (
+              <ConsentModal
+                restrictions={session.restrictions}
+                sessionID={session.id}
+                onClose={handleCloseRequestModal}
+                onConform={next}
+              />
+            );
+          }
+          if (state === "demography") {
+            return (
+              <DemographicsModal
+                $restrictions={$restrictions}
+                sessionID={session.id}
+                onClose={handleCloseRequestModal}
+              />
+            );
+          }
+        }}
+      </RequestsModal>
     </>
   );
 };
