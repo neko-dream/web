@@ -29,15 +29,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       return data?.remainingCount;
     });
 
-  const $reports = api.GET("/talksessions/{talkSessionID}/report", {
-    headers: request.headers,
-    params: {
-      path: {
-        talkSessionID: params.session_id,
-      },
-    },
-  });
-
   /**
    * 制限項目の中で足りていない項目を取得
    */
@@ -89,7 +80,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   return {
     $session,
-    $reports,
     $remainingCount,
     $restrictions,
     $positions,

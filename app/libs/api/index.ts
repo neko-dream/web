@@ -8,7 +8,7 @@ const convertFormData = (params: object): URLSearchParams | FormData => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(params)) {
     if (value) {
-      formData.append(key, `${value}`);
+      formData.append(key, value);
     }
   }
   return formData;

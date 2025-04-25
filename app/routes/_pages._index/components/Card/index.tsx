@@ -44,7 +44,7 @@ export const Card = ({
               違うかも
             </OpinionButton>
             <OpinionButton tabIndex={-1} color={"disabled"}>
-              保留
+              パス
             </OpinionButton>
             <OpinionButton tabIndex={-1} color={"disabled"}>
               良さそう

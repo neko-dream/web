@@ -1,13 +1,14 @@
 import { Suspense, useState } from "react";
-import { Await, useRevalidator } from "react-router";
+import { Await, useOutletContext, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card, OpinionCardSkeleton } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
+import { useVote } from "~/hooks/useVote";
 import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
-import { postVote } from "~/utils/vote";
+import type { VoteType } from "~/types";
+import type { SessionRouteContext } from "~/types/ctx";
 import { AnalyticsModal } from "./components/AnalyticsModal";
-import { GroupTabs } from "./components/GroupTabs";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -17,23 +18,21 @@ export default function Page({
   loaderData: { $opinions, $reasons, $user, $positions },
 }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
+  const { session } = useOutletContext<SessionRouteContext>();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectOpinionID, setSelectOpinionID] = useState<string>("");
+  const [selectOpinionID, setSelectOpinionID] = useState("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState("a");
+  // const [activeTab, setActiveTab] = useState("a");
 
-  const handleVote = async (opinionID: string, voteStatus: string) => {
-    const { data, error } = await postVote({
-      opinionID,
-      voteStatus: voteStatus as never,
-    });
+  const { vote } = useVote({ sessionID: session.id });
 
-    if (data) {
+  const handleVote = async (opinionID: string, status: VoteType) => {
+    const result = await vote({ opinionID, status });
+    if (result === "success") {
       toast.success("意思表明を行いました");
       revalidate();
-    }
-    if (error) {
-      toast.error(error.message);
+    } else if (result === "error") {
+      toast.error("意思表明に失敗しました");
     }
   };
 
@@ -102,7 +101,7 @@ export default function Page({
                     return (
                       <>
                         {/* FIXME: サーバーと繋げてぽよ */}
-                        <GroupTabs
+                        {/* <GroupTabs
                           tabs={[
                             { label: "Aグループ", value: "a" },
                             { label: "Bグループ", value: "b" },
@@ -110,7 +109,7 @@ export default function Page({
                           ]}
                           activeTab={activeTab}
                           onChange={setActiveTab}
-                        />
+                        /> */}
                         {opinionCardList}
                       </>
                     );

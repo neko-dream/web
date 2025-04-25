@@ -105,16 +105,18 @@ export const Header = ({ $user }: Props) => {
                         <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
                       </Link>
 
-                      <Link
-                        to={"/create/session/new"}
-                        className={button({
-                          className:
-                            "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
-                        })}
-                      >
-                        <PlusCircle />
-                        <span>作成</span>
-                      </Link>
+                      {user?.orgType && (
+                        <Link
+                          to={"/create/session/new"}
+                          className={button({
+                            className:
+                              "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
+                          })}
+                        >
+                          <PlusCircle />
+                          <span>作成</span>
+                        </Link>
+                      )}
                     </div>
                   );
                 }}

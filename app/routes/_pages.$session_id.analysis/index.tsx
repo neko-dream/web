@@ -48,6 +48,10 @@ export default function Page({
         <Suspense>
           <Await resolve={$positions}>
             {({ data }) => {
+              if (data?.positions.length === 0) {
+                return null;
+              }
+
               return (
                 <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
                   <Graph
