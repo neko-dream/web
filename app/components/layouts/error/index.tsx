@@ -7,14 +7,7 @@ type Props = {
 export const ErrorView = ({ children }: Props): JSX.Element => {
   return (
     <div className="flex flex-1 flex-col items-center justify-center">
-      {children ? (
-        children
-      ) : (
-        <>
-          <p>あちゃ〜〜</p>
-          <p>なんかエラーがでちゃ〜〜</p>
-        </>
-      )}
+      {children ? children : <p>エラーが発生しました</p>}
     </div>
   );
 };
