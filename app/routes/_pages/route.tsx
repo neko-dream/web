@@ -1,5 +1,5 @@
 import { Outlet } from "react-router";
-import { Slide, ToastContainer, } from "react-toastify";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
