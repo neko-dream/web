@@ -2,7 +2,7 @@ import { type ComponentProps, createElement } from "react";
 import { tv } from "tailwind-variants";
 import { JST } from "~/libs/date";
 import type { UserType, VoteType } from "~/types";
-import { LineChart, Message, More, Notification } from "../../icons";
+import { Message, More, Notification } from "../../icons";
 import { Avatar, AvatarSkeleton } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import { Popover } from "../../ui/popover";
@@ -117,20 +117,21 @@ export const Card = ({
       {isMoreButton && (
         <Popover buttonLabel={<More className="w-6 text-gray-600" />}>
           <div className="flex flex-col px-3 py-1">
-            <button
+            {/* FIXME: 一旦コメントアウト */}
+            {/* <button
               onClick={() => onClickAnalytics?.()}
               type="button"
               className="flex cursor-pointer space-x-2 border-gray-200 border-b py-2 text-[#8E8E93]"
             >
               <LineChart />
               <span>分析</span>
-            </button>
+            </button> */}
             <button
               onClick={() => onClickReport?.()}
               type="button"
               className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
             >
-              <Notification />
+              <Notification className="fill-[#FF3B30]" />
               <span>通報</span>
             </button>
           </div>
