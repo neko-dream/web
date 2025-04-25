@@ -24,9 +24,10 @@ export const useVote = ({ sessionID }: Props) => {
 
   const check = async () => {
     //　同意済みなら何もしない
-    if (window.localStorage.getItem(`satisfied-${sessionID}`)) {
-      return "satisfied";
-    }
+    // 動作確認取れてないので一旦コメントアウト
+    // if (window.localStorage.getItem(`satisfied-${sessionID}`)) {
+    //   return "satisfied";
+    // }
 
     // セッションに同意しているかどうか
     const { data } = await api.GET("/talksessions/{talkSessionID}/consent", {
