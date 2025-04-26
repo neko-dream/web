@@ -15,8 +15,8 @@ import * as PIXI from "pixi.js";
 
 // const colorList = [0xff453a, 0xffd60a, 0xbf5af2, 0x30d158];
 const colorList = [
-  0xf03e3e, 0x862e9c, 0xfd7e14, 0x38d9a9, 0xfab005, 0xa9e34b, 0xf783ac,
-  0x4263eb, 0x4dabf7,
+  0xFFA8A8, 0xEEBEFA, 0xFFA94D, 0x63E6BE, 0xFFEC99, 0xC0EB75, 0xFCC2D7,
+  0x91A7FF, 0x74C0FC,
 ];
 
 const groupNames = Array.from({ length: 8 }, (_, i) =>
@@ -241,8 +241,9 @@ const LabelsPlot = ({ labels }: any) => {
           eventMode="static"
         /> */}
         <Text
-          text={text.counts}
-          x={text.textsCenter[0] + 10}
+          text={`${text.counts}人`}
+          // x={text.textsCenter[0] + 10}
+          x={text.textsCenter[0]}
           y={text.textsCenter[1] + 10}
           anchor={0.5}
           style={
