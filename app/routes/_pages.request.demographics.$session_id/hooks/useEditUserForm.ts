@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
@@ -23,6 +24,9 @@ export const useEditUserForm = ({ user, sessionID, returnPage }: Props) => {
         body: {
           ...value,
           icon: undefined,
+          dateOfBirth: dayjs(value.dateOfBirth).format(
+            "YYYYMMDD",
+          ) as unknown as number,
         },
       });
 
