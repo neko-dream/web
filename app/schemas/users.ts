@@ -21,7 +21,7 @@ const baseSchema = v.object({
   prefecture: v.optional(v.string()),
   icon: v.optional(v.instance(File)),
   gender: v.optional(genderSchema),
-  yearOfBirth: str2num,
+  dateOfBirth: str2num,
 });
 
 export const adressFormSchema = v.object({
