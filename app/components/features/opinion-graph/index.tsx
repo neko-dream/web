@@ -241,8 +241,9 @@ const LabelsPlot = ({ labels }: any) => {
           eventMode="static"
         /> */}
         <Text
-          text={text.counts}
-          x={text.textsCenter[0] + 10}
+          text={`${text.counts}人`}
+          // x={text.textsCenter[0] + 10}
+          x={text.textsCenter[0]}
           y={text.textsCenter[1] + 10}
           anchor={0.5}
           style={
