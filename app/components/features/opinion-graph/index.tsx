@@ -966,7 +966,7 @@ const drawAutoRoundedPolygon = (
     // const maxR = Math.min(distPrev, distNext) / 2 - 0.1;
     // const maxR = Math.min(distPrev, distNext) / 2 - 50;
     // const maxR = Math.min(distPrev, distNext) / 2 - 10;
-    const maxR = Math.min(distPrev, distNext) / 5 - 0.1;
+    const maxR = Math.min(distPrev, distNext) / 10 - 0.1;
     const r = Math.min(rOriginal, Math.max(0, maxR));
 
     const v1 = { x: p0.x - p1.x, y: p0.y - p1.y };
