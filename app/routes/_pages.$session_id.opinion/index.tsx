@@ -22,7 +22,9 @@ export default function Page({
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
-  // const [activeTab, setActiveTab] = useState("a");
+
+  $positions.then(console.log);
+  $opinions.then(console.log);
 
   const { vote } = useVote({ sessionID: session.id });
 
