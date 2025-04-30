@@ -15,8 +15,8 @@ import * as PIXI from "pixi.js";
 
 // const colorList = [0xff453a, 0xffd60a, 0xbf5af2, 0x30d158];
 const colorList = [
-  0xFFA8A8, 0xEEBEFA, 0xFFA94D, 0x63E6BE, 0xFFEC99, 0xC0EB75, 0xFCC2D7,
-  0x91A7FF, 0x74C0FC,
+  0xffa8a8, 0xeebefa, 0xffa94d, 0x63e6be, 0xffec99, 0xc0eb75, 0xfcc2d7,
+  0x91a7ff, 0x74c0fc,
 ];
 
 const groupNames = Array.from({ length: 8 }, (_, i) =>
@@ -159,7 +159,7 @@ const PolygonPlot = ({
         key={i}
         color={colorList[Number(polygon.groupId)]}
         points={polygon.points}
-        groupid={0}
+        groupID={0}
         selectGroupId={undefined}
       ></RoundedPolygon>
     );
@@ -202,7 +202,7 @@ const GroupCirclePlot = ({ singlePoints }: { singlePoints: any }) => {
         singlePoint={singlePoint}
         color={colorList[Number(singlePoint.groupId)]}
         circleSize={15 + 0.1 * singlePoint.pointsCount}
-        groupid={0}
+        groupID={0}
         selectGroupId={undefined}
       />
     );
@@ -570,15 +570,15 @@ const Dots = ({
   const hasSinglePointGroup = new Set<string>();
   const hasPerimeterIndexGroup = new Set<string>();
   const idxToGroupId = [];
-  positions.forEach((v: { groupId: string; posX: number; posY: any }) => {
+  positions.forEach((v: { groupID: string; posX: number; posY: any }) => {
     _minX = Math.min(_minX, v.posX);
     _minY = Math.min(_minY, v.posY);
     _maxX = Math.max(_maxX, v.posX);
     _maxY = Math.max(_maxY, v.posY);
-    idxToGroupId.push(v.groupId);
-    groupIds.add(v.groupId);
+    idxToGroupId.push(v.groupID);
+    groupIds.add(v.groupID);
     if ("perimeterIndex" in v) {
-      hasPerimeterIndexGroup.add(v.groupId);
+      hasPerimeterIndexGroup.add(v.groupID);
     }
   });
 
@@ -609,7 +609,7 @@ const Dots = ({
     positions.map(
       (v: {
         displayID: string;
-        groupId: string;
+        groupID: string;
         posX: number;
         posY: any;
         iconURL: string;
@@ -626,9 +626,9 @@ const Dots = ({
         //   (v.posX - _minX) * ((width - paddingX * 2) / originalWidth),
         // );
 
-        if (!hasPerimeterIndexGroup.has(v.groupId)) {
-          groupPointInfo[Number(v.groupId)].x.add(v.posX);
-          groupPointInfo[Number(v.groupId)].y.add(v.posY);
+        if (!hasPerimeterIndexGroup.has(v.groupID)) {
+          groupPointInfo[Number(v.groupID)]?.x.add(v.posX);
+          groupPointInfo[Number(v.groupID)]?.y.add(v.posY);
         }
 
         const x =
@@ -668,7 +668,7 @@ const Dots = ({
         return {
           x: isNaN(x) ? centerX : x,
           y: isNaN(y) ? centerY : y,
-          groupId: v.groupId,
+          groupId: v.groupID,
           radius: radius,
           myPosition: myPositionFlag,
           iconURL: v.iconURL,
@@ -679,8 +679,8 @@ const Dots = ({
   for (const groupId of groupIds) {
     if (!hasPerimeterIndexGroup.has(groupId)) {
       if (
-        groupPointInfo[Number(groupId)].x.size > 1 ||
-        groupPointInfo[Number(groupId)].y.size > 1
+        groupPointInfo[Number(groupId)]?.x.size > 1 ||
+        groupPointInfo[Number(groupId)]?.y.size > 1
       ) {
         hasDifferentPointGroup.add(groupId);
       } else {
@@ -700,8 +700,8 @@ const Dots = ({
 
   for (const groupId of hasSinglePointGroup) {
     const polygons = positions.filter(
-      (opinion: { groupId: string; perimeterIndex: number }) => {
-        return opinion.groupId === groupId;
+      (opinion: { groupID: string; perimeterIndex: number }) => {
+        return opinion.groupID === groupId;
       },
     );
 
@@ -755,8 +755,8 @@ const Dots = ({
 
   for (const groupId of hasDifferentPointGroup) {
     const polygons = positions.filter(
-      (opinion: { groupId: string; perimeterIndex: number }) => {
-        return opinion.groupId === groupId;
+      (opinion: { groupID: string; perimeterIndex: number }) => {
+        return opinion.groupID === groupId;
       },
     );
 
@@ -1001,12 +1001,12 @@ const drawAutoRoundedPolygon = (
 const RoundedPolygon = ({
   points,
   color,
-  groupid,
+  groupID,
   selectGroupId,
 }: {
   points: PolygonPoints;
   color: number;
-  groupid: number;
+  groupID: number;
   selectGroupId: any;
 }) => {
   // const points = [
@@ -1042,13 +1042,13 @@ const Circle = ({
   singlePoint,
   circleSize = 10,
   color,
-  groupid,
+  groupID,
   selectGroupId,
 }: {
   singlePoint: any;
   circleSize: any;
   color: number;
-  groupid: number;
+  groupID: number;
   selectGroupId: any;
 }) => {
   // console.log("circle !!!!!!!!!");
