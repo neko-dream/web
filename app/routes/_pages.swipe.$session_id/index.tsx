@@ -182,7 +182,7 @@ export default function Page({
 
       const current = opinions.length - swipe.gone.size;
       if (current === 0) {
-        navigate(`/${session.id}`);
+        navigate(`/${session.id}/opinion`);
       }
       setSwipeCount((prev) => prev + 1);
     },
@@ -209,7 +209,7 @@ export default function Page({
     }
 
     if (current === 0) {
-      navigate(`/${session.id}`);
+      navigate(`/${session.id}/opinion`);
     }
 
     swipe.api.start((i) => {
