@@ -167,7 +167,10 @@ const PolygonPlot = ({
 };
 
 // グループ長方体を生成
-const RectPlot = ({ differentPoints, selectGroupId }: { differentPoints: any, selectGroupId: any }) => {
+const RectPlot = ({
+  differentPoints,
+  selectGroupId,
+}: { differentPoints: any; selectGroupId: any }) => {
   return differentPoints.map((differentPoint: any, i: any) => {
     const x = differentPoint.firstPoint.x - differentPoint.secondPoint.x;
     const y = differentPoint.firstPoint.y - differentPoint.secondPoint.y;
@@ -194,7 +197,10 @@ const RectPlot = ({ differentPoints, selectGroupId }: { differentPoints: any, se
 };
 
 // グループサークルを生成
-const GroupCirclePlot = ({ singlePoints, selectGroupId }: { singlePoints: any, selectGroupId: any }) => {
+const GroupCirclePlot = ({
+  singlePoints,
+  selectGroupId,
+}: { singlePoints: any; selectGroupId: any }) => {
   return singlePoints.map((singlePoint: any, i: any) => {
     return (
       <Circle
@@ -929,8 +935,14 @@ const Dots = ({
         myPositionData={myPositionData}
         selectGroupId={selectGroupId}
       ></AvatarPlot> */}
-      <RectPlot differentPoints={resultDifferenctPoints} selectGroupId={selectGroupId}></RectPlot>
-      <GroupCirclePlot singlePoints={resultSinglePoints} selectGroupId={selectGroupId}></GroupCirclePlot>
+      <RectPlot
+        differentPoints={resultDifferenctPoints}
+        selectGroupId={selectGroupId}
+      ></RectPlot>
+      <GroupCirclePlot
+        singlePoints={resultSinglePoints}
+        selectGroupId={selectGroupId}
+      ></GroupCirclePlot>
       <MyPositionPlot
         dots={dots}
         myPositionData={myPositionData}
