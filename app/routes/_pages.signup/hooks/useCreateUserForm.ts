@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
@@ -19,6 +20,9 @@ export const useCreateUserForm = (widthEmail: boolean) => {
         credentials: "include",
         body: {
           ...value,
+          dateOfBirth: dayjs(value.dateOfBirth).format(
+            "YYYYMMDD",
+          ) as unknown as number,
           icon: (await compressIcon) as unknown as string,
         },
       });

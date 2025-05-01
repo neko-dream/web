@@ -2,7 +2,6 @@ import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
 import { type ChangeEvent, useRef, useState } from "react";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
-import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import AdressInputs from "~/components/features/input-adress";
 import { Check, Photo } from "~/components/icons";
@@ -66,6 +65,11 @@ export default function Page({
           title="ユーザー名"
           required={true}
           errors={fields.displayName.errors}
+          notes={[
+            "ユーザー名は誰でもみられる状態で公開されます。",
+            "ニックネームを入力してください。",
+            "注意：個人情報は入力しないでください。",
+          ]}
         >
           <Input
             {...getInputProps(fields.displayName, { type: "text" })}
@@ -114,16 +118,18 @@ export default function Page({
         <Label
           title="誕生年"
           optional={true}
-          errors={fields.yearOfBirth.errors}
+          errors={fields.dateOfBirth.errors}
         >
-          <Select
-            {...getSelectProps(fields.yearOfBirth)}
-            error={isFieldsError(fields.yearOfBirth.errors)}
-            options={bathday.map((v) => ({
-              value: `${v}`,
-              title: `${v}年`,
-            }))}
-          />
+          <span className="relative">
+            <Input
+              {...getInputProps(fields.dateOfBirth, {
+                type: "date",
+              })}
+              type="date"
+              className="h-12 w-full px-4"
+              placeholder="記入する"
+            />
+          </span>
         </Label>
 
         {/* FIXME: 型が合わない */}
