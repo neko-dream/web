@@ -1,7 +1,7 @@
 import { animated, to } from "@react-spring/web";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { useState } from "react";
-import { Await, Link, useParams } from "react-router";
+import { Await, Link, useNavigate } from "react-router";
 import { useSprings } from "react-spring";
 import { toast } from "react-toastify";
 import { useDrag } from "react-use-gesture";
@@ -17,7 +17,6 @@ import {
   PointUp,
 } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
-import { button } from "~/components/ui/button";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
@@ -165,9 +164,9 @@ export const useSwipe = ({ opinions, onSwipe }: Props) => {
 export default function Page({
   loaderData: { opinions, session, $positions },
 }: Route.ComponentProps) {
-  const [isOpinionEnd, setIsOpinionEnd] = useState<boolean>(false);
   const windowWidth = useWindowResize(374);
-  const params = useParams();
+  const navigate = useNavigate();
+  const [swipeCount, setSwipeCount] = useState(0);
 
   const swipe = useSwipe({
     opinions,
@@ -182,33 +181,12 @@ export default function Page({
       }
 
       const current = opinions.length - swipe.gone.size;
-      setTimeout(() => {
-        if (current === 0) {
-          setIsOpinionEnd(true);
-        }
-      }, 300);
+      if (current === 0) {
+        navigate(`/${session.id}`);
+      }
+      setSwipeCount((prev) => prev + 1);
     },
   });
-
-  useEffect(() => {
-    if (opinions.length === 0) {
-      setIsOpinionEnd(true);
-    }
-  }, [opinions]);
-
-  if (opinions.length === 0) {
-    return (
-      <div className="relative flex w-full flex-1 flex-col items-center justify-center">
-        <p>全ての意見に意思表明しました🎉</p>
-        <Link
-          to={`/${params.id}`}
-          className={button({ color: "primary", className: "mt-4 block" })}
-        >
-          みんなの意見を見る
-        </Link>
-      </div>
-    );
-  }
 
   const handleSubmitVote = async (v: VoteType) => {
     const current = opinions.length - swipe.gone.size - 1;
@@ -230,11 +208,9 @@ export default function Page({
       return toast.error(error.message);
     }
 
-    setTimeout(() => {
-      if (current === 0) {
-        setIsOpinionEnd(true);
-      }
-    }, 300);
+    if (current === 0) {
+      navigate(`/${session.id}`);
+    }
 
     swipe.api.start((i) => {
       if (i !== current) {
@@ -242,6 +218,7 @@ export default function Page({
       }
 
       swipe.gone.add(current);
+      setSwipeCount((prev) => prev + 1);
 
       return {
         x: v === "agree" ? 800 : v === "disagree" ? -800 : 0,
@@ -252,19 +229,7 @@ export default function Page({
     });
   };
 
-  if (isOpinionEnd) {
-    return (
-      <div className="relative flex w-full flex-1 flex-col items-center justify-center space-y-4">
-        <p>{opinions.length}件の意見に意思表明しました🎉</p>
-        <Link
-          to={`/${params.id}`}
-          className={button({ color: "primary", className: "block" })}
-        >
-          みんなの意見を見る
-        </Link>
-      </div>
-    );
-  }
+  // console.log(swipe.gone.size);
 
   return (
     <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
@@ -310,7 +275,7 @@ export default function Page({
 
       <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
         <span className="mr-2">意見</span>
-        {swipe.gone.size} / {swipe.item.length}
+        {swipeCount} / {swipe.item.length}
       </p>
 
       <div className="relative mx-auto mt-2 h-[168px] w-full max-w-3xl">
