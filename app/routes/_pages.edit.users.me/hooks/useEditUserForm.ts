@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
@@ -6,6 +5,7 @@ import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
 import { userEditFormSchema } from "~/schemas/users";
 import type { UserType } from "~/types";
+import { removeHyphens } from "~/utils/format-date";
 
 type Props = {
   user: UserType;
@@ -28,9 +28,7 @@ export const useEditUserForm = ({ user }: Props) => {
         credentials: "include",
         body: {
           ...value,
-          dateOfBirth: dayjs(value.dateOfBirth).format(
-            "YYYYMMDD",
-          ) as unknown as number,
+          dateOfBirth: removeHyphens(value.dateOfBirth),
           icon: (await compressIcon) as unknown as string,
         },
       });

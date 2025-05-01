@@ -11,18 +11,11 @@ import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.edit.users.me/+types";
+import { formatDate } from "~/utils/format-date";
 import { useEditUserForm } from "./hooks/useEditUserForm";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
-
-const formatDate = (str: string) => {
-  return str.replace(
-    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
-    /^(\d{4})(\d{2})(\d{2})$/,
-    "$1-$2-$3",
-  ) as unknown as number;
-};
 
 export default function Page({
   loaderData: { user, demographics },
@@ -31,7 +24,7 @@ export default function Page({
     user: {
       ...user,
       ...demographics,
-      dateOfBirth: formatDate(demographics.dateOfBirth?.toString() || ""),
+      dateOfBirth: formatDate(demographics.dateOfBirth?.toString()),
     },
   });
 
