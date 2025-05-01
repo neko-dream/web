@@ -36,7 +36,7 @@ type PolygonPoints = {
 type GroupPolygon = {
   points: PolygonPoints;
   flatPoints: number[];
-  groupId: string;
+  groupID: string;
 }[];
 
 const Axes = ({
@@ -113,7 +113,7 @@ const DotPlot = ({
     }) => {
       g.clear();
 
-      drawPolygon(g, polygon.flatPoints, polygon.groupId);
+      drawPolygon(g, polygon.flatPoints, polygon.groupID);
     };
 
     return (
@@ -121,7 +121,7 @@ const DotPlot = ({
       <Graphics
         key={i}
         pointerdown={() => {
-          selectGroupId(polygon.groupId);
+          selectGroupId(polygon.groupID);
         }}
         // interactive={true}
         eventMode="static"
@@ -157,7 +157,7 @@ const PolygonPlot = ({
     return (
       <RoundedPolygon
         key={i}
-        color={colorList[Number(polygon.groupId)]}
+        color={colorList[Number(polygon.groupID)]}
         points={polygon.points}
         groupID={0}
         selectGroupId={undefined}
@@ -185,7 +185,7 @@ const RectPlot = ({ differentPoints }: { differentPoints: any }) => {
         height={20}
         radius={20}
         rotation={rotation}
-        color={colorList[Number(differentPoint.groupId)]}
+        color={colorList[Number(differentPoint.groupID)]}
         groupid={0}
         selectGroupId={undefined}
       ></RotatedRoundedRect>
@@ -200,7 +200,7 @@ const GroupCirclePlot = ({ singlePoints }: { singlePoints: any }) => {
       <Circle
         key={i}
         singlePoint={singlePoint}
-        color={colorList[Number(singlePoint.groupId)]}
+        color={colorList[Number(singlePoint.groupID)]}
         circleSize={15 + 0.1 * singlePoint.pointsCount}
         groupID={0}
         selectGroupId={undefined}
@@ -215,7 +215,7 @@ const LabelsPlot = ({ labels }: any) => {
     return (
       <Fragment key={i}>
         <Text
-          text={groupNames[text.groupId]}
+          text={groupNames[text.groupID]}
           x={text.textsCenter[0]}
           y={text.textsCenter[1] - 10}
           anchor={0.5}
@@ -452,7 +452,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
     (dot: {
       x: any;
       y: any;
-      groupId: number;
+      groupID: number;
       radius: number;
       myPosition: boolean;
       iconURL: string;
@@ -460,7 +460,7 @@ const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
       drawAvatar(
         dot.x,
         dot.y,
-        dot.groupId,
+        dot.groupID,
         dot.radius ?? 1,
         dot.myPosition,
         dot.iconURL,
@@ -543,7 +543,7 @@ const Dots = ({
   // const positions = data?.positions
   // .filter((opinion) => {
   //   return (
-  //     opinion.groupId === 3 &&
+  //     opinion.groupID === 3 &&
   //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
   //   );
   // })
@@ -564,7 +564,7 @@ const Dots = ({
   let _maxX = -100000000000;
   let _maxY = -100000000000;
 
-  const groupIds = new Set<string>();
+  const groupIDs = new Set<string>();
   // const hasPoint = new Set<string>();
   const hasDifferentPointGroup = new Set<string>();
   const hasSinglePointGroup = new Set<string>();
@@ -576,14 +576,14 @@ const Dots = ({
     _maxX = Math.max(_maxX, v.posX);
     _maxY = Math.max(_maxY, v.posY);
     idxToGroupId.push(v.groupID);
-    groupIds.add(v.groupID);
+    groupIDs.add(v.groupID);
     if ("perimeterIndex" in v) {
       hasPerimeterIndexGroup.add(v.groupID);
     }
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const groupPointInfo = Array.from({ length: groupIds.size }, (_v, _i) => ({
+  const groupPointInfo = Array.from({ length: groupIDs.size }, (_v, _i) => ({
     x: new Set<number>(),
     y: new Set<number>(),
   }));
@@ -668,7 +668,7 @@ const Dots = ({
         return {
           x: isNaN(x) ? centerX : x,
           y: isNaN(y) ? centerY : y,
-          groupId: v.groupID,
+          groupID: v.groupID,
           radius: radius,
           myPosition: myPositionFlag,
           iconURL: v.iconURL,
@@ -676,15 +676,15 @@ const Dots = ({
       },
     ) || [];
 
-  for (const groupId of groupIds) {
-    if (!hasPerimeterIndexGroup.has(groupId)) {
+  for (const groupID of groupIDs) {
+    if (!hasPerimeterIndexGroup.has(groupID)) {
       if (
-        groupPointInfo[Number(groupId)]?.x.size > 1 ||
-        groupPointInfo[Number(groupId)]?.y.size > 1
+        groupPointInfo[Number(groupID)]?.x.size > 1 ||
+        groupPointInfo[Number(groupID)]?.y.size > 1
       ) {
-        hasDifferentPointGroup.add(groupId);
+        hasDifferentPointGroup.add(groupID);
       } else {
-        hasSinglePointGroup.add(groupId);
+        hasSinglePointGroup.add(groupID);
       }
     }
   }
@@ -698,10 +698,10 @@ const Dots = ({
   // console.log(dots);
   const resultSinglePoints = [];
 
-  for (const groupId of hasSinglePointGroup) {
+  for (const groupID of hasSinglePointGroup) {
     const polygons = positions.filter(
       (opinion: { groupID: string; perimeterIndex: number }) => {
-        return opinion.groupID === groupId;
+        return opinion.groupID === groupID;
       },
     );
 
@@ -739,24 +739,24 @@ const Dots = ({
 
     labels.push({
       textsCenter: textPos,
-      groupId: groupId,
+      groupID: groupID,
       counts: polygons.length,
       minDistance: null,
     });
 
     resultSinglePoints.push({
       point: point,
-      groupId: groupId,
+      groupID: groupID,
       pointsCount: polygons.length,
     });
   }
 
   const resultDifferenctPoints = [];
 
-  for (const groupId of hasDifferentPointGroup) {
+  for (const groupID of hasDifferentPointGroup) {
     const polygons = positions.filter(
       (opinion: { groupID: string; perimeterIndex: number }) => {
-        return opinion.groupID === groupId;
+        return opinion.groupID === groupID;
       },
     );
 
@@ -807,7 +807,7 @@ const Dots = ({
     // console.log(firstPoint);
     labels.push({
       textsCenter: textPos,
-      groupId: groupId,
+      groupID: groupID,
       counts: polygons.length,
       minDistance: null,
     });
@@ -815,16 +815,16 @@ const Dots = ({
     resultDifferenctPoints.push({
       firstPoint: firstPoint,
       secondPoint: secondPoint,
-      groupId: groupId,
+      groupID: groupID,
     });
   }
 
-  for (const groupId of hasPerimeterIndexGroup) {
+  for (const groupID of hasPerimeterIndexGroup) {
     // poligonsを扱う
     const polygons = positions
-      .filter((opinion: { groupId: string; perimeterIndex: number }) => {
+      .filter((opinion: { groupID: string; perimeterIndex: number }) => {
         return (
-          opinion.groupId === groupId &&
+          opinion.groupID === groupID &&
           (opinion.perimeterIndex || opinion.perimeterIndex === 0)
         );
       })
@@ -874,7 +874,7 @@ const Dots = ({
     ];
     labels.push({
       textsCenter: textPos,
-      groupId: groupId,
+      groupID: groupID,
       counts: polygons.length,
       minDistance: minDistance,
     });
@@ -901,7 +901,7 @@ const Dots = ({
     resultPolygons.push({
       points: points,
       flatPoints: flatPoints,
-      groupId: groupId,
+      groupID: groupID,
     });
   }
 
@@ -1031,7 +1031,7 @@ const RoundedPolygon = ({
       draw={draw}
       pointerdown={() => {
         // console.log("click!!!!");
-        // selectGroupId(groupId)
+        // selectGroupId(groupID)
       }}
       eventMode="static"
     />
