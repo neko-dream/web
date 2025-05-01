@@ -159,15 +159,18 @@ const PolygonPlot = ({
         key={i}
         color={colorList[Number(polygon.groupID)]}
         points={polygon.points}
-        groupID={0}
-        selectGroupId={undefined}
+        groupID={Number(polygon.groupID)}
+        selectGroupId={selectGroupId}
       ></RoundedPolygon>
     );
   });
 };
 
 // グループ長方体を生成
-const RectPlot = ({ differentPoints }: { differentPoints: any }) => {
+const RectPlot = ({
+  differentPoints,
+  selectGroupId,
+}: { differentPoints: any; selectGroupId: any }) => {
   return differentPoints.map((differentPoint: any, i: any) => {
     const x = differentPoint.firstPoint.x - differentPoint.secondPoint.x;
     const y = differentPoint.firstPoint.y - differentPoint.secondPoint.y;
@@ -186,15 +189,18 @@ const RectPlot = ({ differentPoints }: { differentPoints: any }) => {
         radius={20}
         rotation={rotation}
         color={colorList[Number(differentPoint.groupID)]}
-        groupid={0}
-        selectGroupId={undefined}
+        groupid={Number(differentPoint.groupID)}
+        selectGroupId={selectGroupId}
       ></RotatedRoundedRect>
     );
   });
 };
 
 // グループサークルを生成
-const GroupCirclePlot = ({ singlePoints }: { singlePoints: any }) => {
+const GroupCirclePlot = ({
+  singlePoints,
+  selectGroupId,
+}: { singlePoints: any; selectGroupId: any }) => {
   return singlePoints.map((singlePoint: any, i: any) => {
     return (
       <Circle
@@ -202,8 +208,8 @@ const GroupCirclePlot = ({ singlePoints }: { singlePoints: any }) => {
         singlePoint={singlePoint}
         color={colorList[Number(singlePoint.groupID)]}
         circleSize={15 + 0.1 * singlePoint.pointsCount}
-        groupID={0}
-        selectGroupId={undefined}
+        groupID={Number(singlePoint.groupID)}
+        selectGroupId={selectGroupId}
       />
     );
   });
@@ -523,8 +529,8 @@ const RotatedRoundedRect = ({
       rotation={rotation} // 回転（ラジアン）
       pointerdown={() => {
         // selectGroupId(colorIdx);
-        // console.log("click!!!!");
-        // selectGroupId(groupid)
+        selectGroupId(groupid);
+        // console.log(groupid)
       }}
       eventMode="static"
     />
@@ -929,8 +935,14 @@ const Dots = ({
         myPositionData={myPositionData}
         selectGroupId={selectGroupId}
       ></AvatarPlot> */}
-      <RectPlot differentPoints={resultDifferenctPoints}></RectPlot>
-      <GroupCirclePlot singlePoints={resultSinglePoints}></GroupCirclePlot>
+      <RectPlot
+        differentPoints={resultDifferenctPoints}
+        selectGroupId={selectGroupId}
+      ></RectPlot>
+      <GroupCirclePlot
+        singlePoints={resultSinglePoints}
+        selectGroupId={selectGroupId}
+      ></GroupCirclePlot>
       <MyPositionPlot
         dots={dots}
         myPositionData={myPositionData}
@@ -1031,7 +1043,8 @@ const RoundedPolygon = ({
       draw={draw}
       pointerdown={() => {
         // console.log("click!!!!");
-        // selectGroupId(groupID)
+        selectGroupId(groupID);
+        // console.log(groupID)
       }}
       eventMode="static"
     />
@@ -1076,8 +1089,9 @@ const Circle = ({
     <Graphics
       draw={drawGroupCircle}
       pointerdown={() => {
-        // selectGroupId(colorIdx);
+        selectGroupId(groupID);
         // console.log("click!!!!");
+        // console.log(groupID)
       }}
       eventMode="static"
     />
