@@ -182,7 +182,7 @@ const Contents = ({
               return (
                 <Await resolve={$user}>
                   {(user) => {
-                    if (!user && count === 0) {
+                    if (!user || count === 0) {
                       return;
                     }
 
