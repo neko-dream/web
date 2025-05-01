@@ -229,8 +229,6 @@ export default function Page({
     });
   };
 
-  // console.log(swipe.gone.size);
-
   return (
     <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
       <Link
