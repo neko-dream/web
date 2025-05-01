@@ -523,7 +523,7 @@ const RotatedRoundedRect = ({
       rotation={rotation} // 回転（ラジアン）
       pointerdown={() => {
         // selectGroupId(colorIdx);
-        selectGroupId(groupid)
+        selectGroupId(groupid);
         // console.log(groupid)
       }}
       eventMode="static"
@@ -1031,7 +1031,7 @@ const RoundedPolygon = ({
       draw={draw}
       pointerdown={() => {
         // console.log("click!!!!");
-        selectGroupId(groupID)
+        selectGroupId(groupID);
         // console.log(groupID)
       }}
       eventMode="static"
