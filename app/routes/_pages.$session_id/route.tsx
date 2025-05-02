@@ -221,16 +221,20 @@ const Contents = ({
               <p className="ml-2">誰でも参加OK</p>
             </div>
           ) : (
-            <div className="flex items-center">
-              <p className="rounded bg-mt-blue-50 px-2 py-1">入力済対象</p>
-              {session.restrictions.map(({ description, key }, i) => {
-                return (
-                  <p className="ml-2 flex space-x-1" key={i}>
-                    <span>{RESTRICTIONS_ICON_MAP[key]}</span>
-                    <span>{description}</span>
-                  </p>
-                );
-              })}
+            <div className="flex items-start space-x-2">
+              <p className="inline-block whitespace-nowrap rounded bg-mt-blue-50 px-2 py-1">
+                入力済対象
+              </p>
+              <div className="flex flex-wrap items-center">
+                {session.restrictions.map(({ description, key }, i) => {
+                  return (
+                    <p className="ml-2 flex space-x-1" key={i}>
+                      <span>{RESTRICTIONS_ICON_MAP[key]}</span>
+                      <span>{description}</span>
+                    </p>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>

@@ -3,7 +3,6 @@ import { parseWithValibot } from "conform-to-valibot";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import * as v from "valibot";
 import { InfoCircle, PaperPlane } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
@@ -11,19 +10,10 @@ import { Label } from "~/components/ui/label";
 import Textarea from "~/components/ui/textarea";
 import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
+import { createOpinionFormSchema } from "~/schemas/create-opinion";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
-
-const createOpinionFormSchema = v.object({
-  parentOpinionID: v.optional(v.string()),
-  opinionContent: v.pipe(
-    v.string("意見の入力は必須です"),
-    v.maxLength(140, "140文字以内で入力してください"),
-  ),
-  referenceURL: v.optional(v.string()),
-  picture: v.optional(v.instance(File)),
-});
 
 export default function Page({
   loaderData: { session },

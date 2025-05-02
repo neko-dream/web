@@ -140,7 +140,8 @@ export default function Page({
         },
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         onDragEnd() {
-          const xdir = this.x > 300 ? 1 : this.x < -300 ? -1 : 0;
+          const threshold = windowWidth * 0.3; // 画面幅の30%
+          const xdir = this.x > threshold ? 1 : this.x < -threshold ? -1 : 0;
           const ydir = this.y > 100 ? 1 : this.y < -100 ? -1 : 0;
 
           let status: VoteType = "pass";
