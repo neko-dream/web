@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
-import { fileCompress } from "~/libs/compressor";
+import { fileCompress } from "~/libs/image-compressor";
 import { signupFormSchema, singupFormWithEmailSchema } from "~/schemas/users";
 import { removeHyphens } from "~/utils/format-date";
 
@@ -13,15 +13,12 @@ export const useCreateUserForm = (widthEmail: boolean) => {
   return useCustomForm({
     schema: widthEmail ? singupFormWithEmailSchema : signupFormSchema,
     onSubmit: async ({ value }) => {
-      const compressIcon =
-        value.icon && value.icon?.size > 0 && fileCompress(value.icon);
-
       const { error } = await api.POST("/user", {
         credentials: "include",
         body: {
           ...value,
           dateOfBirth: removeHyphens(value.dateOfBirth),
-          icon: (await compressIcon) as unknown as string,
+          icon: await fileCompress(value.icon),
         },
       });
 
