@@ -273,7 +273,6 @@ const Contents = ({
           if (state === "consent") {
             return (
               <ConsentModal
-                restrictions={session.restrictions}
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
                 onConform={next}
