@@ -136,7 +136,7 @@ export default function Page({
                 return selectedGroup?.opinions.map(({ opinion, user }, i) => {
                   return (
                     <Card
-                      href={`/opinion/${opinion.id}`}
+                      href={`/opinion/${opinion.id}/${session.id}`}
                       key={i}
                       title={opinion.title}
                       description={opinion.content}
