@@ -3,6 +3,7 @@ import { Draggable } from "gsap/Draggable";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Await, Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { HintSwipeModal } from "~/components/features/hint-swipe-modal";
 import { Card } from "~/components/features/opinion-card/index.js";
 import Graph from "~/components/features/opinion-graph";
 import {
@@ -50,6 +51,7 @@ export default function Page({
     })),
   );
   const [loading, setLoading] = useState(false);
+  const [isHintModalOpen, setIsHintModalOpen] = useState(false);
 
   useEffect(() => {
     if (opinions.length === swipeCount) {
@@ -140,7 +142,8 @@ export default function Page({
         },
         // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         onDragEnd() {
-          const xdir = this.x > 300 ? 1 : this.x < -300 ? -1 : 0;
+          const threshold = windowWidth * 0.3; // 画面幅の30%
+          const xdir = this.x > threshold ? 1 : this.x < -threshold ? -1 : 0;
           const ydir = this.y > 100 ? 1 : this.y < -100 ? -1 : 0;
 
           let status: VoteType = "pass";
@@ -297,171 +300,181 @@ export default function Page({
   };
 
   return (
-    <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
-      <Link
-        className="flex w-full cursor-pointerp-2 items-center bg-white p-2 font-bold text-[18px]"
-        to={`/${session?.id}/analysis`}
-      >
-        <Left className="text-black" />
-        <span className="-translate-x-[13.5px] mx-auto">{session?.theme}</span>
-      </Link>
-
-      <span className="mx-[2%] block">
-        <List
-          className="m-2 mx-auto max-w-3xl"
-          title={
-            <div className="flex items-center space-x-2">
-              <PieChart />
-              <p>参加者のグラフ</p>
-            </div>
-          }
+    <>
+      <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
+        <Link
+          className="flex w-full cursor-pointerp-2 items-center bg-white p-2 font-bold text-[18px]"
+          to={`/${session?.id}/analysis`}
         >
-          <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                return (
-                  <div className="flex w-full justify-center rounded bg-white p-2">
-                    <Graph
-                      polygons={data?.positions}
-                      positions={data?.positions}
-                      myPosition={data?.myPosition}
-                      // 両方のpadding分
-                      windowWidth={windowWidth - 64}
-                      selectGroupId={(_id: number) => {}}
-                      background={0xffffff}
-                    />
-                  </div>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </List>
-      </span>
+          <Left className="text-black" />
+          <span className="-translate-x-[13.5px] mx-auto">
+            {session?.theme}
+          </span>
+        </Link>
 
-      <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
-        <span className="mr-2">意見</span>
-        {swipeCount} / {opinions.length}
-      </p>
-
-      <div className="relative mx-auto mt-2 h-[168px] w-full max-w-3xl">
-        {opinions.map((opinion, i) => {
-          const zIndex = opinions.length - i;
-
-          const state = cardsState[i] || {
-            backgroundColor: "transparent",
-            agreeDisplay: "none",
-            disagreeDisplay: "none",
-            opacity: 0,
-          };
-
-          return (
-            <div
-              key={i}
-              className="absolute block cursor-pointer touch-none rounded will-change-transform"
-              style={{
-                height: "144px",
-                width: "96%",
-                left: "2%",
-                zIndex,
-                pointerEvents: loading ? "none" : "auto",
-              }}
-              ref={(el) => {
-                cardsRef.current[i] = el;
-              }}
-            >
-              <div className="h-full w-full bg-white">
-                {/* 重なり - 反対 */}
-                <div
-                  style={{
-                    backgroundColor: state.backgroundColor,
-                    display: state.disagreeDisplay,
-                    opacity: state.opacity,
-                  }}
-                  className="absolute z-10 h-[144px] w-full rounded"
-                />
-                <p
-                  style={{ display: state.disagreeDisplay }}
-                  className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
-                >
-                  違うかも
-                </p>
-
-                {/* 重なり - 賛成 */}
-                <div
-                  style={{
-                    backgroundColor: state.backgroundColor,
-                    display: state.agreeDisplay,
-                    opacity: state.opacity,
-                  }}
-                  className="absolute z-10 h-[144px] w-full rounded"
-                />
-                <p
-                  style={{ display: state.agreeDisplay }}
-                  className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
-                >
-                  いいかも
-                </p>
-
-                <Card
-                  title={opinion.opinion.title || ""}
-                  description={opinion.opinion.content || ""}
-                  user={opinion.user}
-                  date={"2025/12/31 10:00"}
-                  className="pointer-events-none select-none"
-                />
+        <span className="mx-[2%] block">
+          <List
+            className="m-2 mx-auto max-w-3xl"
+            title={
+              <div className="flex items-center space-x-2">
+                <PieChart />
+                <p>参加者のグラフ</p>
               </div>
-            </div>
-          );
-        })}
+            }
+          >
+            <Suspense>
+              <Await resolve={$positions}>
+                {({ data }) => {
+                  return (
+                    <div className="flex w-full justify-center rounded bg-white p-2">
+                      <Graph
+                        polygons={data?.positions}
+                        positions={data?.positions}
+                        myPosition={data?.myPosition}
+                        // 両方のpadding分
+                        windowWidth={windowWidth - 64}
+                        selectGroupId={(_id: number) => {}}
+                        background={0xffffff}
+                      />
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          </List>
+        </span>
+
+        <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
+          <span className="mr-2">意見</span>
+          {swipeCount} / {opinions.length}
+        </p>
+
+        <div className="relative mx-auto mt-2 h-[168px] w-full max-w-3xl">
+          {opinions.map((opinion, i) => {
+            const zIndex = opinions.length - i;
+
+            const state = cardsState[i] || {
+              backgroundColor: "transparent",
+              agreeDisplay: "none",
+              disagreeDisplay: "none",
+              opacity: 0,
+            };
+
+            return (
+              <div
+                key={i}
+                className="absolute block cursor-pointer touch-none rounded will-change-transform"
+                style={{
+                  height: "144px",
+                  width: "96%",
+                  left: "2%",
+                  zIndex,
+                  pointerEvents: loading ? "none" : "auto",
+                }}
+                ref={(el) => {
+                  cardsRef.current[i] = el;
+                }}
+              >
+                <div className="h-full w-full bg-white">
+                  {/* 重なり - 反対 */}
+                  <div
+                    style={{
+                      backgroundColor: state.backgroundColor,
+                      display: state.disagreeDisplay,
+                      opacity: state.opacity,
+                    }}
+                    className="absolute z-10 h-[144px] w-full rounded"
+                  />
+                  <p
+                    style={{ display: state.disagreeDisplay }}
+                    className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
+                  >
+                    違うかも
+                  </p>
+
+                  {/* 重なり - 賛成 */}
+                  <div
+                    style={{
+                      backgroundColor: state.backgroundColor,
+                      display: state.agreeDisplay,
+                      opacity: state.opacity,
+                    }}
+                    className="absolute z-10 h-[144px] w-full rounded"
+                  />
+                  <p
+                    style={{ display: state.agreeDisplay }}
+                    className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
+                  >
+                    いいかも
+                  </p>
+
+                  <Card
+                    title={opinion.opinion.title || ""}
+                    description={opinion.opinion.content || ""}
+                    user={opinion.user}
+                    date={"2025/12/31 10:00"}
+                    className="pointer-events-none select-none"
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="relative mt-4 h-[160px]">
+          <PointUp className="-translate-x-3/5 absolute left-1/2 mt-1" />
+
+          <div className="absolute top-6 right-3/5 flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("disagree")}
+              className="cursor-pointer rounded-full bg-[#FF2D55] p-2 shadow-cs-normal disabled:opacity-70"
+            >
+              <ArrowLeft className="fill-white" />
+            </button>
+            <p className="mt-1 text-pink-400">違うかも</p>
+          </div>
+
+          <div className="-translate-x-1/2 absolute top-24 left-1/2 flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("pass")}
+              className="cursor-pointer rounded-full bg-[#5856D6] p-2 shadow-cs-normal disabled:opacity-70"
+            >
+              <ArrowDown className="fill-white" />
+            </button>
+            <p className="mt-1 text-indigo-400">パス</p>
+          </div>
+
+          <div className="absolute top-6 left-3/5 flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("agree")}
+              className="cursor-pointer rounded-full bg-[#32ADE6] p-2 shadow-cs-normal disabled:opacity-70"
+            >
+              <ArrowRight className="fill-white" />
+            </button>
+            <p className="mt-1 text-cyan-400">良さそう</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsHintModalOpen(true)}
+          className="mx-auto mt-4 flex items-center justify-center text-blue-500 text-sm"
+        >
+          <InfoCircle />
+          <span>この画面の操作ヒント</span>
+        </button>
       </div>
 
-      <div className="relative mt-4 h-[160px]">
-        <PointUp className="-translate-x-3/5 absolute left-1/2 mt-1" />
-
-        <div className="absolute top-6 right-3/5 flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("disagree")}
-            className="cursor-pointer rounded-full bg-[#FF2D55] p-2 shadow-cs-normal disabled:opacity-70"
-          >
-            <ArrowLeft className="fill-white" />
-          </button>
-          <p className="mt-1 text-pink-400">違うかも</p>
-        </div>
-
-        <div className="-translate-x-1/2 absolute top-24 left-1/2 flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("pass")}
-            className="cursor-pointer rounded-full bg-[#5856D6] p-2 shadow-cs-normal disabled:opacity-70"
-          >
-            <ArrowDown className="fill-white" />
-          </button>
-          <p className="mt-1 text-indigo-400">パス</p>
-        </div>
-
-        <div className="absolute top-6 left-3/5 flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("agree")}
-            className="cursor-pointer rounded-full bg-[#32ADE6] p-2 shadow-cs-normal disabled:opacity-70"
-          >
-            <ArrowRight className="fill-white" />
-          </button>
-          <p className="mt-1 text-cyan-400">良さそう</p>
-        </div>
-      </div>
-
-      <Link
-        to="#"
-        className="mt-4 flex items-center justify-center text-blue-500 text-sm"
-      >
-        <InfoCircle />
-        <span>この画面の操作ヒント</span>
-      </Link>
-    </div>
+      <HintSwipeModal
+        isOpen={isHintModalOpen}
+        onOpenChange={setIsHintModalOpen}
+      />
+    </>
   );
 }

@@ -36,7 +36,7 @@ export const ConsentModal = ({ sessionID, onConform, onClose }: Props) => {
   return (
     <div className="w-[327px] p-2">
       <p className="text-center font-bold text-[18px]">参加される方へ</p>
-      <p className="mt-4 h-60 overflow-y-scroll whitespace-pre-line">
+      <p className="scrollbar-visible mt-4 h-60 overflow-y-scroll whitespace-pre-line">
         {CONSENT_MODAL_TEXT}
       </p>
       <div className="mt-4">

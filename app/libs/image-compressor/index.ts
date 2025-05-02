@@ -7,7 +7,7 @@ export const fileCompress = async (
   file?: File | Blob,
   size = 300,
 ): Promise<File | Blob | undefined> => {
-  if (!(file && file.size <= 0)) {
+  if (!file || file.size === 0) {
     return undefined;
   }
 

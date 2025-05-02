@@ -1,17 +1,20 @@
-import { getFormProps, getInputProps } from "@conform-to/react";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { parseWithValibot } from "conform-to-valibot";
 import { useState } from "react";
 import { Form, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
+import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { Card } from "~/components/features/opinion-card";
 import { More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import Textarea from "~/components/ui/textarea";
-import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
 import { useVote } from "~/hooks/useVote";
+import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.opinion.$opinion_id.$session_id/+types";
+import { createOpinionFormSchema } from "~/schemas/create-opinion";
 import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
@@ -22,10 +25,11 @@ export { meta } from "./modules/meta";
 export default function Page({
   loaderData: { currentUser, root, opinions, sessionID },
 }: Route.ComponentProps) {
-  const { revalidate } = useRevalidator();
-  // FIXME: 正しいセッションIDを渡す
-  const { vote } = useVote({ sessionID });
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { revalidate } = useRevalidator();
+  const { vote } = useVote({ sessionID });
+  const [isHintModalOpen, setIsHintModalOpen] = useState(false);
 
   const handleVote = async (opinionID: string, status: VoteType) => {
     const result = await vote({ opinionID, status });
@@ -37,9 +41,41 @@ export default function Page({
     }
   };
 
-  const { form, fields } = useCreateOpinionsForm({
-    parentOpinionID: root.opinion.id,
-    onFinishedProcess: () => {},
+  const [form, fields] = useForm({
+    onValidate: ({ formData }) => {
+      return parseWithValibot(formData, {
+        schema: createOpinionFormSchema,
+      });
+    },
+    onSubmit: async (e, { submission }) => {
+      e.preventDefault();
+      if (isSubmitting || submission?.status !== "success") {
+        return;
+      }
+      setIsSubmitting(true);
+      try {
+        const { data, error } = await api.POST("/opinions", {
+          credentials: "include",
+          body: {
+            parentOpinionID: root.opinion.id,
+            ...submission.value,
+          },
+        });
+        if (data) {
+          toast.success("意見を投稿しました");
+          setIsCreateOpinionModalOpen(false);
+          setIsSubmitting(false);
+          revalidate();
+        } else {
+          toast.error(error.message);
+          setIsSubmitting(false);
+        }
+      } catch {
+        toast.error("エラーが発生しました");
+        setIsSubmitting(false);
+      }
+    },
+    shouldValidate: "onInput",
   });
 
   return (
@@ -114,6 +150,7 @@ export default function Page({
       <CreateOpinionModal
         isOpen={isCreateOpinionModal}
         onClose={() => setIsCreateOpinionModalOpen(false)}
+        onHintTextCLick={() => setIsHintModalOpen(true)}
       >
         <Form {...getFormProps(form)}>
           <Textarea
@@ -121,12 +158,22 @@ export default function Page({
             className="h-[270px]"
             placeholder="この意見についてどう思うか書いてみよう！"
           />
-          <Button color="primary" type="submit" className="!mt-8 mx-auto block">
+          <Button
+            color="primary"
+            type="submit"
+            disabled={isSubmitting}
+            className="!mt-8 mx-auto block"
+          >
             <img src="" alt="" />
             <span>コメントを投稿する</span>
           </Button>
         </Form>
       </CreateOpinionModal>
+
+      <HintOpinionModal
+        isOpen={isHintModalOpen}
+        onOpenChange={setIsHintModalOpen}
+      />
     </>
   );
 }

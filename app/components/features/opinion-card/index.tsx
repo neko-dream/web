@@ -21,6 +21,7 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
   onClickPass?: () => void;
   onClickReport?: () => void;
   onClickAnalytics?: () => void;
+  isJudgeButtonDisabled?: boolean;
 };
 
 const card = tv({
@@ -55,6 +56,7 @@ export const Card = ({
   onClickPass,
   onClickReport,
   onClickAnalytics,
+  isJudgeButtonDisabled,
   ...props
 }: Props) => {
   return (
@@ -70,7 +72,7 @@ export const Card = ({
             <p className="mt-1 text-gray-300 text-xs">
               {JST(date).format("YYYY/MM/DD HH:mm")}
             </p>
-            <p className="mt-2 line-clamp-3 whitespace-break-spaces text-[#4e4d4b]">
+            <p className="mt-2 line-clamp-3 whitespace-break-spaces break-all text-[#4e4d4b]">
               {description}
             </p>
 
@@ -95,18 +97,21 @@ export const Card = ({
             <div className="mt-1 flex w-[calc(100%-40px)] justify-between">
               <OpinionButton
                 onClick={onClickDisagree}
+                disabled={isJudgeButtonDisabled}
                 color={status === "disagree" ? "disagree" : "disabled"}
               >
                 違うかも
               </OpinionButton>
               <OpinionButton
                 onClick={onClickPass}
+                disabled={isJudgeButtonDisabled}
                 color={status === "pass" ? "pass" : "disabled"}
               >
                 パス
               </OpinionButton>
               <OpinionButton
                 onClick={onClickAgree}
+                disabled={isJudgeButtonDisabled}
                 color={status === "agree" ? "agree" : "disabled"}
               >
                 良さそう
