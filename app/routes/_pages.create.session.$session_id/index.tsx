@@ -116,7 +116,7 @@ export default function Page({
     const { data } = await api.POST("/images", {
       credentials: "include",
       body: {
-        image: file as unknown as string,
+        image: file,
       },
     });
 
