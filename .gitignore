@@ -14,3 +14,5 @@ storybook-static
 .react-router
 
 *.tsbuildinfo
+
+output

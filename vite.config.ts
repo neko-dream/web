@@ -5,6 +5,7 @@ import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
+import { visualizer } from "rollup-plugin-visualizer";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
@@ -52,6 +53,13 @@ export default defineConfig(async ({ mode }) => {
       reactRouter(),
       tsconfigPaths(),
       tailwindcss(),
+      // 他のプラグイン...
+      visualizer({
+        open: true,
+        filename: "output/stats.html",
+        gzipSize: true,
+        brotliSize: true,
+      }),
     ],
   };
 });
