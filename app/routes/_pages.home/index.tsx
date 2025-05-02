@@ -22,20 +22,30 @@ export default function Page({
       >
         <Await resolve={$session}>
           {(data) => {
-            if (data?.talkSessions.length === 0) {
+            if ((data?.talkSessions || []).length === 0) {
               return (
                 <div className="mt-4 space-y-2 p-4">
-                  <p>【{theme}】に一致するセッションが見つかりませんでした。</p>
-                  <p className="primary-gradient inline-block text-clip font-semibold">
-                    再検索のヒント
-                  </p>
-                  <p className="text-[#8E8E93]">
-                    ・誤字、脱字がないか確認してみてください
-                    <br />
-                    ・言葉の区切り方を変えてみてください
-                    <br />
-                    ・似たキーワードを入れてみてください
-                  </p>
+                  {theme ? (
+                    <>
+                      <p>
+                        【{theme}】に一致するセッションが見つかりませんでした。
+                      </p>
+                      <p className="primary-gradient inline-block text-clip font-semibold">
+                        再検索のヒント
+                      </p>
+                      <p className="text-[#8E8E93]">
+                        ・誤字、脱字がないか確認してみてください
+                        <br />
+                        ・言葉の区切り方を変えてみてください
+                        <br />
+                        ・似たキーワードを入れてみてください
+                      </p>
+                    </>
+                  ) : (
+                    <p className="text-center">
+                      セッションがまだありません。🙇
+                    </p>
+                  )}
                 </div>
               );
             }
