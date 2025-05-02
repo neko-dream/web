@@ -86,7 +86,7 @@ export default function Page({
           toast.error(error.message);
         } else {
           toast.success("更新が完了しました");
-          navigate(`/session/${session?.id}`);
+          navigate(`/${session?.id}`);
         }
         return;
       }
