@@ -217,11 +217,17 @@ export default function Page({
           <span className="relative">
             <Input
               {...getInputProps(fields.scheduledEndTime, {
-                type: "text",
+                type: "date",
               })}
               type="date"
               className="h-12 w-full px-4"
               placeholder="記入する"
+              defaultValue={
+                session?.scheduledEndTime
+                  ? dayjs(session?.scheduledEndTime).format("YYYY-MM-DD")
+                  : dayjs().add(1, "day").format("YYYY-MM-DD")
+              }
+              min={dayjs().add(1, "day").format("YYYY-MM-DD")} // 今日の日付を最小値として設定
             />
           </span>
         </Label>
