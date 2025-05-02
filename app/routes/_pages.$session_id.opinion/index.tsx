@@ -84,7 +84,7 @@ export default function Page({
                           user={{ displayID, displayName, iconURL }}
                           status={myVoteType}
                           date={opinion.postedAt}
-                          className="mx-auto w-full"
+                          className="mx-auto w-full max-w-2xl"
                           isJudgeButton={user?.displayID !== displayID}
                           isMoreButton={user?.displayID !== displayID}
                           onClickAgree={() => handleVote(id, "agree")}

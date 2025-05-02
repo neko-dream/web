@@ -36,7 +36,7 @@ export const ReportCard = ({
             {JST(opinion.postedAt).format("YYYY/MM/DD HH:mm")}
           </p>
           <p className="mt-1">{opinion.content}</p>
-          <div className="-translate-x-6 mt-3 flex justify-center pb-4">
+          <div className="-translate-x-6 mt-3 flex justify-center gap-4 pb-4">
             {status !== "hold" && (
               <button
                 type="button"
