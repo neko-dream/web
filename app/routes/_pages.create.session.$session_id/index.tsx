@@ -34,7 +34,7 @@ export default function Page({
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (session?.restrictions) {
+    if ((session?.restrictions.length || 0) !== 0) {
       setIsRestriction(true);
     }
   }, [session]);
@@ -167,6 +167,7 @@ export default function Page({
 
         <Label title="募集事項" notes={["どんな人に参加してほしいか決めよう"]}>
           <Select
+            disabled={isEditMobe}
             options={[
               {
                 title: "誰でもOK",
@@ -177,7 +178,9 @@ export default function Page({
                 value: "restriction",
               },
             ]}
-            defaultValue={session?.restrictions ? "restriction" : "all"}
+            defaultValue={
+              (session?.restrictions.length || 0) !== 0 ? "restriction" : "all"
+            }
             onChange={(e) => {
               setIsRestriction(e.currentTarget.value === "restriction");
             }}
@@ -199,6 +202,7 @@ export default function Page({
                     value={restriction.key}
                     label={restriction.description}
                     defaultChecked={checked}
+                    disabled={isEditMobe}
                   />
                 );
               })}

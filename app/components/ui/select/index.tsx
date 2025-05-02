@@ -32,7 +32,9 @@ function Select(
         {...props}
         ref={ref}
         className={base({
-          className: defaultValue ? "text-black" : "text-gray-400",
+          className: defaultValue
+            ? "text-black disabled:opacity-30"
+            : "text-gray-400 disabled:opacity-30",
         })}
         onChange={(e) => {
           props.onChange?.(e);
