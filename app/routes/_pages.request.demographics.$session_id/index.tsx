@@ -1,10 +1,10 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
 import { Form } from "react-router";
-import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import AdressInputs from "~/components/features/input-adress";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
+import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
@@ -14,6 +14,14 @@ import { useEditUserForm } from "./hooks/useEditUserForm";
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
+const formatDate = (str: string) => {
+  return str.replace(
+    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
+    /^(\d{4})(\d{2})(\d{2})$/,
+    "$1-$2-$3",
+  ) as unknown as number;
+};
+
 export default function Page({
   loaderData: { returnPage, user, demographics, sessionID },
 }: Route.ComponentProps) {
@@ -21,65 +29,70 @@ export default function Page({
     user: {
       ...user,
       ...demographics,
+      dateOfBirth: formatDate(demographics.dateOfBirth?.toString() || ""),
     },
     sessionID,
     returnPage,
   });
 
   return (
-    <div>
+    <>
       <Heading
         to={`/${sessionID}/${returnPage}`}
         title="情報入力"
         isLink={true}
       />
 
-      <Form
-        {...getFormProps(form)}
-        method="post"
-        onSubmit={form.onSubmit}
-        className="mt-8 w-full space-y-4 px-6 last-child:m-0"
-      >
-        <input
-          {...getInputProps(fields.displayName, { type: "text" })}
-          hidden={true}
-        />
-
-        <Label title="性別" optional={true} errors={fields.gender.errors}>
-          <Select
-            {...getSelectProps(fields.gender)}
-            error={isFieldsError(fields.gender.errors)}
-            options={gender.map((v) => ({ value: v, title: v }))}
-          />
-        </Label>
-
-        <Label
-          title="誕生年"
-          optional={true}
-          errors={fields.yearOfBirth.errors}
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
+        <Form
+          {...getFormProps(form)}
+          method="post"
+          onSubmit={form.onSubmit}
+          className="mt-8 w-full space-y-4 px-6 last-child:m-0"
         >
-          <Select
-            {...getSelectProps(fields.yearOfBirth)}
-            error={isFieldsError(fields.yearOfBirth.errors)}
-            options={bathday.map((v) => ({
-              value: `${v}`,
-              title: `${v}年`,
-            }))}
+          <input
+            {...getInputProps(fields.displayName, { type: "text" })}
+            hidden={true}
           />
-        </Label>
 
-        {/* FIXME: 型が合わない */}
-        <AdressInputs fields={fields} form={form as never} />
+          <Label title="性別" optional={true} errors={fields.gender.errors}>
+            <Select
+              {...getSelectProps(fields.gender)}
+              error={isFieldsError(fields.gender.errors)}
+              options={gender.map((v) => ({ value: v, title: v }))}
+            />
+          </Label>
 
-        <Button
-          color="primary"
-          type="submit"
-          className="!mt-12 mx-auto block"
-          disabled={isDisabled}
-        >
-          セッションに参加する
-        </Button>
-      </Form>
-    </div>
+          <Label
+            title="誕生年"
+            optional={true}
+            errors={fields.dateOfBirth.errors}
+          >
+            <span className="relative">
+              <Input
+                {...getInputProps(fields.dateOfBirth, {
+                  type: "text",
+                })}
+                type="date"
+                className="h-12 w-full px-4"
+                placeholder="記入する"
+              />
+            </span>
+          </Label>
+
+          {/* FIXME: 型が合わない */}
+          <AdressInputs fields={fields} form={form as never} />
+
+          <Button
+            color="primary"
+            type="submit"
+            className="!mt-12 mx-auto block"
+            disabled={isDisabled}
+          >
+            セッションに参加する
+          </Button>
+        </Form>
+      </div>
+    </>
   );
 }

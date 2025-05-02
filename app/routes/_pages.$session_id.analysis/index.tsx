@@ -1,9 +1,10 @@
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Await, Link, useOutletContext } from "react-router";
 import { Card } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { Arrow } from "~/components/icons";
+import { GroupTabs } from "~/components/ui/group-tabs";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
 import type { SessionRouteContext } from "~/types/ctx";
@@ -12,11 +13,25 @@ import { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader };
 
+const GROUP_NAME_MAP: { readonly [key: number]: string } = {
+  0: "A",
+  1: "B",
+  2: "C",
+  3: "D",
+  4: "E",
+  5: "F",
+  6: "G",
+  7: "H",
+  8: "I",
+  9: "J",
+};
+
 export default function Page({
   loaderData: { $opinions, $reports, $positions },
 }: Route.ComponentProps) {
   const { session } = useOutletContext<SessionRouteContext>();
   const windowWidth = useWindowResize(374);
+  const [activeTab, setActiveTab] = useState("A");
 
   return (
     <div className="mx-auto flex max-w-4xl items-start">
@@ -52,17 +67,44 @@ export default function Page({
                 return null;
               }
 
+              const uniqueGroupIDsSet = new Set(
+                data?.positions?.map((p) => p.groupID) || [],
+              );
+
+              const groups = new Array(uniqueGroupIDsSet.size)
+                .fill(0)
+                .map((_, i) => {
+                  return GROUP_NAME_MAP[i];
+                });
+
               return (
-                <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
-                  <Graph
-                    polygons={data?.positions}
-                    positions={data?.positions}
-                    myPosition={data?.myPosition}
-                    windowWidth={windowWidth - 48}
-                    selectGroupId={(_id: number) => {}}
-                    background={0xffffff}
-                  />
-                </div>
+                <>
+                  <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
+                    <Graph
+                      polygons={data?.positions}
+                      positions={data?.positions}
+                      myPosition={data?.myPosition}
+                      windowWidth={windowWidth - 48}
+                      selectGroupId={(v: number) => {
+                        setActiveTab(GROUP_NAME_MAP[v]);
+                      }}
+                      background={0xffffff}
+                    />
+                  </div>
+
+                  <div className="mt-2">
+                    <GroupTabs
+                      tabs={groups.map((group) => {
+                        return {
+                          label: `${group}`,
+                          value: group,
+                        };
+                      })}
+                      activeTab={activeTab}
+                      onChange={setActiveTab}
+                    />
+                  </div>
+                </>
               );
             }}
           </Await>
@@ -72,8 +114,12 @@ export default function Page({
           <Suspense>
             <Await resolve={$opinions}>
               {({ data }) => {
-                return data?.opinions.map(
-                  ({ opinion, user: opinionUser, myVoteType }, i) => {
+                return data?.opinions
+                  .filter(() => {
+                    // FIXME: ここでフィルタリングしているが、サーバーから返ってこない
+                    return true;
+                  })
+                  .map(({ opinion, user: opinionUser, myVoteType }, i) => {
                     return (
                       <Card
                         href={`/opinion/${opinion.id}`}
@@ -86,8 +132,7 @@ export default function Page({
                         className="mx-auto w-full max-w-2xl"
                       />
                     );
-                  },
-                );
+                  });
               }}
             </Await>
           </Suspense>
@@ -105,7 +150,9 @@ export default function Page({
                   positions={data?.positions}
                   myPosition={data?.myPosition}
                   windowWidth={330}
-                  selectGroupId={(_id: number) => {}}
+                  selectGroupId={(v: number) => {
+                    setActiveTab(GROUP_NAME_MAP[v]);
+                  }}
                   background={0xffffff}
                 />
               </div>

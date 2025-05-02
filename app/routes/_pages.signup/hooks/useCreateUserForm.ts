@@ -5,6 +5,7 @@ import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
 import { signupFormSchema, singupFormWithEmailSchema } from "~/schemas/users";
+import { removeHyphens } from "~/utils/format-date";
 
 export const useCreateUserForm = (widthEmail: boolean) => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ export const useCreateUserForm = (widthEmail: boolean) => {
         credentials: "include",
         body: {
           ...value,
+          dateOfBirth: removeHyphens(value.dateOfBirth),
           icon: (await compressIcon) as unknown as string,
         },
       });

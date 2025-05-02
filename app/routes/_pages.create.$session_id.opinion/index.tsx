@@ -33,7 +33,11 @@ export default function Page({
         className="mx-auto w-full max-w-2xl p-4 pb-16"
       >
         <p className="text-gray-500">{session.theme}</p>
-        <Label title="あなたの意見" className="mt-4">
+        <Label
+          title="あなたの意見"
+          className="mt-4"
+          notes={["注意：個人情報は入力しないでください"]}
+        >
           <div className="flex items-center space-x-1 font-bold text-blue-500 text-sm">
             <InfoCircle />
             <p>投稿のルール</p>

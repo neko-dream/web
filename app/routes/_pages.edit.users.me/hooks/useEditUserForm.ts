@@ -5,6 +5,7 @@ import { api } from "~/libs/api";
 import { fileCompress } from "~/libs/compressor";
 import { userEditFormSchema } from "~/schemas/users";
 import type { UserType } from "~/types";
+import { removeHyphens } from "~/utils/format-date";
 
 type Props = {
   user: UserType;
@@ -27,6 +28,7 @@ export const useEditUserForm = ({ user }: Props) => {
         credentials: "include",
         body: {
           ...value,
+          dateOfBirth: removeHyphens(value.dateOfBirth),
           icon: (await compressIcon) as unknown as string,
         },
       });

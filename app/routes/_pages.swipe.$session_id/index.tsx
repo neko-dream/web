@@ -1,10 +1,8 @@
-import { animated, to } from "@react-spring/web";
-import { Suspense, useEffect } from "react";
-import { useState } from "react";
-import { Await, Link, useParams } from "react-router";
-import { useSprings } from "react-spring";
+import gsap from "gsap";
+import { Draggable } from "gsap/Draggable";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { Await, Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { useDrag } from "react-use-gesture";
 import { Card } from "~/components/features/opinion-card/index.js";
 import Graph from "~/components/features/opinion-graph";
 import {
@@ -17,254 +15,286 @@ import {
   PointUp,
 } from "~/components/icons";
 import { List } from "~/components/ui/acordion";
-import { button } from "~/components/ui/button";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
-import type { components } from "~/types/openapi";
 import { postVote } from "~/utils/vote";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
-type OnSwipeParam = {
-  opinionID: string;
-  opinionStatus: VoteType;
-};
-
-type Props = {
-  opinions: {
-    opinion: components["schemas"]["opinion"];
-    user: components["schemas"]["user"];
-    replyCount: number;
-  }[];
-  onSwipe: ({ opinionID, opinionStatus }: OnSwipeParam) => void;
-};
-
-const trans = (r: number, s: number) =>
-  `rotateY(${r / 10}deg) rotateZ(${r}deg) scale(${s})`;
-
-const animations = {
-  to: () => ({
-    w: "96%",
-    h: "144px",
-    x: 0,
-    y: 0,
-    zIndex: 0,
-    left: "2%",
-    scale: 1,
-  }),
-  from: () => ({
-    w: "96%",
-    h: "144px",
-    x: 0,
-    y: -1000,
-    zIndex: 0,
-    left: "2%",
-    rot: 0,
-    scale: 1.5,
-    backgroundColor: "transparent",
-    agreeDisplay: "none",
-    disagreeDisplay: "none",
-    opacity: 0,
-  }),
-  init: () => ({
-    w: "96%",
-    h: "144px",
-    x: 0,
-    y: 0,
-    left: "2%",
-    zIndex: 0,
-  }),
-};
-
-export const useSwipe = ({ opinions, onSwipe }: Props) => {
-  const [gone] = useState(() => new Set<number>());
-
-  const [item, api] = useSprings(opinions.length, () => ({
-    ...animations.to(),
-    from: animations.from(),
-  }));
-
-  const bind = useDrag(
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-    ({ args: [index], down, movement: [mx, my], velocity }) => {
-      const trigger = velocity > 0.1;
-      // MEMO: 閾値を超えたらスワイプしたとみなす
-      const xdir = mx > 100 ? 1 : mx < -100 ? -1 : 0;
-      const ydir = my > 100 ? 1 : my < -100 ? -1 : 0;
-
-      // MEMO: スワイプしたカードをコールバックに渡す
-      if (!down && trigger) {
-        const opinionID = opinions[opinions.length - gone.size - 1].opinion.id;
-        if (xdir >= 1) {
-          onSwipe({ opinionID, opinionStatus: "agree" });
-        } else if (xdir <= -1) {
-          onSwipe({ opinionID, opinionStatus: "disagree" });
-        }
-        if (ydir >= 1) {
-          onSwipe({ opinionID, opinionStatus: "pass" });
-        }
-      }
-
-      // MEMO: ydir || xidr が 0 でない場合はどこかにスワイプしている
-      if (!down && trigger && (ydir !== 0 || xdir !== 0)) {
-        if (ydir !== -1) {
-          gone.add(index);
-        }
-      }
-
-      // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
-      api.start((i) => {
-        if (i !== index) {
-          return;
-        }
-
-        const isGone = gone.has(index);
-        // MEMO: スワイプしたカードの位置を計算
-        const x = isGone ? (200 + window.innerWidth) * xdir : down ? mx : 0;
-        const y = isGone ? (200 + window.innerHeight) * ydir : down ? my : 0;
-        const rot = down ? mx / 100 + (isGone ? xdir * 10 * velocity : 0) : 0;
-
-        const config = {
-          friction: 50,
-          tension: down ? 800 : isGone ? 200 : 500,
-        };
-
-        // 透かし
-        let backgroundColor = x > 10 ? "blue" : x < -10 ? "red" : "transparent";
-        backgroundColor = y < -100 ? "transparent" : backgroundColor;
-        const opacity = x > 10 ? mx / 400 : x < -10 ? -mx / 400 : 0;
-
-        return {
-          ...animations.init(),
-          y,
-          x,
-          rot,
-          backgroundColor,
-          opacity,
-          agreeDisplay: x > 10 && y > -100 ? "block" : "none",
-          disagreeDisplay: x < -10 ? "block" : "none",
-          zIndex: down ? 100 : 0,
-          config,
-        };
-      });
-    },
-  );
-
-  return {
-    gone,
-    item,
-    api,
-    bind,
-    opinions,
-  };
-};
+// GSAPのDraggableを登録
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(Draggable);
+}
 
 export default function Page({
   loaderData: { opinions, session, $positions },
 }: Route.ComponentProps) {
-  const [isOpinionEnd, setIsOpinionEnd] = useState<boolean>(false);
   const windowWidth = useWindowResize(374);
-  const params = useParams();
-
-  const swipe = useSwipe({
-    opinions,
-    onSwipe: async ({ opinionID, opinionStatus }) => {
-      const { error } = await postVote({
-        opinionID,
-        voteStatus: opinionStatus as never,
-      });
-
-      if (error) {
-        return toast.error(error.message);
-      }
-
-      const current = opinions.length - swipe.gone.size;
-      setTimeout(() => {
-        if (current === 0) {
-          setIsOpinionEnd(true);
-        }
-      }, 300);
-    },
-  });
+  const navigate = useNavigate();
+  const [swipeCount, setSwipeCount] = useState(0);
+  // カード状態の管理
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const [cardsState, setCardsState] = useState(
+    opinions.map(() => ({
+      x: 0,
+      y: 0,
+      rotation: 0,
+      scale: 1,
+      opacity: 1,
+      backgroundColor: "transparent",
+      agreeDisplay: "none",
+      disagreeDisplay: "none",
+    })),
+  );
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (opinions.length === 0) {
-      setIsOpinionEnd(true);
+    if (opinions.length === swipeCount) {
+      navigate(`/${session.id}/opinion`);
     }
-  }, [opinions]);
+  }, [swipeCount]);
 
-  if (opinions.length === 0) {
-    return (
-      <div className="relative flex w-full flex-1 flex-col items-center justify-center">
-        <p>全ての意見に意思表明しました🎉</p>
-        <Link
-          to={`/${params.id}`}
-          className={button({ color: "primary", className: "mt-4 block" })}
-        >
-          みんなの意見を見る
-        </Link>
-      </div>
-    );
-  }
+  // カードのスワイプ後の処理
+  const handleSwipe = async ({
+    opinionStatus,
+  }: { opinionStatus: VoteType }) => {
+    const opinionID = opinions[swipeCount].opinion.id;
 
-  const handleSubmitVote = async (v: VoteType) => {
-    const current = opinions.length - swipe.gone.size - 1;
-    // MEMO: すべてのカードをスワイプした場合は何もしない
-    if (current < 0) {
-      return;
-    }
-
-    // MEMO: いますワイプしているカードのIDを取得
-    const opinionID =
-      opinions[opinions.length - swipe.gone.size - 1].opinion.id;
-
+    setLoading(true);
     const { error } = await postVote({
       opinionID,
-      voteStatus: v as never,
+      voteStatus: opinionStatus as never,
     });
 
     if (error) {
-      return toast.error(error.message);
+      toast.error(error.message);
+      setLoading(false);
+    } else {
+      setSwipeCount((prev) => prev + 1);
+      setLoading(false);
     }
-
-    setTimeout(() => {
-      if (current === 0) {
-        setIsOpinionEnd(true);
-      }
-    }, 300);
-
-    swipe.api.start((i) => {
-      if (i !== current) {
-        return;
-      }
-
-      swipe.gone.add(current);
-
-      return {
-        x: v === "agree" ? 800 : v === "disagree" ? -800 : 0,
-        y: v === "pass" ? 800 : 0,
-        scale: 1,
-        config: { friction: 50, tension: 200 },
-      };
-    });
   };
 
-  if (isOpinionEnd) {
-    return (
-      <div className="relative flex w-full flex-1 flex-col items-center justify-center space-y-4">
-        <p>{opinions.length}件の意見に意思表明しました🎉</p>
-        <Link
-          to={`/${params.id}`}
-          className={button({ color: "primary", className: "block" })}
-        >
-          みんなの意見を見る
-        </Link>
-      </div>
+  // GSAP Draggableの設定
+  useEffect(() => {
+    // 各カードにDraggableを適用
+    cardsRef.current.map((card, index) => {
+      if (!card) {
+        return null;
+      }
+
+      return Draggable.create(card, {
+        type: "x,y",
+        onDrag: function () {
+          // ドラッグ中の回転と背景色の更新
+          const rotation = this.x / 20;
+          let backgroundColor = "transparent";
+          let opacity = 0;
+          let agreeDisplay = "none";
+          let disagreeDisplay = "none";
+
+          if (this.x > 10) {
+            backgroundColor = "blue";
+            opacity = this.x / 400;
+            agreeDisplay = "block";
+          } else if (this.x < -10) {
+            backgroundColor = "red";
+            opacity = -this.x / 400;
+            disagreeDisplay = "block";
+          }
+
+          if (this.y < -100) {
+            backgroundColor = "transparent";
+            agreeDisplay = "none";
+            disagreeDisplay = "none";
+          }
+
+          gsap.to(card, {
+            rotation,
+            duration: 0,
+          });
+
+          setCardsState((prev) => {
+            return prev.map((state, i) => {
+              // インデックスが一致する場合、状態を更新
+              if (i === index) {
+                return {
+                  ...state,
+                  x: this.x,
+                  y: this.y,
+                  rotation,
+                  backgroundColor,
+                  opacity,
+                  agreeDisplay,
+                  disagreeDisplay,
+                };
+              }
+
+              // そうでない場合は状態を変更せずに返す
+              return state;
+            });
+          });
+        },
+        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
+        onDragEnd() {
+          const xdir = this.x > 300 ? 1 : this.x < -300 ? -1 : 0;
+          const ydir = this.y > 100 ? 1 : this.y < -100 ? -1 : 0;
+
+          let status: VoteType = "pass";
+
+          if (xdir >= 1) {
+            status = "agree";
+            // カードを右に飛ばすアニメーション
+            gsap.to(card, {
+              x: window.innerWidth + 200,
+              y: this.y,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          } else if (xdir <= -1) {
+            status = "disagree";
+            // カードを左に飛ばすアニメーション
+            gsap.to(card, {
+              x: -window.innerWidth - 200,
+              y: this.y,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          } else if (ydir >= 1) {
+            status = "pass";
+            // カードを下に飛ばすアニメーション
+            gsap.to(card, {
+              x: this.x,
+              y: window.innerHeight + 200,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          } else {
+            // どの方向にもスワイプされなかった場合は元の位置に戻す
+            gsap.to(card, {
+              x: 0,
+              y: 0,
+              rotation: 0,
+              duration: 0.5,
+              ease: "elastic.out(1, 0.5)",
+            });
+
+            setCardsState((prev) => {
+              return prev.map((state, i) => {
+                // インデックスが一致する場合、状態を更新
+                if (i === index) {
+                  return {
+                    ...state,
+                    x: this.x,
+                    y: this.y,
+                    backgroundColor: "transparent",
+                    agreeDisplay: "none",
+                    disagreeDisplay: "none",
+                  };
+                }
+
+                // そうでない場合は状態を変更せずに返す
+                return state;
+              });
+            });
+            return;
+          }
+
+          // ユーザーコールバックを呼び出し
+          handleSwipe({ opinionStatus: status });
+        },
+      });
+    });
+  }, [swipeCount]);
+
+  const handleSubmitVote = async (opinionStatus: VoteType) => {
+    // カードをアニメーションで移動
+    const card = cardsRef.current[swipeCount];
+
+    if (!card) {
+      return;
+    }
+
+    let x = 0;
+    let y = 0;
+    let rotation = 0;
+    let backgroundColor = "transparent";
+    let agreeDisplay = "none";
+    let disagreeDisplay = "none";
+    let opacity = 0;
+
+    // ヘルパー関数
+    const setAgreeStyle = () => {
+      x = window.innerWidth + 200;
+      rotation = 15;
+      backgroundColor = "blue";
+      agreeDisplay = "block";
+      opacity = 0.7;
+    };
+
+    const setDisagreeStyle = () => {
+      x = -window.innerWidth - 200;
+      rotation = -15;
+      backgroundColor = "red";
+      disagreeDisplay = "block";
+      opacity = 0.7;
+    };
+
+    const setPassStyle = () => {
+      y = window.innerHeight + 200;
+    };
+
+    // 各ケースで単一のステートメントだけを使用
+    switch (opinionStatus) {
+      case "agree":
+        setAgreeStyle();
+        break;
+      case "disagree":
+        setDisagreeStyle();
+        break;
+      case "pass":
+        setPassStyle();
+        break;
+      default:
+        break;
+    }
+
+    gsap.to(card, {
+      x,
+      y,
+      rotation,
+      duration: 0.7,
+      ease: "power2.out",
+    });
+
+    // カードの状態を更新
+    setCardsState((prev) =>
+      prev.map((state, i) => {
+        // インデックスが一致する場合は状態を更新
+        if (i === swipeCount) {
+          return {
+            ...state,
+            x,
+            y,
+            rotation,
+            backgroundColor,
+            agreeDisplay,
+            disagreeDisplay,
+            opacity,
+          };
+        }
+
+        // 一致しない場合は元の状態を維持
+        return state;
+      }),
     );
-  }
+
+    // ユーザーコールバックを呼び出し
+    handleSwipe({ opinionStatus });
+  };
 
   return (
     <div className="relative w-full flex-1 overflow-hidden bg-[#F2F2F7] pb-16">
@@ -310,98 +340,90 @@ export default function Page({
 
       <p className="mx-2 mt-6 text-center font-semibold text-[#8E8E93] text-lg">
         <span className="mr-2">意見</span>
-        {swipe.gone.size} / {swipe.item.length}
+        {swipeCount} / {opinions.length}
       </p>
 
       <div className="relative mx-auto mt-2 h-[168px] w-full max-w-3xl">
-        {swipe.item?.map(
-          (
-            {
-              x,
-              y,
-              w,
-              h,
-              left,
-              rot,
-              scale,
-              zIndex,
-              backgroundColor,
-              disagreeDisplay,
-              agreeDisplay,
-              opacity,
-            },
-            i,
-          ) => {
-            return (
-              <animated.div
-                className="absolute block cursor-pointer touch-none rounded bg-white will-change-transform"
-                key={i}
-                style={{
-                  x,
-                  y,
-                  height: h,
-                  width: w,
-                  left,
-                  zIndex,
-                }}
-              >
-                <animated.div
-                  {...swipe.bind(i)}
-                  style={{ transform: to([rot, scale], trans) }}
-                  className="w-full"
+        {opinions.map((opinion, i) => {
+          const zIndex = opinions.length - i;
+
+          const state = cardsState[i] || {
+            backgroundColor: "transparent",
+            agreeDisplay: "none",
+            disagreeDisplay: "none",
+            opacity: 0,
+          };
+
+          return (
+            <div
+              key={i}
+              className="absolute block cursor-pointer touch-none rounded will-change-transform"
+              style={{
+                height: "144px",
+                width: "96%",
+                left: "2%",
+                zIndex,
+                pointerEvents: loading ? "none" : "auto",
+              }}
+              ref={(el) => {
+                cardsRef.current[i] = el;
+              }}
+            >
+              <div className="h-full w-full bg-white">
+                {/* 重なり - 反対 */}
+                <div
+                  style={{
+                    backgroundColor: state.backgroundColor,
+                    display: state.disagreeDisplay,
+                    opacity: state.opacity,
+                  }}
+                  className="absolute z-10 h-[144px] w-full rounded"
+                />
+                <p
+                  style={{ display: state.disagreeDisplay }}
+                  className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
                 >
-                  {/* 重なり */}
-                  <animated.div
-                    style={{
-                      backgroundColor,
-                      display: disagreeDisplay,
-                      opacity,
-                    }}
-                    className="absolute z-10 h-[144px] w-full rounded"
-                  />
-                  <animated.p
-                    style={{ display: disagreeDisplay }}
-                    className="absolute z-10 w-full select-none p-4 text-end font-bold text-2xl text-white"
-                  >
-                    違うかも
-                  </animated.p>
+                  違うかも
+                </p>
 
-                  <animated.div
-                    style={{
-                      backgroundColor,
-                      display: agreeDisplay,
-                      opacity,
-                    }}
-                    className="absolute z-10 h-[144px] w-full rounded"
-                  />
-                  <animated.p
-                    style={{ display: agreeDisplay }}
-                    className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
-                  >
-                    いいかも
-                  </animated.p>
+                {/* 重なり - 賛成 */}
+                <div
+                  style={{
+                    backgroundColor: state.backgroundColor,
+                    display: state.agreeDisplay,
+                    opacity: state.opacity,
+                  }}
+                  className="absolute z-10 h-[144px] w-full rounded"
+                />
+                <p
+                  style={{ display: state.agreeDisplay }}
+                  className="absolute z-10 w-full select-none p-4 font-bold text-2xl text-white"
+                >
+                  いいかも
+                </p>
 
-                  <Card
-                    title={swipe.opinions[i].opinion.title || ""}
-                    description={swipe.opinions[i].opinion.content || ""}
-                    user={swipe.opinions[i].user}
-                    date={"2025/12/31 10:00"}
-                    className="pointer-events-none select-none"
-                  />
-                </animated.div>
-              </animated.div>
-            );
-          },
-        )}
+                <Card
+                  title={opinion.opinion.title || ""}
+                  description={opinion.opinion.content || ""}
+                  user={opinion.user}
+                  date={"2025/12/31 10:00"}
+                  className="pointer-events-none select-none"
+                />
+              </div>
+            </div>
+          );
+        })}
       </div>
+
       <div className="relative mt-4 h-[160px]">
         <PointUp className="-translate-x-3/5 absolute left-1/2 mt-1" />
 
         <div className="absolute top-6 right-3/5 flex flex-col items-center">
           <button
             type="button"
+            disabled={loading}
             onClick={() => handleSubmitVote("disagree")}
-            className="cursor-pointer rounded-full bg-[#FF2D55] p-2 shadow-cs-normal"
+            className="cursor-pointer rounded-full bg-[#FF2D55] p-2 shadow-cs-normal disabled:opacity-70"
           >
             <ArrowLeft className="fill-white" />
           </button>
@@ -411,8 +433,9 @@ export default function Page({
         <div className="-translate-x-1/2 absolute top-24 left-1/2 flex flex-col items-center">
           <button
             type="button"
+            disabled={loading}
             onClick={() => handleSubmitVote("pass")}
-            className="cursor-pointer rounded-full bg-[#5856D6] p-2 shadow-cs-normal"
+            className="cursor-pointer rounded-full bg-[#5856D6] p-2 shadow-cs-normal disabled:opacity-70"
           >
             <ArrowDown className="fill-white" />
           </button>
@@ -422,14 +445,16 @@ export default function Page({
         <div className="absolute top-6 left-3/5 flex flex-col items-center">
           <button
             type="button"
+            disabled={loading}
             onClick={() => handleSubmitVote("agree")}
-            className="cursor-pointer rounded-full bg-[#32ADE6] p-2 shadow-cs-normal"
+            className="cursor-pointer rounded-full bg-[#32ADE6] p-2 shadow-cs-normal disabled:opacity-70"
           >
             <ArrowRight className="fill-white" />
           </button>
           <p className="mt-1 text-cyan-400">良さそう</p>
         </div>
       </div>
+
       <Link
         to="#"
         className="mt-4 flex items-center justify-center text-blue-500 text-sm"
