@@ -17,7 +17,7 @@ export const Checkbox = ({ id, label, ...props }: Props) => {
           type="checkbox"
           className="[&:checked::after]:-rotate-45 relative h-[20px] w-[20px] cursor-pointer appearance-none rounded border border-[#CED4DA] bg-white checked:bg-[#4dabf7] disabled:bg-[#C1C2C5] [&:checked::after]:absolute [&:checked::after]:top-[5px] [&:checked::after]:left-[3px] [&:checked::after]:h-[6px] [&:checked::after]:w-[12px] [&:checked::after]:transform [&:checked::after]:border-white [&:checked::after]:border-b-2 [&:checked::after]:border-l-2 [&:checked::after]:content-['']"
         />
-        {label}
+        <span className="cursor-pointer">{label}</span>
       </label>
     </div>
   );
