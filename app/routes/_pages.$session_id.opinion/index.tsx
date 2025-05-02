@@ -22,7 +22,6 @@ export default function Page({
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
-  // const [activeTab, setActiveTab] = useState("a");
 
   const { vote } = useVote({ sessionID: session.id });
 
@@ -79,7 +78,7 @@ export default function Page({
                       return (
                         <Card
                           key={i}
-                          href={`/opinion/${id}`}
+                          href={`/opinion/${id}/${session.id}`}
                           title={opinion.title}
                           description={opinion.content}
                           user={{ displayID, displayName, iconURL }}

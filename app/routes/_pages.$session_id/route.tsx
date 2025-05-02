@@ -182,7 +182,7 @@ const Contents = ({
               return (
                 <Await resolve={$user}>
                   {(user) => {
-                    if (!(user && count)) {
+                    if (!user || count === 0) {
                       return;
                     }
 
@@ -190,7 +190,7 @@ const Contents = ({
                       <button
                         type="button"
                         onClick={handleMoveSwipePage}
-                        className="md:!hidden relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
+                        className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
                       >
                         <span className="primary-gradient inline-block text-clip">
                           みんなの意見を見る

@@ -9,10 +9,10 @@ const avator = tv({
   base: "block h-10 w-10 rounded-full",
 });
 
-export const Avatar = ({ className, ...props }: Props) => {
+export const Avatar = ({ className, src, ...props }: Props) => {
   return (
     <picture {...props} className={avator({ className })}>
-      <source srcSet={props.src || ""} />
+      <source srcSet={src || ""} />
       <img
         src={"/default_icon.png"}
         alt=""

@@ -26,7 +26,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       },
     })
     .then(({ data }) => {
-      return data?.remainingCount;
+      return data?.remainingCount || 0;
     });
 
   /**

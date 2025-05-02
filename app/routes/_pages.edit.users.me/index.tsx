@@ -1,7 +1,6 @@
 import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
-import bathday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import AdressInputs from "~/components/features/input-adress";
 import { Camera } from "~/components/icons";
@@ -12,6 +11,7 @@ import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.edit.users.me/+types";
+import { formatDate } from "~/utils/format-date";
 import { useEditUserForm } from "./hooks/useEditUserForm";
 
 export { loader } from "./modules/loader";
@@ -24,6 +24,7 @@ export default function Page({
     user: {
       ...user,
       ...demographics,
+      dateOfBirth: formatDate(demographics.dateOfBirth?.toString()),
     },
   });
 
@@ -93,16 +94,18 @@ export default function Page({
         <Label
           title="誕生年"
           optional={true}
-          errors={fields.yearOfBirth.errors}
+          errors={fields.dateOfBirth.errors}
         >
-          <Select
-            {...getSelectProps(fields.yearOfBirth)}
-            error={isFieldsError(fields.yearOfBirth.errors)}
-            options={bathday.map((v) => ({
-              value: `${v}`,
-              title: `${v}年`,
-            }))}
-          />
+          <span className="relative">
+            <Input
+              {...getInputProps(fields.dateOfBirth, {
+                type: "text",
+              })}
+              type="date"
+              className="h-12 w-full px-4"
+              placeholder="記入する"
+            />
+          </span>
         </Label>
 
         {/* FIXME: 型が合わない */}

@@ -3,7 +3,7 @@ import { api } from "~/libs/api";
 import { notfound } from "~/libs/response";
 
 export const loader = async ({ params, request }: LoaderFunctionArgs) => {
-  if (!params.opinion_id) {
+  if (!(params.opinion_id && params.session_id)) {
     return notfound();
   }
 
@@ -37,5 +37,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     root,
     currentUser,
     opinions: opinions.opinions,
+    sessionID: params.session_id,
   };
 };
