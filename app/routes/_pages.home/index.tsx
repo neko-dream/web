@@ -68,9 +68,9 @@ export default function Page({
           {(data) => {
             return (
               <>
-                <h2 className="mx-4 mt-12 font-bold text-xl">
+                {/* <h2 className="mx-4 mt-12 font-bold text-xl">
                   終了したセッション
-                </h2>
+                </h2> */}
                 <div className="mt-4 space-y-6 px-4">
                   {data?.talkSessions.map((session, i) => (
                     <Link
