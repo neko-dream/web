@@ -3,6 +3,7 @@ import { parseWithValibot } from "conform-to-valibot";
 import { useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { InfoCircle, PaperPlane } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
@@ -20,6 +21,7 @@ export default function Page({
 }: Route.ComponentProps) {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isHintModalOpen, setIsHintModalOpen] = useState(false);
 
   const [form, fields] = useForm({
     onValidate: ({ formData }) => {
@@ -58,39 +60,50 @@ export default function Page({
   });
 
   return (
-    <div className="flex flex-1 flex-col bg-[#F2F2F7]">
-      <Heading title="意見を書いてみる" to={`/${session.id}`} isLink={true} />
+    <>
+      <div className="flex flex-1 flex-col bg-[#F2F2F7]">
+        <Heading title="意見を書いてみる" to={`/${session.id}`} isLink={true} />
 
-      <Form
-        {...getFormProps(form)}
-        onSubmit={form.onSubmit}
-        className="mx-auto w-full max-w-2xl p-4 pb-16"
-      >
-        <p className="text-gray-500">{session.theme}</p>
-        <Label
-          title="あなたの意見"
-          className="mt-4"
-          notes={["注意：個人情報は入力しないでください"]}
+        <Form
+          {...getFormProps(form)}
+          onSubmit={form.onSubmit}
+          className="mx-auto w-full max-w-2xl p-4 pb-16"
         >
-          <div className="flex items-center space-x-1 font-bold text-blue-500 text-sm">
-            <InfoCircle />
-            <p>投稿のルール</p>
-          </div>
-          <Textarea
-            {...getInputProps(fields.opinionContent, { type: "text" })}
-            className="h-[400px]"
-          />
-        </Label>
-        <Button
-          color="primary"
-          type="submit"
-          className="!mt-12 mx-auto flex items-center space-x-4"
-          disabled={isSubmitting}
-        >
-          <PaperPlane />
-          <span>意見を投稿する</span>
-        </Button>
-      </Form>
-    </div>
+          <p className="text-gray-500">{session.theme}</p>
+          <Label
+            title="あなたの意見"
+            className="mt-4"
+            notes={["注意：個人情報は入力しないでください"]}
+          >
+            <button
+              type="button"
+              onClick={() => setIsHintModalOpen(true)}
+              className="flex items-center space-x-1 font-bold text-blue-500 text-sm"
+            >
+              <InfoCircle />
+              <p>投稿のルール</p>
+            </button>
+            <Textarea
+              {...getInputProps(fields.opinionContent, { type: "text" })}
+              className="h-[400px]"
+            />
+          </Label>
+          <Button
+            color="primary"
+            type="submit"
+            className="!mt-12 mx-auto flex items-center space-x-4"
+            disabled={isSubmitting}
+          >
+            <PaperPlane />
+            <span>意見を投稿する</span>
+          </Button>
+        </Form>
+      </div>
+
+      <HintOpinionModal
+        isOpen={isHintModalOpen}
+        onOpenChange={setIsHintModalOpen}
+      />
+    </>
   );
 }

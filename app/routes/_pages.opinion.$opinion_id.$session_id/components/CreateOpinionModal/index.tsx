@@ -6,9 +6,15 @@ type Props = {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
+  onHintTextCLick: () => void;
 };
 
-export const CreateOpinionModal = ({ isOpen, onClose, children }: Props) => {
+export const CreateOpinionModal = ({
+  isOpen,
+  onClose,
+  children,
+  onHintTextCLick,
+}: Props) => {
   return (
     <AnimatePresence>
       {isOpen && (
@@ -33,10 +39,14 @@ export const CreateOpinionModal = ({ isOpen, onClose, children }: Props) => {
             <div className="flex items-center justify-between">
               <h2 className="mx-auto font-bold text-lg">コメント</h2>
             </div>
-            <div className="mt-1 flex items-center space-x-1 font-bold text-blue-500 text-sm">
+            <button
+              type="button"
+              onClick={onHintTextCLick}
+              className="mt-1 flex items-center space-x-1 font-bold text-blue-500 text-sm"
+            >
               <InfoCircle />
               <p>投稿のルール</p>
-            </div>
+            </button>
             <div className="mt-4">{children}</div>
           </motion.div>
         </>

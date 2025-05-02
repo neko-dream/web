@@ -5,6 +5,7 @@ import { Form, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
 import { Fragment } from "react/jsx-runtime";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
+import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { Card } from "~/components/features/opinion-card";
 import { More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
@@ -28,6 +29,7 @@ export default function Page({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { revalidate } = useRevalidator();
   const { vote } = useVote({ sessionID });
+  const [isHintModalOpen, setIsHintModalOpen] = useState(false);
 
   const handleVote = async (opinionID: string, status: VoteType) => {
     const result = await vote({ opinionID, status });
@@ -148,6 +150,7 @@ export default function Page({
       <CreateOpinionModal
         isOpen={isCreateOpinionModal}
         onClose={() => setIsCreateOpinionModalOpen(false)}
+        onHintTextCLick={() => setIsHintModalOpen(true)}
       >
         <Form {...getFormProps(form)}>
           <Textarea
@@ -166,6 +169,11 @@ export default function Page({
           </Button>
         </Form>
       </CreateOpinionModal>
+
+      <HintOpinionModal
+        isOpen={isHintModalOpen}
+        onOpenChange={setIsHintModalOpen}
+      />
     </>
   );
 }
