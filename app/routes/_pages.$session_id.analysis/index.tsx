@@ -8,10 +8,9 @@ import { GroupTabs } from "~/components/ui/group-tabs";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
 import type { SessionRouteContext } from "~/types/ctx";
-import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader };
+export { loader } from "./modules/loader";
 
 const GROUP_NAME_MAP: { readonly [key: number]: string } = {
   0: "A",
@@ -27,37 +26,59 @@ const GROUP_NAME_MAP: { readonly [key: number]: string } = {
 };
 
 export default function Page({
-  loaderData: { $opinions, $reports, $positions },
+  loaderData: { $reports, $positions },
 }: Route.ComponentProps) {
   const { session } = useOutletContext<SessionRouteContext>();
-  const windowWidth = useWindowResize(374);
   const [activeTab, setActiveTab] = useState("A");
+  const windowWidth = useWindowResize(374);
+
+  // グループ名を取得する関数
+  const handleSlectGroup = (id: number) => {
+    setActiveTab(GROUP_NAME_MAP[id]);
+  };
+
+  // グループIDを抽出する関数
+  const extractGroups = (groupIDs: { groupID: number }[]) => {
+    const uniqueGroupIDsSet = new Set(groupIDs.map((p) => p.groupID));
+    return new Array(uniqueGroupIDsSet.size).fill(0).map((_, i) => {
+      return GROUP_NAME_MAP[i];
+    });
+  };
 
   return (
     <div className="mx-auto flex max-w-4xl items-start">
       <div className="w-full">
-        <div className="mx-auto w-full max-w-2xl rounded-md bg-white p-2">
-          <div className="flex items-center space-x-2">
-            <img src="/icon.png" alt="" className="m-1 h-7" />
-            <p className="text-gray-500 text-xs">ことひろAIレポート</p>
-          </div>
-          <article className="mt-1 line-clamp-4 text-gray-800 text-sm">
-            <Suspense>
-              <Await resolve={$reports}>
-                {({ data }) => {
-                  return <ReactMarkdown>{data?.report}</ReactMarkdown>;
-                }}
-              </Await>
-            </Suspense>
-          </article>
-          <Link
-            to={`/report/${session.id}`}
-            className="m-2 flex items-center justify-end text-blue-400 text-xs"
-          >
-            <span className="mr-1">詳しくみる</span>
-            <Arrow className="rotate-270 text-blue-400" />
-          </Link>
-        </div>
+        <Suspense>
+          <Await resolve={$reports}>
+            {({ data }) => {
+              return (
+                <div className="mx-auto w-full max-w-2xl rounded-md bg-white p-2">
+                  <div className="flex items-center space-x-2">
+                    <img src="/icon.png" alt="" className="m-1 h-7" />
+                    <p className="text-gray-500 text-xs">ことひろAIレポート</p>
+                  </div>
+                  <article className="mt-1 line-clamp-4 text-gray-800 text-sm">
+                    <ReactMarkdown>{data?.report}</ReactMarkdown>
+                    {!data?.report && (
+                      <p className="py-4 text-center">
+                        まだレポートがありません。意見を投稿してみよう🎵
+                      </p>
+                    )}
+                  </article>
+                  {data?.report && (
+                    <Link
+                      to={`/report/${session.id}`}
+                      className="m-2 flex items-center justify-end text-blue-400 text-xs"
+                    >
+                      <span className="mr-1">詳しくみる</span>
+                      <Arrow className="rotate-270 text-blue-400" />
+                    </Link>
+                  )}
+                </div>
+              );
+            }}
+          </Await>
+        </Suspense>
 
         {/* モバイルで表示するようのグラフ */}
         <Suspense>
@@ -67,15 +88,15 @@ export default function Page({
                 return null;
               }
 
-              const uniqueGroupIDsSet = new Set(
-                data?.positions?.map((p) => p.groupID) || [],
+              // グループIDの抽出
+              const groups = extractGroups(data?.positions || []).map(
+                (group) => {
+                  return {
+                    label: `${group}`,
+                    value: group,
+                  };
+                },
               );
-
-              const groups = new Array(uniqueGroupIDsSet.size)
-                .fill(0)
-                .map((_, i) => {
-                  return GROUP_NAME_MAP[i];
-                });
 
               return (
                 <>
@@ -85,21 +106,14 @@ export default function Page({
                       positions={data?.positions}
                       myPosition={data?.myPosition}
                       windowWidth={windowWidth - 48}
-                      selectGroupId={(v: number) => {
-                        setActiveTab(GROUP_NAME_MAP[v]);
-                      }}
+                      selectGroupId={handleSlectGroup}
                       background={0xffffff}
                     />
                   </div>
 
                   <div className="mt-2">
                     <GroupTabs
-                      tabs={groups.map((group) => {
-                        return {
-                          label: `${group}`,
-                          value: group,
-                        };
-                      })}
+                      tabs={groups}
                       activeTab={activeTab}
                       onChange={setActiveTab}
                     />
@@ -112,27 +126,26 @@ export default function Page({
 
         <div className="mt-2 flex flex-col space-y-2">
           <Suspense>
-            <Await resolve={$opinions}>
+            <Await resolve={$positions}>
               {({ data }) => {
-                return data?.opinions
-                  .filter(() => {
-                    // FIXME: ここでフィルタリングしているが、サーバーから返ってこない
-                    return true;
-                  })
-                  .map(({ opinion, user: opinionUser, myVoteType }, i) => {
-                    return (
-                      <Card
-                        href={`/opinion/${opinion.id}`}
-                        key={i}
-                        title={opinion.title}
-                        description={opinion.content}
-                        user={opinionUser}
-                        status={myVoteType}
-                        date={opinion.postedAt}
-                        className="mx-auto w-full max-w-2xl"
-                      />
-                    );
-                  });
+                // 選択されているグループのみ抽出
+                const selectedGroup = data?.groupOpinions.find((group) => {
+                  return group.groupName === activeTab;
+                });
+
+                return selectedGroup?.opinions.map(({ opinion, user }, i) => {
+                  return (
+                    <Card
+                      href={`/opinion/${opinion.id}`}
+                      key={i}
+                      title={opinion.title}
+                      description={opinion.content}
+                      user={user}
+                      date={opinion.postedAt}
+                      className="mx-auto w-full max-w-2xl"
+                    />
+                  );
+                });
               }}
             </Await>
           </Suspense>
@@ -143,6 +156,10 @@ export default function Page({
       <Suspense>
         <Await resolve={$positions}>
           {({ data }) => {
+            if (data?.positions.length === 0) {
+              return null;
+            }
+
             return (
               <div className="ml-4 hidden min-w-[346px] rounded bg-white p-2 md:block">
                 <Graph
@@ -150,9 +167,7 @@ export default function Page({
                   positions={data?.positions}
                   myPosition={data?.myPosition}
                   windowWidth={330}
-                  selectGroupId={(v: number) => {
-                    setActiveTab(GROUP_NAME_MAP[v]);
-                  }}
+                  selectGroupId={handleSlectGroup}
                   background={0xffffff}
                 />
               </div>
