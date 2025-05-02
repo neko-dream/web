@@ -30,7 +30,10 @@ export const CenterDialog = ({
       document.body.style.width = "100%";
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
 
       // スクロール位置を復元
       const scrollY = document.body.style.top;
@@ -38,7 +41,10 @@ export const CenterDialog = ({
     }
 
     return () => {
-      document.body.style = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
     };
   }, [isOpen]);
 
