@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { create } from "zustand";
 import { api } from "~/libs/api";
 
@@ -21,6 +22,10 @@ export const useVote = ({ sessionID }: Props) => {
   const setIsRequestModal = useSatisfiedStore(
     (state) => state.setIsRequestModal,
   );
+
+  useEffect(() => {
+    return () => setIsRequestModal([]);
+  }, [sessionID]);
 
   const check = async () => {
     //　同意済みなら何もしない

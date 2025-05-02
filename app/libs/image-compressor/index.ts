@@ -3,10 +3,14 @@ import Compressor from "compressorjs";
 /**
  * 画像を小さくする
  */
-export const fileCompress = (
-  file: File | Blob,
+export const fileCompress = async (
+  file?: File | Blob,
   size = 300,
-): Promise<File | Blob> => {
+): Promise<File | Blob | undefined> => {
+  if (!(file && file.size <= 0)) {
+    return undefined;
+  }
+
   return new Promise((resolve, reject) => {
     new Compressor(file, {
       maxWidth: size,

@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 import * as v from "valibot";
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
-import { fileCompress } from "~/libs/compressor";
+import { fileCompress } from "~/libs/image-compressor";
 
 type Props = {
   talkSessionID?: string;
@@ -28,18 +28,13 @@ export const useCreateOpinionsForm = ({
   return useCustomForm({
     schema: createOpinionFormSchema,
     onSubmit: async ({ value }) => {
-      const compressedPicture =
-        value.picture &&
-        value.picture?.size > 0 &&
-        fileCompress(value.picture, 150);
-
       const { data, error } = await api.POST("/opinions", {
         credentials: "include",
         body: {
           talkSessionID,
           parentOpinionID,
           ...value,
-          picture: (await compressedPicture) as unknown as string,
+          picture: await fileCompress(value.picture, 150),
         },
       });
 

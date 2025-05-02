@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { useCustomForm } from "~/hooks/useCustomForm";
 import { api } from "~/libs/api";
-import { fileCompress } from "~/libs/compressor";
+import { fileCompress } from "~/libs/image-compressor";
 import { userEditFormSchema } from "~/schemas/users";
 import type { UserType } from "~/types";
 import { removeHyphens } from "~/utils/format-date";
@@ -21,15 +21,12 @@ export const useEditUserForm = ({ user }: Props) => {
       icon: undefined,
     },
     onSubmit: async ({ value }) => {
-      const compressIcon =
-        value.icon && value.icon?.size > 0 && fileCompress(value.icon);
-
       const { error } = await api.PUT("/user", {
         credentials: "include",
         body: {
           ...value,
           dateOfBirth: removeHyphens(value.dateOfBirth),
-          icon: (await compressIcon) as unknown as string,
+          icon: await fileCompress(value.icon),
         },
       });
 
