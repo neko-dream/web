@@ -43,6 +43,7 @@ export const ReportModal = ({
         },
         body: {
           reason: submission.value.reason,
+          content: submission.value.content,
         },
       });
       if (res.response.status === 200) {
@@ -69,7 +70,10 @@ export const ReportModal = ({
                   value={reasonID}
                   className="h-4 w-4"
                 />
-                <label htmlFor={`reason-${reasonID}`} className="text-sm">
+                <label
+                  htmlFor={`reason-${reasonID}`}
+                  className="cursor-pointer text-sm"
+                >
                   {reason}
                 </label>
               </div>
