@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
+import SimpleBar from "simplebar-react";
 import { Checkbox } from "~/components/ui/checkbox";
 import { api } from "~/libs/api";
 import { CONSENT_MODAL_TEXT } from "./constants";
+import "simplebar-react/dist/simplebar.min.css";
 
 type Props = {
   sessionID: string;
@@ -36,9 +38,13 @@ export const ConsentModal = ({ sessionID, onConform, onClose }: Props) => {
   return (
     <div className="w-[327px] p-2">
       <p className="text-center font-bold text-[18px]">参加される方へ</p>
-      <p className="scrollbar-visible mt-4 h-60 overflow-y-scroll whitespace-pre-line">
+      <SimpleBar
+        style={{ maxHeight: 300 }}
+        className="mt-4 whitespace-pre-line"
+        autoHide={false}
+      >
         {CONSENT_MODAL_TEXT}
-      </p>
+      </SimpleBar>
       <div className="mt-4">
         <Checkbox
           label="上記に同意してセッションに参加する"
