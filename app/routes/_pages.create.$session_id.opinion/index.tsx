@@ -1,26 +1,70 @@
-import { getFormProps, getInputProps } from "@conform-to/react";
+import { getFormProps, getInputProps, useForm } from "@conform-to/react";
+import { parseWithValibot } from "conform-to-valibot";
+import { useState } from "react";
 import { Form, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import * as v from "valibot";
 import { InfoCircle, PaperPlane } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import Textarea from "~/components/ui/textarea";
-import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
+import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
+const createOpinionFormSchema = v.object({
+  parentOpinionID: v.optional(v.string()),
+  opinionContent: v.pipe(
+    v.string("意見の入力は必須です"),
+    v.maxLength(140, "140文字以内で入力してください"),
+  ),
+  referenceURL: v.optional(v.string()),
+  picture: v.optional(v.instance(File)),
+});
+
 export default function Page({
   loaderData: { session },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { form, fields, isDisabled } = useCreateOpinionsForm({
-    talkSessionID: session.id,
-    onFinishedProcess: () => {
-      navigate(`/${session.id}/opinion`);
+  const [form, fields] = useForm({
+    onValidate: ({ formData }) => {
+      return parseWithValibot(formData, {
+        schema: createOpinionFormSchema,
+      });
     },
+    onSubmit: async (e, { submission }) => {
+      e.preventDefault();
+      if (isSubmitting || submission?.status !== "success") {
+        return;
+      }
+      setIsSubmitting(true);
+      try {
+        const { data, error } = await api.POST("/opinions", {
+          credentials: "include",
+          body: {
+            talkSessionID: session.id,
+            ...submission.value,
+          },
+        });
+        if (data) {
+          toast.success("意見を投稿しました");
+          navigate(`/${session.id}/opinion`);
+        } else {
+          toast.error(error.message);
+          setIsSubmitting(false);
+        }
+      } catch {
+        toast.error("エラーが発生しました");
+        setIsSubmitting(false);
+      }
+    },
+
+    shouldValidate: "onInput",
   });
 
   return (
@@ -51,7 +95,7 @@ export default function Page({
           color="primary"
           type="submit"
           className="!mt-12 mx-auto flex items-center space-x-4"
-          disabled={isDisabled}
+          disabled={isSubmitting}
         >
           <PaperPlane />
           <span>意見を投稿する</span>
