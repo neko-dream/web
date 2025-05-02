@@ -31,7 +31,9 @@ function Select(
       <select
         {...props}
         ref={ref}
-        className={base()}
+        className={base({
+          className: defaultValue ? "text-black" : "text-gray-400",
+        })}
         onChange={(e) => {
           props.onChange?.(e);
           e.currentTarget.style.color = "black";
