@@ -23,9 +23,6 @@ export default function Page({
   const [selectOpinionID, setSelectOpinionID] = useState("");
   const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
 
-  $positions.then(console.log);
-  $opinions.then(console.log);
-
   const { vote } = useVote({ sessionID: session.id });
 
   const handleVote = async (opinionID: string, status: VoteType) => {
