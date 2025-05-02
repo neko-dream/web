@@ -3,6 +3,9 @@ import { useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { ModalProps } from "./types";
 
+/**
+ * swipeカードに謎にzIndexがついて負けるので一旦5000にしている
+ */
 export const CenterDialog = ({
   isOpen,
   onOpenChange,
@@ -61,7 +64,7 @@ export const CenterDialog = ({
             animate={{ opacity: 0.5 }}
             exit={{ opacity: 0 }}
             onClick={() => onOpenChange(false)}
-            className="fixed inset-0 z-40 w-full bg-black"
+            className="fixed inset-0 z-[5000] w-full bg-black"
           />
           <motion.div
             initial={{ opacity: 0, scale: 0.75, y: 20 }}
@@ -72,7 +75,7 @@ export const CenterDialog = ({
               duration: 0.2,
               bounce: 0.3,
             }}
-            className="-translate-x-1/2 -translate-y-1/2 fixed inset-0 top-1/2 left-1/2 z-50 h-fit w-fit"
+            className="-translate-x-1/2 -translate-y-1/2 fixed inset-0 top-1/2 left-1/2 z-[5000] h-fit w-fit min-w-[343px]"
           >
             <div className="rounded-lg bg-white p-2 shadow-xl">{children}</div>
           </motion.div>

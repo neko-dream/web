@@ -54,7 +54,7 @@ export const useCustomForm = <T extends U>({
 
       try {
         await onSubmit({ e, value: deleteDashValues(submission?.payload) });
-      } catch (_e) {
+      } catch {
         toast.error("エラーが発生しました");
       } finally {
         setLoading(false);
