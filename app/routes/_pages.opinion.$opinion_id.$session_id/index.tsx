@@ -3,7 +3,6 @@ import { parseWithValibot } from "conform-to-valibot";
 import { useState } from "react";
 import { Form, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import { Fragment } from "react/jsx-runtime";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { Card } from "~/components/features/opinion-card";
@@ -101,7 +100,7 @@ export default function Page({
           onClickAgree={() => handleVote(root.opinion.id, "agree")}
           onClickDisagree={() => handleVote(root.opinion.id, "disagree")}
           onClickPass={() => handleVote(root.opinion.id, "pass")}
-          className="rounded-none"
+          className="mx-auto w-full max-w-2xl"
         />
       )}
 
@@ -119,8 +118,9 @@ export default function Page({
               />
             );
           }
+
           return (
-            <Fragment key={i}>
+            <div key={i} className="mx-auto w-full max-w-2xl">
               <More className="ml-4 w-6 text-cyan-500" />
               <Card
                 key={i}
@@ -134,7 +134,7 @@ export default function Page({
                 onClickDisagree={() => handleVote(opinion.id, "disagree")}
                 onClickPass={() => handleVote(opinion.id, "pass")}
               />
-            </Fragment>
+            </div>
           );
         })}
       </div>
