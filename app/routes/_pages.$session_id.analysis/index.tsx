@@ -4,10 +4,10 @@ import { Await, Link, useOutletContext } from "react-router";
 import { Card } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { Arrow } from "~/components/icons";
+import { GroupTabs } from "~/components/ui/group-tabs";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
 import type { SessionRouteContext } from "~/types/ctx";
-import { GroupTabs } from "../_pages.$session_id.opinion/components/GroupTabs";
 import { loader } from "./modules/loader";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
