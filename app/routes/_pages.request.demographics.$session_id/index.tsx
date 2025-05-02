@@ -38,7 +38,7 @@ export default function Page({
   return (
     <>
       <Heading
-        to={`/${sessionID}/${returnPage}`}
+        to={returnPage ? `/${sessionID}/${returnPage}` : `/${sessionID}`}
         title="情報入力"
         isLink={true}
       />
