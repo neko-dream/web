@@ -78,7 +78,7 @@ export default function Page({
                       return (
                         <Card
                           key={i}
-                          href={`/opinion/${id}`}
+                          href={`/opinion/${id}/${session.id}`}
                           title={opinion.title}
                           description={opinion.content}
                           user={{ displayID, displayName, iconURL }}

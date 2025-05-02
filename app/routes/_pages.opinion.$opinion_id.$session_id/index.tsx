@@ -11,7 +11,7 @@ import { Heading } from "~/components/ui/heading";
 import Textarea from "~/components/ui/textarea";
 import { useCreateOpinionsForm } from "~/hooks/useCreateOpinionForm";
 import { useVote } from "~/hooks/useVote";
-import type { Route } from "~/react-router/_pages.opinion.$opinion_id/+types";
+import type { Route } from "~/react-router/_pages.opinion.$opinion_id.$session_id/+types";
 import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { CreateOpinionModal } from "./components/CreateOpinionModal";
@@ -20,11 +20,11 @@ export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({
-  loaderData: { currentUser, root, opinions },
+  loaderData: { currentUser, root, opinions, sessionID },
 }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
   // FIXME: 正しいセッションIDを渡す
-  const { vote } = useVote({ sessionID: "fa" });
+  const { vote } = useVote({ sessionID });
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
 
   const handleVote = async (opinionID: string, status: VoteType) => {
