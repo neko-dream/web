@@ -15,7 +15,7 @@ type Props = Omit<ModalProps, "children"> & {
 
 const schema = v.object({
   reason: v.number(),
-  content: v.string(),
+  content: v.optional(v.string()),
 });
 
 export const ReportModal = ({
@@ -43,6 +43,7 @@ export const ReportModal = ({
         },
         body: {
           reason: submission.value.reason,
+          content: submission.value.content,
         },
       });
       if (res.response.status === 200) {
@@ -60,18 +61,6 @@ export const ReportModal = ({
       <Form {...getFormProps(form)} className="mx-auto mt-4 max-w-2xl">
         <p>通報理由</p>
         <div className="mt-2 space-y-1">
-          {/* {reasons?.map(({ reason, reasonID }, i) => {
-            return (
-              <Checkbox
-                {...getInputProps(fields.reason, { type: "checkbox" })}
-                key={i}
-                name="reason"
-                id={`${reasonID}`}
-                value={reasonID}
-                label={reason}
-              />
-            );
-          })} */}
           {reasons?.map(({ reason, reasonID }, i) => {
             return (
               <div key={i} className="flex items-center space-x-2">
@@ -81,7 +70,10 @@ export const ReportModal = ({
                   value={reasonID}
                   className="h-4 w-4"
                 />
-                <label htmlFor={`reason-${reasonID}`} className="text-sm">
+                <label
+                  htmlFor={`reason-${reasonID}`}
+                  className="cursor-pointer text-sm"
+                >
                   {reason}
                 </label>
               </div>

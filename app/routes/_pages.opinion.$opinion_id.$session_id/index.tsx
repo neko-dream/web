@@ -45,7 +45,8 @@ export default function Page({
   return (
     <>
       {/* FIXME: 意見IDからセッションのIDが欲しい */}
-      <Heading title="コメント一覧" />
+      <Heading title="コメント一覧" to={`/${sessionID}`} isLink={true} />
+
       {root.opinion.isDeleted ? (
         <DeletedOpinionCard
           title={root.opinion.title}

@@ -97,21 +97,7 @@ export default function Page({
                       );
                     });
 
-                    return (
-                      <>
-                        {/* FIXME: サーバーと繋げてぽよ */}
-                        {/* <GroupTabs
-                          tabs={[
-                            { label: "Aグループ", value: "a" },
-                            { label: "Bグループ", value: "b" },
-                            { label: "Cグループ", value: "c" },
-                          ]}
-                          activeTab={activeTab}
-                          onChange={setActiveTab}
-                        /> */}
-                        {opinionCardList}
-                      </>
-                    );
+                    return opinionCardList;
                   }}
                 </Await>
               )}
@@ -123,6 +109,10 @@ export default function Page({
         <Suspense>
           <Await resolve={$positions}>
             {({ data }) => {
+              if (data?.positions.length === 0) {
+                return null;
+              }
+
               return (
                 <div className="ml-4 hidden min-w-[346px] rounded bg-white p-2 md:block">
                   <Graph
