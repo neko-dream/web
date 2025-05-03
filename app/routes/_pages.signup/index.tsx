@@ -98,6 +98,10 @@ export default function Page({
           title="ユーザーID"
           required={true}
           errors={fields.displayID.errors}
+          notes={[
+            "ユーザーIDは誰でもみられる状態で公開されます。",
+            "注意：個人情報は入力しないでください。",
+          ]}
         >
           <Input
             {...getInputProps(fields.displayID, { type: "text" })}
