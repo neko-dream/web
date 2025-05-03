@@ -101,6 +101,7 @@ export default function Page({
           onClickDisagree={() => handleVote(root.opinion.id, "disagree")}
           onClickPass={() => handleVote(root.opinion.id, "pass")}
           className="mx-auto w-full max-w-2xl"
+          isAllText={true}
         />
       )}
 
@@ -133,6 +134,7 @@ export default function Page({
                 onClickAgree={() => handleVote(opinion.id, "agree")}
                 onClickDisagree={() => handleVote(opinion.id, "disagree")}
                 onClickPass={() => handleVote(opinion.id, "pass")}
+                isAllText={true}
               />
             </div>
           );
