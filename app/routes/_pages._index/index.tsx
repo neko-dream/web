@@ -108,17 +108,17 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="mt-16 mb-4 text-center">
+      {/* <div className="mt-16 mb-4 text-center">
         <p className="primary-gradient inline-block text-clip rounded-md p-2 font-bold text-2xl backdrop-blur-[20px]">
           注目のトピック
         </p>
-      </div>
+      </div> */}
 
-      <CarouselScroll>
+      {/* <CarouselScroll>
         {Array.from({ length: 5 }).map((_, i) => (
           <TopicCard key={i} />
         ))}
-      </CarouselScroll>
+      </CarouselScroll> */}
     </>
   );
 }

@@ -22,6 +22,7 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
   onClickReport?: () => void;
   onClickAnalytics?: () => void;
   isJudgeButtonDisabled?: boolean;
+  isAllText?: boolean;
 };
 
 const card = tv({
@@ -56,6 +57,7 @@ export const Card = ({
   onClickPass,
   onClickReport,
   onClickAnalytics,
+  isAllText,
   isJudgeButtonDisabled,
   ...props
 }: Props) => {
@@ -72,14 +74,14 @@ export const Card = ({
             <p className="mt-1 text-gray-300 text-xs">
               {JST(date).format("YYYY/MM/DD HH:mm")}
             </p>
-            <p className="mt-2 line-clamp-3 whitespace-break-spaces break-all text-[#4e4d4b]">
+            <p className={`mt-2 whitespace-break-spaces break-all text-[#4e4d4b] ${isAllText ? "" : "line-clamp-3"}`}>
               {description}
             </p>
 
             {opinionCount > 0 && (
               <div className="mt-1 flex items-center space-x-1">
                 <Message className="text-blue-500" />
-                <p className="font-bold text-blue-500 text-xs ">
+                <p className="font-bold text-blue-500 text-xs">
                   コメント{opinionCount < 99 ? opinionCount : "99+"}件
                 </p>
               </div>
