@@ -594,6 +594,9 @@ const Dots = ({
     y: new Set<number>(),
   }));
 
+  // グループの人数
+  const groupCounts = Array(groupIDs.size).fill(0);
+
   // const windowWidth = window.innerWidth;
   // グラフサイズに関わる
   const maxWidth = 656;
@@ -620,6 +623,9 @@ const Dots = ({
         posY: any;
         iconURL: string;
       }) => {
+        // グループごとの人数をカウントする
+        groupCounts[Number(v.groupID)] += 1;
+
         let radius: number = 1; // 5
         let myPositionFlag = false;
 
@@ -746,7 +752,7 @@ const Dots = ({
     labels.push({
       textsCenter: textPos,
       groupID: groupID,
-      counts: polygons.length,
+      counts: groupCounts[Number(groupID)],
       minDistance: null,
     });
 
@@ -814,7 +820,7 @@ const Dots = ({
     labels.push({
       textsCenter: textPos,
       groupID: groupID,
-      counts: polygons.length,
+      counts: groupCounts[Number(groupID)],
       minDistance: null,
     });
 
@@ -881,7 +887,7 @@ const Dots = ({
     labels.push({
       textsCenter: textPos,
       groupID: groupID,
-      counts: polygons.length,
+      counts: groupCounts[Number(groupID)],
       minDistance: minDistance,
     });
 
