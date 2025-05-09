@@ -7,6 +7,7 @@ import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
+import Tip from "~/components/ui/tip";
 import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.request.demographics.$session_id/+types";
 import { useEditUserForm } from "./hooks/useEditUserForm";
@@ -23,7 +24,13 @@ const formatDate = (str: string) => {
 };
 
 export default function Page({
-  loaderData: { returnPage, user, demographics, sessionID },
+  loaderData: {
+    returnPage,
+    user,
+    demographics,
+    sessionID,
+    requestRestrictions,
+  },
 }: Route.ComponentProps) {
   const { form, fields, isDisabled } = useEditUserForm({
     user: {
@@ -35,6 +42,16 @@ export default function Page({
     returnPage,
   });
 
+  const Find = (key: keyof typeof demographics) => {
+    const restriction = requestRestrictions.find((restriction) => {
+      return restriction.key === `demographics.${key}`;
+    });
+
+    if (restriction?.required) {
+      return <Tip label="必須" required={true} className="" />;
+    }
+  };
+
   return (
     <>
       <Heading
@@ -44,6 +61,11 @@ export default function Page({
       />
 
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
+        <p className="mt-4 text-center">
+          より良い意思決定のため
+          <br />
+          以下の情報をセッション作成者に提供します。
+        </p>
         <Form
           {...getFormProps(form)}
           method="post"
@@ -55,7 +77,11 @@ export default function Page({
             hidden={true}
           />
 
-          <Label title="性別" optional={true} errors={fields.gender.errors}>
+          <Label
+            title="性別"
+            tip={Find("gender")}
+            errors={fields.gender.errors}
+          >
             <Select
               {...getSelectProps(fields.gender)}
               error={isFieldsError(fields.gender.errors)}
@@ -65,7 +91,7 @@ export default function Page({
 
           <Label
             title="誕生年"
-            optional={true}
+            tip={Find("dateOfBirth")}
             errors={fields.dateOfBirth.errors}
           >
             <span className="relative">
@@ -81,7 +107,12 @@ export default function Page({
           </Label>
 
           {/* FIXME: 型が合わない */}
-          <AdressInputs fields={fields} form={form as never} />
+          <AdressInputs
+            fields={fields}
+            form={form as never}
+            cityTip={Find("city")}
+            prefectureTip={Find("city")}
+          />
 
           <Button
             color="primary"
