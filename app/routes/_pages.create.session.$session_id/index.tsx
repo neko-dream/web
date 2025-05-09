@@ -30,7 +30,7 @@ export default function Page({
   loaderData: { restrictions, session, isEditMobe },
 }: Route.ComponentProps) {
   const [isRestriction, setIsRestriction] = useState<boolean>(false);
-  const thumbnailRef = useRef<string>();
+  const thumbnailRef = useRef<string>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,6 +52,7 @@ export default function Page({
       });
       return parse;
     },
+    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     onSubmit: async (e, { submission }) => {
       e.preventDefault();
 
@@ -78,7 +79,7 @@ export default function Page({
             ...value,
             scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
             restrictions,
-            thumbnailURL: thumbnailRef.current,
+            thumbnailURL: thumbnailRef.current || "",
           },
         });
 
@@ -121,7 +122,7 @@ export default function Page({
     });
 
     if (!thumbnailRef.current) {
-      thumbnailRef.current = data?.url;
+      thumbnailRef.current = data?.url || null;
     }
 
     return data?.url || "";
