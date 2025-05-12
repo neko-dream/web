@@ -1,7 +1,5 @@
 import { Arrow, AuthGoogle, AuthLine, Logo } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
-import { CarouselScroll } from "./components/CarouselScroll";
-import { TopicCard } from "./components/TopicCard";
 import "./index.css";
 import { useState } from "react";
 import { Link } from "react-router";
