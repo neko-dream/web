@@ -74,7 +74,9 @@ export const Card = ({
             <p className="mt-1 text-gray-300 text-xs">
               {JST(date).format("YYYY/MM/DD HH:mm")}
             </p>
-            <p className={`mt-2 whitespace-break-spaces break-all text-[#4e4d4b] ${isAllText ? "" : "line-clamp-3"}`}>
+            <p
+              className={`mt-2 whitespace-break-spaces break-all text-[#4e4d4b] ${isAllText ? "" : "line-clamp-3"}`}
+            >
               {description}
             </p>
 
