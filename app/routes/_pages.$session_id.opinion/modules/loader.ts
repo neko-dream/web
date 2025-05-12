@@ -17,6 +17,9 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
       path: {
         talkSessionID: params.session_id,
       },
+      query: {
+        limit: 1000,
+      },
     },
   });
 
