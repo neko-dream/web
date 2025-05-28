@@ -1,4 +1,9 @@
-import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
+import {
+  getFormProps,
+  getInputProps,
+  getSelectProps,
+  useInputControl,
+} from "@conform-to/react";
 import { type ChangeEvent, useRef, useState } from "react";
 import { Form } from "react-router";
 import { toast } from "react-toastify";
@@ -14,6 +19,7 @@ import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.signup/+types";
 import Uploadarea from "./components/Uploadarea";
 import { useCreateUserForm } from "./hooks/useCreateUserForm";
+import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -37,6 +43,8 @@ export default function Page({
   const handleOpenFiler = () => {
     inputFileRef.current?.click();
   };
+
+  const handleDateOfBarthControl = useInputControl(fields.dateOfBirth);
 
   return (
     <>
@@ -124,16 +132,13 @@ export default function Page({
           optional={true}
           errors={fields.dateOfBirth.errors}
         >
-          <span className="relative">
-            <Input
-              {...getInputProps(fields.dateOfBirth, {
-                type: "date",
-              })}
-              type="date"
-              className="h-12 w-full px-4"
-              placeholder="記入する"
-            />
-          </span>
+          <InputDateByScrollPicker
+            pickerUi="dialog"
+            value={handleDateOfBarthControl.value || null}
+            onChangeValue={(newDate) => {
+              handleDateOfBarthControl.change(newDate?.toString());
+            }}
+          />
         </Label>
 
         {/* FIXME: 型が合わない */}

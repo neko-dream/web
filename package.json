@@ -81,7 +81,10 @@
     "wrangler": "4"
   },
   "svgr": {
-    "plugins": ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+    "plugins": [
+      "@svgr/plugin-svgo",
+      "@svgr/plugin-jsx"
+    ],
     "jsxRuntime": "automatic",
     "noDimensions": true,
     "typescript": true,
