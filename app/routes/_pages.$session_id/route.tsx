@@ -80,7 +80,7 @@ const Contents = ({
   const windowWidth = useWindowResize(374);
   const { check } = useVote({ sessionID: session.id });
   const { isRequestModal, setIsRequestModal } = useSatisfiedStore(
-    (state) => state,
+    (state) => state
   );
 
   useEffect(() => {

@@ -20,7 +20,7 @@ type Props = {
 
 export const useVote = ({ sessionID }: Props) => {
   const setIsRequestModal = useSatisfiedStore(
-    (state) => state.setIsRequestModal,
+    (state) => state.setIsRequestModal
   );
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export const useVote = ({ sessionID }: Props) => {
             talkSessionID: sessionID,
           },
         },
-      },
+      }
     );
 
     // 同意モーダルだけ出してデモグラモーダルは出さない
