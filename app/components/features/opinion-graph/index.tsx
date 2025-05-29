@@ -1,1107 +1,780 @@
-export default (..._: any) => {
-  return <div>Graph</div>;
+import { useEffect, useRef } from "react";
+
+// 定数
+const colorList = [
+  0xffa8a8, 0xeebefa, 0xffa94d, 0x63e6be, 0xffec99, 0xc0eb75, 0xfcc2d7,
+  0x91a7ff, 0x74c0fc,
+];
+
+const groupNames = Array.from({ length: 8 }, (_, i) =>
+  String.fromCharCode(65 + i)
+);
+
+const axisColor = 0xe5e5ea;
+const paddingX = 30;
+const paddingY = 25;
+
+// 型定義
+type PolygonPoints = {
+  x: number;
+  y: number;
+}[];
+
+type GroupPolygon = {
+  points: PolygonPoints;
+  flatPoints: number[];
+  groupID: string;
+}[];
+
+type Props = {
+  polygons: any;
+  positions: any;
+  myPosition: any;
+  windowWidth: any;
+  selectGroupId: any;
+  background?: number;
 };
 
-// import { ComponentProps, Fragment, useCallback, useRef } from "react";
-// import { tv } from "tailwind-variants";
-
-// const graph = tv({
-//   base: "h-60 w-full bg-blue-300",
-// });
-
-// /* eslint-disable @typescript-eslint/no-explicit-any */
-// import "@pixi/events";
-// import { Graphics as PixiGraphics } from "@pixi/graphics";
-// // import { Texture } from "@pixi/core";
-// import { Graphics, Sprite, Stage, Text } from "@pixi/react";
-// import { TextStyle } from "@pixi/text";
-// import * as PIXI from "pixi.js";
-
-// // const colorList = [0xff453a, 0xffd60a, 0xbf5af2, 0x30d158];
-// const colorList = [
-//   0xffa8a8, 0xeebefa, 0xffa94d, 0x63e6be, 0xffec99, 0xc0eb75, 0xfcc2d7,
-//   0x91a7ff, 0x74c0fc,
-// ];
-
-// const groupNames = Array.from({ length: 8 }, (_, i) =>
-//   String.fromCharCode(65 + i),
-// );
-
-// const axisColor = 0xe5e5ea;
-
-// const paddingX = 30;
-// const paddingY = 25;
-
-// type PolygonPoints = {
-//   x: number;
-//   y: number;
-// }[];
-
-// type GroupPolygon = {
-//   points: PolygonPoints;
-//   flatPoints: number[];
-//   groupID: string;
-// }[];
-
-// const Axes = ({
-//   width,
-//   height,
-//   xLength,
-//   yLength,
-//   color = 0x000000,
-//   thickness = 2,
-// }: {
-//   width: number;
-//   height: number;
-//   xLength: number;
-//   yLength: number;
-//   color: number;
-//   thickness: number;
-// }) => {
-//   const drawAxes = useCallback(
-//     (g: {
-//       clear: () => void;
-//       lineStyle: (arg0: number, arg1: number) => void;
-//       moveTo: (arg0: number, arg1: number) => void;
-//       lineTo: (arg0: number, arg1: number) => void;
-//     }) => {
-//       g.clear();
-//       g.lineStyle(thickness, color);
-
-//       // X軸
-//       g.moveTo(0, height / 2);
-//       g.lineTo(xLength, height / 2);
-
-//       // Y軸
-//       g.moveTo(width / 2, 0);
-//       g.lineTo(width / 2, yLength);
-//     },
-//     [width, height, xLength, yLength, color, thickness],
-//   );
-
-//   return <Graphics draw={drawAxes} />;
-// };
-
-// const DotPlot = ({
-//   polygons,
-//   selectGroupId,
-// }: {
-//   polygons: any;
-//   selectGroupId: any;
-// }) => {
-//   const drawPolygon = (
-//     g: {
-//       beginFill: (arg0: number, arg1: number) => void;
-//       drawPolygon: (arg0: any) => void;
-//       endFill: () => void;
-//     },
-//     points: any,
-//     colorIdx: any,
-//   ) => {
-//     g.beginFill(colorList[colorIdx], 1); // 色と透明度
-//     g.drawPolygon(points);
-//     g.endFill();
-//   };
-
-//   return polygons.map((polygon: any, i: number) => {
-//     const draw = (g: {
-//       clear?: any;
-//       beginFill: (arg0: number) => void;
-//       drawCircle: (arg0: any, arg1: any, arg2: number) => void;
-//       drawPolygon: (arg0: any) => void;
-//       endFill: () => void;
-//       moveTo: (arg0: any, arg1: any) => void;
-//       lineTo: (arg0: any, arg1: any) => void;
-//       quadraticCurveTo: (arg0: any, arg1: any, arg2: any, arg3: any) => void;
-//       closePath: () => void;
-//     }) => {
-//       g.clear();
-
-//       drawPolygon(g, polygon.flatPoints, polygon.groupID);
-//     };
-
-//     return (
-//       // eslint-disable-next-line react/jsx-key
-//       <Graphics
-//         key={i}
-//         pointerdown={() => {
-//           selectGroupId(polygon.groupID);
-//         }}
-//         // interactive={true}
-//         eventMode="static"
-//         draw={draw}
-//       />
-//     );
-//   });
-// };
-
-// // グループポリゴンを生成
-// const PolygonPlot = ({
-//   polygons,
-//   selectGroupId,
-// }: {
-//   polygons: GroupPolygon;
-//   selectGroupId: any;
-// }) => {
-//   // const drawPolygon = (
-//   //   g: {
-//   //     beginFill: (arg0: number, arg1: number) => void;
-//   //     drawPolygon: (arg0: any) => void;
-//   //     endFill: () => void;
-//   //   },
-//   //   points: any,
-//   //   colorIdx: any,
-//   // ) => {
-//   //   g.beginFill(colorList[colorIdx], 1); // 色と透明度
-//   //   g.drawPolygon(points);
-//   //   g.endFill();
-//   // };
-
-//   return polygons.map((polygon: GroupPolygon[0], i: number) => {
-//     return (
-//       <RoundedPolygon
-//         key={i}
-//         color={colorList[Number(polygon.groupID)]}
-//         points={polygon.points}
-//         groupID={Number(polygon.groupID)}
-//         selectGroupId={selectGroupId}
-//       ></RoundedPolygon>
-//     );
-//   });
-// };
-
-// // グループ長方体を生成
-// const RectPlot = ({
-//   differentPoints,
-//   selectGroupId,
-// }: { differentPoints: any; selectGroupId: any }) => {
-//   return differentPoints.map((differentPoint: any, i: any) => {
-//     const x = differentPoint.firstPoint.x - differentPoint.secondPoint.x;
-//     const y = differentPoint.firstPoint.y - differentPoint.secondPoint.y;
-//     const rotation = Math.atan2(y, x);
-
-//     const vecgtorNorm = Math.hypot(x, y);
-//     const cx = (differentPoint.firstPoint.x + differentPoint.secondPoint.x) / 2;
-//     const cy = (differentPoint.firstPoint.y + differentPoint.secondPoint.y) / 2;
-//     return (
-//       <RotatedRoundedRect
-//         key={i}
-//         x={cx}
-//         y={cy}
-//         width={vecgtorNorm}
-//         height={20}
-//         radius={20}
-//         rotation={rotation}
-//         color={colorList[Number(differentPoint.groupID)]}
-//         groupid={Number(differentPoint.groupID)}
-//         selectGroupId={selectGroupId}
-//       ></RotatedRoundedRect>
-//     );
-//   });
-// };
-
-// // グループサークルを生成
-// const GroupCirclePlot = ({
-//   singlePoints,
-//   selectGroupId,
-// }: { singlePoints: any; selectGroupId: any }) => {
-//   return singlePoints.map((singlePoint: any, i: any) => {
-//     return (
-//       <Circle
-//         key={i}
-//         singlePoint={singlePoint}
-//         color={colorList[Number(singlePoint.groupID)]}
-//         circleSize={15 + 0.1 * singlePoint.pointsCount}
-//         groupID={Number(singlePoint.groupID)}
-//         selectGroupId={selectGroupId}
-//       />
-//     );
-//   });
-// };
-
-// const LabelsPlot = ({ labels }: any) => {
-//   // const texture = Texture.from("");
-//   return labels.map((text: any, i: number) => {
-//     return (
-//       <Fragment key={i}>
-//         <Text
-//           text={groupNames[text.groupID]}
-//           x={text.textsCenter[0]}
-//           y={text.textsCenter[1] - 10}
-//           anchor={0.5}
-//           style={
-//             new TextStyle({
-//               fontSize: 16,
-//               fill: "0x000000",
-//             })
-//           }
-//         />
-//         {/* <Sprite
-//           // texture={texture}
-//           x={text.textsCenter[0] - 10}
-//           y={text.textsCenter[1] + 10}
-//           anchor={0.5}
-//           // zIndex={zIndex + 10}
-//           // scale={[0.15 * radiusRate, 0.15 * radiusRate]}
-//           // anchor={[0.5, 0.5]}
-//           // scale={[0.1, 0.1]}
-//           pointerdown={() => {
-//             // selectGroupId(colorIdx);
-//           }}
-//           eventMode="static"
-//         /> */}
-//         <Text
-//           text={`${text.counts}人`}
-//           // x={text.textsCenter[0] + 10}
-//           x={text.textsCenter[0]}
-//           y={text.textsCenter[1] + 10}
-//           anchor={0.5}
-//           style={
-//             new TextStyle({
-//               fontSize: 16,
-//               fill: "0x000000",
-//             })
-//           }
-//         />
-//       </Fragment>
-//     );
-//   });
-// };
-
-// const posToSegmenetDistance = (
-//   P: { posX: number; posY: number },
-//   A: { posX: number; posY: number },
-//   B: { posX: number; posY: number },
-// ) => {
-//   const ABx = B.posX - A.posX;
-//   const ABy = B.posY - A.posY;
-
-//   const PAx = P.posX - A.posX;
-//   const PAy = P.posY - A.posY;
-
-//   const dotABPA = ABx * PAx + ABy * PAy;
-//   const dotABAB = ABx * ABx + ABy * ABy;
-
-//   // 投影係数 t 正射影ベクトルを使ったもの？
-//   let t = dotABPA / dotABAB;
-//   t = Math.max(0, Math.min(1, t));
-
-//   // 最近接点 Q = A + t * AB
-//   const Qx = A.posX + t * ABx;
-//   const Qy = A.posY + t * ABy;
-
-//   const dx = P.posX - Qx;
-//   const dy = P.posY - Qy;
-
-//   return Math.sqrt(dx * dx + dy * dy);
-// };
-
-// const MyPositionPlot = ({ dots, myPositionData, selectGroupId }: any) => {
-//   const maskRef = useRef<any>();
-//   if (!!myPositionData.x) {
-//     const drawCircleMask = useCallback(
-//       (
-//         g: {
-//           clear: () => void;
-//           beginFill: (arg0: number) => void;
-//           drawCircle: (arg0: number, arg1: number, arg2: number) => void;
-//           endFill: () => void;
-//         },
-//         color: number = 0x64748b,
-//         radius: number = 11,
-//       ) => {
-//         g.clear();
-//         g.beginFill(color);
-//         g.drawCircle(0, 0, radius);
-//         g.endFill();
-//       },
-//       [],
-//     );
-//     return (
-//       <Fragment>
-//         <Graphics
-//           x={myPositionData.x}
-//           y={myPositionData.y}
-//           zIndex={3}
-//           draw={(graphics) => drawCircleMask(graphics)}
-//           ref={maskRef}
-//         ></Graphics>
-//         <Sprite
-//           // userのデフォルトアイコンを設定する
-//           image={myPositionData.iconURL ?? "/icon.png"}
-//           x={myPositionData.x}
-//           y={myPositionData.y}
-//           zIndex={5}
-//           scale={[0.1, 0.1]}
-//           anchor={[0.5, 0.5]}
-//           mask={maskRef.current}
-//           pointerdown={() => {
-//             // selectGroupId(colorIdx);
-//           }}
-//           eventMode="static"
-//         />
-//       </Fragment>
-//     );
-//   } else {
-//     return <></>;
-//   }
-// };
-
-// const AvatarPlot = ({ dots, myPositionData, selectGroupId }: any) => {
-//   let avatarWithZindex: any[][] = [];
-
-//   // console.log("----avatar plot");
-//   // console.log(dots);
-//   // console.log(myPositionData);
-//   // console.log(selectGroupId);
-//   // const [masks, setMask] = useState<any[]>([]);
-
-//   const drawAvatarBackground = useCallback(
-//     (g: {
-//       clear?: any;
-//       beginFill: (arg0: number) => void;
-//       drawCircle: (arg0: any, arg1: any, arg2: number) => void;
-//       drawPolygon: (arg0: any) => void;
-//       endFill: () => void;
-//     }) => {
-//       g.clear();
-//       // bg-slate-500
-//       g.beginFill(0x64748b);
-//       g.drawCircle(myPositionData.x, myPositionData.y, 10);
-//       g.endFill();
-//     },
-//     [myPositionData],
-//   );
-
-//   const drawCircleMask = useCallback(
-//     (
-//       g: {
-//         clear: () => void;
-//         beginFill: (arg0: number) => void;
-//         drawCircle: (arg0: number, arg1: number, arg2: number) => void;
-//         endFill: () => void;
-//       },
-//       color: number = 0x64748b,
-//       radius: number = 11,
-//     ) => {
-//       g.clear();
-//       g.beginFill(color);
-//       g.drawCircle(0, 0, radius);
-//       g.endFill();
-//     },
-//     [],
-//   );
-
-//   const drawAvatar = (
-//     x: any,
-//     y: any,
-//     colorIdx: any,
-//     radiusRate = 1,
-//     myPosition = false,
-//     iconURL: string,
-//   ) => {
-//     // const images = [
-//     //   "/avatar-circle/avatar-circle-red.png",
-//     //   "/avatar-circle/avatar-circle-yellow.png",
-//     //   "/avatar-circle/avatar-circle-purple.png",
-//     //   "/avatar-circle/avatar-circle-green.png",
-//     // ];
-//     const zIndex = myPosition ? 100 : 10;
-//     if (myPosition) {
-//       avatarWithZindex.push([
-//         // eslint-disable-next-line react/jsx-key
-//         <Graphics zIndex={zIndex} draw={drawAvatarBackground} />,
-//         zIndex,
-//       ]);
-//     }
-//     // const ref = createRef<any>();
-//     // maskRefs.current.push(ref);
-
-//     // console.log("iconURL: " + iconURL);
-//     avatarWithZindex.push([
-//       // eslint-disable-next-line react/jsx-key
-//       <Graphics
-//         x={x}
-//         y={y}
-//         zIndex={zIndex}
-//         // ref={ref}
-//         draw={(graphics) =>
-//           drawCircleMask(graphics, colorList[colorIdx], 11 * radiusRate)
-//         }
-//         // ref={(ref) => setMask([...masks, ref])}
-//       ></Graphics>,
-//       zIndex + 10,
-//     ]);
-//     // console.log(iconURL);
-
-//     avatarWithZindex.push([
-//       // eslint-disable-next-line react/jsx-key
-//       <>
-//         <Sprite
-//           // image={images[colorIdx]}
-//           image={"/avatar-circle/avatar-circle-red.png"}
-//           // image={iconURL ??  "/icon.png"}
-//           x={x}
-//           y={y}
-//           zIndex={zIndex + 10}
-//           scale={[0.15 * radiusRate, 0.15 * radiusRate]}
-//           anchor={[0.5, 0.5]}
-//           pointerdown={() => {
-//             selectGroupId(colorIdx);
-//           }}
-//           eventMode="static"
-//         />
-//         {myPosition && <Text text="🕶️" x={x - 13} y={y - 15} />}
-//       </>,
-//       zIndex + 10,
-//     ]);
-//   };
-
-//   // const [masks, setMask] = useState<any[]>([]);
-//   dots.forEach(
-//     (dot: {
-//       x: any;
-//       y: any;
-//       groupID: number;
-//       radius: number;
-//       myPosition: boolean;
-//       iconURL: string;
-//     }) => {
-//       drawAvatar(
-//         dot.x,
-//         dot.y,
-//         dot.groupID,
-//         dot.radius ?? 1,
-//         dot.myPosition,
-//         dot.iconURL,
-//       );
-//     },
-//   );
-
-//   avatarWithZindex = avatarWithZindex.sort(function (a, b) {
-//     return a[1] - b[1];
-//   });
-//   return avatarWithZindex.map((avatar, i) => (
-//     <Fragment key={i}>{avatar[0]}</Fragment>
-//   ));
-// };
-
-// type Props = {
-//   polygons: any;
-//   positions: any;
-//   myPosition: any;
-//   windowWidth: any;
-//   selectGroupId: any;
-//   background?: number;
-// };
-
-// const RotatedRoundedRect = ({
-//   x,
-//   y,
-//   width,
-//   height,
-//   radius,
-//   rotation,
-//   color,
-//   groupid,
-//   selectGroupId,
-// }: {
-//   x: number;
-//   y: number;
-//   width: number;
-//   height: number;
-//   radius: number;
-//   rotation: number;
-//   color: number;
-//   groupid: number;
-//   selectGroupId: any;
-// }) => {
-//   const draw = (g: PixiGraphics) => {
-//     g.clear();
-//     g.beginFill(color, 1);
-//     // 注意：原点 (0, 0) から描くと回転が中心でできる
-//     g.drawRoundedRect(-width / 2, -height / 2, width, height, radius);
-//     // g.drawRoundedRect(0, 0, width, height, radius);
-//     g.endFill();
-//   };
-
-//   return (
-//     <Graphics
-//       draw={draw}
-//       x={x}
-//       y={y}
-//       rotation={rotation} // 回転（ラジアン）
-//       pointerdown={() => {
-//         // selectGroupId(colorIdx);
-//         selectGroupId(groupid);
-//         // console.log(groupid)
-//       }}
-//       eventMode="static"
-//     />
-//   );
-// };
-
-// const Dots = ({
-//   positions,
-//   myPosition,
-//   windowWidth,
-//   selectGroupId,
-//   background = 0xf2f2f7,
-// }: Props) => {
-//   // グループ３が一番意見多そうなので、グループ３の意見を取得
-//   // ついでにインデックス順にする
-//   // const positions = data?.positions
-//   // .filter((opinion) => {
-//   //   return (
-//   //     opinion.groupID === 3 &&
-//   //     (opinion.perimeterIndex || opinion.perimeterIndex === 0)
-//   //   );
-//   // })
-//   // .sort((a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0));
-//   // グラフの外に出ていたソートしていた処理を統一するためにここに入れました。
-
-//   positions = positions.sort(
-//     (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
-//   );
-
-//   if (positions.length === 0 || !positions) {
-//     // ここにグラフのempty stateをいい感じに表示する
-//     return <></>;
-//   }
-
-//   let _minX = 100000000000;
-//   let _minY = 100000000000;
-//   let _maxX = -100000000000;
-//   let _maxY = -100000000000;
-
-//   const groupIDs = new Set<string>();
-//   // const hasPoint = new Set<string>();
-//   const hasDifferentPointGroup = new Set<string>();
-//   const hasSinglePointGroup = new Set<string>();
-//   const hasPerimeterIndexGroup = new Set<string>();
-//   const idxToGroupId = [];
-//   positions.forEach((v: { groupID: string; posX: number; posY: any }) => {
-//     _minX = Math.min(_minX, v.posX);
-//     _minY = Math.min(_minY, v.posY);
-//     _maxX = Math.max(_maxX, v.posX);
-//     _maxY = Math.max(_maxY, v.posY);
-//     idxToGroupId.push(v.groupID);
-//     groupIDs.add(v.groupID);
-//     if ("perimeterIndex" in v) {
-//       hasPerimeterIndexGroup.add(v.groupID);
-//     }
-//   });
-
-//   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-//   const groupPointInfo = Array.from({ length: groupIDs.size }, (_v, _i) => ({
-//     x: new Set<number>(),
-//     y: new Set<number>(),
-//   }));
-
-//   // グループの人数
-//   const groupCounts = Array(groupIDs.size).fill(0);
-
-//   // const windowWidth = window.innerWidth;
-//   // グラフサイズに関わる
-//   const maxWidth = 656;
-//   const minWidth = 310;
-
-//   const width = Math.min(maxWidth, Math.max(windowWidth, minWidth));
-
-//   // グラフサイズに関わる
-//   const maxHeight = 350;
-//   const minHeight = 250;
-//   const rateSize = (width - minWidth) / (maxWidth - minWidth);
-//   const height = minHeight + rateSize * (maxHeight - minHeight);
-
-//   const originalWidth = _maxX - _minX;
-//   const originalHeight = _maxY - _minY;
-//   let isUsedMyPosition = false;
-//   const myPositionData: any = {};
-//   const dots =
-//     positions.map(
-//       (v: {
-//         displayID: string;
-//         groupID: string;
-//         posX: number;
-//         posY: any;
-//         iconURL: string;
-//       }) => {
-//         // グループごとの人数をカウントする
-//         groupCounts[Number(v.groupID)] += 1;
-
-//         let radius: number = 1; // 5
-//         let myPositionFlag = false;
-
-//         // console.log("------- positions map");
-//         // console.log(v.posX);
-//         // console.log(_minX);
-//         // console.log(originalWidth);
-//         // console.log(v.iconURL);
-//         // console.log(
-//         //   (v.posX - _minX) * ((width - paddingX * 2) / originalWidth),
-//         // );
-
-//         if (!hasPerimeterIndexGroup.has(v.groupID)) {
-//           groupPointInfo[Number(v.groupID)]?.x.add(v.posX);
-//           groupPointInfo[Number(v.groupID)]?.y.add(v.posY);
-//         }
-
-//         const x =
-//           (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//           paddingX;
-//         const y =
-//           (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
-//           paddingY;
-//         const centerX = width / 2;
-//         const centerY = height / 2;
-//         // const centerX = 0;
-//         // const centerY = 0;
-
-//         if (myPosition?.displayID === v?.displayID && !isUsedMyPosition) {
-//           // radius = 0.07; // 10 // 自分の位置の画像のサイズを変更する(倍率)
-//           radius = 1.5;
-//           isUsedMyPosition = true;
-//           myPositionFlag = true;
-//           if (originalWidth === 0) {
-//             myPositionData["x"] = centerX;
-//           } else {
-//             myPositionData["x"] = x;
-//           }
-//           if (originalHeight === 0) {
-//             myPositionData["y"] = centerY;
-//           } else {
-//             myPositionData["y"] = y;
-//           }
-
-//           myPositionData["iconURL"] = v.iconURL;
-//           // myPositionData["x"] =
-//           //   (v.posX - _minX) * ((width - 30) / originalWidth) + 15;
-//           // myPositionData["y"] =
-//           //   (v.posY - _minY) * ((height - 50) / originalHeight) + 25;
-//         }
-
-//         return {
-//           x: isNaN(x) ? centerX : x,
-//           y: isNaN(y) ? centerY : y,
-//           groupID: v.groupID,
-//           radius: radius,
-//           myPosition: myPositionFlag,
-//           iconURL: v.iconURL,
-//         };
-//       },
-//     ) || [];
-
-//   for (const groupID of groupIDs) {
-//     if (!hasPerimeterIndexGroup.has(groupID)) {
-//       if (
-//         groupPointInfo[Number(groupID)]?.x.size > 1 ||
-//         groupPointInfo[Number(groupID)]?.y.size > 1
-//       ) {
-//         hasDifferentPointGroup.add(groupID);
-//       } else {
-//         hasSinglePointGroup.add(groupID);
-//       }
-//     }
-//   }
-
-//   const resultPolygons: GroupPolygon = [];
-//   const labels = [];
-//   // console.log("------------------------ plot polygon");
-//   // console.log(hasDifferentPointGroup);
-//   // console.log(hasSinglePointGroup);
-//   // console.log(positions);
-//   // console.log(dots);
-//   const resultSinglePoints = [];
-
-//   for (const groupID of hasSinglePointGroup) {
-//     const polygons = positions.filter(
-//       (opinion: { groupID: string; perimeterIndex: number }) => {
-//         return opinion.groupID === groupID;
-//       },
-//     );
-
-//     let point: { x: number | null; y: number | null } = {
-//       x: null,
-//       y: null,
-//     };
-
-//     for (const position of polygons) {
-//       point = {
-//         x:
-//           (position.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//           paddingX,
-//         y:
-//           (position.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
-//           paddingY,
-//       };
-//     }
-
-//     const centerX = width / 2;
-//     const centerY = height / 2;
-//     if (isNaN(point.x!)) {
-//       point.x = centerX;
-//     }
-
-//     if (isNaN(point.y!)) {
-//       point.y = centerY;
-//     }
-
-//     const textPos = [point.x, point.y];
-
-//     // console.log("single textPos!!!!");
-//     // console.log(textPos);
-//     // console.log(point);
-
-//     labels.push({
-//       textsCenter: textPos,
-//       groupID: groupID,
-//       counts: groupCounts[Number(groupID)],
-//       minDistance: null,
-//     });
-
-//     resultSinglePoints.push({
-//       point: point,
-//       groupID: groupID,
-//       pointsCount: polygons.length,
-//     });
-//   }
-
-//   const resultDifferenctPoints = [];
-
-//   for (const groupID of hasDifferentPointGroup) {
-//     const polygons = positions.filter(
-//       (opinion: { groupID: string; perimeterIndex: number }) => {
-//         return opinion.groupID === groupID;
-//       },
-//     );
-
-//     let firstPoint: { x: number | null; y: number | null } = {
-//       x: null,
-//       y: null,
-//     };
-//     let secondPoint: { x: number | null; y: number | null } = {
-//       x: null,
-//       y: null,
-//     };
-
-//     for (const position of polygons) {
-//       if (firstPoint.x === null) {
-//         // firstPoint = { x: position.posX, y: position.posY };
-//         firstPoint = {
-//           x:
-//             (position.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//             paddingX,
-//           y:
-//             (position.posY - _minY) *
-//               ((height - paddingY * 2) / originalHeight) +
-//             paddingY,
-//         };
-//       } else if (
-//         firstPoint.x !== position.posX ||
-//         firstPoint.y !== position.posY
-//       ) {
-//         // secondPoint = { x: position.posX, y: position.posY };
-//         secondPoint = {
-//           x:
-//             (position.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//             paddingX,
-//           y:
-//             (position.posY - _minY) *
-//               ((height - paddingY * 2) / originalHeight) +
-//             paddingY,
-//         };
-//       }
-//     }
-
-//     const centerX = (firstPoint.x! + secondPoint.x!) / 2;
-//     const centerY = (firstPoint.y! + secondPoint.y!) / 2;
-
-//     const textPos = [centerX, centerY];
-//     // console.log("textPos!!!!!!!!!!!!!!!!!");
-//     // console.log(textPos);
-//     // console.log(firstPoint);
-//     labels.push({
-//       textsCenter: textPos,
-//       groupID: groupID,
-//       counts: groupCounts[Number(groupID)],
-//       minDistance: null,
-//     });
-
-//     resultDifferenctPoints.push({
-//       firstPoint: firstPoint,
-//       secondPoint: secondPoint,
-//       groupID: groupID,
-//     });
-//   }
-
-//   for (const groupID of hasPerimeterIndexGroup) {
-//     // poligonsを扱う
-//     const polygons = positions
-//       .filter((opinion: { groupID: string; perimeterIndex: number }) => {
-//         return (
-//           opinion.groupID === groupID &&
-//           (opinion.perimeterIndex || opinion.perimeterIndex === 0)
-//         );
-//       })
-//       .sort(
-//         (a: { perimeterIndex: any }, b: { perimeterIndex: any }) =>
-//           (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
-//       );
-
-//     const polygonsSum = polygons.reduce(
-//       (acc: { posX: any; posY: any }, value: { posX: any; posY: any }) => ({
-//         posX: acc.posX + value.posX,
-//         posY: acc.posY + value.posY,
-//       }),
-//       { posX: 0, posY: 0 },
-//     );
-
-//     const polygonsCount = polygons.length;
-//     const polygonsCenter = {
-//       posX: polygonsSum.posX / polygonsCount,
-//       posY: polygonsSum.posY / polygonsCount,
-//     };
-//     // const isCreatedPolygons = polygonsCount >= 3;
-
-//     let minDistance = Infinity;
-//     for (let i = 0; i < polygonsCount; i++) {
-//       minDistance = Math.min(
-//         minDistance,
-//         posToSegmenetDistance(
-//           polygonsCenter,
-//           polygons[i],
-//           polygons[(i + 1) % polygonsCount],
-//         ),
-//       );
-//     }
-
-//     // console.log("---------------- 計算");
-//     // console.log(polygonsCenter);
-//     // console.log(isCreatedPolygons);
-//     // console.log(minDistance);
-
-//     const textPos = [
-//       (polygonsCenter.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//         paddingX,
-//       (polygonsCenter.posY - _minY) *
-//         ((height - paddingY * 2) / originalHeight) +
-//         paddingY,
-//     ];
-//     labels.push({
-//       textsCenter: textPos,
-//       groupID: groupID,
-//       counts: groupCounts[Number(groupID)],
-//       minDistance: minDistance,
-//     });
-
-//     const flatPoints = polygons.flatMap((v: { posX: number; posY: any }) => {
-//       return [
-//         (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) + paddingX,
-//         (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
-//           paddingY,
-//       ];
-//     });
-
-//     const points = polygons.map((v: { posX: number; posY: any }) => {
-//       return {
-//         x:
-//           (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
-//           paddingX,
-//         y:
-//           (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
-//           paddingY,
-//       };
-//     });
-
-//     resultPolygons.push({
-//       points: points,
-//       flatPoints: flatPoints,
-//       groupID: groupID,
-//     });
-//   }
-
-//   return (
-//     <Stage
-//       width={width}
-//       height={height}
-//       options={{ backgroundColor: background }}
-//     >
-//       <Axes
-//         width={width}
-//         height={height}
-//         xLength={width}
-//         yLength={height}
-//         color={axisColor}
-//         thickness={2}
-//       />
-//       {/* <DotPlot polygons={resultPolygons} selectGroupId={selectGroupId} /> */}
-//       <PolygonPlot
-//         polygons={resultPolygons}
-//         selectGroupId={selectGroupId}
-//       ></PolygonPlot>
-//       {/* <AvatarPlot
-//         dots={dots}
-//         myPositionData={myPositionData}
-//         selectGroupId={selectGroupId}
-//       ></AvatarPlot> */}
-//       <RectPlot
-//         differentPoints={resultDifferenctPoints}
-//         selectGroupId={selectGroupId}
-//       ></RectPlot>
-//       <GroupCirclePlot
-//         singlePoints={resultSinglePoints}
-//         selectGroupId={selectGroupId}
-//       ></GroupCirclePlot>
-//       <MyPositionPlot
-//         dots={dots}
-//         myPositionData={myPositionData}
-//         selectGroupId={selectGroupId}
-//       ></MyPositionPlot>
-//       <LabelsPlot labels={labels}></LabelsPlot>
-//     </Stage>
-//   );
-// };
-
-// const drawAutoRoundedPolygon = (
-//   graphics: PixiGraphics,
-//   points: PolygonPoints,
-//   radii: number,
-//   color: number = 0x66ccff,
-// ) => {
-//   graphics.clear();
-//   graphics.beginFill(color);
-
-//   const len = points.length;
-
-//   for (let i = 0; i < len; i++) {
-//     const p0 = points[(i - 1 + len) % len];
-//     const p1 = points[i];
-//     const p2 = points[(i + 1) % len];
-
-//     const rOriginal = radii || 0;
-
-//     const distPrev = Math.hypot(p1.x - p0.x, p1.y - p0.y);
-//     const distNext = Math.hypot(p2.x - p1.x, p2.y - p1.y);
-//     // const maxR = Math.min(distPrev, distNext) / 2 - 0.1;
-//     // const maxR = Math.min(distPrev, distNext) / 2 - 50;
-//     // const maxR = Math.min(distPrev, distNext) / 2 - 10;
-//     const maxR = Math.min(distPrev, distNext) / 10 - 0.1;
-//     const r = Math.min(rOriginal, Math.max(0, maxR));
-
-//     const v1 = { x: p0.x - p1.x, y: p0.y - p1.y };
-//     const v2 = { x: p2.x - p1.x, y: p2.y - p1.y };
-//     const len1 = Math.hypot(v1.x, v1.y);
-//     const len2 = Math.hypot(v2.x, v2.y);
-//     const u1 = { x: v1.x / len1, y: v1.y / len1 };
-//     const u2 = { x: v2.x / len2, y: v2.y / len2 };
-
-//     const p1a = {
-//       x: p1.x + u1.x * r,
-//       y: p1.y + u1.y * r,
-//     };
-//     const p1b = {
-//       x: p1.x + u2.x * r,
-//       y: p1.y + u2.y * r,
-//     };
-
-//     if (i === 0) {
-//       graphics.moveTo(p1a.x, p1a.y);
-//     } else {
-//       graphics.lineTo(p1a.x, p1a.y);
-//     }
-
-//     graphics.quadraticCurveTo(p1.x, p1.y, p1b.x, p1b.y);
-//   }
-
-//   graphics.closePath();
-//   graphics.endFill();
-// };
-
-// const RoundedPolygon = ({
-//   points,
-//   color,
-//   groupID,
-//   selectGroupId,
-// }: {
-//   points: PolygonPoints;
-//   color: number;
-//   groupID: number;
-//   selectGroupId: any;
-// }) => {
-//   // const points = [
-//   //   { x: 100, y: 100 },
-//   //   { x: 300, y: 120 },
-//   //   { x: 350, y: 250 },
-//   //   { x: 250, y: 350 },
-//   //   { x: 120, y: 300 },
-//   // ];
-
-//   const radii = 100000;
-
-//   const draw = useCallback(
-//     (g: PixiGraphics) => {
-//       drawAutoRoundedPolygon(g, points, radii, color);
-//     },
-//     [points, radii, color],
-//   );
-
-//   return (
-//     <Graphics
-//       draw={draw}
-//       pointerdown={() => {
-//         // console.log("click!!!!");
-//         selectGroupId(groupID);
-//         // console.log(groupID)
-//       }}
-//       eventMode="static"
-//     />
-//   );
-// };
-
-// const Circle = ({
-//   singlePoint,
-//   circleSize = 10,
-//   color,
-//   groupID,
-//   selectGroupId,
-// }: {
-//   singlePoint: any;
-//   circleSize: any;
-//   color: number;
-//   groupID: number;
-//   selectGroupId: any;
-// }) => {
-//   // console.log("circle !!!!!!!!!");
-//   // console.log(singlePoint);
-//   // console.log(typeof singlePoint.point);
-//   // console.log(typeof singlePoint.x);
-//   const drawGroupCircle = useCallback(
-//     (g: {
-//       clear?: any;
-//       beginFill: (arg0: number) => void;
-//       drawCircle: (arg0: any, arg1: any, arg2: number) => void;
-//       drawPolygon: (arg0: any) => void;
-//       endFill: () => void;
-//     }) => {
-//       g.clear();
-//       // bg-slate-500
-//       g.beginFill(color);
-//       g.drawCircle(singlePoint.point.x, singlePoint.point.y, circleSize);
-//       g.endFill();
-//     },
-//     [color, singlePoint.point.x, singlePoint.point.y, circleSize],
-//   );
-
-//   return (
-//     <Graphics
-//       draw={drawGroupCircle}
-//       pointerdown={() => {
-//         selectGroupId(groupID);
-//         // console.log("click!!!!");
-//         // console.log(groupID)
-//       }}
-//       eventMode="static"
-//     />
-//   );
-// };
+// ヘルパー関数
+function numberToHexColor(numColor: number): string {
+  return `#${numColor.toString(16).padStart(6, "0")}`;
+}
+
+const posToSegmenetDistance = (
+  P: { posX: number; posY: number },
+  A: { posX: number; posY: number },
+  B: { posX: number; posY: number }
+) => {
+  const ABx = B.posX - A.posX;
+  const ABy = B.posY - A.posY;
+  const PAx = P.posX - A.posX;
+  const PAy = P.posY - A.posY;
+  const dotABPA = ABx * PAx + ABy * PAy;
+  const dotABAB = ABx * ABx + ABy * ABy;
+  let t = dotABPA / dotABAB;
+  t = Math.max(0, Math.min(1, t));
+  const Qx = A.posX + t * ABx;
+  const Qy = A.posY + t * ABy;
+  const dx = P.posX - Qx;
+  const dy = P.posY - Qy;
+  return Math.sqrt(dx * dx + dy * dy);
+};
+
+// Canvas描画クラス
+class GraphRenderer {
+  private canvas: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private imageCache: Map<string, HTMLImageElement> = new Map();
+  private drawingData: any = null;
+
+  constructor(canvas: HTMLCanvasElement) {
+    this.canvas = canvas;
+    const context = canvas.getContext("2d");
+    if (!context) {
+      throw new Error("Failed to get 2D rendering context");
+    }
+    this.ctx = context;
+    this.setupEventListeners();
+  }
+
+  private setupEventListeners() {
+    this.canvas.addEventListener("click", this.handleClick.bind(this));
+  }
+
+  private handleClick(event: MouseEvent) {
+    const rect = this.canvas.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    if (!this.drawingData) return;
+
+    const {
+      resultPolygons,
+      resultDifferenctPoints,
+      resultSinglePoints,
+      myPositionData,
+      selectGroupId,
+    } = this.drawingData;
+
+    // MyPosition のクリック判定
+    if (myPositionData && myPositionData.x !== undefined) {
+      const radius = 11 * 1.5;
+      if (Math.hypot(x - myPositionData.x, y - myPositionData.y) < radius) {
+        return;
+      }
+    }
+
+    // ポリゴンのクリック判定
+    for (const poly of (resultPolygons || []).slice().reverse()) {
+      this.ctx.beginPath();
+      this.drawAutoRoundedPolygonPath(poly.points, 100000);
+      if (this.ctx.isPointInPath(x, y)) {
+        selectGroupId(poly.groupID);
+        return;
+      }
+    }
+
+    // 回転矩形のクリック判定
+    for (const rectData of (resultDifferenctPoints || []).slice().reverse()) {
+      const x1 = rectData.firstPoint.x - rectData.secondPoint.x;
+      const y1 = rectData.firstPoint.y - rectData.secondPoint.y;
+      const rotation = Math.atan2(y1, x1);
+      const vecgtorNorm = Math.hypot(x1, y1);
+      const cx = (rectData.firstPoint.x + rectData.secondPoint.x) / 2;
+      const cy = (rectData.firstPoint.y + rectData.secondPoint.y) / 2;
+
+      if (this.isPointInRotatedRect(x, y, cx, cy, vecgtorNorm, 20, rotation)) {
+        selectGroupId(rectData.groupID);
+        return;
+      }
+    }
+
+    // 円のクリック判定
+    for (const circleData of (resultSinglePoints || []).slice().reverse()) {
+      const circleSize = 15 + 0.1 * circleData.pointsCount;
+      if (
+        Math.hypot(x - circleData.point.x, y - circleData.point.y) < circleSize
+      ) {
+        selectGroupId(circleData.groupID);
+        return;
+      }
+    }
+  }
+
+  private isPointInRotatedRect(
+    px: number,
+    py: number,
+    rcx: number,
+    rcy: number,
+    rWidth: number,
+    rHeight: number,
+    angle: number
+  ): boolean {
+    const s = Math.sin(-angle);
+    const c = Math.cos(-angle);
+    const tx = px - rcx;
+    const ty = py - rcy;
+    const rotX = tx * c - ty * s;
+    const rotY = tx * s + ty * c;
+    return Math.abs(rotX) <= rWidth / 2 && Math.abs(rotY) <= rHeight / 2;
+  }
+
+  async setData(props: Props) {
+    const {
+      positions,
+      myPosition,
+      windowWidth,
+      selectGroupId,
+      background = 0xf2f2f7,
+    } = props;
+
+    // Canvas サイズ設定
+    const maxWidth = 656;
+    const minWidth = 310;
+    const width = Math.min(maxWidth, Math.max(windowWidth, minWidth));
+    const maxHeight = 350;
+    const minHeight = 250;
+    const rateSize = (width - minWidth) / (maxWidth - minWidth);
+    const height = minHeight + rateSize * (maxHeight - minHeight);
+
+    const dpr = window.devicePixelRatio || 1;
+    this.canvas.width = width * dpr;
+    this.canvas.height = height * dpr;
+    this.canvas.style.width = `${width}px`;
+    this.canvas.style.height = `${height}px`;
+    this.ctx.scale(dpr, dpr);
+
+    if (!positions || positions.length === 0) {
+      this.ctx.clearRect(0, 0, width, height);
+      return;
+    }
+
+    // データ処理
+    const sortedPositions = positions.sort(
+      (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
+    );
+
+    let _minX = 100000000000;
+    let _minY = 100000000000;
+    let _maxX = -100000000000;
+    let _maxY = -100000000000;
+
+    const groupIDs = new Set<string>();
+    const hasDifferentPointGroup = new Set<string>();
+    const hasSinglePointGroup = new Set<string>();
+    const hasPerimeterIndexGroup = new Set<string>();
+
+    sortedPositions.forEach((v: any) => {
+      _minX = Math.min(_minX, v.posX);
+      _minY = Math.min(_minY, v.posY);
+      _maxX = Math.max(_maxX, v.posX);
+      _maxY = Math.max(_maxY, v.posY);
+      groupIDs.add(v.groupID);
+      if ("perimeterIndex" in v) {
+        hasPerimeterIndexGroup.add(v.groupID);
+      }
+    });
+
+    const groupPointInfo = Array.from({ length: groupIDs.size }, () => ({
+      x: new Set<number>(),
+      y: new Set<number>(),
+    }));
+
+    const groupCounts = Array(groupIDs.size).fill(0);
+    const originalWidth = _maxX - _minX;
+    const originalHeight = _maxY - _minY;
+    let isUsedMyPosition = false;
+    const myPositionData: any = {};
+
+    const dots = sortedPositions.map((v: any) => {
+      groupCounts[Number(v.groupID)] += 1;
+      let radius = 1;
+      let myPositionFlag = false;
+
+      if (!hasPerimeterIndexGroup.has(v.groupID)) {
+        groupPointInfo[Number(v.groupID)]?.x.add(v.posX);
+        groupPointInfo[Number(v.groupID)]?.y.add(v.posY);
+      }
+
+      const x =
+        (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) + paddingX;
+      const y =
+        (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
+        paddingY;
+      const centerX = width / 2;
+      const centerY = height / 2;
+
+      if (myPosition?.displayID === v?.displayID && !isUsedMyPosition) {
+        radius = 1.5;
+        isUsedMyPosition = true;
+        myPositionFlag = true;
+        myPositionData.x = originalWidth === 0 ? centerX : x;
+        myPositionData.y = originalHeight === 0 ? centerY : y;
+        myPositionData.iconURL = v.iconURL;
+      }
+
+      return {
+        x: isNaN(x) ? centerX : x,
+        y: isNaN(y) ? centerY : y,
+        groupID: v.groupID,
+        radius: radius,
+        myPosition: myPositionFlag,
+        iconURL: v.iconURL,
+      };
+    });
+
+    for (const groupID of groupIDs) {
+      if (!hasPerimeterIndexGroup.has(groupID)) {
+        if (
+          groupPointInfo[Number(groupID)]?.x.size > 1 ||
+          groupPointInfo[Number(groupID)]?.y.size > 1
+        ) {
+          hasDifferentPointGroup.add(groupID);
+        } else {
+          hasSinglePointGroup.add(groupID);
+        }
+      }
+    }
+
+    const resultPolygons: GroupPolygon = [];
+    const labels = [];
+    const resultSinglePoints = [];
+    const resultDifferenctPoints = [];
+
+    // シングルポイントグループ処理
+    for (const groupID of hasSinglePointGroup) {
+      const polygons = sortedPositions.filter(
+        (opinion: any) => opinion.groupID === groupID
+      );
+      let point = { x: width / 2, y: height / 2 };
+
+      for (const position of polygons) {
+        point = {
+          x:
+            (position.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
+            paddingX,
+          y:
+            (position.posY - _minY) *
+              ((height - paddingY * 2) / originalHeight) +
+            paddingY,
+        };
+      }
+
+      if (isNaN(point.x)) point.x = width / 2;
+      if (isNaN(point.y)) point.y = height / 2;
+
+      labels.push({
+        textsCenter: [point.x, point.y],
+        groupID: groupID,
+        counts: groupCounts[Number(groupID)],
+      });
+
+      resultSinglePoints.push({
+        point: point,
+        groupID: groupID,
+        pointsCount: polygons.length,
+      });
+    }
+
+    // 異なるポイントグループ処理
+    for (const groupID of hasDifferentPointGroup) {
+      const polygons = sortedPositions.filter(
+        (opinion: any) => opinion.groupID === groupID
+      );
+      let firstPoint = null;
+      let secondPoint = null;
+
+      for (const position of polygons) {
+        const currentPoint = {
+          x:
+            (position.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
+            paddingX,
+          y:
+            (position.posY - _minY) *
+              ((height - paddingY * 2) / originalHeight) +
+            paddingY,
+        };
+
+        if (!firstPoint) {
+          firstPoint = currentPoint;
+        } else if (
+          firstPoint.x !== position.posX ||
+          firstPoint.y !== position.posY
+        ) {
+          secondPoint = currentPoint;
+          break;
+        }
+      }
+
+      if (!secondPoint) secondPoint = firstPoint;
+      const centerX = (firstPoint!.x + secondPoint!.x) / 2;
+      const centerY = (firstPoint!.y + secondPoint!.y) / 2;
+
+      labels.push({
+        textsCenter: [centerX, centerY],
+        groupID: groupID,
+        counts: groupCounts[Number(groupID)],
+      });
+
+      resultDifferenctPoints.push({
+        firstPoint: firstPoint,
+        secondPoint: secondPoint,
+        groupID: groupID,
+      });
+    }
+
+    // ペリメーターインデックスグループ処理
+    for (const groupID of hasPerimeterIndexGroup) {
+      const polygons = sortedPositions
+        .filter(
+          (opinion: any) =>
+            opinion.groupID === groupID &&
+            (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+        )
+        .sort(
+          (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
+        );
+
+      if (polygons.length === 0) continue;
+
+      const polygonsSum = polygons.reduce(
+        (acc: any, value: any) => ({
+          posX: acc.posX + value.posX,
+          posY: acc.posY + value.posY,
+        }),
+        { posX: 0, posY: 0 }
+      );
+
+      const polygonsCount = polygons.length;
+      const polygonsCenter = {
+        posX: polygonsSum.posX / polygonsCount,
+        posY: polygonsSum.posY / polygonsCount,
+      };
+
+      let minDistance = Infinity;
+      for (let i = 0; i < polygonsCount; i++) {
+        minDistance = Math.min(
+          minDistance,
+          posToSegmenetDistance(
+            polygonsCenter,
+            polygons[i],
+            polygons[(i + 1) % polygonsCount]
+          )
+        );
+      }
+
+      const textPos = [
+        (polygonsCenter.posX - _minX) *
+          ((width - paddingX * 2) / originalWidth) +
+          paddingX,
+        (polygonsCenter.posY - _minY) *
+          ((height - paddingY * 2) / originalHeight) +
+          paddingY,
+      ];
+
+      labels.push({
+        textsCenter: textPos,
+        groupID: groupID,
+        counts: groupCounts[Number(groupID)],
+        minDistance: minDistance,
+      });
+
+      const points = polygons.map((v: any) => ({
+        x:
+          (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) +
+          paddingX,
+        y:
+          (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
+          paddingY,
+      }));
+
+      const flatPoints = polygons.flatMap((v: any) => [
+        (v.posX - _minX) * ((width - paddingX * 2) / originalWidth) + paddingX,
+        (v.posY - _minY) * ((height - paddingY * 2) / originalHeight) +
+          paddingY,
+      ]);
+
+      resultPolygons.push({
+        points: points,
+        flatPoints: flatPoints,
+        groupID: groupID,
+      });
+    }
+
+    // 描画データを保存
+    this.drawingData = {
+      resultPolygons,
+      resultDifferenctPoints,
+      resultSinglePoints,
+      myPositionData,
+      dots,
+      labels,
+      width,
+      height,
+      background,
+      selectGroupId,
+    };
+
+    // 画像をロードしてから描画
+    await this.loadImages();
+    this.draw();
+  }
+
+  private async loadImages() {
+    const imagesToLoad = new Set<string>();
+
+    if (this.drawingData.myPositionData?.iconURL) {
+      imagesToLoad.add(this.drawingData.myPositionData.iconURL);
+    }
+
+    this.drawingData.dots?.forEach((dot: any) => {
+      if (dot.iconURL) {
+        imagesToLoad.add(dot.iconURL);
+      }
+    });
+
+    const promises = Array.from(imagesToLoad).map((url) => {
+      if (this.imageCache.has(url)) {
+        return Promise.resolve();
+      }
+
+      return new Promise<void>((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          this.imageCache.set(url, img);
+          resolve();
+        };
+        img.onerror = () => {
+          console.error(`Failed to load image: ${url}`);
+          resolve();
+        };
+        img.src = url;
+      });
+    });
+
+    await Promise.all(promises);
+  }
+
+  private draw() {
+    if (!this.drawingData) return;
+
+    const { width, height, background } = this.drawingData;
+
+    // クリア
+    this.ctx.clearRect(0, 0, width, height);
+
+    // 背景
+    this.ctx.fillStyle = numberToHexColor(background);
+    this.ctx.fillRect(0, 0, width, height);
+
+    // 軸を描画
+    this.drawAxes();
+
+    // ポリゴンを描画
+    this.drawPolygons();
+
+    // 矩形を描画
+    this.drawRects();
+
+    // 円を描画
+    this.drawCircles();
+
+    // アバターを描画
+    this.drawAvatars();
+
+    // MyPositionを描画
+    this.drawMyPosition();
+
+    // ラベルを描画
+    this.drawLabels();
+  }
+
+  private drawAxes() {
+    const { width, height } = this.drawingData;
+
+    this.ctx.strokeStyle = numberToHexColor(axisColor);
+    this.ctx.lineWidth = 2;
+
+    // X軸
+    this.ctx.beginPath();
+    this.ctx.moveTo(0, height / 2);
+    this.ctx.lineTo(width, height / 2);
+    this.ctx.stroke();
+
+    // Y軸
+    this.ctx.beginPath();
+    this.ctx.moveTo(width / 2, 0);
+    this.ctx.lineTo(width / 2, height);
+    this.ctx.stroke();
+  }
+
+  private drawPolygons() {
+    const { resultPolygons } = this.drawingData;
+
+    resultPolygons?.forEach((poly: any) => {
+      this.ctx.fillStyle = numberToHexColor(colorList[Number(poly.groupID)]);
+      this.ctx.beginPath();
+      this.drawAutoRoundedPolygonPath(poly.points, 100000);
+      this.ctx.fill();
+    });
+  }
+
+  private drawAutoRoundedPolygonPath(points: PolygonPoints, radii: number) {
+    const len = points.length;
+    if (len < 3) return;
+
+    for (let i = 0; i < len; i++) {
+      const p0 = points[(i - 1 + len) % len];
+      const p1 = points[i];
+      const p2 = points[(i + 1) % len];
+
+      const rOriginal = radii || 0;
+      const distPrev = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+      const distNext = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+      const maxR = Math.min(distPrev, distNext) / 10 - 0.1;
+      const r = Math.min(rOriginal, Math.max(0, maxR));
+
+      const v1 = { x: p0.x - p1.x, y: p0.y - p1.y };
+      const v2 = { x: p2.x - p1.x, y: p2.y - p1.y };
+      const len1 = Math.hypot(v1.x, v1.y);
+      const len2 = Math.hypot(v2.x, v2.y);
+
+      const u1 =
+        len1 === 0 ? { x: 0, y: 0 } : { x: v1.x / len1, y: v1.y / len1 };
+      const u2 =
+        len2 === 0 ? { x: 0, y: 0 } : { x: v2.x / len2, y: v2.y / len2 };
+
+      const p1a = { x: p1.x + u1.x * r, y: p1.y + u1.y * r };
+      const p1b = { x: p1.x + u2.x * r, y: p1.y + u2.y * r };
+
+      if (i === 0) {
+        this.ctx.moveTo(p1a.x, p1a.y);
+      } else {
+        this.ctx.lineTo(p1a.x, p1a.y);
+      }
+      this.ctx.quadraticCurveTo(p1.x, p1.y, p1b.x, p1b.y);
+    }
+    this.ctx.closePath();
+  }
+
+  private drawRects() {
+    const { resultDifferenctPoints } = this.drawingData;
+
+    resultDifferenctPoints?.forEach((rectData: any) => {
+      const x = rectData.firstPoint.x - rectData.secondPoint.x;
+      const y = rectData.firstPoint.y - rectData.secondPoint.y;
+      const rotation = Math.atan2(y, x);
+      const vecgtorNorm = Math.hypot(x, y);
+      const cx = (rectData.firstPoint.x + rectData.secondPoint.x) / 2;
+      const cy = (rectData.firstPoint.y + rectData.secondPoint.y) / 2;
+
+      this.ctx.save();
+      this.ctx.translate(cx, cy);
+      this.ctx.rotate(rotation);
+      this.ctx.fillStyle = numberToHexColor(
+        colorList[Number(rectData.groupID)]
+      );
+      this.ctx.beginPath();
+      this.drawRoundedRect(-vecgtorNorm / 2, -10, vecgtorNorm, 20, 20);
+      this.ctx.fill();
+      this.ctx.restore();
+    });
+  }
+
+  private drawRoundedRect(
+    x: number,
+    y: number,
+    width: number,
+    height: number,
+    radius: number
+  ) {
+    if (width < 2 * radius) radius = width / 2;
+    if (height < 2 * radius) radius = height / 2;
+
+    this.ctx.moveTo(x + radius, y);
+    this.ctx.arcTo(x + width, y, x + width, y + height, radius);
+    this.ctx.arcTo(x + width, y + height, x, y + height, radius);
+    this.ctx.arcTo(x, y + height, x, y, radius);
+    this.ctx.arcTo(x, y, x + width, y, radius);
+    this.ctx.closePath();
+  }
+
+  private drawCircles() {
+    const { resultSinglePoints } = this.drawingData;
+
+    resultSinglePoints?.forEach((circleData: any) => {
+      const circleSize = 15 + 0.1 * circleData.pointsCount;
+      this.ctx.fillStyle = numberToHexColor(
+        colorList[Number(circleData.groupID)]
+      );
+      this.ctx.beginPath();
+      this.ctx.arc(
+        circleData.point.x,
+        circleData.point.y,
+        circleSize,
+        0,
+        Math.PI * 2
+      );
+      this.ctx.fill();
+    });
+  }
+
+  private drawAvatars() {
+    const { dots } = this.drawingData;
+
+    dots?.forEach((dot: any) => {
+      if (!dot.myPosition && dot.iconURL) {
+        this.drawAvatar(dot.x, dot.y, dot.iconURL, dot.radius, false);
+      }
+    });
+  }
+
+  private drawMyPosition() {
+    const { myPositionData } = this.drawingData;
+
+    if (
+      myPositionData &&
+      myPositionData.x !== undefined &&
+      myPositionData.iconURL
+    ) {
+      this.drawAvatar(
+        myPositionData.x,
+        myPositionData.y,
+        myPositionData.iconURL,
+        1.5,
+        true
+      );
+    }
+  }
+
+  private drawAvatar(
+    x: number,
+    y: number,
+    iconURL: string,
+    radius: number,
+    isMyPosition: boolean
+  ) {
+    const img = this.imageCache.get(iconURL);
+    if (!img) return;
+
+    this.ctx.save();
+
+    // マスク用の円
+    const maskRadius = 11 * radius;
+    this.ctx.beginPath();
+    this.ctx.arc(x, y, maskRadius, 0, Math.PI * 2);
+    this.ctx.clip();
+
+    // 画像描画
+    const scale = isMyPosition ? 0.1 : 0.15;
+    const scaledRadius = radius * scale;
+    const imgWidth = img.width * scaledRadius;
+    const imgHeight = img.height * scaledRadius;
+
+    this.ctx.drawImage(
+      img,
+      x - imgWidth / 2,
+      y - imgHeight / 2,
+      imgWidth,
+      imgHeight
+    );
+
+    this.ctx.restore();
+
+    // MyPosition の場合はサングラスを描画
+    if (isMyPosition) {
+      this.ctx.font = "16px sans-serif";
+      this.ctx.textAlign = "center";
+      this.ctx.textBaseline = "middle";
+      this.ctx.fillText("🕶️", x - 1, y - 2);
+    }
+  }
+
+  private drawLabels() {
+    const { labels } = this.drawingData;
+
+    labels?.forEach((label: any) => {
+      const [x, y] = label.textsCenter;
+
+      this.ctx.font = "16px sans-serif";
+      this.ctx.fillStyle = "#000000";
+      this.ctx.textAlign = "center";
+      this.ctx.textBaseline = "middle";
+
+      // グループ名
+      this.ctx.fillText(groupNames[Number(label.groupID)], x, y - 10);
+
+      // 人数
+      this.ctx.fillText(`${label.counts}人`, x, y + 10);
+    });
+  }
+
+  destroy() {
+    this.canvas.removeEventListener("click", this.handleClick.bind(this));
+  }
+}
+
+// Reactコンポーネント
+const Dots = (props: Props) => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const rendererRef = useRef<GraphRenderer | null>(null);
+
+  useEffect(() => {
+    if (canvasRef.current) {
+      if (!rendererRef.current) {
+        rendererRef.current = new GraphRenderer(canvasRef.current);
+      }
+      rendererRef.current.setData(props);
+    }
+
+    return () => {
+      if (rendererRef.current) {
+        rendererRef.current.destroy();
+      }
+    };
+  }, [props]);
+
+  return <canvas ref={canvasRef} style={{ display: "block" }} />;
+};
+
+export default Dots;
