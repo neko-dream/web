@@ -79,7 +79,7 @@ export const AnalyticsModal = (props: Props) => {
                     datasets: [
                       {
                         data,
-                        backgroundColor: ["#4c6ef5", "#f783ac", "#74c0fc"], // 各セグメントの色
+                        backgroundColor: ["#32ade6", "#ff2d55", "#5856d6"], // 各セグメントの色
                         borderWidth: 0,
                       },
                     ],
