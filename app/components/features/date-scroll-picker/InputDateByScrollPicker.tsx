@@ -1,5 +1,5 @@
-import { FC, useState, CSSProperties, useRef, useEffect } from "react";
 import dayjs from "dayjs";
+import { CSSProperties, FC, useEffect, useRef, useState } from "react";
 
 // Removed MUI imports
 
@@ -93,7 +93,7 @@ const InputDateContent: FC<
 };
 // --- End InputDateContent ---
 
-const DEFAULT_INITIAL_PICKER_DATE = dayjs().format("YYYY-MM-DD");
+const DEFAULT_INITIAL_PICKER_DATE = dayjs().format("2000-05-04");
 
 export type InputDateByScrollPickerProps = {
   value: string | null; // Changed from Date | null
@@ -121,12 +121,12 @@ export const InputDateByScrollPicker: FC<InputDateByScrollPickerProps> = ({
 
   const inputStyle: CSSProperties = {
     width: "100%",
-    padding: "8.5px 14px", // Approximates MUI small outlined TextField
+    padding: "11px 14px", // Approximates MUI small outlined TextField
     paddingRight: "60px", // Make space for icons
     fontSize: "1rem",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    border: "1px solid rgba(0, 0, 0, 0.23)",
-    borderRadius: "4px",
+    border: "1px solid oklch(0.872 0.01 258.338)",
+    borderRadius: "6px",
     boxSizing: "border-box",
     cursor: "pointer",
     backgroundColor: "#fff",
