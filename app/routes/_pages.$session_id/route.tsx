@@ -1,6 +1,12 @@
 import { type MouseEvent, Suspense, useEffect, useState } from "react";
-import { Await, Outlet, useNavigate, useOutletContext } from "react-router";
-import { Notification } from "~/components/icons";
+import {
+  Await,
+  Link,
+  Outlet,
+  useNavigate,
+  useOutletContext,
+} from "react-router";
+import { Left, Notification } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { useSatisfiedStore, useVote } from "~/hooks/useVote";
 import { JST } from "~/libs/date";
@@ -112,7 +118,12 @@ const Contents = ({
     <>
       <div className="mx-auto mt-2 flex w-full max-w-4xl flex-col space-y-2 px-4 py-2">
         <div className="flex items-center">
-          <p className="font-bold text-base md:text-3xl">{session.theme}</p>
+          <Link to="/home">
+            <Left className="fill-gray-600" />
+          </Link>
+          <p className="ml-2 font-bold text-base md:text-3xl">
+            {session.theme}
+          </p>
           <Suspense>
             <EditButton $user={$user} session={session} />
           </Suspense>
