@@ -9,7 +9,7 @@ type Props = ComponentProps<"input"> & {
 export const input = tv({
   base: "h-12 w-full rounded-md border border-gray-300 bg-white px-2 text-sm",
   variants: {
-    error: { true: "border-red-500 bg-red-100" },
+    error: { true: "border-red-500 bg-red-50" },
     withIcon: { true: "pl-18" },
   },
 });

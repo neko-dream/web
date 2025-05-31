@@ -214,23 +214,23 @@ export default function Page({
         <Label
           title="募集期間"
           notes={["具体的な場所が決まっていたら入力しよう"]}
+          errors={fields.scheduledEndTime.errors}
         >
-          <span className="relative">
-            <Input
-              {...getInputProps(fields.scheduledEndTime, {
-                type: "date",
-              })}
-              type="date"
-              className="h-12 w-full px-4"
-              placeholder="記入する"
-              defaultValue={
-                session?.scheduledEndTime
-                  ? dayjs(session?.scheduledEndTime).format("YYYY-MM-DD")
-                  : dayjs().add(1, "day").format("YYYY-MM-DD")
-              }
-              min={dayjs().add(1, "day").format("YYYY-MM-DD")} // 今日の日付を最小値として設定
-            />
-          </span>
+          <Input
+            {...getInputProps(fields.scheduledEndTime, {
+              type: "date",
+            })}
+            type="date"
+            className="h-12 w-full px-4"
+            placeholder="記入する"
+            defaultValue={
+              session?.scheduledEndTime
+                ? dayjs(session?.scheduledEndTime).format("YYYY-MM-DD")
+                : dayjs().add(7, "day").format("YYYY-MM-DD")
+            }
+            min={dayjs().add(1, "day").format("YYYY-MM-DD")} // 今日の日付を最小値として設定
+            error={(fields.scheduledEndTime.errors || []).length > 0}
+          />
         </Label>
 
         <Button

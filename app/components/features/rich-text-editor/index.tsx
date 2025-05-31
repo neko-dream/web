@@ -21,6 +21,9 @@ export const RichTextEditor = ({
   onUpdate,
   defaultValue,
 }: Props) => {
+  // 初期値が未設定の場合５行分の改行を設定
+  const initialContent = defaultValue || "<p></p><p></p><p></p><p></p><p></p>";
+
   const editor = useEditor({
     extensions: [
       Document,
@@ -32,7 +35,7 @@ export const RichTextEditor = ({
       // CustomaizedPlaceholder,
       CustomaizedDropcursor,
     ],
-    content: defaultValue,
+    content: initialContent,
   });
 
   useEffect(() => {
@@ -47,7 +50,7 @@ export const RichTextEditor = ({
 
   return (
     <div className="rounded border border-gray-300 bg-white">
-      <div className="flex justify-end space-x-2 px-2 pt-2">
+      <div className="flex justify-end space-x-2 border-gray-200 border-b border-dashed px-2 pt-2 pb-2">
         <CustomaizedLinkToolbarItem editor={editor} />
         <CustomaizedImageToolbarItem
           editor={editor}

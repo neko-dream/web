@@ -1,4 +1,5 @@
 import type { Editor } from "@tiptap/core";
+import { TextSelection } from "@tiptap/pm/state";
 import { useRef } from "react";
 import { Picture } from "~/components/icons";
 
@@ -31,7 +32,22 @@ export const CustomaizedImageToolbarItem = ({ editor, onImageLoad }: Props) => {
           }
           const file = e.target.files[0];
           const src = await onImageLoad(file);
-          editor.chain().focus().setImage({ src }).run();
+
+          editor
+            .chain()
+            .focus()
+            .setImage({ src })
+            .command(({ tr, dispatch }) => {
+              // 画像挿入後に改行を追加
+              if (dispatch) {
+                const { selection } = tr;
+                const pos = selection.to;
+                tr.insert(pos, editor.schema.nodes.paragraph.create());
+                tr.setSelection(TextSelection.create(tr.doc, pos + 1));
+              }
+              return true;
+            })
+            .run();
         }}
       />
     </>
