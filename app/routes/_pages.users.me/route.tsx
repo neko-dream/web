@@ -11,7 +11,7 @@ export default function Layout({ loaderData: { user } }: Route.ComponentProps) {
   return (
     <>
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center pt-4">
-        <Link to={"/edit/users/me"} className="mr-2 ml-auto">
+        <Link to={"/users/me/edit"} className="mr-2 ml-auto">
           <Setting />
         </Link>
         <Avatar src={user.iconURL} className="mt-2 h-24 w-24" />

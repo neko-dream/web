@@ -94,9 +94,9 @@ const Contents = ({
 
   const handleMoveCreateOpinionPage = async (e: MouseEvent) => {
     e.preventDefault();
-    const result = await check(`/create/${session.id}/opinion`);
+    const result = await check(`/make/${session.id}/opinions/new`);
     if (result === "satisfied") {
-      navigate(`/create/${session.id}/opinion`);
+      navigate(`/make/${session.id}/opinions/new`);
     }
   };
 

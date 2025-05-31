@@ -7,6 +7,7 @@ import {
 import { type ChangeEvent, useEffect, useRef, useState } from "react";
 import { Form } from "react-router";
 import gender from "~/assets/data/gender.json";
+import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 import AdressInputs from "~/components/features/input-adress";
 import { Camera } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
@@ -15,10 +16,9 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
-import type { Route } from "~/react-router/_pages.edit.users.me/+types";
+import type { Route } from "~/react-router/_pages.users.me.edit/+types";
 import { formatDate } from "~/utils/format-date";
 import { useEditUserForm } from "./hooks/useEditUserForm";
-import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";

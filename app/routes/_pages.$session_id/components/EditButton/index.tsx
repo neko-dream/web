@@ -21,7 +21,7 @@ export const EditButton = ({ $user, session }: Props) => {
   }
 
   return (
-    <Link to={`/create/session/${session.id}`} className="ml-2 cursor-pointer">
+    <Link to={`/make/${session.id}`} className="ml-2 cursor-pointer">
       <Edit />
     </Link>
   );

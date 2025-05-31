@@ -112,7 +112,7 @@ export const Header = ({ $user }: Props) => {
 
                       {user?.orgType && (
                         <Link
-                          to={"/create/session/new"}
+                          to={"/make/new"}
                           className={button({
                             className:
                               "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",

@@ -14,7 +14,7 @@ export default function Page() {
         </p>
         <span className="flex justify-center">
           <Link
-            to={`/create/${session.id}/message`}
+            to={`/make/${session.id}/message`}
             className={button({
               className: "inline-flex w-auto items-center justify-center",
               color: "primary",
@@ -32,7 +32,7 @@ export default function Page() {
         </p>
         <span className="flex justify-center">
           <Link
-            to={`/create/${session.id}/loadmap`}
+            to={`/make/${session.id}/loadmap`}
             className={button({
               className: "inline-flex w-auto items-center justify-center",
               color: "primary",

@@ -12,6 +12,11 @@ const ignoreLayoutRoute: RouteConfigEntry[] = [
     file: "routes/_pages.$session_id.opinions.$opinion_id/index.tsx",
     path: ":session_id/opinions/:opinion_id",
   },
+  {
+    id: "routes/_pages.users.me.edit",
+    file: "routes/_pages.users.me.edit/index.tsx",
+    path: "users/me/edit",
+  },
 ];
 
 /**
