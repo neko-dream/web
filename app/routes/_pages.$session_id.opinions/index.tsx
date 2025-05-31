@@ -93,7 +93,6 @@ export default function Page({
                           onClickReport={() => handleOpenModal(id)}
                           onClickAnalytics={() => handleAnalyticsModal(id)}
                           opinionCount={replyCount}
-                          isJudgeButtonDisabled={!!myVoteType}
                         />
                       );
                     });
