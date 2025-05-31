@@ -30,7 +30,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   }
 
   return {
-    isEditMobe: true,
+    isEditMode: true,
     session,
     restrictions,
   };

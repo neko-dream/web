@@ -27,7 +27,7 @@ export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";
 
 export default function Page({
-  loaderData: { restrictions, session, isEditMobe },
+  loaderData: { restrictions, session, isEditMode },
 }: Route.ComponentProps) {
   const [isRestriction, setIsRestriction] = useState<boolean>(false);
   const thumbnailRef = useRef<string>(null);
@@ -67,7 +67,7 @@ export default function Page({
         ? [value.restrictions]
         : [];
 
-      if (isEditMobe) {
+      if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
           credentials: "include",
           params: {
@@ -131,9 +131,9 @@ export default function Page({
   return (
     <div className="flex flex-1 flex-col bg-mt-gray-200">
       <Heading
-        title={isEditMobe ? "セッションを編集する" : "セッションを作成する"}
+        title={isEditMode ? "セッションを編集する" : "セッションを作成する"}
         className="h-10"
-        to={isEditMobe ? `/${session.id}` : "/home"}
+        to={isEditMode ? `/${session.id}` : "/home"}
         isLink={true}
       />
       <Form
@@ -168,7 +168,7 @@ export default function Page({
 
         <Label title="募集事項" notes={["どんな人に参加してほしいか決めよう"]}>
           <Select
-            disabled={isEditMobe}
+            disabled={isEditMode}
             options={[
               {
                 title: "誰でもOK",
@@ -203,7 +203,7 @@ export default function Page({
                     value={restriction.key}
                     label={restriction.description}
                     defaultChecked={checked}
-                    disabled={isEditMobe}
+                    disabled={isEditMode}
                   />
                 );
               })}
@@ -240,7 +240,7 @@ export default function Page({
         >
           <Check />
           <span>
-            {isEditMobe ? "セッションを編集する" : "セッションを作成する"}
+            {isEditMode ? "セッションを編集する" : "セッションを作成する"}
           </span>
         </Button>
       </Form>
