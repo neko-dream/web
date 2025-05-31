@@ -154,12 +154,12 @@ const Contents = ({
         <div className="text-blue-500 text-sm">
           {session.restrictions.length === 0 ? (
             <div className="flex items-center">
-              <Notification className="fill-mt-blue-600" />
+              <Notification className="fill-cs-blue-600" />
               <p className="ml-2">誰でも参加OK</p>
             </div>
           ) : (
             <div className="flex items-center space-x-2">
-              <p className="inline-block whitespace-nowrap rounded bg-mt-blue-50 px-2 py-1">
+              <p className="inline-block whitespace-nowrap rounded bg-cs-blue-50 px-2 py-1">
                 入力済対象
               </p>
               <div className="flex flex-wrap items-center">

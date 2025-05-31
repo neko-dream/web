@@ -49,7 +49,7 @@ export const HintSwipeModal = (props: Omit<ModalProps, "children">) => {
             href="/guide/help"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-mt-blue-600"
+            className="text-cs-blue-600"
           >
             💡より詳しい説明はこちら
           </a>

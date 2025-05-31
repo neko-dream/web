@@ -49,15 +49,15 @@ export const DemographicsModalContent = ({
               </div>
               <div className="mt-4 flex flex-col space-y-4">
                 <Link
-                  className="cursor-pointer text-center font-bold text-mt-blue-600"
-                  to={`/request/demographics/${sessionID}?next=${nextPath}`}
+                  className="cursor-pointer text-center font-bold text-cs-blue-600"
+                  to={`/make/${sessionID}/demographics?next=${nextPath}`}
                 >
                   情報を入力・認証する
                 </Link>
                 <button
                   onClick={onClose}
                   type="button"
-                  className="cursor-pointer font-bold text-mt-disabled"
+                  className="cursor-pointer font-bold text-cs-disabled"
                 >
                   キャンセル
                 </button>

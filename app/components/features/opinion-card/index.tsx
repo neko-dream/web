@@ -142,9 +142,9 @@ export const Card = ({
             <button
               onClick={() => onClickReport?.()}
               type="button"
-              className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
+              className="flex cursor-pointer space-x-2 py-2 text-cs-caution"
             >
-              <Notification className="fill-[#FF3B30]" />
+              <Notification className="fill-cs-caution" />
               <span>通報</span>
             </button>
           </div>

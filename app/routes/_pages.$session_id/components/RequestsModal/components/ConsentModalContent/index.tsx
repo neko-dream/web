@@ -58,7 +58,7 @@ export const ConsentModalContent = ({
       <div className="mt-4 flex flex-col space-y-4">
         <button
           type="button"
-          className="cursor-pointer text-center font-bold text-mt-blue-600 disabled:opacity-60"
+          className="cursor-pointer text-center font-bold text-cs-blue-600 disabled:opacity-60"
           onClick={handleConform}
           disabled={!isChecked}
         >
@@ -66,7 +66,7 @@ export const ConsentModalContent = ({
         </button>
         <button
           type="button"
-          className="cursor-pointer font-bold text-mt-disabled"
+          className="cursor-pointer font-bold text-cs-disabled"
           onClick={onClose}
         >
           キャンセル

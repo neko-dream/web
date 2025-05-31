@@ -52,7 +52,7 @@ export default function Page() {
                 href="https://static.kotohiro.com/tos"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-mt-blue-600"
+                className="text-cs-blue-600"
               >
                 利用規約
               </a>
@@ -61,7 +61,7 @@ export default function Page() {
                 href="https://static.kotohiro.com/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-mt-blue-600"
+                className="text-cs-blue-600"
               >
                 プライバシーポリシー
               </a>

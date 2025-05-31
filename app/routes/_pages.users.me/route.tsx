@@ -24,7 +24,7 @@ export default function Layout({ loaderData: { user } }: Route.ComponentProps) {
           ]}
         />
       </div>
-      <div className="h-full w-full flex-1 bg-mt-gray-200">
+      <div className="h-full w-full flex-1 bg-cs-gray-200">
         <Outlet />
       </div>
     </>

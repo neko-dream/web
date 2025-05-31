@@ -15,7 +15,7 @@ export const CustomaizedImageToolbarItem = ({ editor, onImageLoad }: Props) => {
   return (
     <>
       <button onClick={handleClick} type="button" className="cursor-pointer">
-        <Picture className="h-5 w-5 fill-mt-gray-600" />
+        <Picture className="h-5 w-5 fill-cs-gray-600" />
       </button>
       <input
         ref={inputRef}

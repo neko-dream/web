@@ -24,7 +24,7 @@ export const LookupOtherOpinionButton = ({
       <span className="primary-gradient inline-block text-clip">
         みんなの意見を見る
       </span>
-      <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
+      <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-cs-caution p-1 text-sm text-white">
         {count}
       </span>
     </button>

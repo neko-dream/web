@@ -3,18 +3,6 @@
 @plugin "@tailwindcss/typography";
 
 @layer utilities {
-  /* Chrome/Safari向けスタイル */
-  .scrollbar-visible::-webkit-scrollbar {
-    width: 6px;
-  }
-  .scrollbar-visible::-webkit-scrollbar-track {
-    background-color: #f1f1f1;
-    border-radius: 4px;
-  }
-  .scrollbar-visible::-webkit-scrollbar-thumb {
-    background-color: #c1c1c1;
-    border-radius: 4px;
-  }
   .primary-gradient {
     background-image: linear-gradient(
       90deg,
@@ -35,13 +23,6 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-  }
-  .hidden-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
-  }
-  .hidden-scrollbar::-webkit-scrollbar {
-    display: none;
   }
   .border-gradient {
     position: relative;
@@ -73,192 +54,23 @@
 
 @theme {
   /* 背景で使用 */
-  --color-mt-gray-200: #f2f2f7;
-  /* disabeldな表現で使用 */
-  --color-mt-gray-500: #adb5bd;
+  --color-cs-gray-200: #f2f2f7;
+  /* disabledな表現で使用 */
+  --color-cs-gray-500: #adb5bd;
   /* 注意書きで使用 */
-  --color-mt-gray-600: #868e96;
-  --color-mt-gray-900: #212529;
+  --color-cs-gray-600: #868e96;
   /* リンクとかで使用 */
-  --color-mt-blue-50: #e7f5ff;
-  --color-mt-blue-600: #007aff;
-  --color-mt-disabled: #aeaeb2;
-  --color-mt-red: #ff3b30;
-  --shadow-cs-normal: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  --font-roboto: "Roboto", sans-serif;
+  --color-cs-blue-50: #e7f5ff;
+  --color-cs-blue-600: #007aff;
+
+  --color-cs-caution: #ff3b30;
+  --color-cs-disabled: #aeaeb2;
 
   --color-cs-agree: #32ade6;
   --color-cs-disagree: #ff2d55;
   --color-cs-pass: #5856d6;
 
-  /**
-   * Mantine Custom CSS
-   */
-  /* Dark colors */
-  --color-dark-50: #c1c2c5;
-  --color-dark-100: #a6a7ab;
-  --color-dark-200: #909296;
-  --color-dark-300: #5c5f66;
-  --color-dark-400: #373a40;
-  --color-dark-500: #2c2e33;
-  --color-dark-600: #25262b;
-  --color-dark-700: #1a1b1e;
-  --color-dark-800: #141517;
-  --color-dark-900: #101113;
+  --shadow-cs-normal: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
-  /* Gray colors */
-  --color-gray-50: #f8f9fa;
-  --color-gray-100: #f1f3f5;
-  --color-gray-200: #e9ecef;
-  --color-gray-300: #dee2e6;
-  --color-gray-400: #ced4da;
-  --color-gray-500: #adb5bd;
-  --color-gray-600: #868e96;
-  --color-gray-700: #495057;
-  --color-gray-800: #343a40;
-  --color-gray-900: #212529;
-
-  /* Red colors */
-  --color-red-50: #fff5f5;
-  --color-red-100: #ffe3e3;
-  --color-red-200: #ffc9c9;
-  --color-red-300: #ffa8a8;
-  --color-red-400: #ff8787;
-  --color-red-500: #ff6b6b;
-  --color-red-600: #fa5252;
-  --color-red-700: #f03e3e;
-  --color-red-800: #e03131;
-  --color-red-900: #c92a2a;
-
-  /* Pink colors */
-  --color-pink-50: #fff0f6;
-  --color-pink-100: #ffdeeb;
-  --color-pink-200: #fcc2d7;
-  --color-pink-300: #faa2c1;
-  --color-pink-400: #f783ac;
-  --color-pink-500: #f06595;
-  --color-pink-600: #e64980;
-  --color-pink-700: #d6336c;
-  --color-pink-800: #c2255c;
-  --color-pink-900: #a61e4d;
-
-  /* Grape colors */
-  --color-grape-50: #f8f0fc;
-  --color-grape-100: #f3d9fa;
-  --color-grape-200: #eebefa;
-  --color-grape-300: #e599f7;
-  --color-grape-400: #da77f2;
-  --color-grape-500: #cc5de8;
-  --color-grape-600: #be4bdb;
-  --color-grape-700: #ae3ec9;
-  --color-grape-800: #9c36b5;
-  --color-grape-900: #862e9c;
-
-  /* Violet colors */
-  --color-violet-50: #f3f0ff;
-  --color-violet-100: #e5dbff;
-  --color-violet-200: #d0bfff;
-  --color-violet-300: #b197fc;
-  --color-violet-400: #9775fa;
-  --color-violet-500: #845ef7;
-  --color-violet-600: #7950f2;
-  --color-violet-700: #7048e8;
-  --color-violet-800: #6741d9;
-  --color-violet-900: #5f3dc4;
-
-  /* Indigo colors */
-  --color-indigo-50: #edf2ff;
-  --color-indigo-100: #dbe4ff;
-  --color-indigo-200: #bac8ff;
-  --color-indigo-300: #91a7ff;
-  --color-indigo-400: #748ffc;
-  --color-indigo-500: #5c7cfa;
-  --color-indigo-600: #4c6ef5;
-  --color-indigo-700: #4263eb;
-  --color-indigo-800: #3b5bdb;
-  --color-indigo-900: #364fc7;
-
-  /* Blue colors */
-  --color-blue-50: #e7f5ff;
-  --color-blue-100: #d0ebff;
-  --color-blue-200: #a5d8ff;
-  --color-blue-300: #74c0fc;
-  --color-blue-400: #4dabf7;
-  --color-blue-500: #339af0;
-  --color-blue-600: #228be6;
-  --color-blue-700: #1c7ed6;
-  --color-blue-800: #1971c2;
-  --color-blue-900: #1864ab;
-
-  /* Cyan colors */
-  --color-cyan-50: #e3fafc;
-  --color-cyan-100: #c5f6fa;
-  --color-cyan-200: #99e9f2;
-  --color-cyan-300: #66d9e8;
-  --color-cyan-400: #3bc9db;
-  --color-cyan-500: #22b8cf;
-  --color-cyan-600: #15aabf;
-  --color-cyan-700: #1098ad;
-  --color-cyan-800: #0c8599;
-  --color-cyan-900: #0b7285;
-
-  /* Teal colors */
-  --color-teal-50: #e6fcf5;
-  --color-teal-100: #c3fae8;
-  --color-teal-200: #96f2d7;
-  --color-teal-300: #63e6be;
-  --color-teal-400: #38d9a9;
-  --color-teal-500: #20c997;
-  --color-teal-600: #12b886;
-  --color-teal-700: #0ca678;
-  --color-teal-800: #099268;
-  --color-teal-900: #087f5b;
-
-  /* Green colors */
-  --color-green-50: #ebfbee;
-  --color-green-100: #d3f9d8;
-  --color-green-200: #b2f2bb;
-  --color-green-300: #8ce99a;
-  --color-green-400: #69db7c;
-  --color-green-500: #51cf66;
-  --color-green-600: #40c057;
-  --color-green-700: #37b24d;
-  --color-green-800: #2f9e44;
-  --color-green-900: #2b8a3e;
-
-  /* Lime colors */
-  --color-lime-50: #f4fce3;
-  --color-lime-100: #e9fac8;
-  --color-lime-200: #d8f5a2;
-  --color-lime-300: #c0eb75;
-  --color-lime-400: #a9e34b;
-  --color-lime-500: #94d82d;
-  --color-lime-600: #82c91e;
-  --color-lime-700: #74b816;
-  --color-lime-800: #66a80f;
-  --color-lime-900: #5c940d;
-
-  /* Yellow colors */
-  --color-yellow-50: #fff9db;
-  --color-yellow-100: #fff3bf;
-  --color-yellow-200: #ffec99;
-  --color-yellow-300: #ffe066;
-  --color-yellow-400: #ffd43b;
-  --color-yellow-500: #fcc419;
-  --color-yellow-600: #fab005;
-  --color-yellow-700: #f59f00;
-  --color-yellow-800: #f08c00;
-  --color-yellow-900: #e67700;
-
-  /* Orange colors */
-  --color-orange-50: #fff4e6;
-  --color-orange-100: #ffe8cc;
-  --color-orange-200: #ffd8a8;
-  --color-orange-300: #ffc078;
-  --color-orange-400: #ffa94d;
-  --color-orange-500: #ff922b;
-  --color-orange-600: #fd7e14;
-  --color-orange-700: #f76707;
-  --color-orange-800: #e8590c;
-  --color-orange-900: #d9480f;
+  --font-roboto: "Roboto", sans-serif;
 }

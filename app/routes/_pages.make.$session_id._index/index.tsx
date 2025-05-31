@@ -129,7 +129,7 @@ export default function Page({
   };
 
   return (
-    <div className="flex flex-1 flex-col bg-mt-gray-200">
+    <div className="flex flex-1 flex-col bg-cs-gray-200">
       <Heading
         title={isEditMode ? "セッションを編集する" : "セッションを作成する"}
         className="h-10"

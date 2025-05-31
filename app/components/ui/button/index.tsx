@@ -13,9 +13,9 @@ export const button = tv({
   variants: {
     color: {
       primary: "primary-gradient",
-      agree: "border-[#32ADE6] bg-[#32ADE6]",
-      disagree: "border-[#FF2D55] bg-[#FF2D55]",
-      pass: "border-[#AF52DE] bg-[#AF52DE]",
+      agree: "border-cs-agree bg-cs-agree",
+      disagree: "border-cs-disagree bg-cs-disagree",
+      pass: "border-cs-pass bg-cs-pass",
       disabled: "border-2 border-gray-200 bg-white text-gray-300",
     } satisfies { [X in Variants]: string },
     outline: {

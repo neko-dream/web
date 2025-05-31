@@ -108,7 +108,7 @@ export default function Page({
     <>
       <Heading to={`/${sessionID}`} title="情報入力" isLink={true} />
 
-      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
+      <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center bg-cs-gray-200 pb-12">
         <p className="mt-4 text-center">
           より良い意思決定のため
           <br />
