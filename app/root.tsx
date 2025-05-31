@@ -1,5 +1,12 @@
 import type { LinksFunction } from "react-router";
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from "react-router";
+import {
+  Link,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+} from "react-router";
 import "./tailwind.css";
 import type { ReactNode } from "react";
 
@@ -30,4 +37,20 @@ export function Layout({ children }: { children: ReactNode }) {
 
 export default function App() {
   return <Outlet />;
+}
+
+import type { JSX } from "react";
+
+export function ErrorBoundary(): JSX.Element {
+  return (
+    <div className="flex h-screen flex-1 flex-col items-center justify-center">
+      <div className="rounded-md bg-gray-50 px-16 py-8">
+        <p className="font-bold text-3xl">NotFound</p>
+        <p className="mt-2">お探しのページは見つかりませんでした</p>
+        <Link to="/" className="mt-6 block text-end text-blue-500 underline">
+          TOPへ戻る
+        </Link>
+      </div>
+    </div>
+  );
 }
