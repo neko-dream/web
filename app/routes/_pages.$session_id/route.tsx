@@ -14,6 +14,7 @@ import { notfound } from "~/libs/response";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { RouteContext, SessionRouteContext } from "~/types/ctx";
+import { isEnd } from "~/utils/format-date";
 import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
 import { ConsentModal } from "./components/ConsentModal";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
@@ -199,7 +200,9 @@ const Contents = ({
           </Await>
         </Suspense>
         <div className="fixed right-4 bottom-4 z-10">
-          <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
+          {!isEnd(session.scheduledEndTime) && (
+            <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
+          )}
         </div>
       </div>
 

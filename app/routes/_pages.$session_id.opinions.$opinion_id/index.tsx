@@ -144,7 +144,7 @@ export default function Page({
         })}
       </div>
 
-      {!root.opinion.isDeleted && (
+      {!(root.opinion.isDeleted || isEnd(session.scheduledEndTime)) && (
         <div className="fixed right-4 bottom-4 z-10">
           <CreateOpinionButton
             onClick={() => setIsCreateOpinionModalOpen(true)}

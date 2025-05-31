@@ -19,7 +19,7 @@ export const OpinionList = ({ $positions, activeTab, sessionID }: Props) => {
   return selectedGroup?.opinions.map(({ opinion, user }, i) => {
     return (
       <Card
-        href={`/opinion/${opinion.id}/${sessionID}`}
+        href={`/${sessionID}/opinions/${opinion.id}`}
         key={i}
         title={opinion.title}
         description={opinion.content}
