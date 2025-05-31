@@ -85,6 +85,7 @@
   --color-mt-disabled: #aeaeb2;
   --color-mt-red: #ff3b30;
   --shadow-cs-normal: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  --font-roboto: "Roboto", sans-serif;
 
   /**
    * Mantine Custom CSS

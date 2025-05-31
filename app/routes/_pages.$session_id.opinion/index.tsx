@@ -131,11 +131,13 @@ export default function Page({
         </Suspense>
       </div>
 
-      <AnalyticsModal
-        isOpen={isAnalyticsDialogOpen}
-        onOpenChange={setIsAnalyticsDialogOpen}
-        opinionID={selectOpinionID}
-      />
+      <Suspense>
+        <AnalyticsModal
+          isOpen={isAnalyticsDialogOpen}
+          onOpenChange={setIsAnalyticsDialogOpen}
+          opinionID={selectOpinionID}
+        />
+      </Suspense>
 
       <Suspense>
         <Await resolve={$reasons}>
