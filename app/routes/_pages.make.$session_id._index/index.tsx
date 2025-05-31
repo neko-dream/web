@@ -166,7 +166,10 @@ export default function Page({
           />
         </Label>
 
-        <Label title="募集事項" notes={["どんな人に参加してほしいか決めよう"]}>
+        <Label
+          title="参加者の募集範囲"
+          notes={["どんな人に参加してほしいか決めよう"]}
+        >
           <Select
             disabled={isEditMode}
             options={[
