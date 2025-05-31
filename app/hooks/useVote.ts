@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { api } from "~/libs/api";
 
-export type RequestModalState = Array<"demography" | "consent">;
+export type RequestModalState = Array<"demography" | "consent" | "signup">;
 
 export const useSatisfiedStore = create<{
   nextPath?: string;
@@ -39,14 +39,21 @@ export const useVote = ({ sessionID }: Props) => {
     // }
 
     // セッションに同意しているかどうか
-    const { data } = await api.GET("/talksessions/{talkSessionID}/consent", {
-      credentials: "include",
-      params: {
-        path: {
-          talkSessionID: sessionID,
+    const { data, error } = await api.GET(
+      "/talksessions/{talkSessionID}/consent",
+      {
+        credentials: "include",
+        params: {
+          path: {
+            talkSessionID: sessionID,
+          },
         },
-      },
-    });
+      }
+    );
+    if (error?.code === "AUTH-0000") {
+      setIsRequestModal(["signup"]);
+      return "non-satisfied";
+    }
 
     // デモぐらが足りていなければデモグラのフラグを立てる
     const { data: restrictionsRequired } = await api.GET(

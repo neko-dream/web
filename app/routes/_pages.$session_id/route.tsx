@@ -16,12 +16,13 @@ import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { RouteContext, SessionRouteContext } from "~/types/ctx";
 import { isEnd } from "~/utils/format-date";
 import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
-import { ConsentModal } from "./components/ConsentModal";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
-import { DemographicsModal } from "./components/DemographicsModal";
 import { EditButton } from "./components/EditButton";
 import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton";
 import { RequestsModal } from "./components/RequestsModal";
+import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
+import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
+import { SignupModalContent } from "./components/RequestsModal/components/SignupModalContent";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -214,7 +215,7 @@ const Contents = ({
         {(state, next) => {
           if (state === "consent") {
             return (
-              <ConsentModal
+              <ConsentModalContent
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
                 onConform={next}
@@ -223,13 +224,16 @@ const Contents = ({
           }
           if (state === "demography") {
             return (
-              <DemographicsModal
+              <DemographicsModalContent
                 $restrictions={$restrictions}
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
                 nextPath={nextPath}
               />
             );
+          }
+          if (state === "signup") {
+            return <SignupModalContent />;
           }
         }}
       </RequestsModal>

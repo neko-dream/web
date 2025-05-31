@@ -8,7 +8,7 @@ type Props = Pick<Route.ComponentProps["loaderData"], "$restrictions"> & {
   nextPath?: string;
 };
 
-export const DemographicsModal = ({
+export const DemographicsModalContent = ({
   $restrictions,
   sessionID,
   onClose,

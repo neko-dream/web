@@ -12,7 +12,11 @@ type Props = {
   onConform: () => void;
 };
 
-export const ConsentModal = ({ sessionID, onConform, onClose }: Props) => {
+export const ConsentModalContent = ({
+  sessionID,
+  onConform,
+  onClose,
+}: Props) => {
   const [isChecked, setChecked] = useState(false);
 
   const handleConform = async () => {

@@ -96,7 +96,7 @@ export default function Page() {
             </a>
 
             <Link
-              to="/login"
+              to="/auth/login"
               className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
             >
               <span>アカウントをお持ちの方はこちら</span>

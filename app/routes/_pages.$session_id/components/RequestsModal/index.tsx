@@ -5,7 +5,7 @@ import { useSatisfiedStore } from "~/hooks/useVote";
 type Props = Omit<ModalProps, "children"> & {
   sessionID: string;
   children: (
-    status: "consent" | "demography",
+    status: "consent" | "demography" | "signup",
     next: () => void
   ) => React.ReactNode;
 };
