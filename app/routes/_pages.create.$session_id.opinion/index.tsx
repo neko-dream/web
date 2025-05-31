@@ -8,7 +8,7 @@ import { InfoCircle, PaperPlane } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
-import Textarea from "~/components/ui/textarea";
+import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.create.$session_id.opinion/+types";
 import { createOpinionFormSchema } from "~/schemas/create-opinion";
@@ -55,8 +55,7 @@ export default function Page({
         setIsSubmitting(false);
       }
     },
-
-    shouldValidate: "onInput",
+    shouldRevalidate: "onSubmit",
   });
 
   return (
@@ -74,6 +73,7 @@ export default function Page({
             title="あなたの意見"
             className="mt-4"
             notes={["注意：個人情報は入力しないでください"]}
+            errors={fields.opinionContent.errors}
           >
             <button
               type="button"
@@ -85,7 +85,8 @@ export default function Page({
             </button>
             <Textarea
               {...getInputProps(fields.opinionContent, { type: "text" })}
-              className="h-[400px]"
+              className="h-[200px]"
+              error={(fields.opinionContent.errors || []).length > 0}
             />
           </Label>
           <Button

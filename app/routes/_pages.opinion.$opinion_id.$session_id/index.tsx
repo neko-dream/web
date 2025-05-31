@@ -9,7 +9,7 @@ import { Card } from "~/components/features/opinion-card";
 import { More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
-import Textarea from "~/components/ui/textarea";
+import { Textarea } from "~/components/ui/textarea";
 import { useVote } from "~/hooks/useVote";
 import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.opinion.$opinion_id.$session_id/+types";

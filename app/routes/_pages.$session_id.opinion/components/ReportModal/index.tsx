@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import * as v from "valibot";
 import { Button } from "~/components/ui/button";
 import { HalfButtomDialog, type ModalProps } from "~/components/ui/modal";
-import Textarea from "~/components/ui/textarea";
+import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/libs/api";
 
 type Props = Omit<ModalProps, "children"> & {
