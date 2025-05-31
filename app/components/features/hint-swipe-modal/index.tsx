@@ -46,7 +46,7 @@ export const HintSwipeModal = (props: Omit<ModalProps, "children">) => {
         {/* 詳細リンク */}
         <div className="pt-2 text-center">
           <a
-            href="/help"
+            href="/guide/help"
             target="_blank"
             rel="noopener noreferrer"
             className="text-mt-blue-600"
