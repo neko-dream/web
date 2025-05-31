@@ -14,7 +14,7 @@ import { HalfBottomDialog } from "~/components/ui/modal";
 import { Textarea } from "~/components/ui/textarea";
 import { useVote } from "~/hooks/useVote";
 import { api } from "~/libs/api";
-import type { Route } from "~/react-router/_pages.opinion.$opinion_id.$session_id/+types";
+import type { Route } from "~/react-router/_pages.$session_id.opinions.$opinion_id/+types";
 import { createOpinionFormSchema } from "~/schemas/create-opinion";
 import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";

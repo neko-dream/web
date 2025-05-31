@@ -65,7 +65,7 @@ const Contents = ({
 }: Props) => {
   const tabs = [
     { label: "内容", href: `/${session.id}` },
-    { label: "意見", href: `/${session.id}/opinion` },
+    { label: "意見", href: `/${session.id}/opinions` },
     { label: "分析", href: `/${session.id}/analysis` },
   ];
 

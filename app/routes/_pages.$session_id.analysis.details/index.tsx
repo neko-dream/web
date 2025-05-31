@@ -4,7 +4,7 @@ import { Await, Link } from "react-router";
 import Graph from "~/components/features/opinion-graph";
 import { Left } from "~/components/icons";
 import { useWindowResize } from "~/hooks/useWindowResize";
-import type { Route } from "~/react-router/_pages.report.$session_id/+types";
+import type { Route } from "~/react-router/_pages.$session_id.analysis.details/+types";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
@@ -38,7 +38,7 @@ export default function Page({
         <Await resolve={$positions}>
           {({ data: position }) => {
             const positions = position?.positions.sort(
-              (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
+              (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
             );
 
             return (

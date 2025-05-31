@@ -5,7 +5,7 @@ import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card, OpinionCardSkeleton } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { useVote } from "~/hooks/useVote";
-import type { Route } from "~/react-router/_pages.$session_id.opinion/+types";
+import type { Route } from "~/react-router/_pages.$session_id.opinions/+types";
 import type { VoteType } from "~/types";
 import type { SessionRouteContext } from "~/types/ctx";
 import { AnalyticsModal } from "./components/AnalyticsModal";
@@ -78,7 +78,7 @@ export default function Page({
                       return (
                         <Card
                           key={i}
-                          href={`/opinion/${id}/${session.id}`}
+                          href={`/${session.id}/opinions/${id}`}
                           title={opinion.title}
                           description={opinion.content}
                           user={{ displayID, displayName, iconURL }}
