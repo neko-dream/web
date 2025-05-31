@@ -25,7 +25,9 @@ export const useEditUserForm = ({ user }: Props) => {
         credentials: "include",
         body: {
           ...value,
-          dateOfBirth: removeHyphens(value.dateOfBirth),
+          dateOfBirth: value.dateOfBirth
+            ? removeHyphens(value.dateOfBirth)
+            : undefined,
           icon: await fileCompress(value.icon),
         },
       });

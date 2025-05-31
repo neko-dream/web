@@ -5,13 +5,16 @@ import { api } from "~/libs/api";
 export type RequestModalState = Array<"demography" | "consent">;
 
 export const useSatisfiedStore = create<{
+  nextPath?: string;
   isRequestModal: RequestModalState;
   setIsRequestModal: (isRequestModal: RequestModalState) => void;
+  setNextPath: (nextPath?: string) => void;
 }>((set) => ({
   isRequestModal: [],
   setIsRequestModal: (isRequestModal: RequestModalState) => {
     set({ isRequestModal });
   },
+  setNextPath: (nextPath?: string) => set({ nextPath }),
 }));
 
 type Props = {
@@ -19,15 +22,16 @@ type Props = {
 };
 
 export const useVote = ({ sessionID }: Props) => {
-  const setIsRequestModal = useSatisfiedStore(
-    (state) => state.setIsRequestModal
+  const { setIsRequestModal, setNextPath } = useSatisfiedStore(
+    (state) => state
   );
 
   useEffect(() => {
     return () => setIsRequestModal([]);
   }, [sessionID]);
 
-  const check = async () => {
+  const check = async (nextPath?: string) => {
+    setNextPath(nextPath);
     //　同意済みなら何もしない
     // 動作確認取れてないので一旦コメントアウト
     // if (window.localStorage.getItem(`satisfied-${sessionID}`)) {

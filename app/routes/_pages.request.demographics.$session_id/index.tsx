@@ -1,64 +1,112 @@
-import { getFormProps, getInputProps, getSelectProps } from "@conform-to/react";
-import { Form } from "react-router";
+import {
+  getFormProps,
+  getSelectProps,
+  useForm,
+  useInputControl,
+} from "@conform-to/react";
+import { parseWithValibot } from "@conform-to/valibot";
+import { useMemo, useTransition } from "react";
+import { Form, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
-import AdressInputs from "~/components/features/input-adress";
+import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
+import NewAddressInputs from "~/components/features/new-input-adress";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
-import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import Select from "~/components/ui/select";
+import { Select } from "~/components/ui/new-select";
 import Tip from "~/components/ui/tip";
-import { isFieldsError } from "~/libs/form";
+import { api } from "~/libs/api";
+import { deleteDashValues, isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.request.demographics.$session_id/+types";
-import { useEditUserForm } from "./hooks/useEditUserForm";
+import { formatDate, removeHyphens } from "./libs";
+import { type baseSchema, createDynamicSchema } from "./schema";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
-const formatDate = (str: string) => {
-  return str.replace(
-    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
-    /^(\d{4})(\d{2})(\d{2})$/,
-    "$1-$2-$3",
-  ) as unknown as number;
-};
-
 export default function Page({
-  loaderData: {
-    returnPage,
-    user,
-    demographics,
-    sessionID,
-    requestRestrictions,
-  },
+  loaderData: { next, demographics, user, sessionID, requestRestrictions },
 }: Route.ComponentProps) {
-  const { form, fields, isDisabled } = useEditUserForm({
-    user: {
-      ...user,
-      ...demographics,
-      dateOfBirth: formatDate(demographics.dateOfBirth?.toString() || ""),
+  const navigate = useNavigate();
+  const [isPending, startTransition] = useTransition();
+
+  const submitSuccess = () => {
+    toast.success("登録情報の編集が完了しました");
+    if (next) {
+      navigate(next);
+    }
+  };
+
+  const submitError = (error?: { message: string }) => {
+    if (error) {
+      toast.error(error.message);
+    } else {
+      toast.error("エラーが発生しました");
+    }
+  };
+
+  const dynamicSchema = useMemo(
+    () => createDynamicSchema(requestRestrictions),
+    [requestRestrictions]
+  );
+
+  const [form, fields] = useForm({
+    defaultValue: {
+      city: demographics.city,
+      prefecture: demographics.prefecture,
+      gender: demographics.gender,
+      birth: formatDate(demographics.dateOfBirth?.toString()),
     },
-    sessionID,
-    returnPage,
+    onSubmit: (e, { submission }) => {
+      startTransition(async () => {
+        e.preventDefault();
+
+        if (submission?.status !== "success") {
+          return;
+        }
+
+        const values = deleteDashValues(submission.value);
+
+        const { error } = await api.PUT("/user", {
+          credentials: "include",
+          body: {
+            ...values,
+            displayName: user.displayName,
+            dateOfBirth: values.birth
+              ? removeHyphens(values.birth as string)
+              : undefined,
+          } as unknown as InferOutput<typeof baseSchema>,
+        });
+
+        if (error) {
+          submitError(error);
+        } else {
+          submitSuccess();
+        }
+      });
+    },
+    onValidate: ({ formData }) => {
+      return parseWithValibot(formData, {
+        schema: dynamicSchema,
+      });
+    },
+    shouldValidate: "onInput",
   });
 
-  const Find = (key: keyof typeof demographics) => {
-    const restriction = requestRestrictions.find((restriction) => {
-      return restriction.key === `demographics.${key}`;
-    });
+  const handleDateOfBarthControl = useInputControl(fields.birth);
 
-    if (restriction?.required) {
-      return <Tip label="必須" required={true} className="" />;
-    }
+  const required = (key: string) => {
+    return requestRestrictions.some(
+      (restriction) =>
+        restriction.key === `demographics.${key}` && restriction.required
+    );
   };
 
   return (
     <>
-      <Heading
-        to={returnPage ? `/${sessionID}/${returnPage}` : `/${sessionID}`}
-        title="情報入力"
-        isLink={true}
-      />
+      <Heading to={`/${sessionID}`} title="情報入力" isLink={true} />
 
       <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
         <p className="mt-4 text-center">
@@ -68,22 +116,16 @@ export default function Page({
         </p>
         <Form
           {...getFormProps(form)}
-          method="post"
-          onSubmit={form.onSubmit}
           className="mt-8 w-full space-y-4 px-6 last-child:m-0"
         >
-          <input
-            {...getInputProps(fields.displayName, { type: "text" })}
-            hidden={true}
-          />
-
           <Label
             title="性別"
-            tip={Find("gender")}
+            tip={required("gender") && <Tip label="必須" required={true} />}
             errors={fields.gender.errors}
           >
             <Select
               {...getSelectProps(fields.gender)}
+              value={fields.gender.value}
               error={isFieldsError(fields.gender.errors)}
               options={gender.map((v) => ({ value: v, title: v }))}
             />
@@ -91,34 +133,32 @@ export default function Page({
 
           <Label
             title="誕生年"
-            tip={Find("dateOfBirth")}
-            errors={fields.dateOfBirth.errors}
+            tip={required("birth") && <Tip label="必須" required={true} />}
+            errors={fields.birth.errors}
           >
-            <span className="relative">
-              <Input
-                {...getInputProps(fields.dateOfBirth, {
-                  type: "text",
-                })}
-                type="date"
-                className="h-12 w-full px-4"
-                placeholder="記入する"
-              />
-            </span>
+            <InputDateByScrollPicker
+              pickerUi="dialog"
+              value={handleDateOfBarthControl.value || null}
+              onChangeValue={(v) => {
+                handleDateOfBarthControl.change(v || undefined);
+              }}
+            />
           </Label>
 
-          {/* FIXME: 型が合わない */}
-          <AdressInputs
+          <NewAddressInputs
+            form={form}
             fields={fields}
-            form={form as never}
-            cityTip={Find("city")}
-            prefectureTip={Find("city")}
+            required={{
+              prefecture: required("prefecture"),
+              city: required("city"),
+            }}
           />
 
           <Button
             color="primary"
             type="submit"
             className="!mt-12 mx-auto block"
-            disabled={isDisabled}
+            disabled={!form.dirty || isPending}
           >
             セッションに参加する
           </Button>

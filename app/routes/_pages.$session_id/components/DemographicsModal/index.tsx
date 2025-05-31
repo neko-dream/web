@@ -5,12 +5,14 @@ import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 type Props = Pick<Route.ComponentProps["loaderData"], "$restrictions"> & {
   sessionID: string;
   onClose: () => void;
+  nextPath?: string;
 };
 
 export const DemographicsModal = ({
   $restrictions,
   sessionID,
   onClose,
+  nextPath,
 }: Props) => {
   return (
     <Suspense>
@@ -30,7 +32,9 @@ export const DemographicsModal = ({
                   return (
                     <div key={i} className="flex items-center space-x-2">
                       <p
-                        className={`font-semibold ${required ? "" : "text-[#C1C2C5]"}`}
+                        className={`font-semibold ${
+                          required ? "" : "text-[#C1C2C5]"
+                        }`}
                       >
                         ・ {description}
                       </p>
@@ -46,7 +50,7 @@ export const DemographicsModal = ({
               <div className="mt-4 flex flex-col space-y-4">
                 <Link
                   className="cursor-pointer text-center font-bold text-mt-blue-600"
-                  to={`/request/demographics/${sessionID}`}
+                  to={`/request/demographics/${sessionID}?next=${nextPath}`}
                 >
                   情報を入力・認証する
                 </Link>

@@ -79,9 +79,7 @@ const Contents = ({
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
   const windowWidth = useWindowResize(374);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal } = useSatisfiedStore(
-    (state) => state
-  );
+  const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
 
   useEffect(() => {
     $user.then((user) => {
@@ -104,7 +102,7 @@ const Contents = ({
 
   const handleMoveCreateOpinionPage = async (e: MouseEvent) => {
     e.preventDefault();
-    const result = await check();
+    const result = await check(`/create/${session.id}/opinion`);
     if (result === "satisfied") {
       navigate(`/create/${session.id}/opinion`);
     }
@@ -112,7 +110,7 @@ const Contents = ({
 
   const handleMoveSwipePage = async (e: MouseEvent) => {
     e.preventDefault();
-    const result = await check();
+    const result = await check(`/swipe/${session.id}`);
     if (result === "satisfied") {
       navigate(`/swipe/${session.id}`);
     }
@@ -216,12 +214,12 @@ const Contents = ({
 
         <div className="text-blue-500 text-sm">
           {session.restrictions.length === 0 ? (
-            <div className="flex items-center ">
+            <div className="flex items-center">
               <Notification className="fill-mt-blue-600" />
               <p className="ml-2">誰でも参加OK</p>
             </div>
           ) : (
-            <div className="flex items-start space-x-2">
+            <div className="flex items-center space-x-2">
               <p className="inline-block whitespace-nowrap rounded bg-mt-blue-50 px-2 py-1">
                 入力済対象
               </p>
@@ -289,6 +287,7 @@ const Contents = ({
                 $restrictions={$restrictions}
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
+                nextPath={nextPath}
               />
             );
           }

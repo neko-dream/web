@@ -7,7 +7,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  const returnPage = new URL(request.url).searchParams.get("page");
+  const next = new URL(request.url).searchParams.get("next");
 
   const { data } = await api.GET("/user", {
     headers: request.headers,
@@ -29,7 +29,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
           talkSessionID: params.session_id,
         },
       },
-    },
+    }
   );
 
   const { data: restrictions } = await api.GET("/talksessions/restrictions", {
@@ -58,6 +58,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     ...data,
     requestRestrictions,
     sessionID: params.session_id,
-    returnPage,
+    next,
   };
 };

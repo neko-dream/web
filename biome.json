@@ -5,7 +5,10 @@
     "clientKind": "git"
   },
   "files": {
-    "ignore": [".react-router", "worker-configuration.d.ts"]
+    "ignore": [
+      ".react-router",
+      "worker-configuration.d.ts"
+    ]
   },
   "formatter": {
     "enabled": true,
@@ -19,7 +22,8 @@
     "enabled": true,
     "ignore": [
       "app/components/features/opinion-graph",
-      "tools/kotohiro.openapi.yaml"
+      "tools/kotohiro.openapi.yaml",
+      "app/components/features/date-scroll-picker"
     ],
     "rules": {
       "all": true,
@@ -28,7 +32,9 @@
           "level": "warn",
           "fix": "safe",
           "options": {
-            "functions": ["tv"]
+            "functions": [
+              "tv"
+            ]
           }
         }
       },
