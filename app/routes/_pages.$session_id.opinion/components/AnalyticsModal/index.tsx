@@ -14,7 +14,7 @@ type Props = Omit<ModalProps, "children"> & {
 
 export const AnalyticsModal = (props: Props) => {
   if (!props.opinionID) {
-    return <div>...loading now</div>;
+    return null;
   }
 
   const data = use(

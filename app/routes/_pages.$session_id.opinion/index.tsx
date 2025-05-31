@@ -131,7 +131,7 @@ export default function Page({
         </Suspense>
       </div>
 
-      <Suspense>
+      <Suspense fallback="Loading analytics...">
         <AnalyticsModal
           isOpen={isAnalyticsDialogOpen}
           onOpenChange={setIsAnalyticsDialogOpen}

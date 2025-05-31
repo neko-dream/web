@@ -1,25 +1,19 @@
 import { type MouseEvent, Suspense, useEffect, useState } from "react";
-import {
-  Await,
-  Link,
-  Outlet,
-  useNavigate,
-  useOutletContext,
-} from "react-router";
-import Graph from "~/components/features/opinion-graph";
-import { Edit, Notification, PieChart } from "~/components/icons";
-import { List } from "~/components/ui/acordion";
+import { Await, Outlet, useNavigate, useOutletContext } from "react-router";
+import { Notification } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { useSatisfiedStore, useVote } from "~/hooks/useVote";
-import { useWindowResize } from "~/hooks/useWindowResize";
 import { JST } from "~/libs/date";
 import { notfound } from "~/libs/response";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { RouteContext, SessionRouteContext } from "~/types/ctx";
+import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
 import { ConsentModal } from "./components/ConsentModal";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { DemographicsModal } from "./components/DemographicsModal";
+import { EditButton } from "./components/EditButton";
+import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton";
 import { RequestsModal } from "./components/RequestsModal";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
@@ -72,12 +66,11 @@ const Contents = ({
   const tabs = [
     { label: "内容", href: `/${session.id}` },
     { label: "意見", href: `/${session.id}/opinion` },
-    { label: "レポート", href: `/${session.id}/analysis` },
+    { label: "分析", href: `/${session.id}/analysis` },
   ];
 
   const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
-  const windowWidth = useWindowResize(374);
   const { check } = useVote({ sessionID: session.id });
   const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
 
@@ -88,8 +81,7 @@ const Contents = ({
       }
       const ownerTabs = [
         ...tabs,
-        // FIXME: ここは一旦コメントアウト
-        // { label: "活動報告", href: `/${session.id}/conclusion` },
+        { label: "活動報告", href: `/${session.id}/conclusion` },
         { label: "通報", href: `/${session.id}/reports` },
       ];
       setTabItems(ownerTabs);
@@ -122,87 +114,21 @@ const Contents = ({
         <div className="flex items-center">
           <p className="font-bold text-base md:text-3xl">{session.theme}</p>
           <Suspense>
-            <Await resolve={$user}>
-              {(user) => {
-                if (user?.displayID !== session.owner.displayID) {
-                  return null;
-                }
-                return (
-                  <Link
-                    to={`/create/session/${session.id}`}
-                    className="ml-2 cursor-pointer"
-                  >
-                    <Edit />
-                  </Link>
-                );
-              }}
-            </Await>
+            <EditButton $user={$user} session={session} />
           </Suspense>
         </div>
 
         <Suspense>
-          <Await resolve={$positions}>
-            {({ data }) => {
-              if (data?.positions.length === 0) {
-                return null;
-              }
-
-              return (
-                <List
-                  className="block bg-gray-100 md:hidden"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <PieChart />
-                      <p>参加者のグラフ</p>
-                    </div>
-                  }
-                >
-                  <div className="flex w-full justify-center rounded bg-white p-2 md:block">
-                    <Graph
-                      polygons={data?.positions}
-                      positions={data?.positions}
-                      myPosition={data?.myPosition}
-                      // 両方のpadding分
-                      windowWidth={windowWidth - 64}
-                      selectGroupId={(_id: number) => {}}
-                      background={0xffffff}
-                    />
-                  </div>
-                </List>
-              );
-            }}
-          </Await>
+          <AccordionParticipantGraph $positions={$positions} />
         </Suspense>
 
         <Suspense>
-          <Await resolve={$remainingCount}>
-            {(count) => {
-              return (
-                <Await resolve={$user}>
-                  {(user) => {
-                    if (!user || count === 0) {
-                      return;
-                    }
-
-                    return (
-                      <button
-                        type="button"
-                        onClick={handleMoveSwipePage}
-                        className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
-                      >
-                        <span className="primary-gradient inline-block text-clip">
-                          みんなの意見を見る
-                        </span>
-                        <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
-                          {count}
-                        </span>
-                      </button>
-                    );
-                  }}
-                </Await>
-              );
-            }}
-          </Await>
+          <LookupOtherOpinionButton
+            $remainingCount={$remainingCount}
+            $user={$user}
+            onClick={handleMoveSwipePage}
+            className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
+          />
         </Suspense>
 
         <div className="flex items-center space-x-2">
