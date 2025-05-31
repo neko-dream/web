@@ -11,7 +11,12 @@ import { SearchModal } from "../SearchModal";
 
 type Props = Route.ComponentProps["loaderData"];
 
-const ignoreParsonalIconPages = ["/", "/signup", "/about", "/contact"];
+const ignorePersonalIconPages = [
+  "/",
+  "/signup",
+  "/guide/about",
+  "/guide/contact",
+];
 
 const header = tv({
   base: "fixed z-30 w-full border-gray-100 border-b-2",
@@ -64,7 +69,7 @@ export const Header = ({ $user }: Props) => {
             </Await>
           </Suspense>
 
-          {ignoreParsonalIconPages.includes(location.pathname) && (
+          {ignorePersonalIconPages.includes(location.pathname) && (
             <button
               type="button"
               className="ml-auto cursor-pointer"
@@ -74,7 +79,7 @@ export const Header = ({ $user }: Props) => {
             </button>
           )}
 
-          {!ignoreParsonalIconPages.includes(location.pathname) && (
+          {!ignorePersonalIconPages.includes(location.pathname) && (
             <Suspense fallback={<AvatarSkeleton />}>
               <Await resolve={$user}>
                 {(user) => {
