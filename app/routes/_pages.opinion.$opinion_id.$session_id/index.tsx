@@ -6,9 +6,11 @@ import { toast } from "react-toastify";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { Card } from "~/components/features/opinion-card";
-import { More } from "~/components/icons";
+import { InfoCircle, More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
+import { Label } from "~/components/ui/label";
+import { HalfBottomDialog } from "~/components/ui/modal";
 import { Textarea } from "~/components/ui/textarea";
 import { useVote } from "~/hooks/useVote";
 import { api } from "~/libs/api";
@@ -16,7 +18,6 @@ import type { Route } from "~/react-router/_pages.opinion.$opinion_id.$session_i
 import { createOpinionFormSchema } from "~/schemas/create-opinion";
 import type { VoteType } from "~/types";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
-import { CreateOpinionModal } from "./components/CreateOpinionModal";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
@@ -74,7 +75,7 @@ export default function Page({
         setIsSubmitting(false);
       }
     },
-    shouldValidate: "onInput",
+    shouldRevalidate: "onSubmit",
   });
 
   return (
@@ -149,28 +150,47 @@ export default function Page({
         </div>
       )}
 
-      <CreateOpinionModal
+      <HalfBottomDialog
         isOpen={isCreateOpinionModal}
-        onClose={() => setIsCreateOpinionModalOpen(false)}
-        onHintTextCLick={() => setIsHintModalOpen(true)}
+        onOpenChange={() => setIsCreateOpinionModalOpen(false)}
       >
-        <Form {...getFormProps(form)}>
-          <Textarea
-            {...getInputProps(fields.opinionContent, { type: "text" })}
-            className="h-[270px]"
-            placeholder="この意見についてどう思うか書いてみよう！"
-          />
-          <Button
-            color="primary"
-            type="submit"
-            disabled={isSubmitting}
-            className="!mt-8 mx-auto block"
-          >
-            <img src="" alt="" />
-            <span>コメントを投稿する</span>
-          </Button>
-        </Form>
-      </CreateOpinionModal>
+        <div className="flex items-center justify-between">
+          <h2 className="mx-auto font-bold text-lg">コメント</h2>
+        </div>
+        <button
+          type="button"
+          onClick={() => setIsHintModalOpen(true)}
+          className="mt-1 flex items-center space-x-1 font-bold text-blue-500 text-sm"
+        >
+          <InfoCircle />
+          <p>投稿のルール</p>
+        </button>
+        <div className="mt-4">
+          <Form {...getFormProps(form)}>
+            <Label
+              title="あなたの意見"
+              className="mt-4"
+              notes={["注意：個人情報は入力しないでください"]}
+              errors={fields.opinionContent.errors}
+            >
+              <Textarea
+                {...getInputProps(fields.opinionContent, { type: "text" })}
+                className="h-[200px]"
+                error={(fields.opinionContent.errors || []).length > 0}
+              />
+            </Label>
+            <Button
+              color="primary"
+              type="submit"
+              disabled={isSubmitting}
+              className="!mt-8 mx-auto block"
+            >
+              <img src="" alt="" />
+              <span>コメントを投稿する</span>
+            </Button>
+          </Form>
+        </div>
+      </HalfBottomDialog>
 
       <HintOpinionModal
         isOpen={isHintModalOpen}

@@ -2,7 +2,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { createPortal } from "react-dom";
 import type { ModalProps } from "./index.js";
 
-export const HalfButtomDialog = ({
+export const HalfBottomDialog = ({
   isOpen,
   onOpenChange,
   children,
@@ -18,7 +18,7 @@ export const HalfButtomDialog = ({
           {/* オーバーレイ */}
           <motion.div
             initial={{ opacity: 0 }}
-            animate={{ opacity: 0.5 }}
+            animate={{ opacity: 0.2 }}
             exit={{ opacity: 0 }}
             onClick={() => onOpenChange(false)}
             className="fixed inset-0 z-40 bg-black"
@@ -42,6 +42,6 @@ export const HalfButtomDialog = ({
         </>
       )}
     </AnimatePresence>,
-    document.body,
+    document.body
   );
 };

@@ -4,7 +4,7 @@ import { Form } from "react-router";
 import { toast } from "react-toastify";
 import * as v from "valibot";
 import { Button } from "~/components/ui/button";
-import { HalfButtomDialog, type ModalProps } from "~/components/ui/modal";
+import { HalfBottomDialog, type ModalProps } from "~/components/ui/modal";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/libs/api";
 
@@ -56,7 +56,7 @@ export const ReportModal = ({
   });
 
   return (
-    <HalfButtomDialog isOpen={isOpen} onOpenChange={onOpenChange}>
+    <HalfBottomDialog isOpen={isOpen} onOpenChange={onOpenChange}>
       <h2 className="text-center font-bold text-lg">通報</h2>
       <Form {...getFormProps(form)} className="mx-auto mt-4 max-w-2xl">
         <p>通報理由</p>
@@ -89,6 +89,6 @@ export const ReportModal = ({
           通報する
         </Button>
       </Form>
-    </HalfButtomDialog>
+    </HalfBottomDialog>
   );
 };
