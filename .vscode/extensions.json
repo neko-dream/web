@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "biomejs.biome",
-    "be5invis.toml",
     "bradlc.vscode-tailwindcss",
     "github.vscode-github-actions",
     "dbaeumer.vscode-eslint"
