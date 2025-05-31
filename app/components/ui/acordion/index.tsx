@@ -9,7 +9,7 @@ type ListProps = {
   className?: string;
 };
 
-const acordion = tv({
+const accordion = tv({
   base: "box-border flex flex-col rounded-md bg-white p-2 hover:cursor-pointer",
 });
 
@@ -18,7 +18,7 @@ export const List = ({ children, className, title }: ListProps) => {
 
   return (
     <motion.div
-      className={acordion({ className })}
+      className={accordion({ className })}
       onClick={() => setIsShow((value) => !value)}
       initial={false}
     >

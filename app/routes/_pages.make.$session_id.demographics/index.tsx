@@ -16,7 +16,7 @@ import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/new-select";
-import Tip from "~/components/ui/tip";
+import { Tip } from "~/components/ui/tip";
 import { api } from "~/libs/api";
 import { deleteDashValues, isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";

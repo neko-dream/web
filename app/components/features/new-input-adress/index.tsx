@@ -9,7 +9,7 @@ import municipality from "~/assets/data/adress/municipality.json";
 import prefectures from "~/assets/data/adress/prefectures.json";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/new-select";
-import Tip from "~/components/ui/tip";
+import { Tip } from "~/components/ui/tip";
 import { isCity, isFieldsError } from "~/libs/form";
 
 type Props = {
