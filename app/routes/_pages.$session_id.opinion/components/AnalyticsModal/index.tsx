@@ -55,20 +55,6 @@ export const AnalyticsModal = (props: Props) => {
       .map((item) => {
         const total = item.agreeCount + item.disagreeCount + item.passCount;
 
-        // フラグを設定
-        const isSingleCount =
-          (item.agreeCount > 0 &&
-            item.disagreeCount === 0 &&
-            item.passCount === 0) ||
-          (item.agreeCount === 0 &&
-            item.disagreeCount > 0 &&
-            item.passCount === 0) ||
-          (item.agreeCount === 0 &&
-            item.disagreeCount === 0 &&
-            item.passCount > 0);
-
-        const isAllZero = total === 0;
-
         return {
           groupName: item.groupName,
           item,
@@ -91,10 +77,6 @@ export const AnalyticsModal = (props: Props) => {
               percentage: (item.passCount / total) * 100,
             },
           },
-          flags: {
-            isSingleCount,
-            isAllZero,
-          },
         };
       })
       .filter(Boolean);
@@ -103,9 +85,14 @@ export const AnalyticsModal = (props: Props) => {
   return (
     <CenterDialog {...props}>
       <div className="min-w-[300px] space-y-4">
-        {chartData.map(({ counts, data, flags, groupName }, index) => {
+        {chartData.map(({ counts, data, groupName }, index) => {
           const count = counts[selectVoteType]?.count;
-          const percentage = counts[selectVoteType]?.percentage;
+          const percentage = Math.ceil(counts[selectVoteType]?.percentage);
+
+          // 0人の時はグラフを表示しない
+          if (count === 0) {
+            return;
+          }
 
           return (
             <div key={index} className="flex items-center">
@@ -116,7 +103,7 @@ export const AnalyticsModal = (props: Props) => {
                       {
                         data,
                         backgroundColor: ["#4c6ef5", "#f783ac", "#74c0fc"], // 各セグメントの色
-                        spacing: flags.isAllZero || flags.isSingleCount ? 0 : 2,
+                        // spacing: flags.isAllZero || flags.isSingleCount ? 0 : 2,
                         borderWidth: 0,
                       },
                     ],

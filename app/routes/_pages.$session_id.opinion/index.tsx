@@ -21,7 +21,7 @@ export default function Page({
   const { session } = useOutletContext<SessionRouteContext>();
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState("");
-  const [isAnalayticsDialogOpen, setIsAnalayticsDialogOpen] = useState(false);
+  const [isAnalyticsDialogOpen, setIsAnalyticsDialogOpen] = useState(false);
 
   const { vote } = useVote({ sessionID: session.id });
 
@@ -41,7 +41,7 @@ export default function Page({
   };
 
   const handleAnalyticsModal = (opinionID: string) => {
-    setIsAnalayticsDialogOpen(true);
+    setIsAnalyticsDialogOpen(true);
     setSelectOpinionID(opinionID);
   };
 
@@ -132,8 +132,8 @@ export default function Page({
       </div>
 
       <AnalyticsModal
-        isOpen={isAnalayticsDialogOpen}
-        onOpenChange={setIsAnalayticsDialogOpen}
+        isOpen={isAnalyticsDialogOpen}
+        onOpenChange={setIsAnalyticsDialogOpen}
         opinionID={selectOpinionID}
       />
 
