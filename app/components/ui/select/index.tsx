@@ -15,7 +15,7 @@ const select = tv({
       true: "border-red-500 bg-red-50",
     },
     init: {
-      true: "text-gray-500",
+      true: "text-gray-300",
       false: "text-black",
     },
   },

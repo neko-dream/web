@@ -9,7 +9,7 @@ export default function Page({
   loaderData: { $session },
 }: Route.ComponentProps) {
   return (
-    <div className="mt-4 space-y-4">
+    <div className="mx-4 mt-4 space-y-4">
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={$session}>
           {({ data }) => {

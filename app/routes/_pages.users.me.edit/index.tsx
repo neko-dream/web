@@ -2,10 +2,20 @@ import {
   getFormProps,
   getInputProps,
   getSelectProps,
+  useForm,
   useInputControl,
 } from "@conform-to/react";
-import { type ChangeEvent, useEffect, useRef, useState } from "react";
-import { Form } from "react-router";
+import { parseWithValibot } from "@conform-to/valibot";
+import {
+  type ChangeEvent,
+  useEffect,
+  useRef,
+  useState,
+  useTransition,
+} from "react";
+import { Form, useNavigate } from "react-router";
+import { toast } from "react-toastify";
+import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 import { AddressInputs } from "~/components/features/input-address";
@@ -15,10 +25,12 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
-import { isFieldsError } from "~/libs/form";
+import { api } from "~/libs/api";
+import { deleteDashValues, isFieldsError } from "~/libs/form";
+import { fileCompress } from "~/libs/image-compressor";
 import type { Route } from "~/react-router/_pages.users.me.edit/+types";
-import { formatDate } from "~/utils/format-date";
-import { useEditUserForm } from "./hooks/useEditUserForm";
+import { removeHyphens } from "../_pages.make.$session_id.demographics/libs";
+import { userEditSchema } from "./schemas";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
@@ -26,11 +38,46 @@ export { meta } from "./modules/meta";
 export default function Page({
   loaderData: { user, demographics },
 }: Route.ComponentProps) {
-  const { form, fields, isDisabled } = useEditUserForm({
-    user: {
-      ...user,
-      ...demographics,
-      dateOfBirth: formatDate(demographics.dateOfBirth?.toString()),
+  const [isPending, startTransition] = useTransition();
+  const navigate = useNavigate();
+
+  const [form, fields] = useForm<InferOutput<typeof userEditSchema>>({
+    defaultValue: {
+      displayName: user.displayName,
+      birth: demographics.dateOfBirth?.toString(),
+      city: demographics.city,
+      prefecture: demographics.prefecture,
+      gender: demographics.gender,
+      icon: undefined,
+    },
+    onSubmit: (e, { submission }) => {
+      startTransition(async () => {
+        e.preventDefault();
+        if (submission?.status !== "success") {
+          return;
+        }
+
+        const value = deleteDashValues(submission?.payload);
+        const { error } = await api.PUT("/user", {
+          credentials: "include",
+          body: {
+            ...value,
+            dateOfBirth: value.birth
+              ? removeHyphens(value.birth as string)
+              : undefined,
+            icon: await fileCompress(value.icon as File),
+          },
+        });
+
+        if (error) {
+          toast.error("ユーザー情報の更新に失敗しました。");
+        } else {
+          navigate("/users/me");
+        }
+      });
+    },
+    onValidate: ({ formData }) => {
+      return parseWithValibot(formData, { schema: userEditSchema });
     },
   });
 
@@ -54,7 +101,7 @@ export default function Page({
     inputFileRef.current?.click();
   };
 
-  const handleDateOfBarthControl = useInputControl(fields.dateOfBirth);
+  const handleBarthControl = useInputControl(fields.birth);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
@@ -96,19 +143,16 @@ export default function Page({
             {...getSelectProps(fields.gender)}
             error={isFieldsError(fields.gender.errors)}
             options={gender.map((v) => ({ value: v, title: v }))}
+            value={fields.gender.value}
           />
         </Label>
 
-        <Label
-          title="誕生年"
-          optional={true}
-          errors={fields.dateOfBirth.errors}
-        >
+        <Label title="誕生年" optional={true} errors={fields.birth.errors}>
           <InputDateByScrollPicker
             pickerUi="dialog"
-            value={handleDateOfBarthControl.value || null}
+            value={handleBarthControl.value || null}
             onChangeValue={(newDate) => {
-              handleDateOfBarthControl.change(newDate?.toString());
+              handleBarthControl.change(newDate?.toString());
             }}
           />
         </Label>
@@ -128,7 +172,7 @@ export default function Page({
           color="primary"
           type="submit"
           className="!mt-12 mx-auto block"
-          disabled={isDisabled}
+          disabled={!form.dirty || isPending}
         >
           保存する
         </Button>

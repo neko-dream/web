@@ -6,14 +6,11 @@ const alphanumericSchema = v.regex(
   "半角英数字で入力してください",
 );
 
-const genderSchema = v.optional(
-  v.union([
-    v.literal("男性"),
-    v.literal("女性"),
-    v.literal("その他"),
-    v.literal("---"),
-  ]),
-);
+export const genderSchema = v.union([
+  v.literal("男性"),
+  v.literal("女性"),
+  v.literal("その他"),
+]);
 
 const baseSchema = v.object({
   displayName: v.string("ユーザー名の入力は必須です"),
@@ -27,11 +24,6 @@ const baseSchema = v.object({
 export const adressFormSchema = v.object({
   city: v.optional(v.string()),
   prefecture: v.optional(v.string()),
-});
-
-export const userEditFormSchema = v.object({
-  ...baseSchema.entries,
-  ...adressFormSchema.entries,
 });
 
 export const signupFormSchema = v.object({
