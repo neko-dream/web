@@ -27,7 +27,7 @@ export const AccordionParticipantGraph = ({ $positions }: Props) => {
         </div>
       }
     >
-      <div className="flex w-full justify-center rounded bg-white p-2 md:block">
+      <div className="flex w-full justify-center rounded">
         <Graph
           polygons={data?.positions}
           positions={data?.positions}
@@ -35,7 +35,7 @@ export const AccordionParticipantGraph = ({ $positions }: Props) => {
           // 両方のpadding分
           windowWidth={windowWidth - 64}
           selectGroupId={(_id: number) => {}}
-          background={0xffffff}
+          background={0xf1f3f5}
         />
       </div>
     </List>
