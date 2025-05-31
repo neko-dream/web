@@ -19,7 +19,7 @@ import { Select } from "~/components/ui/new-select";
 import Tip from "~/components/ui/tip";
 import { api } from "~/libs/api";
 import { deleteDashValues, isFieldsError } from "~/libs/form";
-import type { Route } from "~/react-router/_pages.request.demographics.$session_id/+types";
+import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
 import { formatDate, removeHyphens } from "./libs";
 import { type baseSchema, createDynamicSchema } from "./schema";
 

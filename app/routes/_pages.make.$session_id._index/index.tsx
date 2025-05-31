@@ -19,7 +19,7 @@ import { Label } from "~/components/ui/label";
 import Select from "~/components/ui/select";
 import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
-import type { Route } from "~/react-router/_pages.create.session.$session_id/+types";
+import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
 import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";
@@ -64,8 +64,8 @@ export default function Page({
       const restrictions = Array.isArray(value.restrictions)
         ? value.restrictions
         : value.restrictions
-          ? [value.restrictions]
-          : [];
+        ? [value.restrictions]
+        : [];
 
       if (isEditMobe) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
@@ -190,7 +190,7 @@ export default function Page({
             <div className="mt-2 space-y-2">
               {restrictions?.map((restriction, i) => {
                 const checked = session?.restrictions?.some(
-                  (r) => r.key === restriction.key,
+                  (r) => r.key === restriction.key
                 );
                 return (
                   <Checkbox
