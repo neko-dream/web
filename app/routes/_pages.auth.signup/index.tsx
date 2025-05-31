@@ -9,13 +9,13 @@ import { Form } from "react-router";
 import { toast } from "react-toastify";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
-import AdressInputs from "~/components/features/input-adress";
+import { AddressInputs } from "~/components/features/input-address";
 import { Check, Photo } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import Select from "~/components/ui/select";
+import { Select } from "~/components/ui/select";
 import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.auth.signup/+types";
 import Uploadarea from "./components/Uploadarea";
@@ -141,8 +141,7 @@ export default function Page({
           />
         </Label>
 
-        {/* FIXME: 型が合わない */}
-        <AdressInputs fields={fields} form={form as never} />
+        <AddressInputs form={form} fields={fields} />
 
         {/* UIには表示しない */}
         <input

@@ -22,9 +22,7 @@ type Props = {
 };
 
 export const useVote = ({ sessionID }: Props) => {
-  const { setIsRequestModal, setNextPath } = useSatisfiedStore(
-    (state) => state
-  );
+  const { setIsRequestModal, setNextPath } = useSatisfiedStore();
 
   useEffect(() => {
     return () => setIsRequestModal([]);
@@ -48,7 +46,7 @@ export const useVote = ({ sessionID }: Props) => {
             talkSessionID: sessionID,
           },
         },
-      }
+      },
     );
     if (error?.code === "AUTH-0000") {
       setIsRequestModal(["signup"]);
@@ -65,7 +63,7 @@ export const useVote = ({ sessionID }: Props) => {
             talkSessionID: sessionID,
           },
         },
-      }
+      },
     );
 
     // 同意モーダルだけ出してデモグラモーダルは出さない

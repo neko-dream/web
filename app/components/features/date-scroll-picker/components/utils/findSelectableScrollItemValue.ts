@@ -1,5 +1,5 @@
-import { ScrollItem } from "../types/ScrollItemType";
 import { SCROLL_ITEM_HEIGHT } from "../constants/ScrollItemHeight";
+import { ScrollItem } from "../types/ScrollItemType";
 
 /**
  * ul要素のscrollTopから選択可能な項目の値を取得する
@@ -10,7 +10,7 @@ import { SCROLL_ITEM_HEIGHT } from "../constants/ScrollItemHeight";
 export const findSelectableScrollItemValue = function <V>(
   elMenuList: HTMLElement,
   currentValue: V,
-  items: ScrollItem<V>[]
+  items: ScrollItem<V>[],
 ): V | undefined {
   const index = Math.round(elMenuList.scrollTop / SCROLL_ITEM_HEIGHT);
   const item = items[index];
@@ -34,11 +34,11 @@ export const findSelectableScrollItemValue = function <V>(
 
   const possiblyTopItems = items.slice(0, index).reverse();
   const possiblyTopItemIndex = possiblyTopItems.findIndex(
-    (item) => !item.disabled
+    (item) => !item.disabled,
   );
   const possiblyBottomItems = items.slice(index + 1);
   const possiblyBottomItemIndex = possiblyBottomItems.findIndex(
-    (item) => !item.disabled
+    (item) => !item.disabled,
   );
 
   // どちらも見つからなかった場合は何もしない

@@ -1,4 +1,4 @@
-import type { FC, ReactNode, CSSProperties } from "react";
+import type { CSSProperties, FC, ReactNode } from "react";
 // Removed MUI imports: ListItemText, MenuItem
 
 import { SCROLL_ITEM_HEIGHT } from "./constants/ScrollItemHeight";

@@ -38,7 +38,7 @@ export default function Page({
         <Await resolve={$positions}>
           {({ data: position }) => {
             const positions = position?.positions.sort(
-              (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
+              (a, b) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
             );
 
             return (

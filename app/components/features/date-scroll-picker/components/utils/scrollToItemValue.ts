@@ -1,5 +1,5 @@
-import { ScrollItem } from "../types/ScrollItemType";
 import { SCROLL_ITEM_HEIGHT } from "../constants/ScrollItemHeight";
+import { ScrollItem } from "../types/ScrollItemType";
 
 /**
  * 対処の値にスクロールする
@@ -17,7 +17,7 @@ export const scrollToItemValue = function <V>(
   }: {
     /** アニメーションせず即時移動させるか */
     disableAnimation?: boolean;
-  } = {}
+  } = {},
 ) {
   const targetIndex = items.findIndex((item) => item.value === targetValue);
   if (targetIndex < 0) {

@@ -11,11 +11,11 @@ import { toast } from "react-toastify";
 import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
-import NewAddressInputs from "~/components/features/new-input-adress";
+import { AddressInputs } from "~/components/features/input-address";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
-import { Select } from "~/components/ui/new-select";
+import { Select } from "~/components/ui/select";
 import { Tip } from "~/components/ui/tip";
 import { api } from "~/libs/api";
 import { deleteDashValues, isFieldsError } from "~/libs/form";
@@ -49,7 +49,7 @@ export default function Page({
 
   const dynamicSchema = useMemo(
     () => createDynamicSchema(requestRestrictions),
-    [requestRestrictions]
+    [requestRestrictions],
   );
 
   const [form, fields] = useForm({
@@ -100,7 +100,7 @@ export default function Page({
   const required = (key: string) => {
     return requestRestrictions.some(
       (restriction) =>
-        restriction.key === `demographics.${key}` && restriction.required
+        restriction.key === `demographics.${key}` && restriction.required,
     );
   };
 
@@ -145,7 +145,7 @@ export default function Page({
             />
           </Label>
 
-          <NewAddressInputs
+          <AddressInputs
             form={form}
             fields={fields}
             required={{

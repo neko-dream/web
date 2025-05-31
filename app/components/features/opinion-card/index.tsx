@@ -90,7 +90,7 @@ export const Card = ({
                 </p>
               </div>
             )}
-          </>
+          </>,
         )}
 
         {isJudgeButton && (

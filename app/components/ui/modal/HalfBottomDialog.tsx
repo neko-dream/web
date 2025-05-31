@@ -42,6 +42,6 @@ export const HalfBottomDialog = ({
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };

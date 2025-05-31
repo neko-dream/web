@@ -29,7 +29,7 @@ export const AnalyticsModal = (props: Props) => {
           },
         })
         .then(({ data }) => data || []);
-    })
+    }),
   );
 
   // 各グループの割合と人数を計算

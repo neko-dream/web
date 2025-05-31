@@ -1,11 +1,11 @@
 import { Outlet, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
-import { useEffect } from "react";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";

@@ -1,15 +1,15 @@
-import { FC, useMemo, useCallback, CSSProperties } from "react";
 import dayjs from "dayjs";
+import { CSSProperties, FC, useCallback, useMemo } from "react";
 import { ScrollPicker } from "./components";
 
 const DATE_FORMAT = "YYYY-MM-DD";
 
 const CURRENT_DAYJS = dayjs();
 const DEFAULT_MIN_DATE_STRING = CURRENT_DAYJS.subtract(100, "year").format(
-  DATE_FORMAT
+  DATE_FORMAT,
 );
 const DEFAULT_MAX_DATE_STRING = CURRENT_DAYJS.add(100, "year").format(
-  DATE_FORMAT
+  DATE_FORMAT,
 );
 
 export type DateScrollPickerProps = {
@@ -113,7 +113,7 @@ export const DateScrollPicker: FC<DateScrollPickerProps> = ({
       }
       onChangeValue(clampedDate.format(DATE_FORMAT));
     },
-    [maxDateAsDayjs, minDateAsDayjs, onChangeValue]
+    [maxDateAsDayjs, minDateAsDayjs, onChangeValue],
   );
 
   const containerStyle: CSSProperties = {
@@ -144,7 +144,7 @@ export const DateScrollPicker: FC<DateScrollPickerProps> = ({
             .month(month - 1);
           const maxDayOfNewYearMonth = currentMonthDayjs.daysInMonth();
           handleChangeValue(
-            currentMonthDayjs.date(Math.min(day, maxDayOfNewYearMonth))
+            currentMonthDayjs.date(Math.min(day, maxDayOfNewYearMonth)),
           );
         }}
       />
@@ -158,7 +158,7 @@ export const DateScrollPicker: FC<DateScrollPickerProps> = ({
             .month(newMonth - 1);
           const maxDayOfNewMonth = currentYearMonthDayjs.daysInMonth();
           handleChangeValue(
-            currentYearMonthDayjs.date(Math.min(day, maxDayOfNewMonth))
+            currentYearMonthDayjs.date(Math.min(day, maxDayOfNewMonth)),
           );
         }}
       />
@@ -171,7 +171,7 @@ export const DateScrollPicker: FC<DateScrollPickerProps> = ({
             dayjs()
               .year(year)
               .month(month - 1)
-              .date(newDay)
+              .date(newDay),
           );
         }}
       />

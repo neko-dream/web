@@ -24,6 +24,6 @@ export const formatDate = (str?: string) => {
   return str?.replace(
     // biome-ignore lint/performance/useTopLevelRegex: <explanation>
     /^(\d{4})(\d{2})(\d{2})$/,
-    "$1-$2-$3"
+    "$1-$2-$3",
   );
 };

@@ -95,7 +95,7 @@ export default function Page({
                           onClickAnalytics={() => handleAnalyticsModal(id)}
                           opinionCount={replyCount}
                           isJudgeButtonDisabled={isEnd(
-                            session.scheduledEndTime
+                            session.scheduledEndTime,
                           )}
                         />
                       );

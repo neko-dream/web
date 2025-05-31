@@ -10,7 +10,9 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const [
     { data: session },
     { data: root },
-    { data: { opinions } = { opinions: [] } },
+    {
+      data: { opinions } = { opinions: [] },
+    },
     { data: currentUser },
   ] = await Promise.all([
     api.GET("/talksessions/{talkSessionID}", {

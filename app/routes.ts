@@ -24,7 +24,7 @@ const ignoreLayoutRoute: RouteConfigEntry[] = [
  */
 function filterRoutes(
   routes: Awaited<ReturnType<typeof flatRoutes>>,
-  ignorePatterns: RouteConfigEntry[]
+  ignorePatterns: RouteConfigEntry[],
 ): Awaited<ReturnType<typeof flatRoutes>> {
   return routes
     .filter((route) => {

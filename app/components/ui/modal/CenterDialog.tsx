@@ -55,6 +55,6 @@ export const CenterDialog = ({
         </>
       )}
     </AnimatePresence>,
-    document.body
+    document.body,
   );
 };

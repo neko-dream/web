@@ -1,32 +1,37 @@
-import { getSelectProps, type useForm } from "@conform-to/react";
+import {
+  type FieldMetadata,
+  type FormMetadata,
+  getSelectProps,
+} from "@conform-to/react";
 import { useControl } from "node_modules/@conform-to/react/integrations";
-import { type ReactNode, useMemo } from "react";
-import type * as v from "valibot";
+import { type ChangeEvent, useMemo } from "react";
 import municipality from "~/assets/data/adress/municipality.json";
 import prefectures from "~/assets/data/adress/prefectures.json";
 import { Label } from "~/components/ui/label";
-import Select from "~/components/ui/select";
+import { Select } from "~/components/ui/select";
+import { Tip } from "~/components/ui/tip";
 import { isCity, isFieldsError } from "~/libs/form";
-import type { adressFormSchema } from "~/schemas/users";
-
-type Output = v.InferOutput<typeof adressFormSchema>;
 
 type Props = {
-  form: ReturnType<typeof useForm<Output>>[0];
-  fields: ReturnType<typeof useForm<Output>>[1];
-  cityTip?: ReactNode;
-  prefectureTip?: ReactNode;
+  // FIXME: 正味このコンポーネントはupdateしか読んでないのでanyでもいいのだが...
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  form: FormMetadata<any, string[]>;
+  fields: {
+    prefecture: FieldMetadata<string | null | undefined>;
+    city: FieldMetadata<string | null | undefined>;
+  };
+  required?: {
+    prefecture?: boolean;
+    city?: boolean;
+  };
 };
+
+const prefecturesOptions = prefectures.map((v) => ({ value: v, title: v }));
 
 /**
  * 都道府県の入力は複数箇所で使うので共通化
  */
-export default function AdressInputs({
-  form,
-  fields,
-  prefectureTip,
-  cityTip,
-}: Props) {
+export const AddressInputs = ({ form, fields, required }: Props) => {
   // 都道府県が選択されたら市町村の選択肢を変更
   const municipalityOptions = useMemo(() => {
     if (isCity(fields.prefecture.value)) {
@@ -38,6 +43,18 @@ export default function AdressInputs({
     return [];
   }, [fields.prefecture.value]);
 
+  /**
+   * 以前と異なる都道府県が洗濯くされたら市町村のフォームをリセットする
+   */
+  const handleResetCity = (e: ChangeEvent<HTMLSelectElement>) => {
+    if (prefectureControl.value !== e.currentTarget.value) {
+      form.update({
+        name: fields.city.name,
+        value: undefined,
+      });
+    }
+  };
+
   const prefectureControl = useControl(fields.prefecture);
 
   return (
@@ -46,23 +63,14 @@ export default function AdressInputs({
         title="都道府県"
         optional={true}
         errors={fields.prefecture.errors}
-        tip={prefectureTip}
+        tip={required?.prefecture && <Tip label="必須" required={true} />}
       >
         <Select
           {...getSelectProps(fields.prefecture)}
-          onChange={(e) => {
-            // 同じ都道府県が選択されたら何もしない
-            if (prefectureControl.value === e.currentTarget.value) {
-              return;
-            }
-            form.update({
-              name: fields.city.name,
-              value: undefined,
-            });
-            prefectureControl.change(e.currentTarget.value);
-          }}
+          value={fields.prefecture.value}
+          onChange={handleResetCity}
           error={isFieldsError(fields.prefecture.errors)}
-          options={prefectures.map((v) => ({ value: v, title: v }))}
+          options={prefecturesOptions}
         />
       </Label>
 
@@ -70,13 +78,13 @@ export default function AdressInputs({
         title="市町村"
         optional={true}
         errors={fields.city.errors}
-        tip={cityTip}
+        tip={required?.city && <Tip label="必須" required={true} />}
       >
         <Select
           {...getSelectProps(fields.city)}
-          disabled={!fields.prefecture.value}
+          value={fields.city.value}
           error={isFieldsError(fields.city.errors)}
-          placeholader={
+          placeholder={
             fields.prefecture.value ? "選択する" : "都道府県を選択してください"
           }
           options={municipalityOptions}
@@ -84,4 +92,4 @@ export default function AdressInputs({
       </Label>
     </>
   );
-}
+};

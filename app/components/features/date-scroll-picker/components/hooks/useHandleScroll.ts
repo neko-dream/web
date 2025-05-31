@@ -78,7 +78,9 @@ export const useHandleScroll = ({
         cancelInertiaScroll = undefined;
       }
       startPosY =
-        "touches" in event ? event.touches[0]?.clientY ?? null : event.clientY;
+        "touches" in event
+          ? (event.touches[0]?.clientY ?? null)
+          : event.clientY;
       startScrollTop = cachedElement?.scrollTop ?? null;
       touchStartTime = performance.now();
     };

@@ -21,7 +21,7 @@ export const createDynamicSchema = (
     key: string;
     description: string;
     required: boolean;
-  }>
+  }>,
 ) => {
   const newSchema = {
     ...baseSchema.entries,
@@ -30,7 +30,7 @@ export const createDynamicSchema = (
   for (const restriction of requestRestrictions) {
     const fieldName = restriction.key.replace(
       "demographics.",
-      ""
+      "",
     ) as keyof typeof newSchema;
 
     if (!restriction.required && newSchema[fieldName]) {

@@ -6,13 +6,13 @@ type Props = Omit<ModalProps, "children"> & {
   sessionID: string;
   children: (
     status: "consent" | "demography" | "signup",
-    next: () => void
+    next: () => void,
   ) => React.ReactNode;
 };
 
 export const RequestsModal = ({ sessionID, children, ...props }: Props) => {
   const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore(
-    (state) => state
+    (state) => state,
   );
   const navigate = useNavigate();
 

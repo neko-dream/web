@@ -5,15 +5,22 @@
     "clientKind": "git"
   },
   "files": {
-    "ignore": [
-      ".react-router",
-      "worker-configuration.d.ts"
-    ]
+    "ignore": [".react-router", "worker-configuration.d.ts"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "all"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
   },
   "organizeImports": {
     "enabled": true
@@ -32,9 +39,7 @@
           "level": "warn",
           "fix": "safe",
           "options": {
-            "functions": [
-              "tv"
-            ]
+            "functions": ["tv"]
           }
         }
       },

@@ -95,7 +95,7 @@ export default function Page({
                     label: `${group}`,
                     value: group,
                   };
-                }
+                },
               );
 
               return (

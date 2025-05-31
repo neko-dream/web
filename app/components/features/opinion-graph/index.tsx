@@ -7,7 +7,7 @@ const colorList = [
 ];
 
 const groupNames = Array.from({ length: 8 }, (_, i) =>
-  String.fromCharCode(65 + i)
+  String.fromCharCode(65 + i),
 );
 
 const axisColor = 0xe5e5ea;
@@ -43,7 +43,7 @@ function numberToHexColor(numColor: number): string {
 const posToSegmenetDistance = (
   P: { posX: number; posY: number },
   A: { posX: number; posY: number },
-  B: { posX: number; posY: number }
+  B: { posX: number; posY: number },
 ) => {
   const ABx = B.posX - A.posX;
   const ABy = B.posY - A.posY;
@@ -148,7 +148,7 @@ class GraphRenderer {
     rcy: number,
     rWidth: number,
     rHeight: number,
-    angle: number
+    angle: number,
   ): boolean {
     const s = Math.sin(-angle);
     const c = Math.cos(-angle);
@@ -191,7 +191,7 @@ class GraphRenderer {
 
     // データ処理
     const sortedPositions = positions.sort(
-      (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
+      (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
     );
 
     let _minX = 100000000000;
@@ -284,7 +284,7 @@ class GraphRenderer {
     // シングルポイントグループ処理
     for (const groupID of hasSinglePointGroup) {
       const polygons = sortedPositions.filter(
-        (opinion: any) => opinion.groupID === groupID
+        (opinion: any) => opinion.groupID === groupID,
       );
       let point = { x: width / 2, y: height / 2 };
 
@@ -319,7 +319,7 @@ class GraphRenderer {
     // 異なるポイントグループ処理
     for (const groupID of hasDifferentPointGroup) {
       const polygons = sortedPositions.filter(
-        (opinion: any) => opinion.groupID === groupID
+        (opinion: any) => opinion.groupID === groupID,
       );
       let firstPoint = null;
       let secondPoint = null;
@@ -369,10 +369,10 @@ class GraphRenderer {
         .filter(
           (opinion: any) =>
             opinion.groupID === groupID &&
-            (opinion.perimeterIndex || opinion.perimeterIndex === 0)
+            (opinion.perimeterIndex || opinion.perimeterIndex === 0),
         )
         .sort(
-          (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0)
+          (a: any, b: any) => (a.perimeterIndex || 0) - (b.perimeterIndex || 0),
         );
 
       if (polygons.length === 0) continue;
@@ -382,7 +382,7 @@ class GraphRenderer {
           posX: acc.posX + value.posX,
           posY: acc.posY + value.posY,
         }),
-        { posX: 0, posY: 0 }
+        { posX: 0, posY: 0 },
       );
 
       const polygonsCount = polygons.length;
@@ -398,8 +398,8 @@ class GraphRenderer {
           posToSegmenetDistance(
             polygonsCenter,
             polygons[i],
-            polygons[(i + 1) % polygonsCount]
-          )
+            polygons[(i + 1) % polygonsCount],
+          ),
         );
       }
 
@@ -612,7 +612,7 @@ class GraphRenderer {
       this.ctx.translate(cx, cy);
       this.ctx.rotate(rotation);
       this.ctx.fillStyle = numberToHexColor(
-        colorList[Number(rectData.groupID)]
+        colorList[Number(rectData.groupID)],
       );
       this.ctx.beginPath();
       this.drawRoundedRect(-vecgtorNorm / 2, -10, vecgtorNorm, 20, 20);
@@ -626,7 +626,7 @@ class GraphRenderer {
     y: number,
     width: number,
     height: number,
-    radius: number
+    radius: number,
   ) {
     if (width < 2 * radius) radius = width / 2;
     if (height < 2 * radius) radius = height / 2;
@@ -645,7 +645,7 @@ class GraphRenderer {
     resultSinglePoints?.forEach((circleData: any) => {
       const circleSize = 15 + 0.1 * circleData.pointsCount;
       this.ctx.fillStyle = numberToHexColor(
-        colorList[Number(circleData.groupID)]
+        colorList[Number(circleData.groupID)],
       );
       this.ctx.beginPath();
       this.ctx.arc(
@@ -653,7 +653,7 @@ class GraphRenderer {
         circleData.point.y,
         circleSize,
         0,
-        Math.PI * 2
+        Math.PI * 2,
       );
       this.ctx.fill();
     });
@@ -682,7 +682,7 @@ class GraphRenderer {
         myPositionData.y,
         myPositionData.iconURL,
         1.5,
-        true
+        true,
       );
     }
   }
@@ -692,7 +692,7 @@ class GraphRenderer {
     y: number,
     iconURL: string,
     radius: number,
-    isMyPosition: boolean
+    isMyPosition: boolean,
   ) {
     const img = this.imageCache.get(iconURL);
     if (!img) return;
@@ -716,7 +716,7 @@ class GraphRenderer {
       x - imgWidth / 2,
       y - imgHeight / 2,
       imgWidth,
-      imgHeight
+      imgHeight,
     );
 
     this.ctx.restore();

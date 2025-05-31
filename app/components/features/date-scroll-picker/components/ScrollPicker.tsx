@@ -1,12 +1,12 @@
-import { useRef, useEffect, CSSProperties, useCallback } from "react";
+import { CSSProperties, useCallback, useEffect, useRef } from "react";
 // Removed MUI imports: Box, MenuList, MenuItem, useForkRef
 
-import { SCROLL_ITEM_HEIGHT } from "./constants/ScrollItemHeight";
-import { scrollToItemValue } from "./utils/scrollToItemValue";
-import { findSelectableScrollItemValue } from "./utils/findSelectableScrollItemValue";
-import { ScrollItem } from "./types/ScrollItemType";
 import { ScrollPickerItem } from "./ScrollPickerItem"; // Assuming this is MUI-free
+import { SCROLL_ITEM_HEIGHT } from "./constants/ScrollItemHeight";
 import { useHandleScroll } from "./hooks/useHandleScroll";
+import { ScrollItem } from "./types/ScrollItemType";
+import { findSelectableScrollItemValue } from "./utils/findSelectableScrollItemValue";
+import { scrollToItemValue } from "./utils/scrollToItemValue";
 
 // Note: Styling for pseudo-elements (::before, ::after) for shadows
 // needs to be handled with CSS classes as it cannot be done with inline styles.
@@ -79,7 +79,7 @@ export const ScrollPicker = function <V>({
         ).current = node;
       }
     },
-    [refScrollerHook]
+    [refScrollerHook],
   );
 
   const containerStyle: CSSProperties = {

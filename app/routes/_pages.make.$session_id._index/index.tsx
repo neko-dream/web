@@ -16,7 +16,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import Select from "~/components/ui/select";
+import { Select } from "~/components/ui/select";
 import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
@@ -64,8 +64,8 @@ export default function Page({
       const restrictions = Array.isArray(value.restrictions)
         ? value.restrictions
         : value.restrictions
-        ? [value.restrictions]
-        : [];
+          ? [value.restrictions]
+          : [];
 
       if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
@@ -182,9 +182,7 @@ export default function Page({
                 value: "restriction",
               },
             ]}
-            defaultValue={
-              (session?.restrictions.length || 0) !== 0 ? "restriction" : "all"
-            }
+            value={isRestriction ? "restriction" : "all"}
             onChange={(e) => {
               setIsRestriction(e.currentTarget.value === "restriction");
             }}
@@ -193,7 +191,7 @@ export default function Page({
             <div className="mt-2 space-y-2">
               {restrictions?.map((restriction, i) => {
                 const checked = session?.restrictions?.some(
-                  (r) => r.key === restriction.key
+                  (r) => r.key === restriction.key,
                 );
                 return (
                   <Checkbox

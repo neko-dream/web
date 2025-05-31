@@ -29,7 +29,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
           talkSessionID: params.session_id,
         },
       },
-    }
+    },
   );
 
   const { data: restrictions } = await api.GET("/talksessions/restrictions", {

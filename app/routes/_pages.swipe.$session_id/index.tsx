@@ -46,7 +46,7 @@ export default function Page({
       scale: 1,
       opacity: 1,
       backgroundColor: "transparent",
-    }))
+    })),
   );
   const [loading, setLoading] = useState(false);
   const [isHintModalOpen, setIsHintModalOpen] = useState(false);
@@ -277,7 +277,7 @@ export default function Page({
 
         // 一致しない場合は元の状態を維持
         return state;
-      })
+      }),
     );
 
     // ユーザーコールバックを呼び出し
