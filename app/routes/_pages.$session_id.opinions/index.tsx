@@ -8,6 +8,7 @@ import { useVote } from "~/hooks/useVote";
 import type { Route } from "~/react-router/_pages.$session_id.opinions/+types";
 import type { VoteType } from "~/types";
 import type { SessionRouteContext } from "~/types/ctx";
+import { isEnd } from "~/utils/format-date";
 import { AnalyticsModal } from "./components/AnalyticsModal";
 import { ReportModal } from "./components/ReportModal";
 
@@ -93,7 +94,9 @@ export default function Page({
                           onClickReport={() => handleOpenModal(id)}
                           onClickAnalytics={() => handleAnalyticsModal(id)}
                           opinionCount={replyCount}
-                          isJudgeButtonDisabled={!!myVoteType}
+                          isJudgeButtonDisabled={isEnd(
+                            session.scheduledEndTime
+                          )}
                         />
                       );
                     });

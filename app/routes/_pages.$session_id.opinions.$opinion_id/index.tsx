@@ -17,18 +17,19 @@ import { api } from "~/libs/api";
 import type { Route } from "~/react-router/_pages.$session_id.opinions.$opinion_id/+types";
 import { createOpinionFormSchema } from "~/schemas/create-opinion";
 import type { VoteType } from "~/types";
+import { isEnd } from "~/utils/format-date";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({
-  loaderData: { currentUser, root, opinions, sessionID },
+  loaderData: { currentUser, root, opinions, session },
 }: Route.ComponentProps) {
   const [isCreateOpinionModal, setIsCreateOpinionModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { revalidate } = useRevalidator();
-  const { vote } = useVote({ sessionID });
+  const { vote } = useVote({ sessionID: session.id });
   const [isHintModalOpen, setIsHintModalOpen] = useState(false);
 
   const handleVote = async (opinionID: string, status: VoteType) => {
@@ -81,7 +82,7 @@ export default function Page({
   return (
     <>
       {/* FIXME: 意見IDからセッションのIDが欲しい */}
-      <Heading title="コメント一覧" to={`/${sessionID}`} isLink={true} />
+      <Heading title="コメント一覧" to={`/${session.id}`} isLink={true} />
 
       {root.opinion.isDeleted ? (
         <DeletedOpinionCard
@@ -103,6 +104,7 @@ export default function Page({
           onClickPass={() => handleVote(root.opinion.id, "pass")}
           className="mx-auto w-full max-w-2xl"
           isAllText={true}
+          isJudgeButtonDisabled={isEnd(session.scheduledEndTime)}
         />
       )}
 

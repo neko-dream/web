@@ -7,36 +7,49 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return notfound();
   }
 
-  const { data: root } = await api.GET("/opinions/{opinionID}", {
-    headers: request.headers,
-    params: {
-      path: {
-        opinionID: params.opinion_id,
+  const [
+    { data: session },
+    { data: root },
+    { data: { opinions } = { opinions: [] } },
+    { data: currentUser },
+  ] = await Promise.all([
+    api.GET("/talksessions/{talkSessionID}", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
       },
-    },
-  });
-
-  const { data: opinions } = await api.GET("/opinions/{opinionID}/replies", {
-    headers: request.headers,
-    params: {
-      path: {
-        opinionID: params.opinion_id,
+    }),
+    api.GET("/opinions/{opinionID}", {
+      headers: request.headers,
+      params: {
+        path: {
+          opinionID: params.opinion_id,
+        },
       },
-    },
-  });
+    }),
+    api.GET("/opinions/{opinionID}/replies", {
+      headers: request.headers,
+      params: {
+        path: {
+          opinionID: params.opinion_id,
+        },
+      },
+    }),
+    api.GET("/auth/token/info", {
+      headers: request.headers,
+    }),
+  ]);
 
-  const { data: currentUser } = await api.GET("/auth/token/info", {
-    headers: request.headers,
-  });
-
-  if (!(root && opinions)) {
+  if (!(root && opinions && session)) {
     return notfound();
   }
 
   return {
     root,
     currentUser,
-    opinions: opinions.opinions,
-    sessionID: params.session_id,
+    session,
+    opinions,
   };
 };
