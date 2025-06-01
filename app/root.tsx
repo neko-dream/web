@@ -8,7 +8,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import "./tailwind.css";
-import type { ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },
@@ -18,6 +18,9 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <head>
+        <Suspense>
+          <Analytics />
+        </Suspense>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -40,6 +43,7 @@ export default function App() {
 }
 
 import type { JSX } from "react";
+import { Analytics } from "./components/features/analytics";
 
 export function ErrorBoundary(): JSX.Element {
   return (
