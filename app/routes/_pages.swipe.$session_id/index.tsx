@@ -15,11 +15,11 @@ import {
   PieChart,
   Reload,
 } from "~/components/icons";
-import { List } from "~/components/ui/acordion";
+import { List } from "~/components/ui/accordion";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.swipe.$session_id/+types";
 import type { VoteType } from "~/types";
-import { postVote } from "~/utils/vote";
+import { postVote } from "./libs";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";

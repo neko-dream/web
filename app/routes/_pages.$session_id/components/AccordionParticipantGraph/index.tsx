@@ -1,7 +1,7 @@
 import { use } from "react";
 import Graph from "~/components/features/opinion-graph";
 import { PieChart } from "~/components/icons";
-import { List } from "~/components/ui/acordion";
+import { List } from "~/components/ui/accordion";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 

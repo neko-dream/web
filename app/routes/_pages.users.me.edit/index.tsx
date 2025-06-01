@@ -29,7 +29,7 @@ import { api } from "~/libs/api";
 import { deleteDashValues, isFieldsError } from "~/libs/form";
 import { fileCompress } from "~/libs/image-compressor";
 import type { Route } from "~/react-router/_pages.users.me.edit/+types";
-import { removeHyphens } from "../_pages.make.$session_id.demographics/libs";
+import { removeHyphens } from "~/utils/format-date";
 import { userEditSchema } from "./schemas";
 
 export { loader } from "./modules/loader";

@@ -1,7 +1,7 @@
 import { type ComponentProps, createElement } from "react";
 import { tv } from "tailwind-variants";
 import { JST } from "~/libs/date";
-import type { UserType, VoteType } from "~/types";
+import type { User, VoteType } from "~/types";
 import { LineChart, Message, More, Notification } from "../../icons";
 import { Avatar, AvatarSkeleton } from "../../ui/avatar";
 import { Button } from "../../ui/button";
@@ -11,7 +11,7 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
   status?: VoteType | null;
   href?: string;
-  user: UserType;
+  user: User;
   date: string;
   isJudgeButton?: boolean;
   isMoreButton?: boolean;

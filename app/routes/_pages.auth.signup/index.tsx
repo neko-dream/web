@@ -25,8 +25,8 @@ import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
 import { fileCompress } from "~/libs/image-compressor";
 import type { Route } from "~/react-router/_pages.auth.signup/+types";
-import { signupFormSchema, signupFormWithEmailSchema } from "~/schemas/users";
 import { removeHyphens } from "~/utils/format-date";
+import { signupFormSchema, signupFormWithEmailSchema } from "./schemas";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -55,7 +55,9 @@ export default function Page({
           credentials: "include",
           body: {
             ...submission.value,
-            dateOfBirth: removeHyphens(submission.value.dateOfBirth),
+            dateOfBirth: submission.value.dateOfBirth
+              ? removeHyphens(submission.value.dateOfBirth as string)
+              : undefined,
             icon: await fileCompress(submission.value.icon),
           },
         });
