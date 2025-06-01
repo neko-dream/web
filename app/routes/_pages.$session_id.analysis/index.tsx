@@ -100,14 +100,13 @@ export default function Page({
 
               return (
                 <>
-                  <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
+                  <div className="mx-auto mt-2 block w-full max-w-2xl rounded p-2 md:hidden">
                     <Graph
                       polygons={data?.positions}
                       positions={data?.positions}
                       myPosition={data?.myPosition}
                       windowWidth={windowWidth - 48}
                       selectGroupId={handleSelectGroup}
-                      background={0xffffff}
                     />
                   </div>
 
