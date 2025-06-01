@@ -67,7 +67,7 @@ export default function Page({
                         return (
                           <DeletedOpinionCard
                             key={i}
-                            href={`/opinion/${id}`}
+                            href={`/${session.id}/opinions/${id}`}
                             description={opinion.content}
                             date={opinion.postedAt}
                             opinionCount={replyCount}

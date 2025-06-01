@@ -45,7 +45,7 @@ export default function Page({
         });
         if (data) {
           toast.success("意見を投稿しました");
-          navigate(`/${session.id}/opinion`);
+          navigate(`/${session.id}/opinions`);
         } else {
           toast.error(error.message);
           setIsSubmitting(false);

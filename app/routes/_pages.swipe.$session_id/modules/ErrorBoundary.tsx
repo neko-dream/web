@@ -26,7 +26,7 @@ export function ErrorBoundary(): JSX.Element {
     <ErrorView>
       <p className="text-gray-700">正常にデータを取得できませんでした🙇‍♀️</p>
       <Link
-        to={"../opinion"}
+        to={"../opinions"}
         className={button({
           color: "primary",
           className: "mx-auto mt-6 block whitespace-nowrap",
