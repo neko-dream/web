@@ -87,6 +87,10 @@ export const AddressInputs = ({ form, fields, required }: Props) => {
           placeholder={
             fields.prefecture.value ? "選択する" : "都道府県を選択してください"
           }
+          style={{
+            userSelect: fields.prefecture.value ? "auto" : "none",
+          }}
+          tabIndex={fields.prefecture.value ? 0 : -1} // 都道府県未選択時はフォーカス不能
           options={municipalityOptions}
         />
       </Label>

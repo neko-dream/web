@@ -19,7 +19,7 @@ import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 import { AddressInputs } from "~/components/features/input-address";
-import { Camera } from "~/components/icons";
+import { Camera, Check } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
@@ -171,10 +171,11 @@ export default function Page({
         <Button
           color="primary"
           type="submit"
-          className="!mt-12 mx-auto block"
+          className="!mt-12 mx-auto flex items-center justify-center space-x-2"
           disabled={!form.dirty || isPending}
         >
-          保存する
+          <Check />
+          <span>保存する</span>
         </Button>
       </Form>
     </div>

@@ -2,24 +2,31 @@ import {
   getFormProps,
   getInputProps,
   getSelectProps,
+  useForm,
   useInputControl,
 } from "@conform-to/react";
-import { type ChangeEvent, useRef, useState } from "react";
-import { Form } from "react-router";
+import { parseWithValibot } from "@conform-to/valibot";
+import { type ChangeEvent, useRef, useState, useTransition } from "react";
+import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
+import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 import { AddressInputs } from "~/components/features/input-address";
-import { Check, Photo } from "~/components/icons";
+import { Camera, Check } from "~/components/icons";
+import { Avatar } from "~/components/ui/avatar";
 import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
+import { Tip } from "~/components/ui/tip";
+import { api } from "~/libs/api";
 import { isFieldsError } from "~/libs/form";
+import { fileCompress } from "~/libs/image-compressor";
 import type { Route } from "~/react-router/_pages.auth.signup/+types";
-import Uploadarea from "./components/Uploadarea";
-import { useCreateUserForm } from "./hooks/useCreateUserForm";
+import { signupFormSchema, signupFormWithEmailSchema } from "~/schemas/users";
+import { removeHyphens } from "~/utils/format-date";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -30,7 +37,41 @@ export default function Page({
 }: Route.ComponentProps) {
   const [preview, setPreview] = useState<string>();
   const inputFileRef = useRef<HTMLInputElement>(null);
-  const { form, fields, isDisabled } = useCreateUserForm(!isEmailVerified);
+  const navigate = useNavigate();
+  const [isPending, startTransition] = useTransition();
+
+  const schema = isEmailVerified ? signupFormSchema : signupFormWithEmailSchema;
+
+  const [form, fields] = useForm<InferOutput<typeof schema>>({
+    onSubmit: (e, { submission }) => {
+      startTransition(async () => {
+        e.preventDefault();
+
+        if (submission?.status !== "success") {
+          return;
+        }
+
+        const { error } = await api.POST("/user", {
+          credentials: "include",
+          body: {
+            ...submission.value,
+            dateOfBirth: removeHyphens(submission.value.dateOfBirth),
+            icon: await fileCompress(submission.value.icon),
+          },
+        });
+
+        if (error) {
+          toast.error(error.message);
+        } else {
+          toast.success("登録が完了しました");
+          navigate("/home");
+        }
+      });
+    },
+    onValidate: ({ formData }) => {
+      return parseWithValibot(formData, { schema });
+    },
+  });
 
   const handleOnChangeInputFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
@@ -52,21 +93,21 @@ export default function Page({
 
       <Form
         {...getFormProps(form)}
-        method="post"
-        onSubmit={form.onSubmit}
-        className="mx-auto mb-12 w-full max-w-xl space-y-4 p-4"
+        className="mx-auto mb-12 flex w-full max-w-xl flex-col items-center space-y-4 px-4"
       >
-        <div className="flex flex-col items-center space-y-2">
-          <Uploadarea onClick={handleOpenFiler} preview={preview} />
-          <Button
+        <div className="relative">
+          <Avatar
+            src={preview}
+            className="mt-12 h-24 w-24"
+            onClick={handleOpenFiler}
+          />
+          <button
             type="button"
-            color="disabled"
-            className="flex h-6 w-[74px] items-center justify-center space-x-1 px-1 font-normal text-sm"
+            className="absolute right-0 bottom-0 flex h-8 w-8 items-center justify-center rounded-full bg-gray-400"
             onClick={handleOpenFiler}
           >
-            <Photo className="w-5 text-gray-400" />
-            <span className="text-gray-400">変更</span>
-          </Button>
+            <Camera />
+          </button>
         </div>
 
         <Label
@@ -74,10 +115,11 @@ export default function Page({
           required={true}
           errors={fields.displayName.errors}
           notes={[
-            "ユーザー名は誰でもみられる状態で公開されます。",
-            "ニックネームを入力してください。",
-            "注意：個人情報は入力しないでください。",
+            "ユーザー名は誰でもみられる状態で公開されます",
+            "ニックネームを入力してください",
+            "注意：個人情報は入力しないでください",
           ]}
+          tip={<Tip label="必須" required={true} />}
         >
           <Input
             {...getInputProps(fields.displayName, { type: "text" })}
@@ -92,6 +134,7 @@ export default function Page({
             title="メールアドレス"
             required={true}
             errors={fields.email.errors}
+            tip={<Tip label="必須" required={true} />}
           >
             <Input
               {...getInputProps(fields.email, { type: "text" })}
@@ -106,9 +149,10 @@ export default function Page({
           title="ユーザーID"
           required={true}
           errors={fields.displayID.errors}
+          tip={<Tip label="必須" required={true} />}
           notes={[
-            "ユーザーIDは誰でもみられる状態で公開されます。",
-            "注意：個人情報は入力しないでください。",
+            "ユーザーIDは誰でもみられる状態で公開されます",
+            "個人情報は入力しないでください",
           ]}
         >
           <Input
@@ -124,6 +168,7 @@ export default function Page({
             {...getSelectProps(fields.gender)}
             error={isFieldsError(fields.gender.errors)}
             options={gender.map((v) => ({ value: v, title: v }))}
+            value={fields.gender.value}
           />
         </Label>
 
@@ -156,7 +201,7 @@ export default function Page({
           color="primary"
           type="submit"
           className="!mt-12 mx-auto flex items-center justify-center space-x-2"
-          disabled={isDisabled}
+          disabled={!form.dirty || isPending}
         >
           <Check />
           <span>アカウントを作成する</span>

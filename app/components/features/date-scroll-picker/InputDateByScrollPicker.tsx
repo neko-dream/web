@@ -6,7 +6,7 @@ import { CSSProperties, FC, useEffect, useRef, useState } from "react";
 import { DateScrollPicker, DateScrollPickerProps } from "./DateScrollPicker"; // Assumed MUI-free
 
 // --- Reusable Icon Placeholders (replace with actual SVGs or icon components) ---
-const CloseIconPlaceholder = () => <span aria-label="close icon">X</span>;
+const CloseIconPlaceholder = () => <span aria-label="close icon">×</span>;
 // --- End Icon Placeholders ---
 
 // --- InputDateContent (MUI-free version from previous step) ---
@@ -117,6 +117,7 @@ export const InputDateByScrollPicker: FC<InputDateByScrollPickerProps> = ({
   const textFieldWrapperStyle: CSSProperties = {
     position: "relative",
     width: "100%",
+    margin: "0", // Approximates MUI TextField margin
   };
 
   const inputStyle: CSSProperties = {
@@ -130,12 +131,13 @@ export const InputDateByScrollPicker: FC<InputDateByScrollPickerProps> = ({
     boxSizing: "border-box",
     cursor: "pointer",
     backgroundColor: "#fff",
+    MozBoxSizing: "border-box",
   };
 
   const inputAdornmentStyle: CSSProperties = {
     position: "absolute",
     top: "50%",
-    right: "10px",
+    right: "14px",
     transform: "translateY(-50%)",
     display: "flex",
     alignItems: "center",
@@ -239,7 +241,7 @@ export const InputDateByScrollPicker: FC<InputDateByScrollPickerProps> = ({
         <input
           type="text"
           style={inputStyle}
-          value={value ? dayjs(value).format("YYYY/MM/DD") : ""} // value is "YYYY-MM-DD" string
+          value={value ? dayjs(value).format("YYYY年M月D日") : ""} // value is "YYYY-MM-DD" string
           placeholder="選択してください"
           readOnly
         />

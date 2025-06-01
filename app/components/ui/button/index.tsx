@@ -9,7 +9,7 @@ export type Button = ComponentProps<"button"> & {
 };
 
 export const button = tv({
-  base: "h-13 cursor-pointer rounded-2xl px-6 text-center font-bold text-white disabled:opacity-80",
+  base: "h-13 cursor-pointer rounded-2xl px-6 text-center font-bold text-white disabled:opacity-40",
   variants: {
     color: {
       primary: "primary-gradient",

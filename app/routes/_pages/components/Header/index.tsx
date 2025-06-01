@@ -13,7 +13,7 @@ type Props = Route.ComponentProps["loaderData"];
 
 const ignorePersonalIconPages = [
   "/",
-  "/signup",
+  "/auth/signup",
   "/guide/about",
   "/guide/contact",
 ];
