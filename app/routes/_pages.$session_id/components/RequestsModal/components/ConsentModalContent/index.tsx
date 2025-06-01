@@ -44,7 +44,7 @@ export const ConsentModalContent = ({
       <p className="text-center font-bold text-[18px]">参加される方へ</p>
       <SimpleBar
         style={{ maxHeight: 300 }}
-        className="mt-4 whitespace-pre-line"
+        className="mt-4 whitespace-pre-line rounded-md bg-gray-50 p-2 text-xs"
         autoHide={false}
       >
         {CONSENT_MODAL_TEXT}
