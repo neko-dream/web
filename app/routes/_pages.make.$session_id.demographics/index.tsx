@@ -17,9 +17,9 @@ import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
 import { Tip } from "~/components/ui/tip";
-import { api } from "~/libs/api";
-import { deleteDashValues, isFieldsError } from "~/libs/form";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
+import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
 import { type baseSchema, createDynamicSchema } from "./schema";
 
@@ -67,15 +67,13 @@ export default function Page({
           return;
         }
 
-        const values = deleteDashValues(submission.value);
-
         const { error } = await api.PUT("/user", {
           credentials: "include",
           body: {
-            ...values,
+            ...submission.value,
             displayName: user.displayName,
-            dateOfBirth: values.birth
-              ? removeHyphens(values.birth as string)
+            dateOfBirth: submission.value.birth
+              ? removeHyphens(submission.value.birth as string)
               : undefined,
           } as unknown as InferOutput<typeof baseSchema>,
         });

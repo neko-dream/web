@@ -9,7 +9,7 @@ import { Button } from "~/components/ui/button";
 import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.opinions.$opinion_id/+types";
 import { createOpinionFormSchema } from "~/schemas/create-opinion";
 

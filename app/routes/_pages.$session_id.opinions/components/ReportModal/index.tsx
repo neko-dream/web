@@ -6,7 +6,7 @@ import * as v from "valibot";
 import { Button } from "~/components/ui/button";
 import { HalfBottomDialog, type ModalProps } from "~/components/ui/modal";
 import { Textarea } from "~/components/ui/textarea";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 
 type Props = Omit<ModalProps, "children"> & {
   reasons: { reason: string; reasonID: number }[];

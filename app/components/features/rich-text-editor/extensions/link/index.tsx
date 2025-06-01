@@ -5,7 +5,7 @@ import { tv } from "tailwind-variants";
 import { Link as LinkIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { CenterDialog } from "~/components/ui/modal";
-import { isURL } from "~/libs/isURL";
+import { isURL } from "~/utils/checker";
 
 export const CustomaizedLink = Link.configure({
   openOnClick: true,

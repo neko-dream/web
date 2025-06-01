@@ -1,5 +1,5 @@
 import DefaultSessionIcon from "~/assets/default/session.webp";
-import { JST } from "~/libs/date";
+import { JST } from "~/libs/dayjs";
 import type { components } from "~/types/openapi";
 import { ClockCircle, Environment, Message } from "../../icons";
 import { Avatar } from "../../ui/avatar";

@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, redirect } from "react-router";
-import { api } from "~/libs/api";
-import { notfound } from "~/libs/response";
+import { api } from "~/libs/openapi-fetch";
+import { notfound } from "~/utils/response";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { data } = await api.GET("/auth/token/info", {

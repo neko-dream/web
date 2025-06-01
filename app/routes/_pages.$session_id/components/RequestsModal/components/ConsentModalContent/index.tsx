@@ -2,7 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import SimpleBar from "simplebar-react";
 import { Checkbox } from "~/components/ui/checkbox";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 import { CONSENT_MODAL_TEXT } from "./constants";
 import "simplebar-react/dist/simplebar.min.css";
 

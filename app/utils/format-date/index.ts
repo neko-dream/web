@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { JST } from "~/libs/date";
+import { JST } from "~/libs/dayjs";
 
 /**
  * YYYY-MM-DD to YYYYMMDDに変換する関数

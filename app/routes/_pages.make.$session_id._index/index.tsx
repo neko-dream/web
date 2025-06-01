@@ -17,9 +17,9 @@ import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
-import { api } from "~/libs/api";
-import { isFieldsError } from "~/libs/form";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
+import { isFieldsError } from "~/utils/form";
 import { createSessionFormSchema } from "./schemas";
 
 export { loader } from "./modules/loader";

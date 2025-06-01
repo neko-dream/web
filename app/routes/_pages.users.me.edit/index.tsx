@@ -25,10 +25,10 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
-import { api } from "~/libs/api";
-import { deleteDashValues, isFieldsError } from "~/libs/form";
-import { fileCompress } from "~/libs/image-compressor";
+import { fileCompress } from "~/libs/compressor";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.users.me.edit/+types";
+import { isFieldsError } from "~/utils/form";
 import { removeHyphens } from "~/utils/format-date";
 import { userEditSchema } from "./schemas";
 
@@ -57,15 +57,14 @@ export default function Page({
           return;
         }
 
-        const value = deleteDashValues(submission?.payload);
         const { error } = await api.PUT("/user", {
           credentials: "include",
           body: {
-            ...value,
-            dateOfBirth: value.birth
-              ? removeHyphens(value.birth as string)
+            ...submission?.payload,
+            dateOfBirth: submission?.payload.birth
+              ? removeHyphens(submission?.payload.birth as string)
               : undefined,
-            icon: await fileCompress(value.icon as File),
+            icon: await fileCompress(submission?.payload.icon as File),
           },
         });
 

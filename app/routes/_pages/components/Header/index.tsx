@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, Link, useLocation } from "react-router";
 import { tv } from "tailwind-variants";
-import LogoIcon from "~/assets/kotihiro.png";
+import LogoIcon from "~/assets/kotohiro.png";
 import { Close, Menu, PlusCircle, Search } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";

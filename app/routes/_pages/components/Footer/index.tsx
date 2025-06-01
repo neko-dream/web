@@ -1,4 +1,4 @@
-import LogoIcon from "~/assets/kotihiro.png";
+import LogoIcon from "~/assets/kotohiro.png";
 
 export const Footer = () => {
   return (

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 
 export type RequestModalState = Array<"demography" | "consent" | "signup">;
 

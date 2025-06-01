@@ -1,6 +1,6 @@
 import { type ComponentProps, createElement } from "react";
 import { tv } from "tailwind-variants";
-import { JST } from "~/libs/date";
+import { JST } from "~/libs/dayjs";
 import type { User, VoteType } from "~/types";
 import { LineChart, Message, More, Notification } from "../../icons";
 import { Avatar, AvatarSkeleton } from "../../ui/avatar";

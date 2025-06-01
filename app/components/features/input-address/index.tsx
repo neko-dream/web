@@ -10,7 +10,7 @@ import prefectures from "~/assets/data/adress/prefectures.json";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
 import { Tip } from "~/components/ui/tip";
-import { isCity, isFieldsError } from "~/libs/form";
+import { isCity, isFieldsError } from "~/utils/form";
 
 type Props = {
   // FIXME: 正味このコンポーネントはupdateしか読んでないのでanyでもいいのだが...

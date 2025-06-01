@@ -2,7 +2,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { use } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { CenterDialog, type ModalProps } from "~/components/ui/modal";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 import { cache } from "~/utils/cache";
 
 // Chart.js のコンポーネントを登録

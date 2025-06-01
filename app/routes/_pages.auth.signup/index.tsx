@@ -21,10 +21,10 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
 import { Tip } from "~/components/ui/tip";
-import { api } from "~/libs/api";
-import { isFieldsError } from "~/libs/form";
-import { fileCompress } from "~/libs/image-compressor";
+import { fileCompress } from "~/libs/compressor";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.auth.signup/+types";
+import { isFieldsError } from "~/utils/form";
 import { removeHyphens } from "~/utils/format-date";
 import { signupFormSchema, signupFormWithEmailSchema } from "./schemas";
 

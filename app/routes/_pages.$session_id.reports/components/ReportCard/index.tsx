@@ -1,6 +1,6 @@
 import { Alert } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
-import { JST } from "~/libs/date";
+import { JST } from "~/libs/dayjs";
 import type { components } from "~/types/openapi";
 
 type Props = components["schemas"]["reportDetail"] & {

@@ -1,6 +1,6 @@
 import { type LoaderFunctionArgs, redirect } from "react-router";
-import { api } from "~/libs/api";
-import { forbidden, notfound } from "~/libs/response";
+import { api } from "~/libs/openapi-fetch";
+import { forbidden, notfound } from "~/utils/response";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   if (!params.session_id) {
