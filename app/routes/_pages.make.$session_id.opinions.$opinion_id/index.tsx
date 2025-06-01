@@ -65,7 +65,6 @@ export default function Page({
 
         <Form
           {...getFormProps(form)}
-          onSubmit={form.onSubmit}
           className="mx-auto w-full max-w-2xl p-4 pb-16"
         >
           <p className="text-gray-500">{session.theme}</p>
