@@ -519,9 +519,6 @@ class GraphRenderer {
     // 円を描画
     this.drawCircles();
 
-    // アバターを描画
-    this.drawAvatars();
-
     // MyPositionを描画
     this.drawMyPosition();
 
@@ -659,16 +656,6 @@ class GraphRenderer {
     });
   }
 
-  private drawAvatars() {
-    const { dots } = this.drawingData;
-
-    dots?.forEach((dot: any) => {
-      if (!dot.myPosition && dot.iconURL) {
-        this.drawAvatar(dot.x, dot.y, dot.iconURL, dot.radius, false);
-      }
-    });
-  }
-
   private drawMyPosition() {
     const { myPositionData } = this.drawingData;
 
@@ -726,7 +713,6 @@ class GraphRenderer {
       this.ctx.font = "16px sans-serif";
       this.ctx.textAlign = "center";
       this.ctx.textBaseline = "middle";
-      this.ctx.fillText("🕶️", x - 1, y - 2);
     }
   }
 
