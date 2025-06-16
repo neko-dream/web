@@ -1,6 +1,7 @@
-import { Outlet } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useEffect } from "react";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -13,6 +14,17 @@ export { loader } from "./modules/loader";
 export default function Layout({
   loaderData: { $user },
 }: Route.ComponentProps) {
+  const navigate = useNavigate();
+
+  // ログイン済みだったらホームにリダイレクト
+  useEffect(() => {
+    $user.then((user) => {
+      if (user && window.location.pathname === "/") {
+        navigate("/home", { replace: true });
+      }
+    });
+  }, []);
+
   return (
     <>
       {/* 実際に見えるコンテンツ */}

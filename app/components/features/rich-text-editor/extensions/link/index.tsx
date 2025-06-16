@@ -5,7 +5,7 @@ import { tv } from "tailwind-variants";
 import { Link as LinkIcon } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { CenterDialog } from "~/components/ui/modal";
-import { isURL } from "~/libs/isURL";
+import { isURL } from "~/utils/checker";
 
 export const CustomaizedLink = Link.configure({
   openOnClick: true,
@@ -15,7 +15,7 @@ export const CustomaizedLink = Link.configure({
 });
 
 const linkIcon = tv({
-  base: "h-5 w-5 fill-mt-gray-600",
+  base: "h-5 w-5 fill-cs-gray-600",
   variants: {
     active: { true: "fill-blue-400" },
   },
@@ -51,7 +51,7 @@ export const CustomaizedLinkToolbarItem = ({ editor }: { editor: Editor }) => {
       </button>
       <CenterDialog isOpen={isOpen} onOpenChange={setIsOpen}>
         <div className="flex w-[300px] max-w-[300px] flex-col gap-1">
-          <label htmlFor="url" className="text-mt-gray-600 text-xs">
+          <label htmlFor="url" className="text-cs-gray-600 text-xs">
             リンクの挿入 https://...
           </label>
           <textarea

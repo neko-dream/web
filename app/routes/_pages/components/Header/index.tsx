@@ -1,7 +1,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, Link, useLocation } from "react-router";
 import { tv } from "tailwind-variants";
-import LogoIcon from "~/assets/kotihiro.png";
+import LogoIcon from "~/assets/kotohiro.png";
 import { Close, Menu, PlusCircle, Search } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";
@@ -11,7 +11,12 @@ import { SearchModal } from "../SearchModal";
 
 type Props = Route.ComponentProps["loaderData"];
 
-const ignoreParsonalIconPages = ["/", "/signup", "/about", "/contact"];
+const ignorePersonalIconPages = [
+  "/",
+  "/auth/signup",
+  "/guide/about",
+  "/guide/contact",
+];
 
 const header = tv({
   base: "fixed z-30 w-full border-gray-100 border-b-2",
@@ -64,7 +69,7 @@ export const Header = ({ $user }: Props) => {
             </Await>
           </Suspense>
 
-          {ignoreParsonalIconPages.includes(location.pathname) && (
+          {ignorePersonalIconPages.includes(location.pathname) && (
             <button
               type="button"
               className="ml-auto cursor-pointer"
@@ -74,7 +79,7 @@ export const Header = ({ $user }: Props) => {
             </button>
           )}
 
-          {!ignoreParsonalIconPages.includes(location.pathname) && (
+          {!ignorePersonalIconPages.includes(location.pathname) && (
             <Suspense fallback={<AvatarSkeleton />}>
               <Await resolve={$user}>
                 {(user) => {
@@ -107,7 +112,7 @@ export const Header = ({ $user }: Props) => {
 
                       {user?.orgType && (
                         <Link
-                          to={"/create/session/new"}
+                          to={"/make/new"}
                           className={button({
                             className:
                               "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",

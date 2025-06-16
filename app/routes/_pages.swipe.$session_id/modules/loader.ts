@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { api } from "~/libs/api";
-import { forbidden, notfound } from "~/libs/response";
+import { api } from "~/libs/openapi-fetch";
+import { forbidden, notfound } from "~/utils/response";
 import { OPINIONS_LIMIT } from "../constants";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {

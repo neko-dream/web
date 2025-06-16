@@ -1,5 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 
 export const loader = ({ request }: LoaderFunctionArgs) => {
   const $user = api

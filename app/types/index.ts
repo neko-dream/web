@@ -5,5 +5,5 @@ export type VoteType = Exclude<
   null | undefined
 >;
 
-export type UserType = components["schemas"]["user"] &
+export type User = Partial<components["schemas"]["user"]> &
   Partial<components["schemas"]["userDemographics"]>;

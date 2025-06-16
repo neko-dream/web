@@ -1,4 +1,4 @@
-import LogoIcon from "~/assets/kotihiro.png";
+import LogoIcon from "~/assets/kotohiro.png";
 
 export const Footer = () => {
   return (
@@ -64,12 +64,12 @@ const links = [
         name: "運営会社",
         href: "company",
       },
+      // {
+      //   name: "お知らせ",
+      //   href: "news",
+      // },
       {
-        name: "ニュース",
-        href: "news",
-      },
-      {
-        name: "電子広告",
+        name: "電子公告",
         href: "notice",
       },
     ],
