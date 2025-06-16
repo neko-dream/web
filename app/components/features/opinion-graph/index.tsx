@@ -83,6 +83,7 @@ class GraphRenderer {
 
   private handleClick(event: MouseEvent) {
     const rect = this.canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
 
@@ -108,7 +109,7 @@ class GraphRenderer {
     for (const poly of (resultPolygons || []).slice().reverse()) {
       this.ctx.beginPath();
       this.drawAutoRoundedPolygonPath(poly.points, 100000);
-      if (this.ctx.isPointInPath(x, y)) {
+      if (this.ctx.isPointInPath(x * dpr, y * dpr)) {
         selectGroupId(poly.groupID);
         return;
       }
@@ -519,9 +520,6 @@ class GraphRenderer {
     // 円を描画
     this.drawCircles();
 
-    // アバターを描画
-    this.drawAvatars();
-
     // MyPositionを描画
     this.drawMyPosition();
 
@@ -659,16 +657,6 @@ class GraphRenderer {
     });
   }
 
-  private drawAvatars() {
-    const { dots } = this.drawingData;
-
-    dots?.forEach((dot: any) => {
-      if (!dot.myPosition && dot.iconURL) {
-        this.drawAvatar(dot.x, dot.y, dot.iconURL, dot.radius, false);
-      }
-    });
-  }
-
   private drawMyPosition() {
     const { myPositionData } = this.drawingData;
 
@@ -726,7 +714,6 @@ class GraphRenderer {
       this.ctx.font = "16px sans-serif";
       this.ctx.textAlign = "center";
       this.ctx.textBaseline = "middle";
-      this.ctx.fillText("🕶️", x - 1, y - 2);
     }
   }
 
