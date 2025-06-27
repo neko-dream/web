@@ -8,13 +8,14 @@ import "simplebar-react/dist/simplebar.min.css";
 
 type Props = {
   sessionID: string;
-  aliasName?: string;
+  aliasName: string;
   onClose: () => void;
   onConform: () => void;
 };
 
 export const ConsentModalContent = ({
   sessionID,
+  aliasName,
   onConform,
   onClose,
 }: Props) => {
@@ -48,7 +49,7 @@ export const ConsentModalContent = ({
         className="mt-4 whitespace-pre-line rounded-md bg-gray-50 p-2 text-xs"
         autoHide={false}
       >
-        {CONSENT_MODAL_TEXT}
+        {CONSENT_MODAL_TEXT(aliasName)}
       </SimpleBar>
       <div className="mt-4">
         <Checkbox
