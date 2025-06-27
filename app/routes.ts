@@ -50,7 +50,10 @@ const filteredRoutes = filterRoutes(await flatRoutes(), ignoreLayoutRoute);
 const route = [
   {
     ...filteredRoutes[0],
-    children: [...(filteredRoutes[0].children || []), ...ignoreLayoutRoute],
+  },
+  {
+    ...filteredRoutes[1],
+    children: [...(filteredRoutes[1].children || []), ...ignoreLayoutRoute],
   },
 ];
 
