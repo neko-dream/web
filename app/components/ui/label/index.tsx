@@ -9,6 +9,7 @@ type Props = ComponentProps<"div"> & {
   optional?: boolean;
   errors?: string[];
   notes?: string[];
+  htmlFor?: string;
 };
 
 const label = tv({
@@ -24,12 +25,15 @@ export const Label = ({
   errors,
   notes,
   className,
+  htmlFor,
   ...props
 }: Props): JSX.Element => {
   return (
     <div {...props} className={label({ className })}>
       <div className="mb-1 flex items-center space-x-1">
-        <p className="font-bold">{title}</p>
+        <label htmlFor={htmlFor} className="cursor-pointer font-bold">
+          {title}
+        </label>
         {tip && tip}
       </div>
       {notes?.map((v, i) => (
