@@ -50,6 +50,19 @@ export default function Page({
   );
   const [loading, setLoading] = useState(false);
   const [isHintModalOpen, setIsHintModalOpen] = useState(false);
+  const [swipeHistory, setSwipeHistory] = useState<
+    Array<{ index: number; status: VoteType }>
+  >([]);
+  const [cardZIndexes, setCardZIndexes] = useState<Record<number, number>>({});
+
+  // 初期z-indexの設定
+  useEffect(() => {
+    const initialZIndexes: Record<number, number> = {};
+    opinions.forEach((_, index) => {
+      initialZIndexes[index] = opinions.length - index;
+    });
+    setCardZIndexes(initialZIndexes);
+  }, [opinions]);
 
   useEffect(() => {
     if (opinions.length === swipeCount) {
@@ -66,6 +79,7 @@ export default function Page({
     const opinionID = opinions[swipeCount].opinion.id;
 
     setLoading(true);
+
     const { error } = await postVote({
       opinionID,
       voteStatus: opinionStatus as never,
@@ -75,8 +89,71 @@ export default function Page({
       toast.error(error.message);
       setLoading(false);
     } else {
+      // スワイプ履歴に追加
+      setSwipeHistory((prev) => [
+        ...prev,
+        { index: swipeCount, status: opinionStatus },
+      ]);
       setSwipeCount((prev) => prev + 1);
       setLoading(false);
+    }
+  };
+
+  // 戻るボタンの処理
+  const handleUndo = () => {
+    if (swipeHistory.length === 0 || swipeCount === 0) {
+      return;
+    }
+
+    // 最後のスワイプ履歴を取得
+    const lastSwipe = swipeHistory[swipeHistory.length - 1];
+
+    // スワイプカウントを戻す
+    setSwipeCount(lastSwipe.index);
+
+    // スワイプ履歴から最後の要素を削除
+    setSwipeHistory((prev) => prev.slice(0, -1));
+
+    // 対象のカードを取得
+    const cardIndex = lastSwipe.index;
+    const card = cardsRef.current[cardIndex];
+
+    if (card) {
+      // カードを元の位置とスタイルに戻すアニメーション
+      gsap.to(card, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        duration: 0.5,
+        ease: "power2.out",
+      });
+
+      // カードの状態を初期状態に戻す
+      setCardsState((prev) =>
+        prev.map((state, i) => {
+          if (i === cardIndex) {
+            return {
+              ...state,
+              x: 0,
+              y: 0,
+              rotation: 0,
+              scale: 1,
+              opacity: 1,
+              backgroundColor: "transparent",
+            };
+          }
+          return state;
+        }),
+      );
+
+      // 戻したカードを一番上に表示するためにz-indexを更新
+      setCardZIndexes((prev) => {
+        const maxZIndex = Math.max(...Object.values(prev));
+        return {
+          ...prev,
+          [cardIndex]: maxZIndex + 1,
+        };
+      });
     }
   };
 
@@ -285,179 +362,186 @@ export default function Page({
   };
 
   return (
-    <div className="relative flex min-h-screen w-full flex-col bg-[#F2F2F7]">
-      <div className="flex items-center bg-white p-2">
-        <Link to={`/${session.id}`}>
-          <Left className="fill-gray-600" />
-        </Link>
-        <span className="mx-auto pr-6 font-bold">{session.theme}</span>
-      </div>
+    <div className="contents overflow-x-hidden">
+      <div className="relative flex min-h-screen w-full flex-col bg-[#F2F2F7]">
+        <div className="flex items-center bg-white p-2">
+          <Link to={`/${session.id}`}>
+            <Left className="fill-gray-600" />
+          </Link>
+          <span className="mx-auto pr-6 font-bold">{session.theme}</span>
+        </div>
 
-      <span className="mx-[2%] block">
-        <List
-          className="m-2 mx-auto max-w-3xl"
-          title={
-            <div className="flex items-center space-x-2">
-              <PieChart />
-              <p>参加者のグラフ</p>
-            </div>
-          }
-        >
-          <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                return (
-                  <div className="flex w-full justify-center rounded bg-white p-2">
-                    <Graph
-                      polygons={data?.positions}
-                      positions={data?.positions}
-                      myPosition={data?.myPosition}
-                      // 両方のpadding分
-                      windowWidth={windowWidth - 64}
-                      selectGroupId={(_id: number) => {}}
-                      background={0xffffff}
-                    />
-                  </div>
-                );
-              }}
-            </Await>
-          </Suspense>
-        </List>
-      </span>
+        <span className="mx-[2%] block">
+          <List
+            className="m-2 mx-auto max-w-3xl"
+            title={
+              <div className="flex items-center space-x-2">
+                <PieChart />
+                <p>参加者のグラフ</p>
+              </div>
+            }
+          >
+            <Suspense>
+              <Await resolve={$positions}>
+                {({ data }) => {
+                  return (
+                    <div className="flex w-full justify-center rounded bg-white p-2">
+                      <Graph
+                        polygons={data?.positions}
+                        positions={data?.positions}
+                        myPosition={data?.myPosition}
+                        // 両方のpadding分
+                        windowWidth={windowWidth - 64}
+                        selectGroupId={(_id: number) => {}}
+                        background={0xffffff}
+                      />
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          </List>
+        </span>
 
-      <p className="mx-2 mt-2 text-center font-semibold text-[#8E8E93] text-lg">
-        <span className="mr-2">意見</span>
-        {swipeCount} / {opinions.length}
-      </p>
+        <p className="mx-2 mt-2 text-center font-semibold text-[#8E8E93] text-lg">
+          <span className="mr-2">意見</span>
+          {swipeCount} / {opinions.length}
+        </p>
 
-      <div className="relative mx-auto mt-2 mb-[200px] h-full min-h-[250px] w-full max-w-3xl">
-        {opinions.map((opinion, i) => {
-          // const zIndex = opinions.length - i;
+        {/* カードエリア */}
+        <div className="relative mx-auto mt-2 mb-[200px] h-full min-h-[250px] w-full max-w-3xl">
+          {opinions.map((opinion, i) => {
+            const zIndex = cardZIndexes[i] || opinions.length - i;
 
-          const state = cardsState[i] || {
-            backgroundColor: "transparent",
-            opacity: 0,
-          };
+            const state = cardsState[i] || {
+              backgroundColor: "transparent",
+              opacity: 0,
+            };
 
-          return (
-            <div
-              key={i}
-              className="absolute block cursor-pointer touch-none rounded bg-white will-change-transform"
-              style={{
-                minHeight: "250px",
-                height: "100%",
-                width: "96%",
-                left: "2%",
-                // zIndex,
-                pointerEvents: loading ? "none" : "auto",
-              }}
-              ref={(el) => {
-                cardsRef.current[i] = el;
-              }}
-            >
-              {/* 重なり - 反対 */}
-
+            return (
               <div
+                key={i}
+                className="absolute block cursor-pointer touch-none rounded bg-white will-change-transform"
                 style={{
-                  backgroundColor: state.backgroundColor,
-                  display:
-                    state.backgroundColor === "transparent" ? "none" : "block",
-                  opacity: state.opacity,
+                  minHeight: "250px",
+                  height: "100%",
+                  width: "96%",
+                  left: "2%",
+                  zIndex,
+                  pointerEvents: loading ? "none" : "auto",
                 }}
-                className="absolute z-1 h-full w-full rounded"
-              />
-              <p
-                style={{
-                  display: state.backgroundColor === "red" ? "block" : "none",
+                ref={(el) => {
+                  cardsRef.current[i] = el;
                 }}
-                className="absolute z-1 w-full select-none p-4 text-end font-bold text-2xl text-white"
               >
-                違うかも
-              </p>
-              <p
-                style={{
-                  display: state.backgroundColor === "blue" ? "block" : "none",
-                }}
-                className="absolute z-1 w-full select-none p-4 font-bold text-2xl text-white"
-              >
-                いいかも
-              </p>
+                {/* 重なり - 反対 */}
 
-              <Card
-                title={opinion.opinion.title || ""}
-                description={opinion.opinion.content || ""}
-                user={opinion.user}
-                date={opinion.opinion.postedAt}
-                className="pointer-events-none select-none"
-                isAllText={true}
-              />
-            </div>
-          );
-        })}
+                <div
+                  style={{
+                    backgroundColor: state.backgroundColor,
+                    display:
+                      state.backgroundColor === "transparent"
+                        ? "none"
+                        : "block",
+                    opacity: state.opacity,
+                  }}
+                  className="absolute z-1 h-full w-full rounded"
+                />
+                <p
+                  style={{
+                    display: state.backgroundColor === "red" ? "block" : "none",
+                  }}
+                  className="absolute z-1 w-full select-none p-4 text-end font-bold text-2xl text-white"
+                >
+                  違うかも
+                </p>
+                <p
+                  style={{
+                    display:
+                      state.backgroundColor === "blue" ? "block" : "none",
+                  }}
+                  className="absolute z-1 w-full select-none p-4 font-bold text-2xl text-white"
+                >
+                  いいかも
+                </p>
+
+                <Card
+                  title={opinion.opinion.title || ""}
+                  description={opinion.opinion.content || ""}
+                  user={opinion.user}
+                  date={opinion.opinion.postedAt}
+                  className="pointer-events-none select-none"
+                  isAllText={true}
+                />
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="sticky bottom-12 z-50 mx-4 mt-auto flex justify-around rounded-t-md bg-white/80 pt-3 pb-3">
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("disagree")}
+              className="cursor-pointer rounded-full bg-cs-disagree p-2 disabled:opacity-70"
+            >
+              <ArrowLeft className="fill-white" />
+            </button>
+            <p className="mt-1 text-cs-disagree">違うかも</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading || swipeCount === 0}
+              className="cursor-pointer rounded-full bg-black p-2 disabled:opacity-70"
+              onClick={handleUndo}
+            >
+              <Reload className="fill-white" />
+            </button>
+            <p className="mt-1 ">戻る</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("pass")}
+              className="cursor-pointer rounded-full bg-cs-pass p-2 disabled:opacity-70"
+            >
+              <Meh className="fill-white" />
+            </button>
+            <p className="mt-1 text-cs-pass">パス</p>
+          </div>
+
+          <div className="flex flex-col items-center">
+            <button
+              type="button"
+              disabled={loading}
+              onClick={() => handleSubmitVote("agree")}
+              className="cursor-pointer rounded-full bg-cs-agree p-2 disabled:opacity-70"
+            >
+              <ArrowRight className="fill-white" />
+            </button>
+            <p className="mt-1 text-cs-agree">良さそう</p>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setIsHintModalOpen(true)}
+          className="sticky bottom-4 z-50 mx-4 mb-2 flex items-center justify-center rounded-b-md bg-white/80 pb-2"
+        >
+          <InfoCircle />
+          <span className="text-blue-500 text-sm">この画面の操作ヒント</span>
+        </button>
+
+        <HintSwipeModal
+          isOpen={isHintModalOpen}
+          onOpenChange={setIsHintModalOpen}
+        />
       </div>
-
-      <div className="sticky bottom-12 z-5 mx-4 mt-auto flex justify-around rounded-t-md bg-white/80 pt-3 pb-3">
-        <div className="flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("disagree")}
-            className="cursor-pointer rounded-full bg-cs-disagree p-2 disabled:opacity-70"
-          >
-            <ArrowLeft className="fill-white" />
-          </button>
-          <p className="mt-1 text-cs-disagree">違うかも</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            className="cursor-pointer rounded-full bg-black p-2 disabled:opacity-70"
-          >
-            <Reload className="fill-white" />
-          </button>
-          <p className="mt-1 ">戻る</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("pass")}
-            className="cursor-pointer rounded-full bg-cs-pass p-2 disabled:opacity-70"
-          >
-            <Meh className="fill-white" />
-          </button>
-          <p className="mt-1 text-cs-pass">パス</p>
-        </div>
-
-        <div className="flex flex-col items-center">
-          <button
-            type="button"
-            disabled={loading}
-            onClick={() => handleSubmitVote("agree")}
-            className="cursor-pointer rounded-full bg-cs-agree p-2 disabled:opacity-70"
-          >
-            <ArrowRight className="fill-white" />
-          </button>
-          <p className="mt-1 text-cs-agree">良さそう</p>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setIsHintModalOpen(true)}
-        className="sticky bottom-4 z-5 mx-4 mb-2 flex items-center justify-center rounded-b-md bg-white/80 pb-2"
-      >
-        <InfoCircle />
-        <span className="text-blue-500 text-sm">この画面の操作ヒント</span>
-      </button>
-
-      <HintSwipeModal
-        isOpen={isHintModalOpen}
-        onOpenChange={setIsHintModalOpen}
-      />
     </div>
   );
 }
