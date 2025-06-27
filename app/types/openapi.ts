@@ -1,4 +1,254 @@
 export interface paths {
+  "/auth/dev/detach": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /**
+     * **開発用** 現在のアカウントを切り離す
+     * @description そのアカウントには再度ログインできなくなります。ログインしたければ言ってね！
+     */
+    delete: operations["authAccountDetach"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/dev/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 開発用登録/ログイン */
+    get: operations["devAuthorize"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/password/change": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /** パスワード変更 */
+    put: operations["changePassword"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/password/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** パスワードによるログイン */
+    post: operations["passwordLogin"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/password/register": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** パスワードによる登録（devのみ） */
+    post: operations["passwordRegister"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/revoke": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** トークンを失効（ログアウト） */
+    post: operations["revokeToken"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/token/info": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** JWTの内容を返してくれる */
+    get: operations["getTokenInfo"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/{provider}/callback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** Auth Callback */
+    get: operations["handleAuthCallback"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/auth/{provider}/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** ログイン */
+    get: operations["authorize"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/health": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** ヘルスチェック */
+    get: operations["health"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/images": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * 画像投稿
+     * @description 画像を投稿してURLを返すAPI
+     */
+    post: operations["postImage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * セッションに対して意見投稿 or 意見に対するリプライ
+     * @description parentOpinionIDがなければルートの意見として投稿される
+     *     parentOpinionIDがない場合はtalkSessionIDが必須
+     *
+     *     セッション管理者はisSeedをtrueにするとシード意見として投稿できる
+     */
+    post: operations["postOpinionPost2"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions/histories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 今までに投稿した意見 */
+    get: operations["opinionsHistory"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions/report_reasons": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 意見への通報理由一覧 */
+    get: operations["getOpinionReportReasons"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/opinions/{opinionID}": {
     parameters: {
       query?: never;
@@ -8,6 +258,23 @@ export interface paths {
     };
     /** 意見詳細 */
     get: operations["getOpinionDetail2"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/opinions/{opinionID}/analysis": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 意見に投票したグループごとの割合 */
+    get: operations["getOpinionAnalysis"];
     put?: never;
     post?: never;
     delete?: never;
@@ -27,23 +294,6 @@ export interface paths {
     get: operations["opinionComments2"];
     put?: never;
     post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/opinions/{opinionID}/votes": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** 意思表明API */
-    post: operations["vote2"];
     delete?: never;
     options?: never;
     head?: never;
@@ -104,15 +354,32 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/opinions/{opinionID}/analysis": {
+  "/opinions/{opinionID}/votes": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** 意見に投票したグループごとの割合 */
-    get: operations["getOpinionAnalysis"];
+    get?: never;
+    put?: never;
+    /** 意思表明API */
+    post: operations["vote2"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organization/{code}/validate": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 組織コード検証 */
+    get: operations["validateOrganizationCode"];
     put?: never;
     post?: never;
     delete?: never;
@@ -121,7 +388,64 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/opinions": {
+  "/organizations": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 所属組織一覧 */
+    get: operations["getOrganizations"];
+    put?: never;
+    /**
+     * 組織作成（運営ユーザーのみ）
+     * @description 組織を作成できる。
+     *     これを作れるユーザーはDBを直接叩いて作るしかない。
+     */
+    post: operations["establishOrganization"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/aliases": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 組織エイリアス一覧取得 */
+    get: operations["getOrganizationAliases"];
+    put?: never;
+    /** 組織エイリアス作成 */
+    post: operations["createOrganizationAlias"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/aliases/{aliasID}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** 組織エイリアス削除 */
+    delete: operations["deleteOrganizationAlias"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/invite": {
     parameters: {
       query?: never;
       header?: never;
@@ -131,37 +455,21 @@ export interface paths {
     get?: never;
     put?: never;
     /**
-     * セッションに対して意見投稿 or 意見に対するリプライ
-     * @description parentOpinionIDがなければルートの意見として投稿される
-     *     parentOpinionIDがない場合はtalkSessionIDが必須
-     *
-     *     セッション管理者はisSeedをtrueにするとシード意見として投稿できる
+     * 組織ユーザー招待（運営ユーザーのみ）
+     * @description Role
+     *     - 10: SuperAdmin
+     *     - 20: Owner
+     *     - 30: Admin
+     *     - 40: Member
      */
-    post: operations["postOpinionPost2"];
+    post: operations["inviteOrganization"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/opinions/report_reasons": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 意見への通報理由一覧 */
-    get: operations["getOpinionReportReasons"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}/votes": {
+  "/organizations/invite_user": {
     parameters: {
       query?: never;
       header?: never;
@@ -170,112 +478,26 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * 意思表明API
-     * @deprecated
-     */
-    post: operations["vote"];
+    /** 組織にユーザーを追加 */
+    post: operations["inviteOrganizationForUser"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionID}/opinions": {
+  "/policy/consent": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** セッションに対する意見一覧 */
-    get: operations["getOpinionsForTalkSession"];
+    /** 最新のポリシーに同意したかを取得 */
+    get: operations["getPolicyConsentStatus"];
     put?: never;
-    /**
-     * セッションに対して意見投稿
-     * @deprecated
-     * @description parentOpinionIDがなければルートの意見として投稿される
-     */
-    post: operations["postOpinionPost"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 意見の詳細
-     * @deprecated
-     */
-    get: operations["getOpinionDetail"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/restrictions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * セッションで満たしていない制限
-     * @description 特定のセッションで満たしていない条件があれば返す
-     */
-    get: operations["getTalkSessionRestrictionSatisfied"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** トークセッションの詳細 */
-    get: operations["getTalkSessionDetail"];
-    /** セッション編集 */
-    put: operations["editTalkSession"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/swipe_opinions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * スワイプ用のエンドポイント
-     * @description セッションの中からまだ投票していない意見をランダムに取得する
-     *     remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
-     */
-    get: operations["swipe_opinions"];
-    put?: never;
-    post?: never;
+    /** 最新のポリシーに同意する */
+    post: operations["policyConsent"];
     delete?: never;
     options?: never;
     head?: never;
@@ -302,7 +524,79 @@ export interface paths {
      *     restrictionsに値を入れると一定のデモグラ情報を登録していない限り、セッションへの投稿が制限されるようにできる。
      *     restrictionsには [GET /talksessions/restrictions](https://app.apidog.com/link/project/674502/apis/api-14271260) より取れるkeyをカンマ区切りで入力してください。
      */
-    post: operations["createTalkSession"];
+    post: operations["initiateTalkSession"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/histories": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** リアクション済みのセッション一覧 */
+    get: operations["sessionsHistory"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/opened": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 自分が開いたセッション一覧 */
+    get: operations["getOpenedTalkSession"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/restrictions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * セッションで指定可能な制限一覧
+     * @description セッションの投稿制限に使用できるキーの一覧を返す
+     */
+    get: operations["getTalkSessionRestrictionKeys"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** トークセッションの詳細 */
+    get: operations["getTalkSessionDetail"];
+    /** セッション編集 */
+    put: operations["editTalkSession"];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -318,6 +612,63 @@ export interface paths {
     };
     /** 分析結果一覧 */
     get: operations["talkSessionAnalysis"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/conclusion": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 結論取得 */
+    get: operations["getConclusion"];
+    put?: never;
+    /**
+     * 結論投稿
+     * @description 結論（conclusion）はセッションが終了した後にセッっションの作成者が投稿できる文章。
+     *     セッションの流れやグループの分かれ方などに対するセッション作成者の感想やそれらの意見を受け、これからの方向性などを記入する。
+     */
+    post: operations["postConclusion"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/consent": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** セッションに同意しているか */
+    get: operations["hasConsent"];
+    put?: never;
+    /** セッションへの同意 */
+    post: operations["consentTalkSession"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/opinions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** セッションに対する意見一覧 */
+    get: operations["getOpinionsForTalkSession"];
     put?: never;
     post?: never;
     delete?: never;
@@ -377,7 +728,48 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionID}/timelines/{actionItemID}": {
+  "/talksessions/{talkSessionID}/restrictions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * セッションで満たしていない制限
+     * @description 特定のセッションで満たしていない条件があれば返す
+     */
+    get: operations["getTalkSessionRestrictionSatisfied"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/swipe_opinions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * スワイプ用のエンドポイント
+     * @description セッションの中からまだ投票していない意見をランダムに取得する
+     *     remainingCountは取得した意見を含めてスワイプできる意見の総数を返す
+     */
+    get: operations["swipeOpinions"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/talksessions/{talkSessionID}/timeline": {
     parameters: {
       query?: never;
       header?: never;
@@ -385,51 +777,9 @@ export interface paths {
       cookie?: never;
     };
     get?: never;
-    /** タイムライン編集 */
-    put: operations["editTimeLine"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/opinions/{opinionID}/replies": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * 意見に対するリプライ意見一覧
-     * @deprecated
-     */
-    get: operations["opinionComments"];
     put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/conclusion": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 結論取得 */
-    get: operations["getConclusion"];
-    put?: never;
-    /**
-     * 結論投稿
-     * @description 結論（conclusion）はセッションが終了した後にセッっションの作成者が投稿できる文章。
-     *     セッションの流れやグループの分かれ方などに対するセッション作成者の感想やそれらの意見を受け、これからの方向性などを記入する。
-     */
-    post: operations["postConclusion"];
+    /** タイムラインアイテム追加 */
+    post: operations["postTimeLineItem"];
     delete?: never;
     options?: never;
     head?: never;
@@ -456,7 +806,7 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/talksessions/{talkSessionID}/timeline": {
+  "/talksessions/{talkSessionID}/timelines/{actionItemID}": {
     parameters: {
       query?: never;
       header?: never;
@@ -464,273 +814,9 @@ export interface paths {
       cookie?: never;
     };
     get?: never;
-    put?: never;
-    /** タイムラインアイテム追加 */
-    post: operations["postTimeLineItem"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/{talkSessionID}/consent": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** セッションに同意しているか */
-    get: operations["hasConsent"];
-    put?: never;
-    /** セッションへの同意 */
-    post: operations["consentTalkSession"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/restrictions": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /**
-     * セッションで指定可能な制限一覧
-     * @description セッションの投稿制限に使用できるキーの一覧を返す
-     */
-    get: operations["getTalkSessionRestrictionKeys"];
-    put?: never;
+    /** タイムライン編集 */
+    put: operations["editTimeLine"];
     post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/password/change": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    /** パスワード変更 */
-    put: operations["changePassword"];
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/user": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** ユーザー情報の取得 */
-    get: operations["get_user_info"];
-    /** ユーザー情報の変更 */
-    put: operations["editUserProfile"];
-    /** ユーザー作成 */
-    post: operations["registerUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/opinions/histories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 今までに投稿した異見 */
-    get: operations["opinionsHistory"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/opened": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 自分が開いたセッション一覧 */
-    get: operations["getOpenedTalkSession"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/talksessions/histories": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** リアクション済みのセッション一覧 */
-    get: operations["sessionsHistory"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/token/info": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** JWTの内容を返してくれる */
-    get: operations["oauth_token_info"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/{provider}/callback": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** Auth Callback */
-    get: operations["oauth_callback"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/dev/login": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** 開発用登録/ログイン */
-    get: operations["devAuthorize"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/{provider}/login": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** ログイン */
-    get: operations["authorize"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/dev/detach": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    post?: never;
-    /**
-     * **開発用** 現在のアカウントを切り離す
-     * @description そのアカウントには再度ログインできなくなります。ログインしたければ言ってね！
-     */
-    delete: operations["authAccountDetach"];
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/revoke": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** トークンを失効（ログアウト） */
-    post: operations["oauth_token_revoke"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/password/login": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** パスワードによるログイン */
-    post: operations["passwordLogin"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/auth/password/register": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    get?: never;
-    put?: never;
-    /** パスワードによる登録（devのみ） */
-    post: operations["passwordRegister"];
     delete?: never;
     options?: never;
     head?: never;
@@ -771,7 +857,58 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
-  "/images": {
+  "/user": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** ユーザー情報の取得 */
+    get: operations["getUserInfo"];
+    /** ユーザー情報の変更 */
+    put: operations["updateUserProfile"];
+    /** ユーザー作成 */
+    post: operations["establishUser"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/manage/talksessions/list": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["getTalkSessionListManage"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/manage/talksessions/{talkSessionID}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["getTalkSessionManage"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/v1/manage/talksessions/{talkSessionID}/analysis/regenerate": {
     parameters: {
       query?: never;
       header?: never;
@@ -780,111 +917,69 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /**
-     * 画像投稿
-     * @description 画像を投稿してURLを返すAPI
-     */
-    post: operations["postImage"];
+    post: operations["manageRegenerateManage"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/policy/consent": {
+  "/v1/manage/talksessions/{talkSessionID}/analysis/report": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** 最新のポリシーに同意したかを取得 */
-    get: operations["getPolicyConsentStatus"];
+    get: operations["getAnalysisReportManage"];
     put?: never;
-    /** 最新のポリシーに同意する */
-    post: operations["policyConsent"];
+    post: operations["toggleReportVisibilityManage"];
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/organizations": {
+  "/v1/manage/users/list": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    /** 所属組織一覧 */
-    get: operations["getOrganizations"];
+    get: operations["getUserListManage"];
     put?: never;
-    /**
-     * 組織作成（運営ユーザーのみ）
-     * @description 組織を作成できる。
-     *     これを作れるユーザーはDBを直接叩いて作るしかない。
-     *
-     *     OrgType
-     *     - 1: 通常
-     *     - 2: 自治体
-     *     - 3: 議員
-     */
-    post: operations["createOrganizations"];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/organizations/{organizationID}/invite": {
+  "/v1/manage/users/stats/list": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get?: never;
+    get: operations["getUserStatsListManage"];
     put?: never;
-    /**
-     * 組織ユーザー招待（運営ユーザーのみ）
-     * @description Role
-     *     - 1: Member
-     *     - 2: Admin
-     *     - 3: Owner
-     */
-    post: operations["inviteOrganization"];
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
     patch?: never;
     trace?: never;
   };
-  "/organizations/{organizationID}/invite_user": {
+  "/v1/manage/users/stats/total": {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    get?: never;
-    put?: never;
-    /** 組織にユーザーを追加 */
-    post: operations["inviteOrganizationForUser"];
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-  "/health": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** ヘルスチェック */
-    get: operations["health"];
+    get: operations["getUserStatsTotalManage"];
     put?: never;
     post?: never;
     delete?: never;
@@ -897,46 +992,58 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
-    talkSession: {
-      /** @description トークセッションID */
-      id: string;
-      /** @description テーマ */
-      theme: string;
-      /** @description 説明 */
-      description?: string | null;
-      /** @description 作成ユーザー */
-      owner: components["schemas"]["user"];
-      /** @description 作成日時 */
+    ActionItem: {
+      actionItemID: string;
+      sequence: number;
+      content: string;
+      status: string;
       createdAt: string;
-      /** @description 終了予定日時 */
-      scheduledEndTime: string;
-      /** @description 位置情報 */
-      location?: components["schemas"]["location"];
-      /** @description 市区町村 */
-      city?: string | null;
-      /** @description 都道府県 */
-      prefecture?: string | null;
-      /** @description サムネ画像 */
-      thumbnailURL?: string | null;
-      /** @description セッションの参加制限 */
-      restrictions: components["schemas"]["restriction"][];
+      updatedAt: string;
     };
-    validationErrorItem: {
-      /** @description バリデーションエラーのフィールド */
-      field: string;
-      /** @description バリデーションエラーメッセージ */
-      message: string;
+    AnalysisReportResponse: {
+      /** @description レポート本文 */
+      report?: string;
     };
-    error: {
+    Conclusion: {
+      /** @description 作成ユーザー */
+      user: components["schemas"]["User"];
+      /** @description 結論本文 */
+      content: string;
+    };
+    /** @description Cookie-based authentication using JWT tokens stored in secure HTTP-only cookies */
+    CookieAuth: {
+      /**
+       * @description API key authentication
+       * @enum {string}
+       */
+      type: "apiKey";
+      /**
+       * @description location of the API key
+       * @enum {string}
+       */
+      in: "cookie";
+      /**
+       * @description name of the API key
+       * @enum {string}
+       */
+      name: "SessionId";
+    };
+    Error: {
       code: string;
       message: string;
     };
-    user: {
-      displayID: string;
-      displayName: string;
-      iconURL?: string | null;
+    Location: {
+      /** @description 緯度 */
+      latitude?: number;
+      /** @description 経度 */
+      longitude?: number;
     };
-    opinion: {
+    OffsetPagination: {
+      totalCount: number;
+      offset: number;
+      limit: number;
+    };
+    Opinion: {
       /** @description 意見ID */
       id: string;
       title?: string;
@@ -944,11 +1051,8 @@ export interface components {
       content: string;
       /** @description 親の意見ID。ルートならば無し */
       parentID?: string;
-      /**
-       * @description 意見投稿主の意見。ルート意見の場合はここには何も入らない
-       * @enum {string|null}
-       */
-      voteType?: "disagree" | "agree" | "pass" | null;
+      /** @description 意見投稿主の意見。ルート意見の場合はここには何も入らない */
+      voteType?: components["schemas"]["VoteType"] | null;
       /** @description 画像が返る場合もある */
       pictureURL?: string | null;
       /** @description 参考文献URL */
@@ -956,13 +1060,200 @@ export interface components {
       postedAt: string;
       isDeleted: boolean;
     };
-    location: {
-      /** @description 緯度 */
-      latitude?: number;
-      /** @description 経度 */
-      longitude?: number;
+    OpinionGroupRatio: {
+      agreeCount: number;
+      disagreeCount: number;
+      passCount: number;
+      groupID: number;
+      groupName: string;
     };
-    tokenClaim: {
+    /** @description 意見とリプライ数と投票情報を含むレスポンス */
+    OpinionWithReplyAndVote: {
+      opinion: components["schemas"]["Opinion"];
+      user: components["schemas"]["User"];
+      replyCount: number;
+      myVoteType?: components["schemas"]["VoteType"] | null;
+    };
+    /** @description 意見とリプライ数を含むレスポンス */
+    OpinionWithReplyCount: {
+      opinion: components["schemas"]["Opinion"];
+      user: components["schemas"]["User"];
+      replyCount: number;
+    };
+    /** @description 意見とユーザー情報を含む基本レスポンス */
+    OpinionWithUser: {
+      opinion: components["schemas"]["Opinion"];
+      user: components["schemas"]["User"];
+    };
+    /** @description 意見と投票情報を含むレスポンス */
+    OpinionWithVote: {
+      opinion: components["schemas"]["Opinion"];
+      user: components["schemas"]["User"];
+      myVoteType?: components["schemas"]["VoteType"] | null;
+    };
+    Organization: {
+      /** @description 組織ID */
+      ID: string;
+      /** @description 組織名 */
+      name: string;
+      /** @description 組織コード */
+      code: string;
+      /** @description 組織のタイプ */
+      type: number;
+      /** @description ロールの名前 */
+      roleName: string;
+      /** @description ロール */
+      role: number;
+    };
+    /** @description 組織エイリアス */
+    OrganizationAlias: {
+      aliasID: string;
+      aliasName: string;
+      createdAt?: string | null;
+    };
+    PolicyConsentStatus: {
+      /** @description 最新ポリシーのバージョン */
+      policyVersion: string;
+      /** @description 同意した日時 */
+      consentedAt?: string | null;
+      /** @description 同意したか */
+      consentGiven: boolean;
+    };
+    RegenerateRequest: {
+      /**
+       * @description 再生成するタイプ
+       * @enum {string}
+       */
+      type: "report" | "group" | "image";
+    };
+    RegenerateResponse: {
+      /** @description ステータス */
+      status: string;
+      /** @description メッセージ */
+      message: string;
+    };
+    Report: {
+      talkSessionID: string;
+      /** @description レポート本文 */
+      content: string;
+    };
+    /**
+     * @description 通報解決アクション
+     * @enum {string}
+     */
+    ReportAction: "deleted" | "hold";
+    ReportDetail: {
+      opinion: components["schemas"]["Opinion"];
+      /** @description 作成ユーザー */
+      user: components["schemas"]["User"];
+      status: components["schemas"]["ReportStatus"];
+      reasons: {
+        reason: string;
+        content?: string | null;
+      }[];
+      /** @description この意見が通報を受けた回数 */
+      reportCount: number;
+    };
+    ReportReason: {
+      /** @description 1 */
+      reasonID: number;
+      /** @description 不適切な内容 */
+      reason: string;
+    };
+    /**
+     * @description 通報ステータス
+     * @enum {string}
+     */
+    ReportStatus: "unsolved" | "deleted" | "hold";
+    Restriction: {
+      key: string;
+      description: string;
+      /** @description 依存しているrestriction */
+      dependsOn?: string[];
+    };
+    Success: {
+      message: string;
+    };
+    TalkSession: {
+      /** @description トークセッションID */
+      id: string;
+      /** @description テーマ */
+      theme: string;
+      /** @description 説明 */
+      description?: string | null;
+      /** @description 作成ユーザー */
+      owner: components["schemas"]["User"];
+      /** @description 作成組織名 */
+      organizationAlias?: components["schemas"]["OrganizationAlias"] | null;
+      /** @description 作成日時 */
+      createdAt: string;
+      /** @description 終了予定日時 */
+      scheduledEndTime: string;
+      /** @description 位置情報 */
+      location?: components["schemas"]["Location"];
+      /** @description 市区町村 */
+      city?: string | null;
+      /** @description 都道府県 */
+      prefecture?: string | null;
+      /** @description サムネ画像 */
+      thumbnailURL?: string | null;
+      /** @description セッションの参加制限 */
+      restrictions: components["schemas"]["Restriction"][];
+      /** @description レポートを隠すかどうか */
+      hideReport: boolean;
+    };
+    TalkSessionForManage: {
+      talkSessionID: string;
+      theme: string;
+      description: string;
+      owner: components["schemas"]["UserForManage"];
+      /** Format: date-time */
+      scheduledEndTime: string;
+      city?: string;
+      prefecture?: string;
+      thumbnailURL: string;
+      hidden: boolean;
+      updatedAt: string;
+      createdAt: string;
+    };
+    TalkSessionListResponse: {
+      talkSessionStats: components["schemas"]["TalkSessionStats"][];
+      /** Format: int32 */
+      totalCount: number;
+    };
+    TalkSessionStats: {
+      talkSessionID: string;
+      theme: string;
+      description: string;
+      owner: components["schemas"]["UserForManage"];
+      /** Format: date-time */
+      scheduledEndTime: string;
+      city?: string;
+      prefecture?: string;
+      thumbnailURL: string;
+      hidden: boolean;
+      updatedAt: string;
+      createdAt: string;
+      /** Format: int32 */
+      opinionCount: number;
+      /** Format: int32 */
+      opinionUserCount: number;
+      /** Format: int32 */
+      voteCount: number;
+      /** Format: int32 */
+      voteUserCount: number;
+    };
+    ToggleReportVisibilityRequest: {
+      /** @description 非表示にするかどうか */
+      hidden: boolean;
+    };
+    ToggleReportVisibilityResponse: {
+      /** @description ステータス */
+      status: string;
+      /** @description メッセージ */
+      message: string;
+    };
+    TokenClaim: {
       /** @description Audience */
       aud: string;
       /** @description 有効期限 */
@@ -988,13 +1279,20 @@ export interface components {
       orgType?: number | null;
       /** @description パスワードの更新が必要かどうか */
       requiredPasswordChange: boolean;
+      /** @description 組織のRole */
+      organizationRole?: string | null;
+      /** @description 組織コード
+       *     ログイン時に使用する */
+      organizationCode?: string | null;
+      /** @description 組織ID */
+      organizationID?: string | null;
     };
-    offsetPagination: {
-      totalCount: number;
-      offset: number;
-      limit: number;
+    User: {
+      displayID: string;
+      displayName: string;
+      iconURL?: string | null;
     };
-    userDemographics: {
+    UserDemographics: {
       /**
        * 20001010
        * @description 生年月日
@@ -1016,7 +1314,32 @@ export interface components {
        */
       prefecture?: string | null;
     };
-    userGroupPosition: {
+    UserForManage: {
+      /** @description ユーザーID */
+      userID: string;
+      /** @description 表示ID */
+      displayID: string;
+      /** @description 表示名 */
+      displayName: string;
+      /** @description アイコンURL */
+      iconURL: string;
+      /**
+       * Format: date-time
+       * @description 最終ログイン日時
+       */
+      lastLoginAt: string;
+      /**
+       * Format: date-time
+       * @description 作成日時
+       */
+      createdAt: string;
+      /**
+       * Format: date-time
+       * @description 更新日時
+       */
+      updatedAt: string;
+    };
+    UserGroupPosition: {
       posX: number;
       posY: number;
       displayID: string;
@@ -1027,76 +1350,39 @@ export interface components {
       /** @description 境界ポイントのインデックス */
       perimeterIndex?: number;
     };
-    Report: {
-      talkSessionID: string;
-      /** @description レポート本文 */
-      content: string;
+    UserStatsResponse: {
+      /**
+       * Format: int32
+       * @description ユニークアクション数
+       */
+      uniqueActionUserCount: number;
+      /**
+       * Format: int32
+       * @description 登録ユーザー数
+       */
+      userCount: number;
+      /**
+       * Format: int32
+       * @description セッション数
+       */
+      talkSessionCount: number;
+      /**
+       * Format: date-time
+       * @description 日付
+       */
+      date: string;
     };
-    conclusion: {
-      /** @description 作成ユーザー */
-      user: components["schemas"]["user"];
-      /** @description 結論本文 */
-      content: string;
-    };
-    actionItem: {
-      ActionItemID: string;
-      Sequence: number;
-      Content: string;
-      Status: string;
-      CreatedAt: string;
-      UpdatedAt: string;
-    };
-    restriction: {
-      key: string;
-      description: string;
-    };
-    policyConsentStatus: {
-      /** @description 最新ポリシーのバージョン */
-      policyVersion: string;
-      /** @description 同意した日時 */
-      consentedAt?: string | null;
-      /** @description 同意したか */
-      consentGiven: boolean;
-    };
-    reportReason: {
-      /** @description 1 */
-      reasonID: number;
-      /** @description 不適切な内容 */
-      reason: string;
-    };
-    opinionGroupRatio: {
-      agreeCount: number;
-      disagreeCount: number;
-      passCount: number;
-      groupID: number;
-      groupName: string;
-    };
-    reportDetail: {
-      opinion: components["schemas"]["opinion"];
-      /** @description 作成ユーザー */
-      user: components["schemas"]["user"];
-      /** @enum {string} */
-      status: "unsolved" | "deleted" | "hold";
-      reasons: {
-        reason: string;
-        content?: string | null;
-      }[];
-      /** @description この意見が通報を受けた回数 */
-      reportCount: number;
-    };
-    organization: {
-      /** @description 組織ID */
-      ID: string;
-      /** @description 組織名 */
-      Name: string;
-      /** @description 組織のタイプ */
-      Type: number;
-      /** @description ロール */
-      Role: number;
-    };
-    success: {
+    ValidationErrorItem: {
+      /** @description バリデーションエラーのフィールド */
+      field: string;
+      /** @description バリデーションエラーメッセージ */
       message: string;
     };
+    /**
+     * @description 投票タイプ
+     * @enum {string}
+     */
+    VoteType: "agree" | "disagree" | "pass";
   };
   responses: never;
   parameters: never;
@@ -1106,31 +1392,35 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  getOpinionDetail2: {
+  authAccountDetach: {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        opinionID: string;
-      };
+      path?: never;
       cookie?: never;
     };
     requestBody?: never;
     responses: {
+      /** @description The request has succeeded. */
       200: {
+        headers: {
+          "Set-Cookie"?: string[];
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
-            opinion: components["schemas"]["opinion"];
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-            /** @enum {string|null} */
-            myVoteType?: "agree" | "disagree" | "pass" | null;
-          };
+          "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -1141,88 +1431,245 @@ export interface operations {
       };
     };
   };
-  opinionComments2: {
+  devAuthorize: {
     parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description 親意見のID */
-        opinionID: string;
+      query: {
+        redirect_url: string;
+        /** @description devのみで使用するsubjectです。ここで指定した値はログインした後も確認できないため覚えておいてください。同じ値を指定すると同じアカウントにログインできます。 */
+        id: string;
+        /** @description 組織コード（組織ログインの場合） */
+        organizationCode?: string;
       };
+      header?: never;
+      path?: never;
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      200: {
+      /** @description Redirection */
+      302: {
         headers: {
+          Location?: string;
+          "Set-Cookie"?: string[];
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
-            opinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              /** @enum {string|null} */
-              myVoteType?: "agree" | "disagree" | "pass" | null;
-            }[];
-          };
+          "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
+          "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
+          "application/json": Record<string, never>;
         };
       };
     };
   };
-  vote2: {
+  changePassword: {
+    parameters: {
+      query: {
+        /** @description 古いパスワード */
+        oldPassword: string;
+        /** @description 新たなパスワード */
+        newPassword: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  passwordLogin: {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        /** @description 意見のID */
-        opinionID: string;
-      };
+      path?: never;
       cookie?: never;
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "multipart/form-data": {
-          /**
-           * @example
-           * @enum {string|null}
-           */
-          voteStatus: "agree" | "disagree" | "pass" | null;
+          idOrEmail: string;
+          password: string;
         };
       };
     };
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["opinion"][];
+          "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  passwordRegister: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          id: string;
+          password: string;
+          email: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  revokeToken: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description There is no content to send for this request, but the headers may be useful.  */
+      204: {
+        headers: {
+          /** @description Cookie削除用のSet-Cookie */
+          "Set-Cookie": string[];
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTokenInfo: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TokenClaim"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -1234,6 +1681,7 @@ export interface operations {
           };
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -1247,74 +1695,34 @@ export interface operations {
       };
     };
   };
-  reportOpinion: {
+  handleAuthCallback: {
     parameters: {
-      query?: never;
+      query: {
+        code: string;
+        /** @description OAuth State from Query */
+        state: string;
+      };
       header?: never;
       path: {
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example 1 */
-          reason?: number;
-          /**
-           * @description その他の場合のみ理由のテキスト
-           * @example
-           */
-          content?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getOpinionReports: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        opinionID: string;
+        provider: string;
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      200: {
+      /** @description Redirection */
+      302: {
         headers: {
+          Location: string;
+          /** @description SessionID */
+          "Set-Cookie": string[];
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["reportDetail"];
+          "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -1323,6 +1731,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -1333,72 +1742,38 @@ export interface operations {
       };
     };
   };
-  solveOpinionReport: {
+  authorize: {
     parameters: {
-      query?: never;
+      query: {
+        /** @description ログイン後にリダイレクトするURL */
+        redirect_url: string;
+        /** @description 組織コード（組織ログインの場合） */
+        organization_code?: string;
+        /** @description 登録していなかった場合に飛ばすURL */
+        registration_url?: string;
+      };
       header?: never;
       path: {
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @example
-           * @enum {string}
-           */
-          action: "deleted" | "hold";
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getOpinionAnalysis: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        opinionID: string;
+        provider: "google" | "line";
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      200: {
+      /** @description Redirection */
+      302: {
         headers: {
+          /** @description IDPのログインページ */
+          Location: string;
+          /** @description OAuth2.0 State */
+          "Set-Cookie"?: string[];
           [name: string]: unknown;
         };
         content: {
-          "application/json": components["schemas"]["opinionGroupRatio"][];
+          "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -1407,6 +1782,92 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  health: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  postImage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** Format: binary */
+          image: Blob;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            url: string;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -1424,40 +1885,22 @@ export interface operations {
       path?: never;
       cookie?: never;
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "multipart/form-data": {
-          /** @example  */
           talkSessionID?: string | null;
-          /**
-           * @description これがある場合はリプライとみなす。これがない場合はTalkSessionIDが必須。
-           * @example
-           */
           parentOpinionID?: string | null;
-          /** @example  */
           title?: string | null;
-          /** @example  */
           opinionContent: string;
-          /**
-           * Format: url
-           * @example
-           */
           referenceURL?: string | null;
-          /**
-           * Format: binary
-           * @description 参考画像。4MiBまで
-           * @example
-           */
+          /** Format: binary */
           picture?: Blob;
-          /**
-           * @description シード意見かどうか
-           * @example
-           */
-          isSeed?: boolean;
+          isSeed?: boolean | null;
         };
       };
     };
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
@@ -1466,6 +1909,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -1477,1437 +1921,7 @@ export interface operations {
           };
         };
       };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpinionReportReasons: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["reportReason"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  vote: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        /** @description セッションのID */
-        talkSessionID: string;
-        /** @description 意見のID */
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @example
-           * @enum {string|null}
-           */
-          voteStatus: "agree" | "disagree" | "pass" | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["opinion"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpinionsForTalkSession: {
-    parameters: {
-      query?: {
-        sort?: "latest" | "mostReplies" | "oldest" | null;
-        /** @example 10 */
-        limit?: number | null;
-        /** @example 0 */
-        offset?: number | null;
-        seed?: boolean | null;
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              replyCount: number;
-              /** @enum {string|null} */
-              myVoteType?: "pass" | "disagree" | "agree" | null;
-            }[];
-            pagination: {
-              totalCount: number;
-            };
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postOpinionPost: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          parentOpinionID?: string | null;
-          /** @example  */
-          title?: string | null;
-          /** @example  */
-          opinionContent: string;
-          /**
-           * Format: url
-           * @example
-           */
-          referenceURL?: string | null;
-          /**
-           * Format: binary
-           * @description 参考画像。4MiBまで
-           * @example
-           */
-          picture?: Blob;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getOpinionDetail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinion: components["schemas"]["opinion"];
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionRestrictionSatisfied: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["restriction"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionDetail: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["talkSession"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  editTalkSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          theme: string;
-          /**
-           * Format: date-time
-           * @example
-           */
-          scheduledEndTime: string;
-          /**
-           * @description 緯度
-           * @example 0
-           */
-          latitude?: number | null;
-          /**
-           * @description 経度
-           * @example 0
-           */
-          longitude?: number;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 説明文
-           * @example
-           */
-          description?: string | null;
-          /**
-           * @description サムネイルURL。文中から一番最初の画像URLをサムネとする。
-           * @example
-           */
-          thumbnailURL?: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["talkSession"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  swipe_opinions: {
-    parameters: {
-      query?: {
-        limit?: number;
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              replyCount: number;
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-            }[];
-            remainingCount: number;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getTalkSessionList: {
-    parameters: {
-      query?: {
-        /**
-         * @description 1ページあたりの要素数
-         * @example 10
-         */
-        limit?: number | null;
-        /**
-         * @description どの要素から始めるか
-         * @example 0
-         */
-        offset?: number | null;
-        theme?: string | null;
-        status?: "open" | "finished";
-        sortKey?: "latest" | "oldest" | "mostReplies" | "nearest";
-        latitude?: number | null;
-        longitude?: number | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            talkSessions: {
-              talkSession: components["schemas"]["talkSession"];
-              opinionCount: number;
-            }[];
-            pagination: components["schemas"]["offsetPagination"];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  createTalkSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example いい感じのテーマ */
-          theme: string;
-          /**
-           * Format: date-time
-           * @example 2024-12-17T03:24:00Z
-           */
-          scheduledEndTime: string;
-          /**
-           * @description 緯度
-           * @example 0
-           */
-          latitude?: number | null;
-          /**
-           * @description 経度
-           * @example 0
-           */
-          longitude?: number | null;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-          /**
-           * @description 説明文
-           * @example
-           */
-          description?: string | null;
-          /**
-           * @description サムネイルURL。文中から一番最初の画像URLをサムネとする。
-           * @example
-           */
-          thumbnailURL?: string | null;
-          /** @example [
-           *       "demographics.city"
-           *     ] */
-          restrictions?: string[];
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            /** @description トークセッションID */
-            id: string;
-            /** @description テーマ */
-            theme: string;
-            /** @description 説明 */
-            description?: string | null;
-            /** @description 作成ユーザー */
-            owner: components["schemas"]["user"];
-            /** @description 作成日時 */
-            createdAt: string;
-            /** @description 終了予定日時 */
-            scheduledEndTime: string;
-            /** @description 位置情報 */
-            location?: components["schemas"]["location"];
-            /** @description 市区町村 */
-            city?: string | null;
-            /** @description 都道府県 */
-            prefecture?: string | null;
-            /** @description サムネ画像 */
-            thumbnailURL?: string | null;
-            /** @description セッションの参加制限 */
-            restrictions: components["schemas"]["restriction"][];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  talkSessionAnalysis: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            myPosition?: components["schemas"]["userGroupPosition"];
-            positions: components["schemas"]["userGroupPosition"][];
-            groupOpinions: {
-              groupName: string;
-              groupID: number;
-              opinions: {
-                opinion: components["schemas"]["opinion"];
-                /** @description 作成ユーザー */
-                user: components["schemas"]["user"];
-                agreeCount: number;
-                disagreeCount: number;
-                passCount: number;
-              }[];
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getTalkSessionReport: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            report: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getReportsForTalkSession: {
-    parameters: {
-      query?: {
-        status?: "unsolved" | "deleted" | "hold";
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            reports: components["schemas"]["reportDetail"][];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionReportCount: {
-    parameters: {
-      query: {
-        status: "unsolved" | "deleted" | "hold";
-      };
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            count: number;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  editTimeLine: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        actionItemID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          content?: string | null;
-          /** @example  */
-          status?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["actionItem"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  opinionComments: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-        /** @description 親意見のID */
-        opinionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            opinions: {
-              opinion: components["schemas"]["opinion"];
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              /** @enum {string|null} */
-              myVoteType?: "agree" | "disagree" | "pass" | null;
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  getConclusion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["conclusion"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postConclusion: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description 結論本文。2文字以上
-           * @example よかった！
-           */
-          content: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["conclusion"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTimeLine: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            items: components["schemas"]["actionItem"][];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postTimeLineItem: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          content: string;
-          /** @example  */
-          status: string;
-          /**
-           * @description 親があるなら親のIDヲシテイ
-           * @example
-           */
-          parentActionItemID?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            ActionItemID: string;
-            Sequence: number;
-            Content: string;
-            Status: string;
-            CreatedAt: string;
-            UpdatedAt: string;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  hasConsent: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            hasConsent: boolean;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  consentTalkSession: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path: {
-        talkSessionID: string;
-      };
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getTalkSessionRestrictionKeys: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["restriction"][];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  changePassword: {
-    parameters: {
-      query: {
-        /** @description 古いパスワード */
-        old_password: string;
-        /** @description 新たなパスワード */
-        new_password: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  get_user_info: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            /** @description 作成ユーザー */
-            user: components["schemas"]["user"];
-            demographics: components["schemas"]["userDemographics"];
-            email?: string | null;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  editUserProfile: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description ユーザー名
-           * @example
-           */
-          displayName?: string | null;
-          /**
-           * Format: binary
-           * @description ユーザーアイコン
-           * @example
-           */
-          icon?: Blob;
-          /**
-           * @default false
-           * @example false
-           */
-          deleteIcon?: boolean | null;
-          /**
-           * @description 生年月日
-           * @example 0
-           */
-          dateOfBirth?: number | null;
-          /**
-           * @description 性別
-           * @example
-           * @enum {string|null}
-           */
-          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
-          /**
-           * @description 市町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string | null;
-          /**
-           * @description メールアドレス
-           * @example
-           */
-          email?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            displayID: string;
-            displayName: string;
-            iconURL?: string | null;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
-    };
-  };
-  registerUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description ユーザー名。日本語なども設定可能。
-           * @example hogesge
-           */
-          displayName: string;
-          /**
-           * @description ユーザーID。プロフィールのパスなどで使用される。DBのIDとは別。
-           * @example suge-
-           */
-          displayID: string;
-          /**
-           * Format: binary
-           * @description ユーザーアイコン
-           * @example
-           */
-          icon?: Blob;
-          /**
-           * @description 生年月日
-           * @default 0
-           * @example 0
-           */
-          dateOfBirth?: number | null;
-          /**
-           * @description 性別
-           * @default preferNotToSay
-           * @example
-           * @enum {string|null}
-           */
-          gender?: "男性" | "女性" | "その他" | "回答しない";
-          /**
-           * @description 都道府県
-           * @example
-           */
-          prefecture?: string;
-          /**
-           * @description 市区町村
-           * @example
-           */
-          city?: string | null;
-          /**
-           * Format: email
-           * @description メアド
-           * @example
-           */
-          email?: string | null;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            displayID: string;
-            displayName: string;
-            iconURL?: string | null;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            code: string;
-            message: string;
-          };
-        };
-      };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -2935,24 +1949,21 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           "application/json": {
-            opinions: {
-              /** @description 作成ユーザー */
-              user: components["schemas"]["user"];
-              opinion: components["schemas"]["opinion"];
-              replyCount: number;
-            }[];
+            opinions: components["schemas"]["OpinionWithReplyCount"][];
             pagination: {
               totalCount: number;
             };
           };
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -2961,6 +1972,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -2971,106 +1983,7 @@ export interface operations {
       };
     };
   };
-  getOpenedTalkSession: {
-    parameters: {
-      query?: {
-        /** @example 0 */
-        limit?: number;
-        /** @example 0 */
-        offset?: number;
-        /**
-         * @description テーマ
-         * @example
-         */
-        theme?: string;
-        /** @example  */
-        status?: "finished" | "open" | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            talkSessions: {
-              talkSession: components["schemas"]["talkSession"];
-              opinionCount: number;
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  sessionsHistory: {
-    parameters: {
-      query?: {
-        limit?: number;
-        offset?: number;
-        /** @description テーマ  */
-        theme?: string | null;
-        status?: "open" | "finished" | null;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            pagination: components["schemas"]["offsetPagination"];
-            talkSessions: {
-              talkSession: components["schemas"]["talkSession"];
-              opinionCount: number;
-            }[];
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  oauth_token_info: {
+  getOpinionReportReasons: {
     parameters: {
       query?: never;
       header?: never;
@@ -3079,40 +1992,130 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReportReason"][];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpinionDetail2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["OpinionWithVote"];
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpinionAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["OpinionGroupRatio"][];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  opinionComments2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 親意見のID */
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           "application/json": {
-            /** @description Audience */
-            aud: string;
-            /** @description 有効期限 */
-            exp: string;
-            /** @description 発行日時 */
-            iat: string;
-            /** @description 発行者 */
-            iss: string;
-            /** @description ユーザID */
-            sub: string;
-            /** @description JWT ID */
-            jti: string;
-            /** @description ユーザーID */
-            displayID?: string;
-            /** @description ユーザー名 */
-            displayName?: string;
-            /** @description アイコンURL */
-            iconURL?: string;
-            /** @description ユーザ登録済みか */
-            isRegistered: boolean;
-            isEmailVerified: boolean;
-            /** @description アカウントの種類。組織がなければ空 */
-            orgType?: number | null;
-            /** @description パスワードの更新が必要かどうか */
-            requiredPasswordChange: boolean;
+            opinions: components["schemas"]["OpinionWithVote"][];
           };
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3124,6 +2127,7 @@ export interface operations {
           };
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3137,355 +2141,216 @@ export interface operations {
       };
     };
   };
-  oauth_callback: {
+  reportOpinion: {
     parameters: {
-      query: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          reason?: number | null;
+          content?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpinionReports: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ReportDetail"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  solveOpinionReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          action: components["schemas"]["ReportAction"];
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  vote2: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        /** @description 意見のID */
+        opinionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          voteStatus: components["schemas"]["VoteType"];
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Opinion"][];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  validateOrganizationCode: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
         code: string;
-        /** @description OAuth State from Query */
-        state: string;
-      };
-      header?: never;
-      path: {
-        provider: string;
-      };
-      cookie: {
-        /**
-         * @description OAuth2.0 State from Cookie
-         * @example {{$string.uuid}}
-         */
-        state: string;
-        /**
-         * @description Authorization Code
-         * @example
-         */
-        redirect_url: string;
-      };
-    };
-    requestBody?: never;
-    responses: {
-      302: {
-        headers: {
-          /** @example  */
-          Location: string;
-          /**
-           * @description SessionID
-           * @example
-           */
-          "Set-Cookie": string;
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  devAuthorize: {
-    parameters: {
-      query: {
-        redirect_url: string;
-        /** @description devのみで使用するsubjectです。ここで指定した値はログインした後も確認できないため覚えておいてください。同じ値を指定すると同じアカウントにログインできます。 */
-        id: string;
-      };
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      302: {
-        headers: {
-          /** @example  */
-          Location?: string;
-          /**
-           * @description OAuth2.0 State
-           * @example
-           */
-          "Set-Cookie"?: string[];
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  authorize: {
-    parameters: {
-      query: {
-        /** @description ログイン後にリダイレクトするURL */
-        redirect_url: string;
-      };
-      header?: never;
-      path: {
-        provider: "google" | "line";
       };
       cookie?: never;
     };
     requestBody?: never;
     responses: {
-      /** @description コンテンツタイプを必ず指定しなければならないため、仮の値としてapplication/jsonを入れている */
-      302: {
-        headers: {
-          /**
-           * @description IDPのログインページ
-           * @example
-           */
-          Location: string;
-          /**
-           * @description OAuth2.0 State
-           * @example
-           */
-          "Set-Cookie": string[];
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  authAccountDetach: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          /** @example  */
-          "Set-Cookie"?: string[];
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  oauth_token_revoke: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      204: {
-        headers: {
-          /**
-           * @description Cookie削除用のSet-Cookie
-           * @example
-           */
-          "Set-Cookie": string[];
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  passwordLogin: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          id_or_email: string;
-          /** @example  */
-          password: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  passwordRegister: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /** @example  */
-          id: string;
-          /** @example  */
-          password: string;
-          /** @example  */
-          email: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  test: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           "application/json": {
-            optInt?: number | null;
-            optNilInt?: number;
-            optNilBool?: boolean | null;
-            optBool?: boolean;
-            /** Format: uri */
-            optUrl?: string;
-            /** Format: url */
-            optNilUrl?: string | null;
+            valid: boolean;
+            organization?: components["schemas"]["Organization"];
           };
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3494,169 +2359,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  dummiInit: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  postImage: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * Format: binary
-           * @example
-           */
-          image: Blob;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": {
-            /** @description 画像のURL */
-            url: string;
-          };
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  getPolicyConsentStatus: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["policyConsentStatus"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-      500: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
-    };
-  };
-  policyConsent: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: {
-      content: {
-        "multipart/form-data": {
-          /**
-           * @description ポリシーバージョン
-           * @example
-           */
-          policyVersion: string;
-        };
-      };
-    };
-    responses: {
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["policyConsentStatus"];
-        };
-      };
-      400: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": Record<string, never>;
-        };
-      };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3676,17 +2379,18 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           "application/json": {
-            /** @description 所属組織 */
-            organizations: components["schemas"]["organization"][];
+            organizations: components["schemas"]["Organization"][];
           };
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3695,6 +2399,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3705,24 +2410,28 @@ export interface operations {
       };
     };
   };
-  createOrganizations: {
+  establishOrganization: {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "multipart/form-data": {
-          /** @example  */
           name: string;
-          /** @example 0 */
-          orgType?: number;
+          /** @description 組織コード（ログイン時に使用）
+           *     4文字以上127文字以下の英数字 _- のみ使用可能 */
+          code: string;
+          /** @description 組織タイプ
+           *     - 1: 通常（基本これ） */
+          orgType: number;
         };
       };
     };
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
@@ -3731,6 +2440,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3739,6 +2449,131 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOrganizationAliases: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            aliases: components["schemas"]["OrganizationAlias"][];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  createOrganizationAlias: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          aliasName: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["OrganizationAlias"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  deleteOrganizationAlias: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        aliasID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3753,22 +2588,19 @@ export interface operations {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        organizationID: string;
-      };
+      path?: never;
       cookie?: never;
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "multipart/form-data": {
-          /** @example 0 */
-          role: number;
-          /** @example  */
           email: string;
+          role: number;
         };
       };
     };
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
@@ -3777,6 +2609,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3785,6 +2618,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3799,22 +2633,19 @@ export interface operations {
     parameters: {
       query?: never;
       header?: never;
-      path: {
-        organizationID: string;
-      };
+      path?: never;
       cookie?: never;
     };
-    requestBody?: {
+    requestBody: {
       content: {
         "multipart/form-data": {
-          /** @example 0 */
-          role: number;
-          /** @example  */
           displayID: string;
+          role: number;
         };
       };
     };
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
@@ -3825,6 +2656,7 @@ export interface operations {
           };
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3833,6 +2665,7 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
@@ -3843,7 +2676,7 @@ export interface operations {
       };
     };
   };
-  health: {
+  getPolicyConsentStatus: {
     parameters: {
       query?: never;
       header?: never;
@@ -3852,14 +2685,16 @@ export interface operations {
     };
     requestBody?: never;
     responses: {
+      /** @description The request has succeeded. */
       200: {
         headers: {
           [name: string]: unknown;
         };
         content: {
-          "application/json": Record<string, never>;
+          "application/json": components["schemas"]["PolicyConsentStatus"];
         };
       };
+      /** @description The server could not understand the request due to invalid syntax. */
       400: {
         headers: {
           [name: string]: unknown;
@@ -3868,12 +2703,1451 @@ export interface operations {
           "application/json": Record<string, never>;
         };
       };
+      /** @description Server error */
       500: {
         headers: {
           [name: string]: unknown;
         };
         content: {
           "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  policyConsent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          policyVersion: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["PolicyConsentStatus"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionList: {
+    parameters: {
+      query?: {
+        /** @description 1ページあたりの要素数 */
+        limit?: number | null;
+        /** @description どの要素から始めるか */
+        offset?: number | null;
+        theme?: string | null;
+        status?: "open" | "finished";
+        sortKey?: "latest" | "oldest" | "mostReplies" | "nearest";
+        latitude?: number | null;
+        longitude?: number | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            talkSessions: {
+              talkSession: components["schemas"]["TalkSession"];
+              opinionCount: number;
+            }[];
+            pagination: components["schemas"]["OffsetPagination"];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  initiateTalkSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          theme: string;
+          /** Format: date-time */
+          scheduledEndTime: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          city?: string | null;
+          prefecture?: string | null;
+          description?: string | null;
+          thumbnailURL?: string | null;
+          restrictions?: string[];
+          aliasId?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TalkSession"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  sessionsHistory: {
+    parameters: {
+      query?: {
+        limit?: number;
+        offset?: number;
+        /** @description テーマ */
+        theme?: string | null;
+        status?: "open" | "finished" | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            pagination: components["schemas"]["OffsetPagination"];
+            talkSessions: {
+              talkSession: components["schemas"]["TalkSession"];
+              opinionCount: number;
+            }[];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpenedTalkSession: {
+    parameters: {
+      query?: {
+        limit?: number;
+        offset?: number;
+        /** @description テーマ */
+        theme?: string;
+        status?: "finished" | "open" | null;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            talkSessions: {
+              talkSession: components["schemas"]["TalkSession"];
+              opinionCount: number;
+            }[];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionRestrictionKeys: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Restriction"][];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionDetail: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TalkSession"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  editTalkSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          theme: string;
+          /** Format: date-time */
+          scheduledEndTime: string;
+          latitude?: number | null;
+          longitude?: number;
+          prefecture?: string | null;
+          city?: string | null;
+          description?: string | null;
+          thumbnailURL?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TalkSession"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  talkSessionAnalysis: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            myPosition?: components["schemas"]["UserGroupPosition"];
+            positions: components["schemas"]["UserGroupPosition"][];
+            groupOpinions: {
+              groupName: string;
+              groupID: number;
+              opinions: {
+                opinion: components["schemas"]["Opinion"];
+                user: components["schemas"]["User"];
+                agreeCount: number;
+                disagreeCount: number;
+                passCount: number;
+              }[];
+            }[];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  getConclusion: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Conclusion"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  postConclusion: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          content: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Conclusion"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  hasConsent: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            hasConsent: boolean;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  consentTalkSession: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOpinionsForTalkSession: {
+    parameters: {
+      query?: {
+        sort?: "latest" | "mostReplies" | "oldest" | null;
+        limit?: number | null;
+        offset?: number | null;
+        seed?: boolean | null;
+      };
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            opinions: components["schemas"]["OpinionWithReplyAndVote"][];
+            pagination: {
+              totalCount: number;
+            };
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            report?: string | null;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getReportsForTalkSession: {
+    parameters: {
+      query?: {
+        status?: "unsolved" | "deleted" | "hold";
+      };
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            reports: components["schemas"]["ReportDetail"][];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionReportCount: {
+    parameters: {
+      query: {
+        status: "unsolved" | "deleted" | "hold";
+      };
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            count: number;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTalkSessionRestrictionSatisfied: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Restriction"][];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  swipeOpinions: {
+    parameters: {
+      query?: {
+        limit?: number;
+      };
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            opinions: components["schemas"]["OpinionWithReplyCount"][];
+            remainingCount: number;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  postTimeLineItem: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          content: string;
+          status: string;
+          parentActionItemID?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            actionItemID: string;
+            sequence: number;
+            content: string;
+            status: string;
+            createdAt: string;
+            updatedAt: string;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getTimeLine: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            items: components["schemas"]["ActionItem"][];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  editTimeLine: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+        actionItemID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          content?: string | null;
+          status?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ActionItem"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  test: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            optInt?: number | null;
+            optNilInt?: number;
+            optNilBool?: boolean | null;
+            optBool?: boolean;
+            /** Format: uri */
+            optUrl?: string;
+            /** Format: url */
+            optNilUrl?: string | null;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  dummiInit: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getUserInfo: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            user: components["schemas"]["User"];
+            demographics: components["schemas"]["UserDemographics"];
+            email?: string | null;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  updateUserProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          displayName?: string | null;
+          /** Format: binary */
+          icon?: Blob;
+          deleteIcon?: boolean | null;
+          dateOfBirth?: number | null;
+          /** @enum {string|null} */
+          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
+          city?: string | null;
+          prefecture?: string | null;
+          email?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  establishUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          displayName: string;
+          displayID: string;
+          /** Format: binary */
+          icon?: Blob;
+          dateOfBirth?: number | null;
+          /** @enum {string|null} */
+          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
+          prefecture?: string;
+          city?: string | null;
+          email?: string | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  getTalkSessionListManage: {
+    parameters: {
+      query?: {
+        status?: "active" | "inactive";
+        offset?: number;
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TalkSessionListResponse"];
+        };
+      };
+    };
+  };
+  getTalkSessionManage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["TalkSessionForManage"];
+        };
+      };
+    };
+  };
+  manageRegenerateManage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/x-www-form-urlencoded": components["schemas"]["RegenerateRequest"];
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["RegenerateResponse"];
+        };
+      };
+    };
+  };
+  getAnalysisReportManage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["AnalysisReportResponse"];
+        };
+      };
+    };
+  };
+  toggleReportVisibilityManage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        talkSessionID: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "application/x-www-form-urlencoded": components["schemas"]["ToggleReportVisibilityRequest"];
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["ToggleReportVisibilityResponse"];
+        };
+      };
+    };
+  };
+  getUserListManage: {
+    parameters: {
+      query?: {
+        offset?: number;
+        limit?: number;
+        search?: string;
+        orderBy?: "createdAt" | "updatedAt" | "displayName" | "lastLoginAt";
+        order?: "asc" | "desc";
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserForManage"][];
+        };
+      };
+    };
+  };
+  getUserStatsListManage: {
+    parameters: {
+      query: {
+        range: string;
+        offset?: number;
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserStatsResponse"][];
+        };
+      };
+    };
+  };
+  getUserStatsTotalManage: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["UserStatsResponse"];
         };
       };
     };

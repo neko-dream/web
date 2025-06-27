@@ -2,7 +2,7 @@ import { api } from "~/libs/openapi-fetch";
 
 type Props = {
   opinionID: string;
-  voteStatus: "agree" | "disagree" | "pass" | null;
+  voteStatus: "agree" | "disagree" | "pass";
 };
 
 export const postVote = ({ opinionID, voteStatus }: Props) => {

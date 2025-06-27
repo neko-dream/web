@@ -8,6 +8,7 @@ import "simplebar-react/dist/simplebar.min.css";
 
 type Props = {
   sessionID: string;
+  aliasName?: string;
   onClose: () => void;
   onConform: () => void;
 };
