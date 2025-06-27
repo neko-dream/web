@@ -34,7 +34,7 @@ export const ConfiromDialog = ({
             <button
               type="button"
               onClick={onSubmitDelete}
-              className="cursor-pointer text-mt-red"
+              className="cursor-pointer text-cs-caution"
             >
               削除する
             </button>
@@ -43,7 +43,7 @@ export const ConfiromDialog = ({
             <button
               type="button"
               onClick={onSubmitHold}
-              className="cursor-pointer text-mt-blue-600"
+              className="cursor-pointer text-cs-blue-600"
             >
               保留にする
             </button>

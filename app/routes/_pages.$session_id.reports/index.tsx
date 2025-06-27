@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useRevalidator } from "react-router";
 import { toast } from "react-toastify";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.$session_id.reports/+types";
 import { ConfiromDialog } from "./components/ConfirmDialog";
 import { ReportCard } from "./components/ReportCard";

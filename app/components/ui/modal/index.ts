@@ -1,3 +1,3 @@
 export { CenterDialog } from "./CenterDialog";
-export { HalfButtomDialog } from "./HalfButtomDialog";
+export { HalfBottomDialog } from "./HalfBottomDialog";
 export type { ModalProps } from "./types";

@@ -1,10 +1,11 @@
 import dayjs from "dayjs";
+import { JST } from "~/libs/dayjs";
 
 /**
  * YYYY-MM-DD to YYYYMMDDに変換する関数
  * - 日付を受け取るときにAPIが現状なってるための対応
  */
-export const removeHyphens = (date?: number) => {
+export const removeHyphens = (date?: string) => {
   try {
     const formattedDate = dayjs(date).format("YYYYMMDD");
     if (formattedDate === "Invalid Date") {
@@ -25,5 +26,14 @@ export const formatDate = (str?: string) => {
     // biome-ignore lint/performance/useTopLevelRegex: <explanation>
     /^(\d{4})(\d{2})(\d{2})$/,
     "$1-$2-$3",
-  ) as unknown as number;
+  );
+};
+
+/**
+ * 日付が現在時刻より前かどうかを判定する関数
+ * @param date YYYY-MM-DD形式の文字列
+ * @returns
+ */
+export const isEnd = (date?: string) => {
+  return JST(date).isBefore(JST(dayjs()));
 };

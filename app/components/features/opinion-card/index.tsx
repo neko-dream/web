@@ -1,8 +1,8 @@
 import { type ComponentProps, createElement } from "react";
 import { tv } from "tailwind-variants";
-import { JST } from "~/libs/date";
-import type { UserType, VoteType } from "~/types";
-import { Message, More, Notification } from "../../icons";
+import { JST } from "~/libs/dayjs";
+import type { User, VoteType } from "~/types";
+import { LineChart, Message, More, Notification } from "../../icons";
 import { Avatar, AvatarSkeleton } from "../../ui/avatar";
 import { Button } from "../../ui/button";
 import { Popover } from "../../ui/popover";
@@ -11,7 +11,7 @@ type Props = Omit<ComponentProps<"div">, "children"> & {
   description: string;
   status?: VoteType | null;
   href?: string;
-  user: UserType;
+  user: User;
   date: string;
   isJudgeButton?: boolean;
   isMoreButton?: boolean;
@@ -75,7 +75,9 @@ export const Card = ({
               {JST(date).format("YYYY/MM/DD HH:mm")}
             </p>
             <p
-              className={`mt-2 whitespace-break-spaces break-all text-[#4e4d4b] ${isAllText ? "" : "line-clamp-3"}`}
+              className={`mt-2 whitespace-break-spaces break-all text-[#4e4d4b] ${
+                isAllText ? "" : "line-clamp-3"
+              }`}
             >
               {description}
             </p>
@@ -129,20 +131,20 @@ export const Card = ({
         <Popover buttonLabel={<More className="w-6 text-gray-600" />}>
           <div className="flex flex-col px-3 py-1">
             {/* FIXME: 一旦コメントアウト */}
-            {/* <button
+            <button
               onClick={() => onClickAnalytics?.()}
               type="button"
               className="flex cursor-pointer space-x-2 border-gray-200 border-b py-2 text-[#8E8E93]"
             >
               <LineChart />
               <span>分析</span>
-            </button> */}
+            </button>
             <button
               onClick={() => onClickReport?.()}
               type="button"
-              className="flex cursor-pointer space-x-2 py-2 text-[#FF3B30]"
+              className="flex cursor-pointer space-x-2 py-2 text-cs-caution"
             >
-              <Notification className="fill-[#FF3B30]" />
+              <Notification className="fill-cs-caution" />
               <span>通報</span>
             </button>
           </div>

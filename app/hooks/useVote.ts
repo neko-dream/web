@@ -1,17 +1,20 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { api } from "~/libs/api";
+import { api } from "~/libs/openapi-fetch";
 
-export type RequestModalState = Array<"demography" | "consent">;
+export type RequestModalState = Array<"demography" | "consent" | "signup">;
 
 export const useSatisfiedStore = create<{
+  nextPath?: string;
   isRequestModal: RequestModalState;
   setIsRequestModal: (isRequestModal: RequestModalState) => void;
+  setNextPath: (nextPath?: string) => void;
 }>((set) => ({
   isRequestModal: [],
   setIsRequestModal: (isRequestModal: RequestModalState) => {
     set({ isRequestModal });
   },
+  setNextPath: (nextPath?: string) => set({ nextPath }),
 }));
 
 type Props = {
@@ -19,15 +22,14 @@ type Props = {
 };
 
 export const useVote = ({ sessionID }: Props) => {
-  const setIsRequestModal = useSatisfiedStore(
-    (state) => state.setIsRequestModal,
-  );
+  const { setIsRequestModal, setNextPath } = useSatisfiedStore();
 
   useEffect(() => {
     return () => setIsRequestModal([]);
   }, [sessionID]);
 
-  const check = async () => {
+  const check = async (nextPath?: string) => {
+    setNextPath(nextPath);
     //　同意済みなら何もしない
     // 動作確認取れてないので一旦コメントアウト
     // if (window.localStorage.getItem(`satisfied-${sessionID}`)) {
@@ -35,14 +37,21 @@ export const useVote = ({ sessionID }: Props) => {
     // }
 
     // セッションに同意しているかどうか
-    const { data } = await api.GET("/talksessions/{talkSessionID}/consent", {
-      credentials: "include",
-      params: {
-        path: {
-          talkSessionID: sessionID,
+    const { data, error } = await api.GET(
+      "/talksessions/{talkSessionID}/consent",
+      {
+        credentials: "include",
+        params: {
+          path: {
+            talkSessionID: sessionID,
+          },
         },
       },
-    });
+    );
+    if (error?.code === "AUTH-0000") {
+      setIsRequestModal(["signup"]);
+      return "non-satisfied";
+    }
 
     // デモぐらが足りていなければデモグラのフラグを立てる
     const { data: restrictionsRequired } = await api.GET(

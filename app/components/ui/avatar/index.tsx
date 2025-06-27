@@ -5,13 +5,13 @@ type Props = ComponentProps<"picture"> & {
   src?: string | null;
 };
 
-const avator = tv({
+const avatar = tv({
   base: "block h-10 w-10 rounded-full",
 });
 
 export const Avatar = ({ className, src, ...props }: Props) => {
   return (
-    <picture {...props} className={avator({ className })}>
+    <picture {...props} className={avatar({ className })}>
       <source srcSet={src || ""} />
       <img
         src={"/default_icon.png"}

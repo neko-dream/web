@@ -14,7 +14,7 @@ const tabs = tv({
 });
 
 const link = tv({
-  base: "relative flex h-full w-40 items-center justify-center font-bold text-mt-gray-500 text-sm",
+  base: "relative flex h-full w-40 items-center justify-center font-bold text-cs-gray-500 text-sm",
   variants: {
     isActive: {
       true: "before:-translate-x-1/2 text-black before:absolute before:bottom-0 before:left-1/2 before:h-1 before:w-3/4 before:transform before:rounded-full before:bg-cyan-500",

@@ -1,7 +1,13 @@
 import type { ComponentProps, ReactNode } from "react";
 import { tv } from "tailwind-variants";
 
-type Variants = "primary" | "agree" | "disagree" | "pass" | "disabled";
+type Variants =
+  | "primary"
+  | "agree"
+  | "green"
+  | "disagree"
+  | "pass"
+  | "disabled";
 
 export type Button = ComponentProps<"button"> & {
   children: ReactNode;
@@ -9,13 +15,14 @@ export type Button = ComponentProps<"button"> & {
 };
 
 export const button = tv({
-  base: "h-13 cursor-pointer rounded-2xl px-6 text-center font-bold text-white disabled:opacity-80",
+  base: "h-13 cursor-pointer rounded-2xl px-6 text-center font-bold text-white disabled:opacity-40",
   variants: {
     color: {
       primary: "primary-gradient",
-      agree: "border-[#32ADE6] bg-[#32ADE6]",
-      disagree: "border-[#FF2D55] bg-[#FF2D55]",
-      pass: "border-[#AF52DE] bg-[#AF52DE]",
+      agree: "border-cs-agree bg-cs-agree",
+      disagree: "border-cs-disagree bg-cs-disagree",
+      pass: "border-cs-pass bg-cs-pass",
+      green: "border-cs-green bg-cs-green",
       disabled: "border-2 border-gray-200 bg-white text-gray-300",
     } satisfies { [X in Variants]: string },
     outline: {

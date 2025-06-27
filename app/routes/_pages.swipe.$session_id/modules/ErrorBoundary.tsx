@@ -2,7 +2,7 @@ import type { JSX } from "react";
 import { Link, isRouteErrorResponse, useRouteError } from "react-router";
 import { ErrorView } from "~/components/layouts/error";
 import { button } from "~/components/ui/button";
-import { forbidden } from "~/libs/response";
+import { forbidden } from "~/utils/response";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
@@ -26,7 +26,7 @@ export function ErrorBoundary(): JSX.Element {
     <ErrorView>
       <p className="text-gray-700">正常にデータを取得できませんでした🙇‍♀️</p>
       <Link
-        to={"../opinion"}
+        to={"../opinions"}
         className={button({
           color: "primary",
           className: "mx-auto mt-6 block whitespace-nowrap",
