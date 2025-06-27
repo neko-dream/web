@@ -32,12 +32,12 @@ export const Label = ({
         <p className="font-bold">{title}</p>
         {tip && tip}
       </div>
-      {children}
       {notes?.map((v, i) => (
-        <p key={i} className="text-mt-gray-600 text-sm">
+        <p key={i} className="text-cs-gray-600 text-sm">
           {v}
         </p>
       ))}
+      {children}
       {errors?.map((v, i) => {
         return (
           <div key={i} className="flex items-center space-x-1">

@@ -1,4 +1,4 @@
-import { type ComponentProps, type ForwardedRef, forwardRef } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type variants = "optional" | "required";
@@ -17,15 +17,16 @@ const tip = tv({
   } satisfies { [x in variants]: object },
 });
 
-function Tip(
-  { required, optional, label, className, ...props }: Props,
-  ref: ForwardedRef<HTMLParagraphElement>,
-) {
+export const Tip = ({
+  required,
+  optional,
+  label,
+  className,
+  ...props
+}: Props) => {
   return (
-    <p {...props} ref={ref} className={tip({ className, optional, required })}>
+    <p {...props} className={tip({ className, optional, required })}>
       {label}
     </p>
   );
-}
-
-export default forwardRef(Tip);
+};

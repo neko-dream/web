@@ -6,21 +6,23 @@ import {
   useNavigate,
   useOutletContext,
 } from "react-router";
-import Graph from "~/components/features/opinion-graph";
-import { Edit, Notification, PieChart } from "~/components/icons";
-import { List } from "~/components/ui/acordion";
+import { Left, Notification } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { useSatisfiedStore, useVote } from "~/hooks/useVote";
-import { useWindowResize } from "~/hooks/useWindowResize";
-import { JST } from "~/libs/date";
-import { notfound } from "~/libs/response";
+import { JST } from "~/libs/dayjs";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { RouteContext, SessionRouteContext } from "~/types/ctx";
-import { ConsentModal } from "./components/ConsentModal";
+import { isEnd } from "~/utils/format-date";
+import { notfound } from "~/utils/response";
+import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
-import { DemographicsModal } from "./components/DemographicsModal";
+import { EditButton } from "./components/EditButton";
+import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton";
 import { RequestsModal } from "./components/RequestsModal";
+import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
+import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
+import { SignupModalContent } from "./components/RequestsModal/components/SignupModalContent";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -71,17 +73,14 @@ const Contents = ({
 }: Props) => {
   const tabs = [
     { label: "内容", href: `/${session.id}` },
-    { label: "意見", href: `/${session.id}/opinion` },
-    { label: "レポート", href: `/${session.id}/analysis` },
+    { label: "意見", href: `/${session.id}/opinions` },
+    { label: "分析", href: `/${session.id}/analysis` },
   ];
 
   const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
-  const windowWidth = useWindowResize(374);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal } = useSatisfiedStore(
-    (state) => state,
-  );
+  const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
 
   useEffect(() => {
     $user.then((user) => {
@@ -90,9 +89,9 @@ const Contents = ({
       }
       const ownerTabs = [
         ...tabs,
-        // FIXME: ここは一旦コメントアウト
-        // { label: "活動報告", href: `/${session.id}/conclusion` },
+        { label: "活動報告", href: `/${session.id}/conclusion` },
         { label: "通報", href: `/${session.id}/reports` },
+        { label: "設定", href: `/${session.id}/config` },
       ];
       setTabItems(ownerTabs);
     });
@@ -104,15 +103,15 @@ const Contents = ({
 
   const handleMoveCreateOpinionPage = async (e: MouseEvent) => {
     e.preventDefault();
-    const result = await check();
+    const result = await check(`/make/${session.id}/opinions/new`);
     if (result === "satisfied") {
-      navigate(`/create/${session.id}/opinion`);
+      navigate(`/make/${session.id}/opinions/new`);
     }
   };
 
   const handleMoveSwipePage = async (e: MouseEvent) => {
     e.preventDefault();
-    const result = await check();
+    const result = await check(`/swipe/${session.id}`);
     if (result === "satisfied") {
       navigate(`/swipe/${session.id}`);
     }
@@ -122,89 +121,28 @@ const Contents = ({
     <>
       <div className="mx-auto mt-2 flex w-full max-w-4xl flex-col space-y-2 px-4 py-2">
         <div className="flex items-center">
-          <p className="font-bold text-base md:text-3xl">{session.theme}</p>
+          <Link to="/home">
+            <Left className="fill-gray-600" />
+          </Link>
+          <p className="ml-2 font-bold text-base md:text-3xl">
+            {session.theme}
+          </p>
           <Suspense>
-            <Await resolve={$user}>
-              {(user) => {
-                if (user?.displayID !== session.owner.displayID) {
-                  return null;
-                }
-                return (
-                  <Link
-                    to={`/create/session/${session.id}`}
-                    className="ml-2 cursor-pointer"
-                  >
-                    <Edit />
-                  </Link>
-                );
-              }}
-            </Await>
+            <EditButton $user={$user} session={session} />
           </Suspense>
         </div>
 
         <Suspense>
-          <Await resolve={$positions}>
-            {({ data }) => {
-              if (data?.positions.length === 0) {
-                return null;
-              }
-
-              return (
-                <List
-                  className="block bg-gray-100 md:hidden"
-                  title={
-                    <div className="flex items-center space-x-2">
-                      <PieChart />
-                      <p>参加者のグラフ</p>
-                    </div>
-                  }
-                >
-                  <div className="flex w-full justify-center rounded bg-white p-2 md:block">
-                    <Graph
-                      polygons={data?.positions}
-                      positions={data?.positions}
-                      myPosition={data?.myPosition}
-                      // 両方のpadding分
-                      windowWidth={windowWidth - 64}
-                      selectGroupId={(_id: number) => {}}
-                      background={0xffffff}
-                    />
-                  </div>
-                </List>
-              );
-            }}
-          </Await>
+          <AccordionParticipantGraph $positions={$positions} />
         </Suspense>
 
         <Suspense>
-          <Await resolve={$remainingCount}>
-            {(count) => {
-              return (
-                <Await resolve={$user}>
-                  {(user) => {
-                    if (!user || count === 0) {
-                      return;
-                    }
-
-                    return (
-                      <button
-                        type="button"
-                        onClick={handleMoveSwipePage}
-                        className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
-                      >
-                        <span className="primary-gradient inline-block text-clip">
-                          みんなの意見を見る
-                        </span>
-                        <span className="-top-2 absolute right-0 flex h-6 w-6 items-center justify-center rounded-full bg-mt-red p-1 text-sm text-white">
-                          {count}
-                        </span>
-                      </button>
-                    );
-                  }}
-                </Await>
-              );
-            }}
-          </Await>
+          <LookupOtherOpinionButton
+            $remainingCount={$remainingCount}
+            $user={$user}
+            onClick={handleMoveSwipePage}
+            className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
+          />
         </Suspense>
 
         <div className="flex items-center space-x-2">
@@ -216,13 +154,13 @@ const Contents = ({
 
         <div className="text-blue-500 text-sm">
           {session.restrictions.length === 0 ? (
-            <div className="flex items-center ">
-              <Notification className="fill-mt-blue-600" />
+            <div className="flex items-center">
+              <Notification className="fill-cs-blue-600" />
               <p className="ml-2">誰でも参加OK</p>
             </div>
           ) : (
-            <div className="flex items-start space-x-2">
-              <p className="inline-block whitespace-nowrap rounded bg-mt-blue-50 px-2 py-1">
+            <div className="flex items-center space-x-2">
+              <p className="inline-block whitespace-nowrap rounded bg-cs-blue-50 px-2 py-1">
                 入力済対象
               </p>
               <div className="flex flex-wrap items-center">
@@ -264,7 +202,9 @@ const Contents = ({
           </Await>
         </Suspense>
         <div className="fixed right-4 bottom-4 z-10">
-          <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
+          {!isEnd(session.scheduledEndTime) && (
+            <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
+          )}
         </div>
       </div>
 
@@ -276,7 +216,7 @@ const Contents = ({
         {(state, next) => {
           if (state === "consent") {
             return (
-              <ConsentModal
+              <ConsentModalContent
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
                 onConform={next}
@@ -285,12 +225,16 @@ const Contents = ({
           }
           if (state === "demography") {
             return (
-              <DemographicsModal
+              <DemographicsModalContent
                 $restrictions={$restrictions}
                 sessionID={session.id}
                 onClose={handleCloseRequestModal}
+                nextPath={nextPath}
               />
             );
+          }
+          if (state === "signup") {
+            return <SignupModalContent />;
           }
         }}
       </RequestsModal>

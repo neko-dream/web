@@ -1,4 +1,4 @@
-import { type ComponentProps, type ForwardedRef, forwardRef } from "react";
+import type { ComponentProps } from "react";
 import { tv } from "tailwind-variants";
 
 type Props = ComponentProps<"textarea"> & {
@@ -8,17 +8,10 @@ type Props = ComponentProps<"textarea"> & {
 const textarea = tv({
   base: "w-full rounded-md border border-gray-300 bg-white px-2 py-1 text-sm",
   variants: {
-    error: { true: "border-red-500" },
+    error: { true: "border-red-500 bg-red-50" },
   },
 });
 
-function Textarea(
-  { className, error, ...props }: Props,
-  ref: ForwardedRef<HTMLTextAreaElement>,
-) {
-  return (
-    <textarea {...props} ref={ref} className={textarea({ className, error })} />
-  );
-}
-
-export default forwardRef(Textarea);
+export const Textarea = ({ className, error, ...props }: Props) => {
+  return <textarea {...props} className={textarea({ className, error })} />;
+};

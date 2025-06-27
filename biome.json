@@ -12,6 +12,16 @@
     "indentStyle": "space",
     "indentWidth": 2
   },
+  "javascript": {
+    "formatter": {
+      "trailingCommas": "all"
+    }
+  },
+  "json": {
+    "formatter": {
+      "trailingCommas": "none"
+    }
+  },
   "organizeImports": {
     "enabled": true
   },
@@ -19,7 +29,8 @@
     "enabled": true,
     "ignore": [
       "app/components/features/opinion-graph",
-      "tools/kotohiro.openapi.yaml"
+      "tools/kotohiro.openapi.yaml",
+      "app/components/features/date-scroll-picker"
     ],
     "rules": {
       "all": true,

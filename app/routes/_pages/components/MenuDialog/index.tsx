@@ -52,11 +52,11 @@ const menu = [
   },
   {
     title: "ことひろとは",
-    path: "/about",
+    path: "/guide/about",
   },
   {
     title: "お問い合わせ",
-    path: "/contact",
+    path: "/guide/contact",
   },
 ];
 

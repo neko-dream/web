@@ -4,7 +4,7 @@ import prefectures from "~/assets/data/adress/prefectures.json";
 import birthday from "~/assets/data/birthday.json";
 import gender from "~/assets/data/gender.json";
 import occupation from "~/assets/data/occupation.json";
-import Select from ".";
+import { Select } from ".";
 
 const meta: Meta<typeof Select> = {
   component: Select,
@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    error: true,
+    error: false,
     options: [...new Array(30)].map((_, i) => ({
       value: `${i}`,
       title: `${i}個目の北海道!!`,

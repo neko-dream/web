@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import Tip from ".";
+import { Tip } from ".";
 
 const meta: Meta<typeof Tip> = {
   component: Tip,

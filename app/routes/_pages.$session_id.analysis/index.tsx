@@ -1,13 +1,13 @@
 import { Suspense, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Await, Link, useOutletContext } from "react-router";
-import { Card } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { Arrow } from "~/components/icons";
 import { GroupTabs } from "~/components/ui/group-tabs";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
 import type { SessionRouteContext } from "~/types/ctx";
+import { OpinionList } from "./components/OpinionList";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -33,7 +33,7 @@ export default function Page({
   const windowWidth = useWindowResize(374);
 
   // グループ名を取得する関数
-  const handleSlectGroup = (id: number) => {
+  const handleSelectGroup = (id: number) => {
     setActiveTab(GROUP_NAME_MAP[id]);
   };
 
@@ -67,7 +67,7 @@ export default function Page({
                   </article>
                   {data?.report && (
                     <Link
-                      to={`/report/${session.id}`}
+                      to={`/${session.id}/analysis/details`}
                       className="m-2 flex items-center justify-end text-blue-400 text-xs"
                     >
                       <span className="mr-1">詳しくみる</span>
@@ -100,14 +100,13 @@ export default function Page({
 
               return (
                 <>
-                  <div className="mx-auto mt-2 block w-full max-w-2xl rounded bg-white p-2 md:hidden">
+                  <div className="mx-auto mt-2 block w-full max-w-2xl rounded p-2 md:hidden">
                     <Graph
                       polygons={data?.positions}
                       positions={data?.positions}
                       myPosition={data?.myPosition}
                       windowWidth={windowWidth - 48}
-                      selectGroupId={handleSlectGroup}
-                      background={0xffffff}
+                      selectGroupId={handleSelectGroup}
                     />
                   </div>
 
@@ -126,28 +125,11 @@ export default function Page({
 
         <div className="mt-2 flex flex-col space-y-2">
           <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                // 選択されているグループのみ抽出
-                const selectedGroup = data?.groupOpinions.find((group) => {
-                  return group.groupName === activeTab;
-                });
-
-                return selectedGroup?.opinions.map(({ opinion, user }, i) => {
-                  return (
-                    <Card
-                      href={`/opinion/${opinion.id}/${session.id}`}
-                      key={i}
-                      title={opinion.title}
-                      description={opinion.content}
-                      user={user}
-                      date={opinion.postedAt}
-                      className="mx-auto w-full max-w-2xl"
-                    />
-                  );
-                });
-              }}
-            </Await>
+            <OpinionList
+              $positions={$positions}
+              sessionID={session.id}
+              activeTab={activeTab}
+            />
           </Suspense>
         </div>
       </div>
@@ -167,7 +149,7 @@ export default function Page({
                   positions={data?.positions}
                   myPosition={data?.myPosition}
                   windowWidth={330}
-                  selectGroupId={handleSlectGroup}
+                  selectGroupId={handleSelectGroup}
                   background={0xffffff}
                 />
               </div>

@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router";
-import { api } from "~/libs/api";
-import { forbidden } from "~/libs/response";
+import { api } from "~/libs/openapi-fetch";
+import { forbidden } from "~/utils/response";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { data } = await api.GET("/user", {
