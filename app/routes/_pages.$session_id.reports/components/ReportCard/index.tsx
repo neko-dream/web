@@ -3,7 +3,7 @@ import { Avatar } from "~/components/ui/avatar";
 import { JST } from "~/libs/dayjs";
 import type { components } from "~/types/openapi";
 
-type Props = components["schemas"]["reportDetail"] & {
+type Props = components["schemas"]["ReportDetail"] & {
   onSubmitDelete: (id: string) => void;
   onSubmitHold: (id: string) => void;
 };

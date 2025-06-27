@@ -5,7 +5,7 @@ import { ClockCircle, Environment, Message } from "../../icons";
 import { Avatar } from "../../ui/avatar";
 
 type Props = {
-  talkSession: components["schemas"]["talkSession"];
+  talkSession: components["schemas"]["TalkSession"];
   opinionCount: number;
 };
 

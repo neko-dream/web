@@ -218,6 +218,7 @@ const Contents = ({
             return (
               <ConsentModalContent
                 sessionID={session.id}
+                aliasName={session.organizationAlias?.aliasName}
                 onClose={handleCloseRequestModal}
                 onConform={next}
               />

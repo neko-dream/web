@@ -46,7 +46,7 @@ export const useVote = ({ sessionID }: Props) => {
             talkSessionID: sessionID,
           },
         },
-      },
+      }
     );
     if (error?.code === "AUTH-0000") {
       setIsRequestModal(["signup"]);
@@ -63,7 +63,7 @@ export const useVote = ({ sessionID }: Props) => {
             talkSessionID: sessionID,
           },
         },
-      },
+      }
     );
 
     // 同意モーダルだけ出してデモグラモーダルは出さない
@@ -95,7 +95,7 @@ export const useVote = ({ sessionID }: Props) => {
     status,
   }: {
     opinionID: string;
-    status: "agree" | "disagree" | "pass" | null;
+    status: "agree" | "disagree" | "pass";
   }) => {
     const result = await check();
     if (result === "non-satisfied") {
