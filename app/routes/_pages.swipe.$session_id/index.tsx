@@ -286,13 +286,12 @@ export default function Page({
 
   return (
     <div className="relative flex min-h-screen w-full flex-col bg-[#F2F2F7]">
-      <Link
-        className="flex w-full cursor-pointer items-center bg-white p-2 font-bold text-[18px]"
-        to={`/${session?.id}/analysis`}
-      >
-        <Left className="text-black" />
-        <span className="-translate-x-[13.5px] mx-auto">{session?.theme}</span>
-      </Link>
+      <div className="flex items-center bg-white p-2">
+        <Link to={`/${session.id}`}>
+          <Left className="fill-gray-600" />
+        </Link>
+        <span className="mx-auto pr-6 font-bold">{session.theme}</span>
+      </div>
 
       <span className="mx-[2%] block">
         <List
