@@ -161,7 +161,7 @@ export default function Page({
             {...getInputProps(fields.displayID, { type: "text" })}
             error={isFieldsError(fields.displayID.errors)}
             className="h-12 w-full px-4"
-            placeholder="例）koto-taro1234"
+            placeholder="例）kototaro1234"
           />
         </Label>
 
