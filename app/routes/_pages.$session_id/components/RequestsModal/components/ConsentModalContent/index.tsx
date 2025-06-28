@@ -15,7 +15,6 @@ type Props = {
 
 export const ConsentModalContent = ({
   sessionID,
-  aliasName,
   onConform,
   onClose,
 }: Props) => {
@@ -49,7 +48,7 @@ export const ConsentModalContent = ({
         className="mt-4 whitespace-pre-line rounded-md bg-gray-50 p-2 text-xs"
         autoHide={false}
       >
-        {CONSENT_MODAL_TEXT(aliasName)}
+        {CONSENT_MODAL_TEXT("鯖江市")}
       </SimpleBar>
       <div className="mt-4">
         <Checkbox
