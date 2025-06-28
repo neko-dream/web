@@ -65,7 +65,7 @@ export default function Page({
         ? value.restrictions
         : value.restrictions
           ? [value.restrictions]
-          : [];
+          : ("[]" as unknown as never[]);
 
       if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
