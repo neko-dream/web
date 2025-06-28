@@ -48,7 +48,7 @@ export const ConsentModalContent = ({
         className="mt-4 whitespace-pre-line rounded-md bg-gray-50 p-2 text-xs"
         autoHide={false}
       >
-        {CONSENT_MODAL_TEXT("鯖江市")}
+        {CONSENT_MODAL_TEXT("鯖江市役所")}
       </SimpleBar>
       <div className="mt-4">
         <Checkbox
