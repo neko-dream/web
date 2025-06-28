@@ -283,7 +283,7 @@ export default function Page({
 
   const handleSubmitVote = async (opinionStatus: VoteType) => {
     // カードをアニメーションで移動
-    const card = cardsRef.current[cardsRef.current.length - swipeCount - 1];
+    const card = cardsRef.current[swipeCount];
 
     if (!card) {
       return;
@@ -295,39 +295,43 @@ export default function Page({
     let backgroundColor = "transparent";
     let opacity = 0;
 
-    // ヘルパー関数
-    const setAgreeStyle = () => {
-      x = window.innerWidth + 200;
-      rotation = 15;
-      backgroundColor = "blue";
-      opacity = 0.7;
-    };
-
-    const setDisagreeStyle = () => {
-      x = -window.innerWidth - 200;
-      rotation = -15;
-      backgroundColor = "red";
-      opacity = 0.7;
-    };
-
-    const setPassStyle = () => {
-      y = window.innerHeight + 200;
-    };
-
     // 各ケースで単一のステートメントだけを使用
     switch (opinionStatus) {
-      case "agree":
-        setAgreeStyle();
+      case "agree": {
+        x = window.innerWidth + 200;
+        rotation = 15;
+        backgroundColor = "blue";
+        opacity = 0.7;
         break;
-      case "disagree":
-        setDisagreeStyle();
+      }
+      case "disagree": {
+        x = -window.innerWidth - 200;
+        rotation = -15;
+        backgroundColor = "red";
+        opacity = 0.7;
         break;
-      case "pass":
-        setPassStyle();
+      }
+      case "pass": {
+        y = window.innerHeight + 200;
         break;
+      }
       default:
         break;
     }
+
+    // カードの状態を即座に更新して重なりを表示
+    setCardsState((prev) =>
+      prev.map((state, i) => {
+        if (i === swipeCount) {
+          return {
+            ...state,
+            backgroundColor,
+            opacity,
+          };
+        }
+        return state;
+      }),
+    );
 
     gsap.to(card, {
       x,
@@ -335,34 +339,32 @@ export default function Page({
       rotation,
       duration: 0.7,
       ease: "power2.out",
+      onComplete: () => {
+        // アニメーション完了後に最終状態を更新
+        setCardsState((prev) =>
+          prev.map((state, i) => {
+            if (i === swipeCount) {
+              return {
+                ...state,
+                x,
+                y,
+                rotation,
+                backgroundColor,
+                opacity,
+              };
+            }
+            return state;
+          }),
+        );
+      },
     });
-
-    // カードの状態を更新
-    setCardsState((prev) =>
-      prev.map((state, i) => {
-        // インデックスが一致する場合は状態を更新
-        if (i === swipeCount) {
-          return {
-            ...state,
-            x,
-            y,
-            rotation,
-            backgroundColor,
-            opacity,
-          };
-        }
-
-        // 一致しない場合は元の状態を維持
-        return state;
-      }),
-    );
 
     // ユーザーコールバックを呼び出し
     handleSwipe({ opinionStatus });
   };
 
   return (
-    <div className="contents overflow-x-hidden">
+    <div className="overflow-x-hidden">
       <div className="relative flex min-h-screen w-full flex-col bg-[#F2F2F7]">
         <div className="flex items-center bg-white p-2">
           <Link to={`/${session.id}`}>
