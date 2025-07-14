@@ -364,8 +364,8 @@ export default function Page({
   };
 
   return (
-    <div className="overflow-x-hidden">
-      <div className="relative flex min-h-screen w-full flex-col bg-[#F2F2F7]">
+    <div className="bg-[#F2F2F7]">
+      <div className="relative flex min-h-screen w-full flex-col overflow-hidden bg-[#F2F2F7]">
         <div className="flex items-center bg-white p-2">
           <Link to={`/${session.id}`}>
             <Left className="fill-gray-600" />
@@ -480,7 +480,14 @@ export default function Page({
           })}
         </div>
 
-        <div className="sticky bottom-12 z-50 mx-4 mt-auto flex justify-around rounded-t-md bg-white/80 pt-3 pb-3">
+        <HintSwipeModal
+          isOpen={isHintModalOpen}
+          onOpenChange={setIsHintModalOpen}
+        />
+      </div>
+
+      <div className="sticky z-50 bottom-0 w-full p-4 rounded-md">
+        <div className="flex justify-around bg-white/80 pt-3">
           <div className="flex flex-col items-center">
             <button
               type="button"
@@ -533,16 +540,11 @@ export default function Page({
         <button
           type="button"
           onClick={() => setIsHintModalOpen(true)}
-          className="sticky bottom-4 z-50 mx-4 mb-2 flex items-center justify-center rounded-b-md bg-white/80 pb-2"
+          className="w-full flex items-center justify-center bg-white/80 py-2"
         >
           <InfoCircle />
           <span className="text-blue-500 text-sm">この画面の操作ヒント</span>
         </button>
-
-        <HintSwipeModal
-          isOpen={isHintModalOpen}
-          onOpenChange={setIsHintModalOpen}
-        />
       </div>
     </div>
   );

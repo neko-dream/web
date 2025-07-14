@@ -466,6 +466,8 @@ class GraphRenderer {
 
     if (this.drawingData.myPositionData?.iconURL) {
       imagesToLoad.add(this.drawingData.myPositionData.iconURL);
+    } else {
+      imagesToLoad.add("/default_icon_half.png");
     }
 
     this.drawingData.dots?.forEach((dot: any) => {
@@ -660,15 +662,11 @@ class GraphRenderer {
   private drawMyPosition() {
     const { myPositionData } = this.drawingData;
 
-    if (
-      myPositionData &&
-      myPositionData.x !== undefined &&
-      myPositionData.iconURL
-    ) {
+    if (myPositionData && myPositionData.x !== undefined) {
       this.drawAvatar(
         myPositionData.x,
         myPositionData.y,
-        myPositionData.iconURL,
+        myPositionData.iconURL ?? "/default_icon_half.png",
         1.5,
         true,
       );
