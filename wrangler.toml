@@ -8,7 +8,7 @@ preview_urls = false
 
 [vars]
 APP_URL = "https://local.kotohiro.com:3000"
-API_URL = "https://api-dev.kotohiro.com"
+API_URL = "https://api.dev.kotohiro.com"
 
 # 開発環境の設定
 [env.develop]
@@ -19,7 +19,7 @@ routes = [
 
 [env.develop.vars]
 APP_URL = "https://develop.kotohiro.com"
-API_URL = "https://api-dev.kotohiro.com"
+API_URL = "https://api.dev.kotohiro.com"
 
 # ステージング環境の設定
 [env.staging]
