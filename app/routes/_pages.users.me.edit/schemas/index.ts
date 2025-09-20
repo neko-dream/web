@@ -7,5 +7,5 @@ export const userEditSchema = object({
   prefecture: optional(string()),
   icon: optional(instance(File)),
   gender: optional(genderSchema),
-  birth: optional(string()),
+  dateOfBirth: optional(string()),
 });

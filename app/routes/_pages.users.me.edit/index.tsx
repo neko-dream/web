@@ -44,7 +44,7 @@ export default function Page({
   const [form, fields] = useForm<InferOutput<typeof userEditSchema>>({
     defaultValue: {
       displayName: user.displayName,
-      birth: demographics.dateOfBirth?.toString(),
+      dateOfBirth: demographics.dateOfBirth?.toString(),
       city: demographics.city,
       prefecture: demographics.prefecture,
       gender: demographics.gender,
@@ -62,8 +62,8 @@ export default function Page({
           body: {
             ...submission?.payload,
             dateOfBirth: submission?.payload.birth
-              ? removeHyphens(submission?.payload.birth as string)
-              : undefined,
+              ? removeHyphens(submission?.payload.birth as string) 
+              : null,
             icon: await fileCompress(submission?.payload.icon as File),
           },
         });
@@ -100,7 +100,7 @@ export default function Page({
     inputFileRef.current?.click();
   };
 
-  const handleBarthControl = useInputControl(fields.birth);
+  const handleBarthControl = useInputControl(fields.dateOfBirth);
 
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center pb-12">
@@ -146,7 +146,7 @@ export default function Page({
           />
         </Label>
 
-        <Label title="誕生年" optional={true} errors={fields.birth.errors}>
+        <Label title="誕生年" optional={true} errors={fields.dateOfBirth.errors}>
           <InputDateByScrollPicker
             pickerUi="dialog"
             value={handleBarthControl.value || null}
