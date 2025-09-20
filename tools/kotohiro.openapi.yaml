@@ -14,6 +14,8 @@ tags:
   - name: image
   - name: test
   - name: health
+  - name: analysis
+  - name: notifications
   - name: manage
 paths:
   /auth/dev/detach:
@@ -223,18 +225,80 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: string
                 password:
                   type: string
                 email:
                   type: string
               required:
-                - id
                 - password
                 - email
       security:
         - {}
+      x-ogen-operation-group: Auth
+  /auth/reactivate:
+    post:
+      operationId: reactivateUser
+      summary: 退会ユーザーの復活
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  user:
+                    $ref: '#/components/schemas/User'
+                required:
+                  - message
+                  - user
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '403':
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+      tags:
+        - auth
       x-ogen-operation-group: Auth
   /auth/revoke:
     post:
@@ -252,10 +316,6 @@ paths:
                 type: array
                 items:
                   type: string
-          content:
-            application/json:
-              schema:
-                type: object
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -270,8 +330,6 @@ paths:
                 type: object
       tags:
         - auth
-      security:
-        - {}
       x-ogen-operation-group: Auth
   /auth/token/info:
     get:
@@ -515,6 +573,287 @@ paths:
               required:
                 - image
       x-ogen-operation-group: Image
+  /notifications/devices:
+    post:
+      operationId: registerDevice
+      summary: デバイス登録/更新
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Device'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                device_token:
+                  type: string
+                platform:
+                  type: string
+                  enum:
+                    - ios
+                    - android
+                    - web
+                device_name:
+                  type: string
+                app_version:
+                  type: string
+                os_version:
+                  type: string
+              required:
+                - device_token
+                - platform
+        description: FCMトークンまたはAPNSトークン
+      x-ogen-operation-group: Notifications
+    get:
+      operationId: getDevices
+      summary: デバイス一覧取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  devices:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Device'
+                required:
+                  - devices
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      x-ogen-operation-group: Notifications
+  /notifications/devices/exists:
+    get:
+      operationId: checkDeviceExists
+      summary: デバイストークンが登録されているか確認
+      parameters:
+        - name: device_token
+          in: query
+          required: true
+          description: FCMトークンまたはAPNSトークン
+          schema:
+            type: string
+          explode: false
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  exists:
+                    type: boolean
+                required:
+                  - exists
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      x-ogen-operation-group: Notifications
+  /notifications/devices/{deviceId}:
+    delete:
+      operationId: deleteDevice
+      summary: デバイス削除
+      parameters:
+        - name: deviceId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      x-ogen-operation-group: Notifications
+  /notifications/preferences:
+    get:
+      operationId: getNotificationPreferences
+      summary: 通知設定取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      x-ogen-operation-group: Notifications
+    put:
+      operationId: updateNotificationPreferences
+      summary: 通知設定更新
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                push_notification_enabled:
+                  type: boolean
+                  nullable: true
+              required:
+                - push_notification_enabled
+            encoding:
+              push_notification_enabled:
+                contentType: application/json
+      x-ogen-operation-group: Notifications
+  /notifications/test:
+    post:
+      operationId: sendTestNotification
+      summary: テスト通知送信
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  devices_count:
+                    type: integer
+                    format: int32
+                  success_count:
+                    type: integer
+                    format: int32
+                required:
+                  - devices_count
+                  - success_count
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - notifications
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                device_id:
+                  type: string
+              required:
+                - title
+                - body
+      x-ogen-operation-group: Notifications
+  /notifications/vapid-key:
+    get:
+      operationId: getVapidKey
+      summary: VAPID公開鍵取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  vapid_key:
+                    type: string
+                required:
+                  - vapid_key
+      tags:
+        - notifications
+      x-ogen-operation-group: Notifications
   /opinions:
     post:
       operationId: postOpinionPost2
@@ -531,7 +870,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/Opinion'
         '400':
           description: The server could not understand the request due to invalid syntax.
           content:
@@ -571,18 +910,14 @@ paths:
               properties:
                 talkSessionID:
                   type: string
-                  nullable: true
                 parentOpinionID:
                   type: string
-                  nullable: true
                 title:
                   type: string
-                  nullable: true
                 opinionContent:
                   type: string
                 referenceURL:
                   type: string
-                  nullable: true
                 picture:
                   type: string
                   format: binary
@@ -592,14 +927,6 @@ paths:
               required:
                 - opinionContent
             encoding:
-              talkSessionID:
-                contentType: application/json
-              parentOpinionID:
-                contentType: application/json
-              title:
-                contentType: application/json
-              referenceURL:
-                contentType: application/json
               isSeed:
                 contentType: application/json
       x-ogen-operation-group: Opinion
@@ -863,7 +1190,9 @@ paths:
                 content:
                   type: string
                   nullable: true
-              required: []
+              required:
+                - reason
+                - content
             encoding:
               reason:
                 contentType: application/json
@@ -1007,12 +1336,9 @@ paths:
               type: object
               properties:
                 voteStatus:
-                  $ref: '#/components/schemas/VoteType'
+                  type: string
               required:
                 - voteStatus
-            encoding:
-              voteStatus:
-                contentType: application/json
       x-ogen-operation-group: Vote
   /organization/{code}/validate:
     get:
@@ -1126,6 +1452,7 @@ paths:
               properties:
                 name:
                   type: string
+                  description: 組織名
                 code:
                   type: string
                   description: |-
@@ -1136,6 +1463,10 @@ paths:
                   description: |-
                     組織タイプ
                     - 1: 通常（基本これ）
+                icon:
+                  type: string
+                  format: binary
+                  description: 組織アイコン
               required:
                 - name
                 - code
@@ -1337,6 +1668,133 @@ paths:
                 - displayID
                 - role
       x-ogen-operation-group: Organization
+  /organizations/switch/{code}:
+    post:
+      operationId: switchOrganization
+      summary: 組織切り替え
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          headers:
+            Set-Cookie:
+              required: true
+              description: SessionID
+              schema:
+                type: array
+                items:
+                  type: string
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - organization
+      x-ogen-operation-group: Organization
+  /organizations/users:
+    get:
+      operationId: getOrganizationUsers
+      summary: 現在の組織のユーザー一覧取得
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OrganizationUser'
+                required:
+                  - users
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - organization
+      x-ogen-operation-group: Organization
+  /organizations/{code}:
+    put:
+      operationId: updateOrganization
+      summary: 組織更新（組織のAdmin以上のユーザーのみ）
+      description: |-
+        組織を更新できる。
+        組織のAdmin以上のユーザーが実行可能。
+      parameters:
+        - name: code
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - organization
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: 組織名
+                icon:
+                  type: string
+                  format: binary
+                  description: 組織アイコン
+              required:
+                - name
+      x-ogen-operation-group: Organization
   /policy/consent:
     get:
       operationId: getPolicyConsentStatus
@@ -1403,6 +1861,41 @@ paths:
               required:
                 - policyVersion
       x-ogen-operation-group: Policy
+  /report/feedback:
+    post:
+      operationId: applyFeedbackToReport
+      summary: セッションのレポートにフィードバックを適用する
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - analysis
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                reportID:
+                  type: string
+                feedbackType:
+                  type: string
+              required:
+                - reportID
+                - feedbackType
+      x-ogen-operation-group: Analysis
   /talksessions:
     get:
       operationId: getTalkSessionList
@@ -1411,7 +1904,9 @@ paths:
         - name: limit
           in: query
           required: false
-          description: 1ページあたりの要素数
+          description: |-
+            ir
+            1ページあたりの要素数
           schema:
             type: integer
             nullable: true
@@ -1567,45 +2062,32 @@ paths:
                   format: date-time
                 latitude:
                   type: number
-                  nullable: true
                 longitude:
                   type: number
-                  nullable: true
                 city:
                   type: string
-                  nullable: true
                 prefecture:
                   type: string
-                  nullable: true
                 description:
                   type: string
-                  nullable: true
                 thumbnailURL:
                   type: string
-                  nullable: true
                 restrictions:
                   type: array
                   items:
                     type: string
                 aliasId:
                   type: string
+                hideTop:
+                  type: boolean
+                  nullable: true
               required:
                 - theme
                 - scheduledEndTime
             encoding:
-              latitude:
-                contentType: application/json
-              longitude:
-                contentType: application/json
-              city:
-                contentType: application/json
-              prefecture:
-                contentType: application/json
-              description:
-                contentType: application/json
-              thumbnailURL:
-                contentType: application/json
               restrictions:
+                contentType: application/json
+              hideTop:
                 contentType: application/json
       x-ogen-operation-group: TalkSession
   /talksessions/histories:
@@ -1859,31 +2341,24 @@ paths:
                   format: date-time
                 latitude:
                   type: number
-                  nullable: true
                 longitude:
                   type: number
                 prefecture:
                   type: string
-                  nullable: true
                 city:
                   type: string
-                  nullable: true
                 description:
                   type: string
-                  nullable: true
                 thumbnailURL:
                   type: string
+                hideTop:
+                  type: boolean
+                  nullable: true
               required:
                 - theme
                 - scheduledEndTime
             encoding:
-              latitude:
-                contentType: application/json
-              prefecture:
-                contentType: application/json
-              city:
-                contentType: application/json
-              description:
+              hideTop:
                 contentType: application/json
       x-ogen-operation-group: TalkSession
   /talksessions/{talkSessionID}/analysis:
@@ -2095,8 +2570,6 @@ paths:
                 type: object
       tags:
         - talk_session
-      security:
-        - {}
       x-ogen-operation-group: TalkSession
     post:
       operationId: consentTalkSession
@@ -2503,13 +2976,9 @@ paths:
                   type: string
                 parentActionItemID:
                   type: string
-                  nullable: true
               required:
                 - content
                 - status
-            encoding:
-              parentActionItemID:
-                contentType: application/json
       x-ogen-operation-group: Timeline
   /talksessions/{talkSessionID}/timelines:
     get:
@@ -2602,7 +3071,9 @@ paths:
                 status:
                   type: string
                   nullable: true
-              required: []
+              required:
+                - content
+                - status
             encoding:
               content:
                 contentType: application/json
@@ -2658,8 +3129,8 @@ paths:
       x-ogen-operation-group: test
   /test/dummy:
     post:
-      operationId: dummiInit
-      summary: mudai
+      operationId: dummyInit
+      summary: init dummy
       parameters: []
       responses:
         '200':
@@ -2682,6 +3153,48 @@ paths:
                 type: object
       tags:
         - test
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                integerNull:
+                  type: integer
+                  nullable: true
+                numericOptionalNull:
+                  type: number
+                  nullable: true
+                numericNull:
+                  type: number
+                  nullable: true
+                numericOptional:
+                  type: number
+                numeric:
+                  type: number
+                booleanOptionalNull:
+                  type: boolean
+                  nullable: true
+                booleanNull:
+                  type: boolean
+                  nullable: true
+              required:
+                - integerNull
+                - numericNull
+                - numeric
+                - booleanNull
+            encoding:
+              integerNull:
+                contentType: application/json
+              numericOptionalNull:
+                contentType: application/json
+              numericNull:
+                contentType: application/json
+              booleanOptionalNull:
+                contentType: application/json
+              booleanNull:
+                contentType: application/json
       security:
         - {}
       x-ogen-operation-group: Test
@@ -2774,35 +3287,17 @@ paths:
                   format: binary
                 dateOfBirth:
                   type: number
-                  nullable: true
                 gender:
                   type: string
-                  enum:
-                    - 男性
-                    - 女性
-                    - その他
-                    - 回答しない
-                  nullable: true
                 prefecture:
                   type: string
                 city:
                   type: string
-                  nullable: true
                 email:
                   type: string
-                  nullable: true
               required:
                 - displayName
                 - displayID
-            encoding:
-              dateOfBirth:
-                contentType: application/json
-              gender:
-                contentType: application/json
-              city:
-                contentType: application/json
-              email:
-                contentType: application/json
       x-ogen-operation-group: user
     put:
       operationId: updateUserProfile
@@ -2854,7 +3349,6 @@ paths:
               properties:
                 displayName:
                   type: string
-                  nullable: true
                 icon:
                   type: string
                   format: binary
@@ -2862,42 +3356,197 @@ paths:
                   type: boolean
                   nullable: true
                 dateOfBirth:
-                  type: number
+                  type: integer
                   nullable: true
                 gender:
                   type: string
-                  enum:
-                    - 男性
-                    - 女性
-                    - その他
-                    - 回答しない
-                  nullable: true
                 city:
                   type: string
-                  nullable: true
                 prefecture:
                   type: string
-                  nullable: true
                 email:
                   type: string
-                  nullable: true
-              required: []
+              required:
+                - dateOfBirth
             encoding:
-              displayName:
-                contentType: application/json
               deleteIcon:
                 contentType: application/json
               dateOfBirth:
                 contentType: application/json
-              gender:
-                contentType: application/json
-              city:
-                contentType: application/json
-              prefecture:
-                contentType: application/json
-              email:
-                contentType: application/json
       x-ogen-operation-group: user
+    delete:
+      operationId: withdrawUser
+      summary: ユーザー退会
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                  withdrawalDate:
+                    type: string
+                    format: date-time
+                required:
+                  - message
+                  - withdrawalDate
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '401':
+          description: Access is unauthorized.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+      tags:
+        - user
+      x-ogen-operation-group: user
+  /user/{displayID}:
+    get:
+      operationId: getUserByDisplayID
+      summary: 表示IDからユーザー情報の取得
+      parameters:
+        - name: displayID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - user
+      security:
+        - {}
+      x-ogen-operation-group: User
+  /users/{displayID}/talksessions:
+    get:
+      operationId: getUserTalkSessions
+      summary: 特定ユーザが開いたセッション一覧
+      parameters:
+        - name: displayID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: status
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - finished
+              - open
+            nullable: true
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  talkSessions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        talkSession:
+                          $ref: '#/components/schemas/TalkSession'
+                        opinionCount:
+                          type: integer
+                      required:
+                        - talkSession
+                        - opinionCount
+                  pagination:
+                    $ref: '#/components/schemas/OffsetPagination'
+                required:
+                  - talkSessions
+                  - pagination
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - user
+      security:
+        - {}
+      x-ogen-operation-group: TalkSession
   /v1/manage/talksessions/list:
     get:
       operationId: getTalkSessionListManage
@@ -3196,6 +3845,37 @@ components:
             - SessionId
           description: name of the API key
       description: Cookie-based authentication using JWT tokens stored in secure HTTP-only cookies
+    Device:
+      type: object
+      required:
+        - device_id
+        - user_id
+        - platform
+        - enabled
+        - created_at
+        - updated_at
+      properties:
+        device_id:
+          type: string
+        user_id:
+          type: string
+        platform:
+          type: string
+          enum:
+            - ios
+            - android
+            - web
+        device_name:
+          type: string
+        enabled:
+          type: boolean
+        last_active_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      description: デバイス情報
     Error:
       type: object
       required:
@@ -3215,6 +3895,14 @@ components:
         longitude:
           type: number
           description: 経度
+    NotificationPreferences:
+      type: object
+      required:
+        - push_notification_enabled
+      properties:
+        push_notification_enabled:
+          type: boolean
+      description: 通知設定
     OffsetPagination:
       type: object
       required:
@@ -3342,6 +4030,29 @@ components:
             - $ref: '#/components/schemas/VoteType'
           nullable: true
       description: 意見と投票情報を含むレスポンス
+    OptionalCookieAuth:
+      type: object
+      required:
+        - type
+        - in
+        - name
+      properties:
+        type:
+          type: string
+          enum:
+            - apiKey
+          description: API key authentication
+        in:
+          type: string
+          enum:
+            - cookie
+          description: location of the API key
+        name:
+          type: string
+          enum:
+            - SessionId
+          description: name of the API key
+      description: Optional cookie-based authentication - will populate session context if authenticated but won't require it
     Organization:
       type: object
       required:
@@ -3361,6 +4072,10 @@ components:
         code:
           type: string
           description: 組織コード
+        iconURL:
+          type: string
+          nullable: true
+          description: 組織アイコンURL
         type:
           type: integer
           description: 組織のタイプ
@@ -3384,6 +4099,29 @@ components:
           type: string
           nullable: true
       description: 組織エイリアス
+    OrganizationUser:
+      type: object
+      required:
+        - userID
+        - displayID
+        - displayName
+        - role
+        - roleName
+      properties:
+        userID:
+          type: string
+        displayID:
+          type: string
+        displayName:
+          type: string
+        iconURL:
+          type: string
+          nullable: true
+        role:
+          type: integer
+        roleName:
+          type: string
+      description: 組織ユーザー
     PolicyConsentStatus:
       type: object
       required:
@@ -3575,6 +4313,10 @@ components:
         hideReport:
           type: boolean
           description: レポートを隠すかどうか
+        hideTop:
+          type: boolean
+          nullable: true
+          description: トップに表示するかどうか
     TalkSessionForManage:
       type: object
       required:
