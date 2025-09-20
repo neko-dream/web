@@ -235,17 +235,17 @@ export default function Page({
           />
         </Label>
 
-        <Label title="ホームの一覧に表示するかどうか" notes={["※ プロフィール画面では表示されます"]}>
+        <Label title="ホームの一覧に非表示するかどうか" notes={["※ プロフィール画面では表示されます"]}>
           <Select
             {...getSelectProps(fields.hideTop)}
             options={[
               {
                 title: "はい",
-                value: "true",
+                value: "false",
               },
               {
                 title: "いいえ",
-                value: "false",
+                value: "true",
               },
             ]}
             value={session?.hideTop ? "true" : "false"}
