@@ -1,4 +1,5 @@
 import { type ComponentProps, createElement } from "react";
+import { Link } from "react-router";
 import { tv } from "tailwind-variants";
 import { JST } from "~/libs/dayjs";
 import type { User, VoteType } from "~/types";
@@ -63,7 +64,9 @@ export const Card = ({
 }: Props) => {
   return (
     <div {...props} className={card({ className })}>
-      <Avatar src={user.iconURL} className="shrink-0" />
+      <Link to={`/users/${user.displayID}`} className="cursor-pointer">
+        <Avatar src={user.iconURL} className="shrink-0" />
+      </Link>
 
       <div className="w-full">
         {createElement(

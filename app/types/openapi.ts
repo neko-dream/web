@@ -87,6 +87,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/reactivate": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** 退会ユーザーの復活 */
+    post: operations["reactivateUser"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/auth/revoke": {
     parameters: {
       query?: never;
@@ -186,6 +203,110 @@ export interface paths {
      * @description 画像を投稿してURLを返すAPI
      */
     post: operations["postImage"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/devices": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** デバイス一覧取得 */
+    get: operations["getDevices"];
+    put?: never;
+    /** デバイス登録/更新 */
+    post: operations["registerDevice"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/devices/exists": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** デバイストークンが登録されているか確認 */
+    get: operations["checkDeviceExists"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/devices/{deviceId}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    post?: never;
+    /** デバイス削除 */
+    delete: operations["deleteDevice"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/preferences": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 通知設定取得 */
+    get: operations["getNotificationPreferences"];
+    /** 通知設定更新 */
+    put: operations["updateNotificationPreferences"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/test": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** テスト通知送信 */
+    post: operations["sendTestNotification"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/notifications/vapid-key": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** VAPID公開鍵取得 */
+    get: operations["getVapidKey"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -486,6 +607,61 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/organizations/switch/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** 組織切り替え */
+    post: operations["switchOrganization"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/users": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 現在の組織のユーザー一覧取得 */
+    get: operations["getOrganizationUsers"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/organizations/{code}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    /**
+     * 組織更新（組織のAdmin以上のユーザーのみ）
+     * @description 組織を更新できる。
+     *     組織のAdmin以上のユーザーが実行可能。
+     */
+    put: operations["updateOrganization"];
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/policy/consent": {
     parameters: {
       query?: never;
@@ -498,6 +674,23 @@ export interface paths {
     put?: never;
     /** 最新のポリシーに同意する */
     post: operations["policyConsent"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/report/feedback": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /** セッションのレポートにフィードバックを適用する */
+    post: operations["applyFeedbackToReport"];
     delete?: never;
     options?: never;
     head?: never;
@@ -849,8 +1042,8 @@ export interface paths {
     };
     get?: never;
     put?: never;
-    /** mudai */
-    post: operations["dummiInit"];
+    /** init dummy */
+    post: operations["dummyInit"];
     delete?: never;
     options?: never;
     head?: never;
@@ -870,6 +1063,41 @@ export interface paths {
     put: operations["updateUserProfile"];
     /** ユーザー作成 */
     post: operations["establishUser"];
+    /** ユーザー退会 */
+    delete: operations["withdrawUser"];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/user/{displayID}": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 表示IDからユーザー情報の取得 */
+    get: operations["getUserByDisplayID"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  "/users/{displayID}/talksessions": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** 特定ユーザが開いたセッション一覧 */
+    get: operations["getUserTalkSessions"];
+    put?: never;
+    post?: never;
     delete?: never;
     options?: never;
     head?: never;
@@ -1028,6 +1256,18 @@ export interface components {
        */
       name: "SessionId";
     };
+    /** @description デバイス情報 */
+    Device: {
+      device_id: string;
+      user_id: string;
+      /** @enum {string} */
+      platform: "ios" | "android" | "web";
+      device_name?: string;
+      enabled: boolean;
+      last_active_at?: string;
+      created_at: string;
+      updated_at: string;
+    };
     Error: {
       code: string;
       message: string;
@@ -1037,6 +1277,10 @@ export interface components {
       latitude?: number;
       /** @description 経度 */
       longitude?: number;
+    };
+    /** @description 通知設定 */
+    NotificationPreferences: {
+      push_notification_enabled: boolean;
     };
     OffsetPagination: {
       totalCount: number;
@@ -1091,6 +1335,24 @@ export interface components {
       user: components["schemas"]["User"];
       myVoteType?: components["schemas"]["VoteType"] | null;
     };
+    /** @description Optional cookie-based authentication - will populate session context if authenticated but won't require it */
+    OptionalCookieAuth: {
+      /**
+       * @description API key authentication
+       * @enum {string}
+       */
+      type: "apiKey";
+      /**
+       * @description location of the API key
+       * @enum {string}
+       */
+      in: "cookie";
+      /**
+       * @description name of the API key
+       * @enum {string}
+       */
+      name: "SessionId";
+    };
     Organization: {
       /** @description 組織ID */
       ID: string;
@@ -1098,6 +1360,8 @@ export interface components {
       name: string;
       /** @description 組織コード */
       code: string;
+      /** @description 組織アイコンURL */
+      iconURL?: string | null;
       /** @description 組織のタイプ */
       type: number;
       /** @description ロールの名前 */
@@ -1110,6 +1374,15 @@ export interface components {
       aliasID: string;
       aliasName: string;
       createdAt?: string | null;
+    };
+    /** @description 組織ユーザー */
+    OrganizationUser: {
+      userID: string;
+      displayID: string;
+      displayName: string;
+      iconURL?: string | null;
+      role: number;
+      roleName: string;
     };
     PolicyConsentStatus: {
       /** @description 最新ポリシーのバージョン */
@@ -1201,6 +1474,8 @@ export interface components {
       restrictions: components["schemas"]["Restriction"][];
       /** @description レポートを隠すかどうか */
       hideReport: boolean;
+      /** @description トップに表示するかどうか */
+      hideTop?: boolean | null;
     };
     TalkSessionForManage: {
       talkSessionID: string;
@@ -1575,7 +1850,6 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          id: string;
           password: string;
           email: string;
         };
@@ -1611,6 +1885,65 @@ export interface operations {
       };
     };
   };
+  reactivateUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            message: string;
+            user: components["schemas"]["User"];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Access is forbidden. */
+      403: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
   revokeToken: {
     parameters: {
       query?: never;
@@ -1627,9 +1960,7 @@ export interface operations {
           "Set-Cookie": string[];
           [name: string]: unknown;
         };
-        content: {
-          "application/json": Record<string, never>;
-        };
+        content?: never;
       };
       /** @description The server could not understand the request due to invalid syntax. */
       400: {
@@ -1878,6 +2209,314 @@ export interface operations {
       };
     };
   };
+  getDevices: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            devices: components["schemas"]["Device"][];
+          };
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  registerDevice: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** @description FCMトークンまたはAPNSトークン */
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          device_token: string;
+          /** @enum {string} */
+          platform: "ios" | "android" | "web";
+          device_name?: string;
+          app_version?: string;
+          os_version?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["Device"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  checkDeviceExists: {
+    parameters: {
+      query: {
+        /** @description FCMトークンまたはAPNSトークン */
+        device_token: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            exists: boolean;
+          };
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server cannot find the requested resource. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  deleteDevice: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        deviceId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description There is no content to send for this request, but the headers may be useful.  */
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server cannot find the requested resource. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getNotificationPreferences: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationPreferences"];
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  updateNotificationPreferences: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          push_notification_enabled: boolean | null;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["NotificationPreferences"];
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  sendTestNotification: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          title: string;
+          body: string;
+          device_id?: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            /** Format: int32 */
+            devices_count: number;
+            /** Format: int32 */
+            success_count: number;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getVapidKey: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            vapid_key: string;
+          };
+        };
+      };
+    };
+  };
   postOpinionPost2: {
     parameters: {
       query?: never;
@@ -1888,11 +2527,11 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          talkSessionID?: string | null;
-          parentOpinionID?: string | null;
-          title?: string | null;
+          talkSessionID?: string;
+          parentOpinionID?: string;
+          title?: string;
           opinionContent: string;
-          referenceURL?: string | null;
+          referenceURL?: string;
           /** Format: binary */
           picture?: Blob;
           isSeed?: boolean | null;
@@ -1906,7 +2545,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          "application/json": Record<string, never>;
+          "application/json": components["schemas"]["Opinion"];
         };
       };
       /** @description The server could not understand the request due to invalid syntax. */
@@ -2153,8 +2792,8 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          reason?: number | null;
-          content?: string | null;
+          reason: number | null;
+          content: string | null;
         };
       };
     };
@@ -2287,7 +2926,7 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          voteStatus: components["schemas"]["VoteType"];
+          voteStatus: string;
         };
       };
     };
@@ -2420,6 +3059,7 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
+          /** @description 組織名 */
           name: string;
           /** @description 組織コード（ログイン時に使用）
            *     4文字以上127文字以下の英数字 _- のみ使用可能 */
@@ -2427,6 +3067,11 @@ export interface operations {
           /** @description 組織タイプ
            *     - 1: 通常（基本これ） */
           orgType: number;
+          /**
+           * Format: binary
+           * @description 組織アイコン
+           */
+          icon?: Blob;
         };
       };
     };
@@ -2676,6 +3321,147 @@ export interface operations {
       };
     };
   };
+  switchOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          /** @description SessionID */
+          "Set-Cookie": string[];
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getOrganizationUsers: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            users: components["schemas"]["OrganizationUser"][];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  updateOrganization: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        code: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          /** @description 組織名 */
+          name: string;
+          /**
+           * Format: binary
+           * @description 組織アイコン
+           */
+          icon?: Blob;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   getPolicyConsentStatus: {
     parameters: {
       query?: never;
@@ -2758,10 +3544,47 @@ export interface operations {
       };
     };
   };
+  applyFeedbackToReport: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          reportID: string;
+          feedbackType: string;
+        };
+      };
+    };
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
   getTalkSessionList: {
     parameters: {
       query?: {
-        /** @description 1ページあたりの要素数 */
+        /** @description ir
+         *     1ページあたりの要素数 */
         limit?: number | null;
         /** @description どの要素から始めるか */
         offset?: number | null;
@@ -2831,14 +3654,15 @@ export interface operations {
           theme: string;
           /** Format: date-time */
           scheduledEndTime: string;
-          latitude?: number | null;
-          longitude?: number | null;
-          city?: string | null;
-          prefecture?: string | null;
-          description?: string | null;
-          thumbnailURL?: string | null;
+          latitude?: number;
+          longitude?: number;
+          city?: string;
+          prefecture?: string;
+          description?: string;
+          thumbnailURL?: string;
           restrictions?: string[];
           aliasId?: string;
+          hideTop?: boolean | null;
         };
       };
     };
@@ -3052,12 +3876,13 @@ export interface operations {
           theme: string;
           /** Format: date-time */
           scheduledEndTime: string;
-          latitude?: number | null;
+          latitude?: number;
           longitude?: number;
-          prefecture?: string | null;
-          city?: string | null;
-          description?: string | null;
+          prefecture?: string;
+          city?: string;
+          description?: string;
           thumbnailURL?: string;
+          hideTop?: boolean | null;
         };
       };
     };
@@ -3595,7 +4420,7 @@ export interface operations {
         "multipart/form-data": {
           content: string;
           status: string;
-          parentActionItemID?: string | null;
+          parentActionItemID?: string;
         };
       };
     };
@@ -3691,8 +4516,8 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          content?: string | null;
-          status?: string | null;
+          content: string | null;
+          status: string | null;
         };
       };
     };
@@ -3773,14 +4598,26 @@ export interface operations {
       };
     };
   };
-  dummiInit: {
+  dummyInit: {
     parameters: {
       query?: never;
       header?: never;
       path?: never;
       cookie?: never;
     };
-    requestBody?: never;
+    requestBody: {
+      content: {
+        "multipart/form-data": {
+          integerNull: number | null;
+          numericOptionalNull?: number | null;
+          numericNull: number | null;
+          numericOptional?: number;
+          numeric: number;
+          booleanOptionalNull?: boolean | null;
+          booleanNull: boolean | null;
+        };
+      };
+    };
     responses: {
       /** @description The request has succeeded. */
       200: {
@@ -3854,16 +4691,15 @@ export interface operations {
     requestBody: {
       content: {
         "multipart/form-data": {
-          displayName?: string | null;
+          displayName?: string;
           /** Format: binary */
           icon?: Blob;
           deleteIcon?: boolean | null;
-          dateOfBirth?: number | null;
-          /** @enum {string|null} */
-          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
-          city?: string | null;
-          prefecture?: string | null;
-          email?: string | null;
+          dateOfBirth: number | null;
+          gender?: string;
+          city?: string;
+          prefecture?: string;
+          email?: string;
         };
       };
     };
@@ -3917,12 +4753,11 @@ export interface operations {
           displayID: string;
           /** Format: binary */
           icon?: Blob;
-          dateOfBirth?: number | null;
-          /** @enum {string|null} */
-          gender?: "男性" | "女性" | "その他" | "回答しない" | null;
+          dateOfBirth?: number;
+          gender?: string;
           prefecture?: string;
-          city?: string | null;
-          email?: string | null;
+          city?: string;
+          email?: string;
         };
       };
     };
@@ -3958,6 +4793,150 @@ export interface operations {
             code: string;
             message: string;
           };
+        };
+      };
+    };
+  };
+  withdrawUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            message: string;
+            /** Format: date-time */
+            withdrawalDate: string;
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Access is unauthorized. */
+      401: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+    };
+  };
+  getUserByDisplayID: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        displayID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["User"];
+        };
+      };
+      /** @description The server cannot find the requested resource. */
+      404: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getUserTalkSessions: {
+    parameters: {
+      query?: {
+        limit?: number;
+        offset?: number;
+        status?: "finished" | "open" | null;
+      };
+      header?: never;
+      path: {
+        displayID: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            talkSessions: {
+              talkSession: components["schemas"]["TalkSession"];
+              opinionCount: number;
+            }[];
+            pagination: components["schemas"]["OffsetPagination"];
+          };
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
         };
       };
     };

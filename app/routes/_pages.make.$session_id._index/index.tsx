@@ -1,6 +1,7 @@
 import {
   getFormProps,
   getInputProps,
+  getSelectProps,
   useForm,
   useInputControl,
 } from "@conform-to/react";
@@ -64,8 +65,8 @@ export default function Page({
       const restrictions = Array.isArray(value.restrictions)
         ? value.restrictions
         : value.restrictions
-          ? [value.restrictions]
-          : ("[]" as unknown as never[]);
+        ? [value.restrictions]
+        : ("[]" as unknown as never[]);
 
       if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
@@ -98,7 +99,7 @@ export default function Page({
           ...value,
           scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
           restrictions,
-          thumbnailURL: thumbnailRef.current,
+          thumbnailURL: thumbnailRef.current || "",
         },
       });
 
@@ -191,7 +192,7 @@ export default function Page({
             <div className="mt-2 space-y-2">
               {restrictions?.map((restriction, i) => {
                 const checked = session?.restrictions?.some(
-                  (r) => r.key === restriction.key,
+                  (r) => r.key === restriction.key
                 );
                 return (
                   <Checkbox
@@ -231,6 +232,23 @@ export default function Page({
             }
             min={dayjs().add(1, "day").format("YYYY-MM-DD")} // 今日の日付を最小値として設定
             error={(fields.scheduledEndTime.errors || []).length > 0}
+          />
+        </Label>
+
+        <Label title="ホームの一覧に表示するかどうか" notes={["※ プロフィール画面では表示されます"]}>
+          <Select
+            {...getSelectProps(fields.hideTop)}
+            options={[
+              {
+                title: "はい",
+                value: "true",
+              },
+              {
+                title: "いいえ",
+                value: "false",
+              },
+            ]}
+            value={session?.hideTop ? "true" : "false"}
           />
         </Label>
 
