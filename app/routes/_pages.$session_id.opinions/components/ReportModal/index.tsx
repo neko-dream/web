@@ -43,7 +43,7 @@ export const ReportModal = ({
         },
         body: {
           reason: submission.value.reason,
-          content: submission.value.content,
+          content: submission.value.content || "",
         },
       });
       if (res.response.status === 200) {
