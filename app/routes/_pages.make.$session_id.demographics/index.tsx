@@ -20,7 +20,7 @@ import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
 import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
-import { type baseSchema, createDynamicSchema } from "./schema";
+import { createDynamicSchema } from "./schema";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
@@ -48,7 +48,7 @@ export default function Page({
 
   const dynamicSchema = useMemo(
     () => createDynamicSchema(requestRestrictions),
-    [requestRestrictions],
+    [requestRestrictions]
   );
 
   const [form, fields] = useForm({
@@ -99,7 +99,7 @@ export default function Page({
   const required = (key: string) => {
     return requestRestrictions.some(
       (restriction) =>
-        restriction.key === `demographics.${key}` && restriction.required,
+        restriction.key === `demographics.${key}` && restriction.required
     );
   };
 
