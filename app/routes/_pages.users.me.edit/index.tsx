@@ -62,7 +62,7 @@ export default function Page({
           body: {
             ...submission?.payload,
             dateOfBirth: submission?.payload.birth
-              ? removeHyphens(submission?.payload.birth as string) 
+              ? removeHyphens(submission?.payload.birth as string)
               : null,
             icon: await fileCompress(submission?.payload.icon as File),
           },
@@ -146,7 +146,11 @@ export default function Page({
           />
         </Label>
 
-        <Label title="誕生年" optional={true} errors={fields.dateOfBirth.errors}>
+        <Label
+          title="誕生年"
+          optional={true}
+          errors={fields.dateOfBirth.errors}
+        >
           <InputDateByScrollPicker
             pickerUi="dialog"
             value={handleBarthControl.value || null}

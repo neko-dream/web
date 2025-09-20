@@ -48,7 +48,7 @@ export default function Page({
 
   const dynamicSchema = useMemo(
     () => createDynamicSchema(requestRestrictions),
-    [requestRestrictions]
+    [requestRestrictions],
   );
 
   const [form, fields] = useForm({
@@ -99,7 +99,7 @@ export default function Page({
   const required = (key: string) => {
     return requestRestrictions.some(
       (restriction) =>
-        restriction.key === `demographics.${key}` && restriction.required
+        restriction.key === `demographics.${key}` && restriction.required,
     );
   };
 

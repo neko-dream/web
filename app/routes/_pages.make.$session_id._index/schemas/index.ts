@@ -11,7 +11,7 @@ export const createSessionFormSchema = v.object({
   hideTop: v.optional(
     v.pipe(
       v.string(), // HTMLからは文字列として受け取る
-      v.transform((value) => value === "true") // "true" → true, それ以外 → false
-    )
+      v.transform((value) => value === "true"), // "true" → true, それ以外 → false
+    ),
   ),
 });
