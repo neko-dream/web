@@ -44,7 +44,7 @@ const TalkSessions = ({
   const sessions = use($sesssions).data;
 
   return (
-    <div className="flex-1 pt-4 mt-8 space-y-4 bg-cs-gray-200">
+    <div className="mt-8 flex-1 space-y-4 bg-cs-gray-200 py-4">
       {sessions?.talkSessions.map((session, i) => {
         return (
           <Link

@@ -20,7 +20,7 @@ import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
 import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
-import { type baseSchema, createDynamicSchema } from "./schema";
+import { createDynamicSchema } from "./schema";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";

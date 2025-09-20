@@ -65,8 +65,8 @@ export default function Page({
       const restrictions = Array.isArray(value.restrictions)
         ? value.restrictions
         : value.restrictions
-        ? [value.restrictions]
-        : ("[]" as unknown as never[]);
+          ? [value.restrictions]
+          : ("[]" as unknown as never[]);
 
       if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
@@ -192,7 +192,7 @@ export default function Page({
             <div className="mt-2 space-y-2">
               {restrictions?.map((restriction, i) => {
                 const checked = session?.restrictions?.some(
-                  (r) => r.key === restriction.key
+                  (r) => r.key === restriction.key,
                 );
                 return (
                   <Checkbox
@@ -235,7 +235,10 @@ export default function Page({
           />
         </Label>
 
-        <Label title="ホームの一覧に非表示するかどうか" notes={["※ プロフィール画面では表示されます"]}>
+        <Label
+          title="ホームの一覧に非表示するかどうか"
+          notes={["※ プロフィール画面では表示されます"]}
+        >
           <Select
             {...getSelectProps(fields.hideTop)}
             options={[
