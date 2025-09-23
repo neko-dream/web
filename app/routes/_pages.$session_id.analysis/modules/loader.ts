@@ -7,14 +7,22 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
     return notfound();
   }
 
-  const $reports = api.GET("/talksessions/{talkSessionID}/report", {
-    headers: request.headers,
-    params: {
-      path: {
-        talkSessionID: params.session_id,
+  const $reports = api
+    .GET("/talksessions/{talkSessionID}/report", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
       },
-    },
-  });
+    })
+    .catch(() => {
+      return {
+        data: {
+          report: null,
+        },
+      };
+    });
 
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
     headers: request.headers,

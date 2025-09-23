@@ -8,7 +8,6 @@ import { parseWithValibot } from "@conform-to/valibot";
 import { useMemo, useTransition } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import type { InferOutput } from "valibot";
 import gender from "~/assets/data/gender.json";
 import { InputDateByScrollPicker } from "~/components/features/date-scroll-picker/InputDateByScrollPicker";
 import { AddressInputs } from "~/components/features/input-address";
@@ -21,7 +20,7 @@ import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
 import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
-import { type baseSchema, createDynamicSchema } from "./schema";
+import { createDynamicSchema } from "./schema";
 
 export { loader } from "./modules/loader";
 export { meta } from "./modules/meta";
@@ -57,7 +56,7 @@ export default function Page({
       city: demographics.city,
       prefecture: demographics.prefecture,
       gender: demographics.gender,
-      birth: formatDate(demographics.dateOfBirth?.toString()),
+      dateOfBirth: formatDate(demographics.dateOfBirth?.toString()),
     },
     onSubmit: (e, { submission }) => {
       startTransition(async () => {
@@ -70,12 +69,14 @@ export default function Page({
         const { error } = await api.PUT("/user", {
           credentials: "include",
           body: {
-            ...submission.value,
             displayName: user.displayName,
-            dateOfBirth: submission.value.birth
-              ? removeHyphens(submission.value.birth as string)
-              : undefined,
-          } as unknown as InferOutput<typeof baseSchema>,
+            dateOfBirth: submission.value.dateOfBirth
+              ? removeHyphens(submission.value.dateOfBirth) || null
+              : null,
+            gender: submission.value.gender || undefined,
+            city: submission.value.city || undefined,
+            prefecture: submission.value.prefecture || undefined,
+          },
         });
 
         if (error) {
@@ -93,7 +94,7 @@ export default function Page({
     shouldValidate: "onInput",
   });
 
-  const handleDateOfBarthControl = useInputControl(fields.birth);
+  const handleDateOfBarthControl = useInputControl(fields.dateOfBirth);
 
   const required = (key: string) => {
     return requestRestrictions.some(
@@ -132,7 +133,7 @@ export default function Page({
           <Label
             title="誕生年"
             tip={required("birth") && <Tip label="必須" required={true} />}
-            errors={fields.birth.errors}
+            errors={fields.dateOfBirth.errors}
           >
             <InputDateByScrollPicker
               pickerUi="dialog"

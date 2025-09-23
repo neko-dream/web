@@ -56,7 +56,8 @@ export default function Page({
           body: {
             ...submission.value,
             dateOfBirth: submission.value.dateOfBirth
-              ? removeHyphens(submission.value.dateOfBirth as string)
+              ? removeHyphens(submission.value.dateOfBirth as string) ||
+                undefined
               : undefined,
             icon: await fileCompress(submission.value.icon),
           },

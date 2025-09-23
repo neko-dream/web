@@ -1,6 +1,7 @@
 import {
   getFormProps,
   getInputProps,
+  getSelectProps,
   useForm,
   useInputControl,
 } from "@conform-to/react";
@@ -98,7 +99,7 @@ export default function Page({
           ...value,
           scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
           restrictions,
-          thumbnailURL: thumbnailRef.current,
+          thumbnailURL: thumbnailRef.current || "",
         },
       });
 
@@ -231,6 +232,26 @@ export default function Page({
             }
             min={dayjs().add(1, "day").format("YYYY-MM-DD")} // 今日の日付を最小値として設定
             error={(fields.scheduledEndTime.errors || []).length > 0}
+          />
+        </Label>
+
+        <Label
+          title="ホームの一覧に非表示するかどうか"
+          notes={["※ プロフィール画面では表示されます"]}
+        >
+          <Select
+            {...getSelectProps(fields.hideTop)}
+            options={[
+              {
+                title: "はい",
+                value: "true",
+              },
+              {
+                title: "いいえ",
+                value: "false",
+              },
+            ]}
+            value={session?.hideTop === true ? "true" : "false"}
           />
         </Label>
 

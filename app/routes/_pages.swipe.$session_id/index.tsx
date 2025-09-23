@@ -486,7 +486,7 @@ export default function Page({
         />
       </div>
 
-      <div className="sticky z-50 bottom-0 w-full p-4 rounded-md">
+      <div className="sticky bottom-0 z-50 w-full rounded-md p-4">
         <div className="flex justify-around bg-white/80 pt-3">
           <div className="flex flex-col items-center">
             <button
@@ -540,7 +540,7 @@ export default function Page({
         <button
           type="button"
           onClick={() => setIsHintModalOpen(true)}
-          className="w-full flex items-center justify-center bg-white/80 py-2"
+          className="flex w-full items-center justify-center bg-white/80 py-2"
         >
           <InfoCircle />
           <span className="text-blue-500 text-sm">この画面の操作ヒント</span>

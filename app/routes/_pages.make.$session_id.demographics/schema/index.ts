@@ -10,7 +10,7 @@ export const baseSchema = v.object({
   city: v.string("市町村の入力は必須です"),
   prefecture: v.string("都道府県の入力は必須です"),
   gender: genderSchema,
-  birth: v.string("誕生日の入力は必須です"),
+  dateOfBirth: v.string("誕生日の入力は必須です"),
 });
 
 /**
