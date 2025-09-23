@@ -244,14 +244,14 @@ export default function Page({
             options={[
               {
                 title: "はい",
-                value: "false",
+                value: "true",
               },
               {
                 title: "いいえ",
-                value: "true",
+                value: "false",
               },
             ]}
-            value={session?.hideTop ? "true" : "false"}
+            value={session?.hideTop === true ? "true" : "false"}
           />
         </Label>
 
