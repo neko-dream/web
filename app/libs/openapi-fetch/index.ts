@@ -7,9 +7,14 @@ import type { paths } from "~/types/openapi";
 const convertFormData = (params: object): URLSearchParams | FormData => {
   const formData = new FormData();
   for (const [key, value] of Object.entries(params)) {
-    if (value) {
-      formData.append(key, value);
+    if (typeof value === "undefined") {
+      continue;
     }
+    if (value === "") {
+      continue;
+    }
+
+    formData.append(key, value);
   }
   return formData;
 };
