@@ -14,9 +14,7 @@ const convertFormData = (params: object): URLSearchParams | FormData => {
       continue;
     }
 
-    if (typeof value !== "undefined" || value !== "") {
-      formData.append(key, value);
-    }
+    formData.append(key, value);
   }
   return formData;
 };
