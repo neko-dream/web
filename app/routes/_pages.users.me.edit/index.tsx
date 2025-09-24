@@ -61,8 +61,8 @@ export default function Page({
           credentials: "include",
           body: {
             ...submission?.payload,
-            dateOfBirth: submission?.payload.birth
-              ? removeHyphens(submission?.payload.birth as string)
+            dateOfBirth: submission?.payload.dateOfBirth
+              ? removeHyphens(submission?.payload.dateOfBirth as string)
               : null,
             icon: await fileCompress(submission?.payload.icon as File),
           },
