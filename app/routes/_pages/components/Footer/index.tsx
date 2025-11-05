@@ -13,11 +13,12 @@ export const Footer = () => {
           return (
             <div key={i}>
               <p className="mt-8 font-bold">{title}</p>
-              {items.map(({ href, name }, j) => {
+              {items.map(({ href, name, external }, j) => {
+                const link = external ? href : `https://static.kotohiro.com/${href}`;
                 return (
                   <a
                     key={j}
-                    href={`https://static.kotohiro.com/${href}`}
+                    href={link}
                     className="mt-3 table"
                     target="_blank"
                     rel="noreferrer"
@@ -57,12 +58,9 @@ const links = [
     title: "About",
     items: [
       {
-        name: "ことひろについて",
-        href: "about",
-      },
-      {
         name: "運営会社",
-        href: "company",
+        href: "https://corp.kotohiro.com",
+        external: true,
       },
       // {
       //   name: "お知らせ",
