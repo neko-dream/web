@@ -8,18 +8,16 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     return notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
-    headers: request.headers,
-    params: {
-      path: {
-        talkSessionID: params.session_id || "",
+  const [{ data: session }, { data: opinions, error }] = await Promise.all([
+    api.GET("/talksessions/{talkSessionID}", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id || "",
+        },
       },
-    },
-  });
-
-  const { data: opinions, error } = await api.GET(
-    "/talksessions/{talkSessionID}/swipe_opinions",
-    {
+    }),
+    api.GET("/talksessions/{talkSessionID}/swipe_opinions", {
       headers: request.headers,
       params: {
         path: {
@@ -29,8 +27,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
           limit: OPINIONS_LIMIT,
         },
       },
-    },
-  );
+    }),
+  ]);
 
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
     headers: request.headers,
