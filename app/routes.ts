@@ -53,7 +53,10 @@ const route = [
   },
   {
     ...filteredRoutes[1],
-    children: [...(filteredRoutes[1].children || []), ...ignoreLayoutRoute],
+  },
+  {
+    ...filteredRoutes[2],
+    children: [...(filteredRoutes[2].children || []), ...ignoreLayoutRoute],
   },
 ];
 

@@ -3,11 +3,12 @@ import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
 export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const { data: restrictions } = await api.GET("/talksessions/restrictions", {
+  const $restrictions = api.GET("/talksessions/restrictions", {
     headers: request.headers,
   });
 
   if (params.session_id === "new") {
+    const { data: restrictions } = await $restrictions;
     return {
       restrictions,
     };
@@ -17,13 +18,18 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     throw notfound();
   }
 
-  const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
+  const $session = api.GET("/talksessions/{talkSessionID}", {
     params: {
       path: {
         talkSessionID: params.session_id,
       },
     },
   });
+
+  const [{ data: restrictions }, { data: session }] = await Promise.all([
+    $restrictions,
+    $session,
+  ]);
 
   if (!session) {
     throw notfound();
