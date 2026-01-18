@@ -6,6 +6,7 @@ import {
   useNavigate,
   useOutletContext,
   useRevalidator,
+  useSearchParams,
 } from "react-router";
 import { AuthenticateCard } from "~/components/features/auth/LoginCard";
 import { Left, Notification } from "~/components/icons";
@@ -83,6 +84,7 @@ const Contents = ({
   const { check } = useVote({ sessionID: session.id });
   const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
   const { revalidate } = useRevalidator();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     $user.then((user) => {
@@ -97,6 +99,13 @@ const Contents = ({
       ];
       setTabItems(ownerTabs);
     });
+  }, []);
+
+  useEffect(() => {
+    const signup = searchParams.get("signup");
+    if (signup === "true") {
+      setIsRequestModal(["signup"]);
+    }
   }, []);
 
   const handleCloseRequestModal = () => {
