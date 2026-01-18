@@ -5,7 +5,9 @@ import {
   Outlet,
   useNavigate,
   useOutletContext,
+  useRevalidator,
 } from "react-router";
+import { AuthenticateCard } from "~/components/features/auth/LoginCard";
 import { Left, Notification } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { useSatisfiedStore, useVote } from "~/hooks/useVote";
@@ -22,7 +24,6 @@ import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton"
 import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
 import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
-import { SignupModalContent } from "./components/RequestsModal/components/SignupModalContent";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -81,6 +82,7 @@ const Contents = ({
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
   const { check } = useVote({ sessionID: session.id });
   const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
+  const { revalidate } = useRevalidator();
 
   useEffect(() => {
     $user.then((user) => {
@@ -238,7 +240,15 @@ const Contents = ({
             );
           }
           if (state === "signup") {
-            return <SignupModalContent />;
+            return (
+              <AuthenticateCard
+                onSuccess={() => {
+                  revalidate();
+                  setIsRequestModal(["consent"]);
+                }}
+                useWithoutLoggingIn={false}
+              />
+            );
           }
         }}
       </RequestsModal>

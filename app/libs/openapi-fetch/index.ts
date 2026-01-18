@@ -26,16 +26,11 @@ export const api = createClient<paths>({
   baseUrl: API_URL,
   bodySerializer: (body) => body && convertFormData(body),
   fetch: (init) => {
-    const headers = new Headers(init.headers);
+    // TODO: なぜかついているとAPIが404を返す
+    init.headers.delete("host");
 
-    /**
-     * ReactRouterV7はundiciを使うようになっています。
-     * ブラウザからのリクエストを全て付け替えてるのでそこにzstdが入ってる？
-     * ただundiciはzstdに対応していなく文字化けしてしまいます。
-     * https://github.com/nodejs/undici/issues/2847
-     */
-    headers.set("accept-encoding", "gzip");
-
-    return fetch(init, { headers });
+    return fetch(init, {
+      headers: init.headers,
+    });
   },
 });

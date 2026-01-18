@@ -36,6 +36,28 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/auth/guest/login": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get?: never;
+    put?: never;
+    /**
+     * ゲストログイン
+     * @description ゲストユーザーとしてログインします。
+     *     ゲストユーザーは登録制限のないセッションでのみ意見投稿・投票が可能です。
+     *     Google/LINEログインすると正規ユーザーに昇格します。
+     */
+    post: operations["guestLogin"];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/auth/password/change": {
     parameters: {
       query?: never;
@@ -1561,6 +1583,8 @@ export interface components {
       organizationCode?: string | null;
       /** @description 組織ID */
       organizationID?: string | null;
+      /** @description ゲストユーザーかどうか */
+      isGuest?: boolean;
     };
     User: {
       displayID: string;
@@ -1748,6 +1772,51 @@ export interface operations {
         };
         content: {
           "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  guestLogin: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          "Set-Cookie": string[];
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": Record<string, never>;
+        };
+      };
+      /** @description The server could not understand the request due to invalid syntax. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
+        };
+      };
+      /** @description Server error */
+      500: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": {
+            code: string;
+            message: string;
+          };
         };
       };
     };

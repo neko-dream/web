@@ -30,8 +30,12 @@ export default defineConfig(async ({ mode }) => {
   }
 
   const httpsConfig = {
-    key: fs.readFileSync(path.resolve(__dirname, "certificates/server.key")),
-    cert: fs.readFileSync(path.resolve(__dirname, "certificates/server.crt")),
+    key: fs.readFileSync(
+      path.resolve(__dirname, "certifications/local.kotohiro.com.key"),
+    ),
+    cert: fs.readFileSync(
+      path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
+    ),
   };
 
   return {
