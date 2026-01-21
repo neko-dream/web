@@ -75,3 +75,9 @@
 
   --font-roboto: "Roboto", sans-serif;
 }
+
+/* デフォルト */
+button,
+a {
+  cursor: pointer;
+}

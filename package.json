@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build",
+    "build": "CF_ENV=develop react-router build",
     "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
     "format": "bunx biome format --write ./app",
     "lint": "biome check .",
@@ -48,7 +48,8 @@
     "react-use-gesture": "^9.1.3",
     "simplebar-react": "^3.3.0",
     "swiper": "^11.2.5",
-    "tailwind-variants": "^0.2.1",
+    "tailwind-merge": "^3.4.0",
+    "tailwind-variants": "^3.2.2",
     "tiptap-extension-resize-image": "^1.2.1",
     "valibot": "^0.42.1",
     "xss": "^1.0.15",

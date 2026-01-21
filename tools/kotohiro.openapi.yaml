@@ -110,6 +110,62 @@ paths:
       security:
         - {}
       x-ogen-operation-group: Auth
+  /auth/guest/login:
+    post:
+      operationId: guestLogin
+      summary: ゲストログイン
+      description: |-
+        ゲストユーザーとしてログインします。
+        ゲストユーザーは登録制限のないセッションでのみ意見投稿・投票が可能です。
+        Google/LINEログインすると正規ユーザーに昇格します。
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          headers:
+            Set-Cookie:
+              required: true
+              schema:
+                type: array
+                items:
+                  type: string
+          content:
+            application/json:
+              schema:
+                type: object
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+      tags:
+        - auth
+      security:
+        - {}
+      x-ogen-operation-group: Auth
   /auth/password/change:
     put:
       operationId: changePassword
@@ -4504,6 +4560,9 @@ components:
           type: string
           nullable: true
           description: 組織ID
+        isGuest:
+          type: boolean
+          description: ゲストユーザーかどうか
     User:
       type: object
       required:

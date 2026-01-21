@@ -44,6 +44,10 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   );
 
+  const $restrictionsList = api.GET("/talksessions/restrictions", {
+    headers: request.headers,
+  });
+
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
     headers: request.headers,
     params: {
@@ -56,14 +60,8 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   /**
    * 制限項目リストの配列の中に足りていないフラグを仕込む処理
    */
-  const $restrictions = $restrictionsRequired.then(
-    async ({ data: requiredRestrictions }) => {
-      const { data: restrictions } = await api.GET(
-        "/talksessions/restrictions",
-        {
-          headers: request.headers,
-        },
-      );
+  const $restrictions = Promise.all([$restrictionsRequired, $restrictionsList]).then(
+    ([{ data: requiredRestrictions }, { data: restrictions }]) => {
       // 制限項目がなければ制限するものはない
       if (!restrictions) {
         return [];

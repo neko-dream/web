@@ -6,6 +6,7 @@ type Props = ComponentProps<"div"> & {
   items: Array<{
     label: string;
     href: string;
+    external?: boolean;
   }>;
 };
 
@@ -28,7 +29,7 @@ const link = tv({
 export const Tabs = ({ className, items, ...props }: Props) => {
   return (
     <div {...props} className={tabs({ className })}>
-      {items.map(({ href, label }, i) => {
+      {items.map(({ href, label, external }, i) => {
         return (
           <NavLink
             key={i}
@@ -39,6 +40,8 @@ export const Tabs = ({ className, items, ...props }: Props) => {
             replace={true}
             viewTransition={true}
             preventScrollReset={true}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
           >
             {label}
           </NavLink>
