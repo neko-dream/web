@@ -9,32 +9,27 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const next = new URL(request.url).searchParams.get("next");
 
-  const { data } = await api.GET("/user", {
-    headers: request.headers,
-  });
+  const [{ data }, { data: requiredRestrictions }, { data: restrictions }] =
+    await Promise.all([
+      api.GET("/user", {
+        headers: request.headers,
+      }),
+      api.GET("/talksessions/{talkSessionID}/restrictions", {
+        headers: request.headers,
+        params: {
+          path: {
+            talkSessionID: params.session_id,
+          },
+        },
+      }),
+      api.GET("/talksessions/restrictions", {
+        headers: request.headers,
+      }),
+    ]);
 
   if (!data?.user) {
     throw forbidden();
   }
-
-  /**
-   * 制限項目の中で足りていない項目を取得
-   */
-  const { data: requiredRestrictions } = await api.GET(
-    "/talksessions/{talkSessionID}/restrictions",
-    {
-      headers: request.headers,
-      params: {
-        path: {
-          talkSessionID: params.session_id,
-        },
-      },
-    },
-  );
-
-  const { data: restrictions } = await api.GET("/talksessions/restrictions", {
-    headers: request.headers,
-  });
 
   if (!(requiredRestrictions && restrictions)) {
     throw notfound();

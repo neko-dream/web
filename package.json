@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build",
+    "build": "CF_ENV=develop react-router build",
     "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
     "format": "bunx biome format --write ./app",
     "lint": "biome check .",
