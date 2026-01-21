@@ -96,6 +96,11 @@ const Contents = ({
         { label: "活動報告", href: `/${session.id}/conclusion` },
         { label: "通報", href: `/${session.id}/reports` },
         { label: "設定", href: `/${session.id}/config` },
+        {
+          label: "スクリーン",
+          href: `/${session.id}/fullscreen`,
+          external: true,
+        },
       ];
       setTabItems(ownerTabs);
     });
