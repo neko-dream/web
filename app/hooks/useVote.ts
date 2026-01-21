@@ -30,59 +30,43 @@ export const useVote = ({ sessionID }: Props) => {
 
   const check = async (nextPath?: string) => {
     setNextPath(nextPath);
-    //　同意済みなら何もしない
-    // 動作確認取れてないので一旦コメントアウト
+    // //　同意済みなら何もしない
+    // ログアウトしたときに消さないといけない。。。。
     // if (window.localStorage.getItem(`satisfied-${sessionID}`)) {
     //   return "satisfied";
     // }
 
-    // セッションに同意しているかどうか
-    const { data, error } = await api.GET(
-      "/talksessions/{talkSessionID}/consent",
-      {
-        credentials: "include",
-        params: {
-          path: {
-            talkSessionID: sessionID,
-          },
+    const props = {
+      credentials: "include",
+      params: {
+        path: {
+          talkSessionID: sessionID,
         },
       },
-    );
+    } as const;
+
+    const [{ data: consentRequired, error }, { data: restrictionsRequired }] =
+      await Promise.all([
+        api.GET("/talksessions/{talkSessionID}/consent", props),
+        api.GET("/talksessions/{talkSessionID}/restrictions", props),
+      ]);
+
     if (error?.code === "AUTH-0000") {
       setIsRequestModal(["signup"]);
       return "non-satisfied";
     }
 
-    // デモぐらが足りていなければデモグラのフラグを立てる
-    const { data: restrictionsRequired } = await api.GET(
-      "/talksessions/{talkSessionID}/restrictions",
-      {
-        credentials: "include",
-        params: {
-          path: {
-            talkSessionID: sessionID,
-          },
-        },
-      },
-    );
-
-    // 同意モーダルだけ出してデモグラモーダルは出さない
-    const onlyConsent = !data?.hasConsent;
-
-    //
-    const onlyDemograpy =
-      restrictionsRequired && restrictionsRequired?.length > 0;
-
-    if (onlyConsent && onlyDemograpy) {
-      setIsRequestModal(["consent", "demography"]);
-      return "non-satisfied";
+    const isRequestModal: RequestModalState = [];
+    // 同意モーダルを出す
+    if (!consentRequired?.hasConsent) {
+      isRequestModal.push("consent");
     }
-    if (onlyConsent) {
-      setIsRequestModal(["consent"]);
-      return "non-satisfied";
+    // デモグラモーダルを出す
+    if (restrictionsRequired && restrictionsRequired?.length > 0) {
+      isRequestModal.push("demography");
     }
-    if (onlyDemograpy) {
-      setIsRequestModal(["demography"]);
+    if (isRequestModal.length > 0) {
+      setIsRequestModal(isRequestModal);
       return "non-satisfied";
     }
 

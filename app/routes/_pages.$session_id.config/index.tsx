@@ -1,10 +1,10 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
 import { parseWithValibot } from "@conform-to/valibot";
-import { Suspense, useState, useTransition } from "react";
+import { Suspense, useEffect, useState, useTransition } from "react";
 import { useNavigate, useOutletContext } from "react-router";
 import { toast } from "react-toastify";
 import type { InferOutput } from "valibot";
-import { Pencil } from "~/components/icons";
+import { Link as LinkIcon, Pencil } from "~/components/icons";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
 import { api } from "~/libs/openapi-fetch";
@@ -20,9 +20,24 @@ export default function Page({
   loaderData: { $opinions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { session } = useOutletContext<SessionRouteContext>();
   const [isPending, startTransition] = useTransition();
+  const [origin, setOrigin] = useState("");
+
+  useEffect(() => {
+    setOrigin(window.location.origin);
+  }, []);
+
+  const loginUrl = `${origin}/${session.id}?signup=true`;
+
+  const handleCopy = () => {
+    if (!origin) {
+      return;
+    }
+    navigator.clipboard.writeText(loginUrl).then(() => {
+      toast.success("URLをコピーしました");
+    });
+  };
 
   const [form, fields] = useForm<InferOutput<typeof createOpinionFormSchema>>({
     onValidate: ({ formData }) => {
@@ -33,10 +48,9 @@ export default function Page({
     onSubmit: (e, { submission }) => {
       startTransition(async () => {
         e.preventDefault();
-        if (isSubmitting || submission?.status !== "success") {
+        if (submission?.status !== "success") {
           return;
         }
-        setIsSubmitting(true);
         try {
           const { data, error } = await api.POST("/opinions", {
             credentials: "include",
@@ -51,11 +65,9 @@ export default function Page({
             navigate(`/${session.id}/config`);
           } else {
             toast.error(error.message);
-            setIsSubmitting(false);
           }
         } catch {
           toast.error("エラーが発生しました");
-          setIsSubmitting(false);
         }
       });
     },
@@ -64,6 +76,31 @@ export default function Page({
 
   return (
     <div className="flex-1 bg-cs-gray-200">
+      <div className="mx-auto max-w-xl p-4">
+        <div className="rounded-2xl bg-white p-6 ">
+          <h2 className="mb-4 font-bold text-gray-800 text-lg">
+            匿名ログイン用URL
+          </h2>
+          <div className="flex items-center gap-2 rounded-xl bg-gray-100 px-4 py-3 text-gray-600">
+            <p className="flex-1 truncate text-sm">
+              {origin ? loginUrl : "Loading..."}
+            </p>
+            <button
+              type="button"
+              onClick={handleCopy}
+              disabled={!origin}
+              className="shrink-0 rounded-lg p-1.5 transition-colors hover:bg-gray-200"
+              aria-label="URLをコピー"
+            >
+              <LinkIcon className="h-5 w-5 fill-gray-500" />
+            </button>
+          </div>
+          <p className="mt-3 text-gray-500 text-xs">
+            このURLを共有すると、アカウント登録なしでこのセッションに参加できます。
+          </p>
+        </div>
+      </div>
+
       <div className="mx-auto max-w-xl p-4 pt-2">
         <p className="mb-4 font-bold">シード意見</p>
         <Suspense>

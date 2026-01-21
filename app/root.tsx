@@ -9,6 +9,8 @@ import {
 } from "react-router";
 import "./tailwind.css";
 import { type ReactNode, Suspense } from "react";
+import type { JSX } from "react";
+import { Analytics } from "./components/features/analytics";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },
@@ -41,9 +43,6 @@ export function Layout({ children }: { children: ReactNode }) {
 export default function App() {
   return <Outlet />;
 }
-
-import type { JSX } from "react";
-import { Analytics } from "./components/features/analytics";
 
 export function ErrorBoundary(): JSX.Element {
   return (
