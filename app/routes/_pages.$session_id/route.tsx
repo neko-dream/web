@@ -88,9 +88,17 @@ const Contents = ({
 
   useEffect(() => {
     $user.then((user) => {
+      if (user) {
+        const signup = searchParams.get("signup");
+        if (signup === "true") {
+          setIsRequestModal(["signup"]);
+        }
+      }
+
       if (session.owner.displayID !== user?.displayID) {
         return;
       }
+
       const ownerTabs = [
         ...tabs,
         { label: "活動報告", href: `/${session.id}/conclusion` },
@@ -104,13 +112,6 @@ const Contents = ({
       ];
       setTabItems(ownerTabs);
     });
-  }, []);
-
-  useEffect(() => {
-    const signup = searchParams.get("signup");
-    if (signup === "true") {
-      setIsRequestModal(["signup"]);
-    }
   }, []);
 
   const handleCloseRequestModal = () => {
