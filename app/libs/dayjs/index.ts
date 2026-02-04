@@ -9,5 +9,5 @@ dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Tokyo");
 
 export const JST = (date: dayjs.ConfigType) => {
-  return dayjs(date);
+  return dayjs(date).tz();
 };

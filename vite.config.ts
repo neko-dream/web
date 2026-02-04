@@ -41,8 +41,13 @@ export default defineConfig(async ({ mode }) => {
   return {
     server: {
       https: httpsConfig,
-      host: "local.kotohiro.com",
+      host: true,
       port: 3000,
+      hmr: {
+        host: "local.kotohiro.com",
+        protocol: "wss",
+        clientPort: 3000,
+      },
       proxy: {},
     },
     define: {

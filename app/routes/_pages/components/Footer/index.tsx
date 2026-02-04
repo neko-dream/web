@@ -14,7 +14,9 @@ export const Footer = () => {
             <div key={i}>
               <p className="mt-8 font-bold">{title}</p>
               {items.map(({ href, name, external }, j) => {
-                const link = external ? href : `https://static.kotohiro.com/${href}`;
+                const link = external
+                  ? href
+                  : `https://static.kotohiro.com/${href}`;
                 return (
                   <a
                     key={j}
