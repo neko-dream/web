@@ -39,10 +39,18 @@ export default defineConfig(async ({ mode }) => {
   };
 
   return {
+    resolve: {
+      dedupe: ["react", "react-dom", "react-router", "@react-router/dev"],
+    },
     server: {
       https: httpsConfig,
       host: true,
       port: 3000,
+      hmr: {
+        host: "local.kotohiro.com",
+        protocol: "wss",
+        clientPort: 3000,
+      },
       proxy: {},
     },
     define: {

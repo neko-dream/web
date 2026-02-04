@@ -107,5 +107,9 @@
   },
   "patchedDependencies": {
     "dependency-cruiser@16.10.1": "patches/dependency-cruiser@16.10.1.patch"
+  },
+  "resolutions": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   }
 }

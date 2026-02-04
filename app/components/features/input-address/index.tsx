@@ -2,8 +2,8 @@ import {
   type FieldMetadata,
   type FormMetadata,
   getSelectProps,
+  unstable_useControl,
 } from "@conform-to/react";
-import { useControl } from "node_modules/@conform-to/react/integrations";
 import { type ChangeEvent, useMemo } from "react";
 import municipality from "~/assets/data/adress/municipality.json";
 import prefectures from "~/assets/data/adress/prefectures.json";
@@ -55,7 +55,7 @@ export const AddressInputs = ({ form, fields, required }: Props) => {
     }
   };
 
-  const prefectureControl = useControl(fields.prefecture);
+  const prefectureControl = unstable_useControl(fields.prefecture);
 
   return (
     <>
