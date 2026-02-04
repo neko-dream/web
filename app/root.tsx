@@ -20,9 +20,6 @@ export function Layout({ children }: { children: ReactNode }) {
   return (
     <html lang="ja">
       <head>
-        <Suspense>
-          <Analytics />
-        </Suspense>
         <meta charSet="utf-8" />
         <meta
           name="viewport"
@@ -33,6 +30,9 @@ export function Layout({ children }: { children: ReactNode }) {
       </head>
       <body className="relative">
         {children}
+        <Suspense>
+          <Analytics />
+        </Suspense>
         <ScrollRestoration />
         <Scripts />
       </body>
