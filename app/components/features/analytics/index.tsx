@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router";
 
 declare global {
   interface Window {
@@ -10,7 +9,6 @@ declare global {
 const ID = "G-G9K1SZJ553"; // Google AnalyticsのID
 
 export default function Analytics() {
-  const { pathname } = useLocation();
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -19,11 +17,22 @@ export default function Analytics() {
       window.dataLayer = [];
     }
 
-    window.dataLayer.push({
-      event: "pageView",
-      page: pathname,
-    });
-  }, [pathname]);
+    // Routerの外側なのでwindow.location.pathnameを使用
+    const trackPageView = () => {
+      const pathname = window.location.pathname;
+      window.dataLayer.push({
+        event: "pageView",
+        page: pathname,
+      });
+    };
+
+    trackPageView();
+    window.addEventListener("popstate", trackPageView);
+
+    return () => {
+      window.removeEventListener("popstate", trackPageView);
+    };
+  }, []);
 
   return (
     <>
