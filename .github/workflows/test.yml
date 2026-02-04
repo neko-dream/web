@@ -28,6 +28,8 @@ jobs:
         run: bun install
 
       - name: Run typecheck
+        env:
+          CF_ENV: develop
         run: bun typecheck
 
       - name: Run Lint

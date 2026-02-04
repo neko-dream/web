@@ -1,49 +1,53 @@
 import { useEffect } from "react";
-import { api } from "~/libs/openapi-fetch";
+import { useLocation } from "react-router";
 
 declare global {
   interface Window {
     dataLayer: unknown[];
-    gtag: (
-      command: "config" | "event" | "js" | "set",
-      targetId: string | Date,
-      config?: Record<string, unknown>,
-    ) => void;
   }
 }
 
 const ID = "G-G9K1SZJ553"; // Google AnalyticsのID
 
-export const Analytics = () => {
+export default function Analytics() {
+  const { pathname } = useLocation();
+
   useEffect(() => {
-    // ユーザーがログイン済みの場合のみGoogle Analyticsを初期化
-    api
-      .GET("/user", { credentials: "include" })
-      .then(({ data }) => {
-        if (!data?.user) {
-          return;
-        }
+    if (!window.dataLayer) {
+      window.dataLayer = [];
+    }
 
-        // Google Analytics を初期化
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = window.gtag || ((...args) => window.dataLayer.push(args));
-        window.gtag("js", new Date());
-        window.gtag("config", ID);
+    window.dataLayer.push({
+      event: "pageView",
+      page: pathname,
+    });
+  }, [pathname]);
 
-        // すでにあれば処理ウァ行わない
-        if (document.querySelector('script[src*="googletagmanager"]')) {
-          return;
-        }
-        // Google Analytics スクリプトを動的に追加
-        const script = document.createElement("script");
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${ID}`;
-        document.head.appendChild(script);
-      })
-      .catch(() => {
-        // GA4の初期化に失敗した場合はなんもできん...
-      });
-  }, []);
-
-  return null;
-};
+  return (
+    <>
+      <noscript>
+        <iframe
+          title="gtag"
+          src={`https://www.googletagmanager.com/ns.html?id=${ID}`}
+          height="0"
+          width="0"
+          style={{ display: "none", visibility: "hidden" }}
+        />
+      </noscript>
+      <script
+        async={true}
+        suppressHydrationWarning={true}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: Google Tag Manager script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+            })(window,document,'script','dataLayer', '${ID}');
+          `,
+        }}
+      />
+    </>
+  );
+}
