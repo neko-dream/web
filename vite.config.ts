@@ -39,9 +39,6 @@ export default defineConfig(async ({ mode }) => {
   };
 
   return {
-    resolve: {
-      dedupe: ["react", "react-dom", "react-router", "@react-router/dev"],
-    },
     server: {
       https: httpsConfig,
       host: true,

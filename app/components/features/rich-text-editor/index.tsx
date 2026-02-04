@@ -1,5 +1,6 @@
 import { Code } from "@tiptap/extension-code";
 import { Document } from "@tiptap/extension-document";
+import Image from "@tiptap/extension-image";
 import { Paragraph } from "@tiptap/extension-paragraph";
 import { Text } from "@tiptap/extension-text";
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -30,6 +31,7 @@ export const RichTextEditor = ({
       Paragraph,
       Text,
       Code,
+      Image,
       ImageResize,
       CustomaizedLink,
       // CustomaizedPlaceholder,

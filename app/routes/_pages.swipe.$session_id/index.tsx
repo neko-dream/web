@@ -1,5 +1,5 @@
 import gsap from "gsap";
-import { Draggable } from "gsap/Draggable";
+import { Draggable } from "gsap/all";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { Await, Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";

@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "include": ["tailwind.config.ts", "vite.config.ts"],
   "compilerOptions": {
+    "skipLibCheck": true,
     "composite": true,
     "strict": true,
     "types": ["node"],
