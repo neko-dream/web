@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "deploy": "CF_ENV=develop bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
+    "deploy": "bun run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
     "format": "bunx biome format --write ./app",
     "lint": "biome check .",
     "deps": "bun depcruise --config .dependency-cruiser.cjs .",
