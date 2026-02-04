@@ -7,7 +7,7 @@ declare global {
   }
 }
 
-const ID = "G-G9K1SZJ553"; // Google AnalyticsのID
+const ID = "GTM-W9CGLLF3"; // Google AnalyticsのID
 
 export default function Analytics() {
   const { pathname } = useLocation();
