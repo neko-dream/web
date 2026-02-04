@@ -12,7 +12,7 @@
     "deps": "bun depcruise --config .dependency-cruiser.cjs .",
     "storybook": "SB=1 storybook dev -p 6006",
     "storybook:build": "SB=1 storybook build",
-    "typecheck": "react-router typegen && wrangler types && tsc -b",
+    "typecheck": "CF_ENV=develop && react-router typegen && wrangler types && tsc -b",
     "icongen": "bunx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && bunx biome format --write ./app/components/Icons"
   },
   "dependencies": {

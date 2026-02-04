@@ -3,6 +3,6 @@ import { generateMetaTag } from "~/utils/metatag";
 
 export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
   return generateMetaTag({
-    title: data.isEditMode ? "セッションを編集する" : "セッションを作成する",
+    title: data?.isEditMode ? "セッションを編集する" : "セッションを作成する",
   });
 };
