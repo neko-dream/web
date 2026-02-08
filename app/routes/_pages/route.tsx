@@ -1,7 +1,7 @@
 import { Outlet, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -10,6 +10,8 @@ import { Header } from "./components/Header";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";
 export { loader } from "./modules/loader";
+
+const Analytics = lazy(() => import("~/components/features/analytics"));
 
 export default function Layout({
   loaderData: { $user },
@@ -27,6 +29,7 @@ export default function Layout({
 
   return (
     <>
+      <Analytics />
       {/* 実際に見えるコンテンツ */}
       <Header $user={$user} />
       <main className="flex min-h-[calc(100vh-48px)] flex-col">

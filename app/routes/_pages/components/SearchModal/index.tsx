@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { useRef } from "react";
 import { useNavigate } from "react-router";
 import { SearchWhite } from "~/components/icons";

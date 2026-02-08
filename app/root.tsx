@@ -9,7 +9,6 @@ import {
 } from "react-router";
 import "./tailwind.css";
 import type { JSX } from "react";
-import Analytics from "./components/features/analytics";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },
@@ -30,7 +29,6 @@ export function Layout() {
       <body className="relative">
         <Scripts />
         <ScrollRestoration />
-        <Analytics />
         <Outlet />
       </body>
     </html>
