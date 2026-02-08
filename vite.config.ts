@@ -23,8 +23,6 @@ export default defineConfig(async ({ mode }) => {
     throw new Error("CF_ENV must be defined");
   }
 
-  console.log(env);
-
   const proxy = await getPlatformProxy({
     environment: process.env.CF_ENV,
   });
