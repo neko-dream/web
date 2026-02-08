@@ -1,4 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
+name = "kotohiro"
 main = "./build/worker/index.js"
 assets = { directory = "./build/client" }
 compatibility_date = "2024-10-18"
