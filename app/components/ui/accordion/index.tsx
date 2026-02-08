@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { type ReactNode, useState } from "react";
 import { tv } from "tailwind-variants";
 import ArrowIcon from "~/assets/icons/arrow.svg";
