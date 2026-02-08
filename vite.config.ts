@@ -29,6 +29,8 @@ export default defineConfig(async ({ mode }) => {
     throw new Error("APP_URL or API_URL must be defined");
   }
 
+  console.log(proxy.env, process.env.CF_ENV);
+
   const httpsConfig = {
     key: fs.readFileSync(
       path.resolve(__dirname, "certifications/local.kotohiro.com.key"),
