@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
-    "deploy": "pnpm run build && wrangler pages functions build --outdir build/worker && wrangler deploy --env develop",
+    "deploy": "pnpm run build && wrangler pages functions build --outdir build/worker && wrangler deploy",
     "format": "pnpm dlx biome format --write ./app",
     "lint": "biome check .",
     "deps": "pnpm dlx depcruise --config .dependency-cruiser.cjs .",
