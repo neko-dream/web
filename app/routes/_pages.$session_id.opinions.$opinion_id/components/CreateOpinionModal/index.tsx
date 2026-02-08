@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import type { ReactNode } from "react";
 import { InfoCircle } from "~/components/icons";
 
