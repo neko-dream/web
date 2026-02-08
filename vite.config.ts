@@ -9,7 +9,7 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
-export default defineConfig(async ({ mode }) => {
+export default defineConfig(async () => {
   // Storybookの時はStorybook用の設定を返す
   if (process.env.SB) {
     return {
@@ -17,19 +17,12 @@ export default defineConfig(async ({ mode }) => {
     };
   }
 
-  if (mode === "production" && !process.env.CF_ENV) {
-    throw new Error("CF_ENV must be defined");
-  }
-  const proxy = await getPlatformProxy({
-    environment: process.env.CF_ENV,
-  });
+  const proxy = await getPlatformProxy();
   const { APP_URL, API_URL } = proxy.env;
 
   if (typeof APP_URL !== "string" || typeof API_URL !== "string") {
     throw new Error("APP_URL or API_URL must be defined");
   }
-
-  console.log(proxy.env, process.env.CF_ENV);
 
   const httpsConfig = {
     key: fs.readFileSync(
