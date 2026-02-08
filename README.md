@@ -1,6 +1,4 @@
-<p align="center">
-  <h1>ことひろのフロント実装</h1>
-</p>
+## ことひろのフロント実装
 
 [☁️ Cloudflare](https://dash.cloudflare.com)
 
