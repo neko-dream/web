@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "react-router dev",
-    "build": "react-router build",
-    "deploy": "wrangler pages functions build --outdir build/worker && wrangler deploy",
+    "build": "react-router build && wrangler pages functions build --outdir build/worker",
+    "deploy": "wrangler deploy --env develop",
     "format": "pnpm dlx biome format --write ./app",
     "lint": "biome check .",
     "deps": "pnpm dlx depcruise --config .dependency-cruiser.cjs .",
