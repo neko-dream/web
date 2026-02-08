@@ -4,7 +4,8 @@
  * https://qiita.com/hagoromo2000/items/a862b3880654100d53fe
  */
 
-import { $ } from "bun";
+import { execSync } from "node:child_process";
+import { writeFile } from "node:fs/promises";
 import openapiTS, { astToString } from "openapi-typescript";
 import { factory } from "typescript";
 
@@ -26,6 +27,6 @@ const ast = await openapiTS(
 const contents = astToString(ast);
 
 // 生成したい場所にファイルを出力
-await Bun.write("./app/types/openapi.ts", contents);
+await writeFile("./app/types/openapi.ts", contents);
 
-await $`bunx biome format --write ./app/types/openapi.ts`;
+execSync("pnpm dlx biome format --write ./app/types/openapi.ts", { stdio: "inherit" });
