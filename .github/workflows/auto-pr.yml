@@ -32,11 +32,9 @@ jobs:
           if [[ ${{ github.ref }} == 'refs/heads/staging' ]]; then
             echo "target_branch=main" >> $GITHUB_OUTPUT
             echo "pr_title=🚀 本番反映" >> $GITHUB_OUTPUT
-            echo "pr_header=🛵 本番環境へデリバリーに参りました" >> $GITHUB_OUTPUT
           else
             echo "target_branch=staging" >> $GITHUB_OUTPUT
             echo "pr_title=🚀 ステージング反映" >> $GITHUB_OUTPUT
-            echo "pr_header=🍏 めんどくさいよね" >> $GITHUB_OUTPUT
           fi
 
       - name: Get commit messages
