@@ -5,11 +5,13 @@ import path from "node:path";
 import { reactRouter } from "@react-router/dev/vite";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+import { defineConfig, loadEnv } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
-export default defineConfig(async () => {
+export default defineConfig(async ({ mode }) => {
+  const env = loadEnv(mode, process.cwd(), "");
+
   // Storybookの時はStorybook用の設定を返す
   if (process.env.SB) {
     return {
@@ -17,7 +19,15 @@ export default defineConfig(async () => {
     };
   }
 
-  const proxy = await getPlatformProxy();
+  if (!env.CF_ENV) {
+    throw new Error("CF_ENV must be defined");
+  }
+
+  console.log(env);
+
+  const proxy = await getPlatformProxy({
+    environment: process.env.CF_ENV,
+  });
   const { APP_URL, API_URL } = proxy.env;
 
   if (typeof APP_URL !== "string" || typeof API_URL !== "string") {
