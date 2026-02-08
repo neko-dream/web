@@ -24,10 +24,14 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.6",
     "@tiptap/core": "^2.11.7",
+    "@tiptap/extension-code": "^3.19.0",
+    "@tiptap/extension-document": "^3.19.0",
     "@tiptap/extension-dropcursor": "^2.11.7",
     "@tiptap/extension-image": "^2.11.7",
     "@tiptap/extension-link": "^2.11.7",
+    "@tiptap/extension-paragraph": "^3.19.0",
     "@tiptap/extension-placeholder": "^2.11.7",
+    "@tiptap/extension-text": "^3.19.0",
     "@tiptap/pm": "^2.11.7",
     "@tiptap/react": "^2.11.7",
     "@tiptap/starter-kit": "^2.11.7",
@@ -83,7 +87,10 @@
     "wrangler": "4"
   },
   "svgr": {
-    "plugins": ["@svgr/plugin-svgo", "@svgr/plugin-jsx"],
+    "plugins": [
+      "@svgr/plugin-svgo",
+      "@svgr/plugin-jsx"
+    ],
     "jsxRuntime": "automatic",
     "noDimensions": true,
     "typescript": true,
