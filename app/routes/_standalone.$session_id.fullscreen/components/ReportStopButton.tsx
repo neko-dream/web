@@ -42,8 +42,6 @@ export const ReportStopButton = ({ defaultDisableAnalysis }: Props) => {
     }
   };
 
-  const enabled = !disableAnalysis;
-
   return (
     <div className="flex cursor-pointer items-center gap-2">
       <span className="font-bold text-gray-700 text-sm">
@@ -52,16 +50,16 @@ export const ReportStopButton = ({ defaultDisableAnalysis }: Props) => {
       <button
         type="button"
         role="switch"
-        aria-checked={enabled}
+        aria-checked={disableAnalysis}
         disabled={isLoading}
         onClick={handleToggle}
         className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors duration-200 disabled:opacity-40 ${
-          enabled ? "bg-blue-500" : "bg-gray-300"
+          disableAnalysis ? "bg-blue-500" : "bg-gray-300"
         }`}
       >
         <span
           className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform duration-200 ${
-            enabled ? "translate-x-6" : "translate-x-1"
+            disableAnalysis ? "translate-x-6" : "translate-x-1"
           }`}
         />
       </button>
