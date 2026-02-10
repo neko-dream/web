@@ -2410,11 +2410,16 @@ paths:
                 hideTop:
                   type: boolean
                   nullable: true
+                disableAnalysis:
+                  type: boolean
+                  nullable: true
               required:
                 - theme
                 - scheduledEndTime
             encoding:
               hideTop:
+                contentType: application/json
+              disableAnalysis:
                 contentType: application/json
       x-ogen-operation-group: TalkSession
   /talksessions/{talkSessionID}/analysis:
@@ -2510,6 +2515,53 @@ paths:
         - talk_session
       security:
         - {}
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/analysis/toggle:
+    put:
+      operationId: toggleTalkSessionAnalysis
+      summary: 分析設定をトグル
+      description: |-
+        分析の有効/無効をトグルする
+
+        分析を有効にすると（disableAnalysis: true → false）、自動的に分析処理が開始されます。
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  disableAnalysis:
+                    type: boolean
+                required:
+                  - disableAnalysis
+        '400':
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        '404':
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Server error
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
       x-ogen-operation-group: TalkSession
   /talksessions/{talkSessionID}/conclusion:
     get:
@@ -4373,6 +4425,10 @@ components:
           type: boolean
           nullable: true
           description: トップに表示するかどうか
+        disableAnalysis:
+          type: boolean
+          nullable: true
+          description: 分析を無効化するかどうか
     TalkSessionForManage:
       type: object
       required:
