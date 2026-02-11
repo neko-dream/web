@@ -17,6 +17,7 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   };
 
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", props);
+  const $reports = api.GET("/talksessions/{talkSessionID}/report", props);
   const { data: session } = await api.GET(
     "/talksessions/{talkSessionID}",
     props,
@@ -26,5 +27,5 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
     return notfound();
   }
 
-  return { session, $positions };
+  return { session, $positions, $reports };
 };

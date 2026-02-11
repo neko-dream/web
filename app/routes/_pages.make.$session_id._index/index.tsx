@@ -243,11 +243,11 @@ export default function Page({
             {...getSelectProps(fields.hideTop)}
             options={[
               {
-                title: "いいえ",
+                title: "はい",
                 value: "true",
               },
               {
-                title: "はい",
+                title: "いいえ",
                 value: "false",
               },
             ]}
