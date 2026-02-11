@@ -53,10 +53,12 @@ export default function Page({
   const { revalidate } = useRevalidator();
 
   useEffect(() => {
-    $positions.then(console.log);
-    const interval = setInterval(() => {
-      revalidate();
-    }, 1000);
+    let interval: number;
+    if (!session.disableAnalysis) {
+      interval = setInterval(() => {
+        revalidate();
+      }, 1000);
+    }
 
     return () => clearInterval(interval);
   }, []);
