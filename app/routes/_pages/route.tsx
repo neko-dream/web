@@ -1,7 +1,9 @@
 import { Outlet, useNavigate } from "react-router";
-import { Slide, ToastContainer } from "react-toastify";
+import { Slide, ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
+import { Button } from "~/components/ui/button";
+import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -27,6 +29,15 @@ export default function Layout({
     });
   }, []);
 
+  const handleClick = async () => {
+    const { error } = await api.POST("/auth/revoke", {
+      credentials: "include",
+    });
+    if (!error) {
+      toast.success("ログアウトしました。");
+    }
+  };
+
   return (
     <>
       <Analytics />
@@ -36,6 +47,12 @@ export default function Layout({
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
       <Footer />
+
+      <div className="flex">
+        <Button color="primary" onClick={handleClick}>
+          ログアウト
+        </Button>
+      </div>
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer
