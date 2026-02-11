@@ -86,7 +86,7 @@ export default function Page({
                       to={`/${session.id}/analysis/details`}
                       className="m-2 flex items-center justify-end text-blue-400 text-xs"
                     >
-                      <span className="mr-1">詳しくみる</span>
+                      <span className="mr-1 text-base">詳しくみる</span>
                       <Arrow className="rotate-270 text-blue-400" />
                     </Link>
                   )}
