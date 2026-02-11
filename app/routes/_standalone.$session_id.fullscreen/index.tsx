@@ -138,7 +138,7 @@ export default function Page({
               <Await resolve={$reports}>
                 {({ data }) => {
                   return (
-                    <div className="rounded-md bg-white p-4">
+                    <div className="prose rounded-md bg-white p-4">
                       <ReactMarkdown>{data?.report}</ReactMarkdown>
                     </div>
                   );
