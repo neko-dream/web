@@ -88,7 +88,7 @@ const Contents = ({
 
   useEffect(() => {
     $user.then((user) => {
-      if (user) {
+      if (!user) {
         const signup = searchParams.get("signup");
         if (signup === "true") {
           setIsRequestModal(["signup"]);

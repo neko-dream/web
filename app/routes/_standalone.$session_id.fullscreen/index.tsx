@@ -1,10 +1,18 @@
 import { Suspense, useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Await, useRevalidator } from "react-router";
 import {} from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { GroupTabs } from "~/components/ui/group-tabs";
 import type { Route } from "./+types";
 import { OpinionList } from "./components/OpinionList";
+import { ReportStopButton } from "./components/ReportStopButton";
+import { Tabs } from "./components/Tabs";
+
+const MAIN_TABS = [
+  { label: "意見", value: "opinions" },
+  { label: "レポート", value: "report" },
+];
 
 export { loader } from "./modules/loader";
 
@@ -22,8 +30,9 @@ const GROUP_NAME_MAP: { readonly [key: number]: string } = {
 };
 
 export default function Page({
-  loaderData: { session, $positions },
+  loaderData: { session, $positions, $reports },
 }: Route.ComponentProps) {
+  const [currentTab, setCurrentTab] = useState("opinions");
   const [activeTab, setActiveTab] = useState("A");
   const { revalidate } = useRevalidator();
 
@@ -51,9 +60,14 @@ export default function Page({
 
   return (
     <div className=" min-h-screen bg-[#F2F2F7] p-4">
-      <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold text-2xl">
-        {session.theme}
-      </p>
+      <div className="flex items-center justify-between">
+        <p className="primary-gradient inline-block text-clip text-center font-bold text-2xl">
+          {session.theme}
+        </p>
+        <ReportStopButton defaultDisableAnalysis={session.disableAnalysis} />
+      </div>
+
+      <Tabs tabs={MAIN_TABS} activeTab={currentTab} onChange={setCurrentTab} />
 
       <div className="mt-4 flex items-start justify-center gap-4">
         <Suspense>
@@ -72,33 +86,50 @@ export default function Page({
         </Suspense>
 
         <div className="flex w-full max-w-2xl flex-col gap-1">
-          <Suspense>
-            <Await resolve={$positions}>
-              {({ data }) => {
-                // グループIDの抽出
-                const groups = extractGroups(data?.positions || []).map(
-                  (group) => {
-                    return {
-                      label: `${group}`,
-                      value: group,
-                    };
-                  },
-                );
+          {currentTab === "opinions" ? (
+            <>
+              <Suspense>
+                <Await resolve={$positions}>
+                  {({ data }) => {
+                    // グループIDの抽出
+                    const groups = extractGroups(data?.positions || []).map(
+                      (group) => {
+                        return {
+                          label: `${group}`,
+                          value: group,
+                        };
+                      },
+                    );
 
-                return (
-                  <GroupTabs
-                    tabs={groups}
-                    activeTab={activeTab}
-                    onChange={setActiveTab}
-                  />
-                );
-              }}
-            </Await>
-          </Suspense>
+                    return (
+                      <GroupTabs
+                        tabs={groups}
+                        activeTab={activeTab}
+                        onChange={setActiveTab}
+                      />
+                    );
+                  }}
+                </Await>
+              </Suspense>
 
-          <Suspense>
-            <OpinionList $positions={$positions} activeTab={activeTab} />
-          </Suspense>
+              <Suspense>
+                <OpinionList $positions={$positions} activeTab={activeTab} />
+              </Suspense>
+            </>
+          ) : (
+            <Suspense>
+              {/* ここにレポートを表示させたい */}
+              <Await resolve={$reports}>
+                {({ data }) => {
+                  return (
+                    <div className="rounded-md bg-white p-4">
+                      <ReactMarkdown>{data?.report}</ReactMarkdown>
+                    </div>
+                  );
+                }}
+              </Await>
+            </Suspense>
+          )}
         </div>
       </div>
     </div>

@@ -35,7 +35,7 @@ export default defineConfig(async () => {
         path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
       ),
     },
-    host: true,
+    host: "local.kotohiro.com",
     port: 3000,
     hmr: {
       host: "local.kotohiro.com",
@@ -46,7 +46,7 @@ export default defineConfig(async () => {
   };
 
   return {
-    server: !process.env.CF_ENV ? server : undefined,
+    server: process.env.CF_ENV ? undefined : server,
     define: {
       APP_URL: `${JSON.stringify(APP_URL)}`,
       API_URL: `${JSON.stringify(API_URL)}`,
