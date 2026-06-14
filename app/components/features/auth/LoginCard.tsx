@@ -131,7 +131,7 @@ export const AuthenticateCard = ({
         >
           <AuthGoogle />
           <span className="mx-auto font-bold text-gray-700">
-            Googleでアカウント作成
+            Googleでログイン
           </span>
         </a>
         <a
@@ -143,9 +143,7 @@ export const AuthenticateCard = ({
           ])}
         >
           <AuthLine />
-          <span className="mx-auto font-bold text-white">
-            LINEでアカウント作成
-          </span>
+          <span className="mx-auto font-bold text-white">LINEでログイン</span>
         </a>
 
         {useWithoutLoggingIn && (
