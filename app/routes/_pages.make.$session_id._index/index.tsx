@@ -5,7 +5,7 @@ import {
   useForm,
   useInputControl,
 } from "@conform-to/react";
-import { parseWithValibot } from "conform-to-valibot";
+import { parseWithValibot } from "@conform-to/valibot";
 import dayjs from "dayjs";
 import { useEffect, useRef, useState } from "react";
 import { Form, useNavigate } from "react-router";

@@ -37,7 +37,6 @@
     "@tiptap/starter-kit": "^2.11.7",
     "chart.js": "^4.4.8",
     "compressorjs": "^1.2.1",
-    "conform-to-valibot": "^1.11.0",
     "dayjs": "^1.11.13",
     "gsap": "^3.13.0",
     "isbot": "^4.1.0",
