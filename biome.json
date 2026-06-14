@@ -30,6 +30,7 @@
     "ignore": [
       "app/components/features/opinion-graph",
       "tools/kotohiro.openapi.yaml",
+      "tools/generate.ts",
       "app/components/features/date-scroll-picker"
     ],
     "rules": {
