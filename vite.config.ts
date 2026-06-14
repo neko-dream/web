@@ -6,14 +6,14 @@ import { reactRouter } from "@react-router/dev/vite";
 import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
   // Storybookの時はStorybook用の設定を返す
   if (process.env.SB) {
     return {
-      plugins: [tsconfigPaths(), tailwindcss()],
+      resolve: { tsconfigPaths: true },
+      plugins: [tailwindcss()],
     };
   }
 
@@ -51,12 +51,12 @@ export default defineConfig(async () => {
       APP_URL: `${JSON.stringify(APP_URL)}`,
       API_URL: `${JSON.stringify(API_URL)}`,
     },
+    resolve: { tsconfigPaths: true },
     plugins: [
       cloudflareDevProxy({
         getLoadContext: ({ context }) => ({ cloudflare: context.cloudflare }),
       }),
       reactRouter(),
-      tsconfigPaths(),
       tailwindcss(),
     ],
   };
