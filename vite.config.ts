@@ -35,7 +35,7 @@ export default defineConfig(async () => {
         path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
       ),
     },
-    host: "local.kotohiro.com",
+    host: true,
     port: 3000,
     hmr: {
       host: "local.kotohiro.com",
