@@ -7,10 +7,6 @@ node_modules
 
 .wrangler
 
-*storybook.log
-
-storybook-static
-
 .react-router
 
 *.tsbuildinfo
