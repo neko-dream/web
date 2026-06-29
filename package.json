@@ -65,6 +65,7 @@
     "@types/node": "^25.9.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "cross-env": "^7.0.3",
     "openapi-typescript": "^7.6.1",
     "postcss": "^8.4.49",

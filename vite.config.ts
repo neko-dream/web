@@ -1,10 +1,7 @@
-// biome-ignore lint/correctness/noNodejsModules: <explanation>
-import fs from "node:fs";
-// biome-ignore lint/correctness/noNodejsModules: <explanation>
-import path from "node:path";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig } from "vite";
 import { getPlatformProxy } from "wrangler";
 
@@ -19,14 +16,6 @@ export default defineConfig(async () => {
   }
 
   const server = {
-    https: {
-      key: fs.readFileSync(
-        path.resolve(__dirname, "certifications/local.kotohiro.com.key"),
-      ),
-      cert: fs.readFileSync(
-        path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
-      ),
-    },
     host: true,
     port: 3000,
     hmr: {
@@ -45,6 +34,15 @@ export default defineConfig(async () => {
     },
     resolve: { tsconfigPaths: true },
     plugins: [
+      basicSsl({
+        name: "kotohiro",
+        domains: ["local.kotohiro.com"],
+        // pnpm install で消えないよう node_modules 外に固定し、
+        // 一度ホストのキーチェインに信頼登録すれば再登録不要にする
+        certDir: ".cert",
+        // ブラウザのTLS有効期限上限(398日)未満。再登録頻度を下げる
+        ttlDays: 397,
+      }),
       cloudflare({ viteEnvironment: { name: "ssr" } }),
       reactRouter(),
       tailwindcss(),

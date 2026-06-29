@@ -16,3 +16,5 @@ storybook-static
 *.tsbuildinfo
 
 output
+
+.cert
