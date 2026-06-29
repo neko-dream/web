@@ -10,7 +10,7 @@
     "format": "biome format --write ./app",
     "lint": "biome check .",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
-    "icongen": "pnpm dlx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && pnpm dlx biome format --write ./app/components/Icons"
+    "icongen": "svgr --out-dir app/components/Icons -- app/assets/icons && biome format --write ./app/components/Icons"
   },
   "dependencies": {
     "@conform-to/react": "^1.2.2",
