@@ -9,14 +9,6 @@ import { defineConfig } from "vite";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
-  // Storybookの時はStorybook用の設定を返す
-  if (process.env.SB) {
-    return {
-      resolve: { tsconfigPaths: true },
-      plugins: [tailwindcss()],
-    };
-  }
-
   const proxy = await getPlatformProxy({
     environment: process.env.CF_ENV || "develop",
   });
