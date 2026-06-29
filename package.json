@@ -7,7 +7,7 @@
     "dev": "react-router dev",
     "build": "react-router build",
     "deploy": "wrangler deploy --env develop",
-    "format": "pnpm dlx biome format --write ./app",
+    "format": "biome format --write ./app",
     "lint": "biome check .",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
     "icongen": "pnpm dlx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && pnpm dlx biome format --write ./app/components/Icons"
