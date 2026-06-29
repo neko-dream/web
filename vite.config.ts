@@ -2,8 +2,8 @@
 import fs from "node:fs";
 // biome-ignore lint/correctness/noNodejsModules: <explanation>
 import path from "node:path";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
-import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import { getPlatformProxy } from "wrangler";
@@ -53,9 +53,7 @@ export default defineConfig(async () => {
     },
     resolve: { tsconfigPaths: true },
     plugins: [
-      cloudflareDevProxy({
-        getLoadContext: ({ context }) => ({ cloudflare: context.cloudflare }),
-      }),
+      cloudflare({ viteEnvironment: { name: "ssr" } }),
       reactRouter(),
       tailwindcss(),
     ],

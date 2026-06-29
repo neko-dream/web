@@ -1,7 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "kotohiro-develop"
-main = "./build/worker/index.js"
-assets = { directory = "./build/client" }
+main = "./workers/app.ts"
 compatibility_date = "2024-10-18"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
