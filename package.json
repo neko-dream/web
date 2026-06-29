@@ -107,5 +107,11 @@
   },
   "patchedDependencies": {
     "dependency-cruiser@16.10.1": "patches/dependency-cruiser@16.10.1.patch"
+  },
+  "pnpm": {
+    "overrides": {
+      "js-yaml@<4.2.0": ">=4.2.0",
+      "esbuild@<0.28.1": ">=0.28.1"
+    }
   }
 }
