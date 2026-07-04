@@ -21,11 +21,11 @@ paths:
   /auth/dev/detach:
     delete:
       operationId: authAccountDetach
-      summary: '**開発用** 現在のアカウントを切り離す'
+      summary: "**開発用** 現在のアカウントを切り離す"
       description: そのアカウントには再度ログインできなくなります。ログインしたければ言ってね！
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           headers:
             Set-Cookie:
@@ -38,13 +38,13 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -76,7 +76,7 @@ paths:
           schema:
             type: string
       responses:
-        '302':
+        "302":
           description: Redirection
           headers:
             Location:
@@ -93,13 +93,13 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -120,7 +120,7 @@ paths:
         Google/LINEログインすると正規ユーザーに昇格します。
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           headers:
             Set-Cookie:
@@ -133,7 +133,7 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -147,7 +147,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -184,19 +184,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -211,19 +211,19 @@ paths:
       summary: パスワードによるログイン
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -254,19 +254,19 @@ paths:
       summary: パスワードによる登録（devのみ）
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -297,7 +297,7 @@ paths:
       summary: 退会ユーザーの復活
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -307,11 +307,11 @@ paths:
                   message:
                     type: string
                   user:
-                    $ref: '#/components/schemas/User'
+                    $ref: "#/components/schemas/User"
                 required:
                   - message
                   - user
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -325,7 +325,7 @@ paths:
                 required:
                   - code
                   - message
-        '403':
+        "403":
           description: Access is forbidden.
           content:
             application/json:
@@ -339,7 +339,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -362,8 +362,8 @@ paths:
       summary: トークンを失効（ログアウト）
       parameters: []
       responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
+        "204":
+          description: "There is no content to send for this request, but the headers may be useful. "
           headers:
             Set-Cookie:
               required: true
@@ -372,13 +372,13 @@ paths:
                 type: array
                 items:
                   type: string
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -393,13 +393,13 @@ paths:
       summary: JWTの内容を返してくれる
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TokenClaim'
-        '400':
+                $ref: "#/components/schemas/TokenClaim"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -413,7 +413,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -452,7 +452,7 @@ paths:
           schema:
             type: string
       responses:
-        '302':
+        "302":
           description: Redirection
           headers:
             Location:
@@ -470,13 +470,13 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -519,7 +519,7 @@ paths:
           schema:
             type: string
       responses:
-        '302':
+        "302":
           description: Redirection
           headers:
             Location:
@@ -538,13 +538,13 @@ paths:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -561,19 +561,19 @@ paths:
       summary: ヘルスチェック
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -591,7 +591,7 @@ paths:
       description: 画像を投稿してURLを返すAPI
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -602,13 +602,13 @@ paths:
                     type: string
                 required:
                   - url
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -635,19 +635,19 @@ paths:
       summary: デバイス登録/更新
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Device'
-        '400':
+                $ref: "#/components/schemas/Device"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -686,7 +686,7 @@ paths:
       summary: デバイス一覧取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -696,10 +696,10 @@ paths:
                   devices:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Device'
+                      $ref: "#/components/schemas/Device"
                 required:
                   - devices
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -721,7 +721,7 @@ paths:
             type: string
           explode: false
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -732,13 +732,13 @@ paths:
                     type: boolean
                 required:
                   - exists
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
               schema:
                 type: object
-        '404':
+        "404":
           description: The server cannot find the requested resource.
           content:
             application/json:
@@ -758,15 +758,15 @@ paths:
           schema:
             type: string
       responses:
-        '204':
-          description: 'There is no content to send for this request, but the headers may be useful. '
-        '401':
+        "204":
+          description: "There is no content to send for this request, but the headers may be useful. "
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
               schema:
                 type: object
-        '404':
+        "404":
           description: The server cannot find the requested resource.
           content:
             application/json:
@@ -781,13 +781,13 @@ paths:
       summary: 通知設定取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotificationPreferences'
-        '401':
+                $ref: "#/components/schemas/NotificationPreferences"
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -801,19 +801,19 @@ paths:
       summary: 通知設定更新
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NotificationPreferences'
-        '400':
+                $ref: "#/components/schemas/NotificationPreferences"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -843,7 +843,7 @@ paths:
       summary: テスト通知送信
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -859,13 +859,13 @@ paths:
                 required:
                   - devices_count
                   - success_count
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -896,7 +896,7 @@ paths:
       summary: VAPID公開鍵取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -921,13 +921,13 @@ paths:
         セッション管理者はisSeedをtrueにするとシード意見として投稿できる
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Opinion'
-        '400':
+                $ref: "#/components/schemas/Opinion"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -941,7 +941,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1013,7 +1013,7 @@ paths:
           schema:
             type: integer
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1023,7 +1023,7 @@ paths:
                   opinions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OpinionWithReplyCount'
+                      $ref: "#/components/schemas/OpinionWithReplyCount"
                   pagination:
                     type: object
                     properties:
@@ -1034,13 +1034,13 @@ paths:
                 required:
                   - opinions
                   - pagination
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1055,21 +1055,21 @@ paths:
       summary: 意見への通報理由一覧
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ReportReason'
-        '400':
+                  $ref: "#/components/schemas/ReportReason"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1091,13 +1091,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OpinionWithVote'
-        '500':
+                $ref: "#/components/schemas/OpinionWithVote"
+        "500":
           description: Server error
           content:
             application/json:
@@ -1119,21 +1119,21 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OpinionGroupRatio'
-        '400':
+                  $ref: "#/components/schemas/OpinionGroupRatio"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1156,7 +1156,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1166,10 +1166,10 @@ paths:
                   opinions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OpinionWithVote'
+                      $ref: "#/components/schemas/OpinionWithVote"
                 required:
                   - opinions
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -1183,7 +1183,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1213,19 +1213,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1267,19 +1267,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ReportDetail'
-        '400':
+                $ref: "#/components/schemas/ReportDetail"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1299,19 +1299,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1327,7 +1327,7 @@ paths:
               type: object
               properties:
                 action:
-                  $ref: '#/components/schemas/ReportAction'
+                  $ref: "#/components/schemas/ReportAction"
               required:
                 - action
             encoding:
@@ -1346,15 +1346,15 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Opinion'
-        '400':
+                  $ref: "#/components/schemas/Opinion"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -1368,7 +1368,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1407,7 +1407,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1417,16 +1417,16 @@ paths:
                   valid:
                     type: boolean
                   organization:
-                    $ref: '#/components/schemas/Organization'
+                    $ref: "#/components/schemas/Organization"
                 required:
                   - valid
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1443,7 +1443,7 @@ paths:
       summary: 所属組織一覧
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1453,16 +1453,16 @@ paths:
                   organizations:
                     type: array
                     items:
-                      $ref: '#/components/schemas/Organization'
+                      $ref: "#/components/schemas/Organization"
                 required:
                   - organizations
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1479,19 +1479,19 @@ paths:
         これを作れるユーザーはDBを直接叩いて作るしかない。
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1534,7 +1534,7 @@ paths:
       summary: 組織エイリアス一覧取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1544,16 +1544,16 @@ paths:
                   aliases:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrganizationAlias'
+                      $ref: "#/components/schemas/OrganizationAlias"
                 required:
                   - aliases
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1567,19 +1567,19 @@ paths:
       summary: 組織エイリアス作成
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrganizationAlias'
-        '400':
+                $ref: "#/components/schemas/OrganizationAlias"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1610,19 +1610,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1643,19 +1643,19 @@ paths:
         - 40: Member
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1684,7 +1684,7 @@ paths:
       summary: 組織にユーザーを追加
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1695,13 +1695,13 @@ paths:
                     type: boolean
                 required:
                   - success
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1735,7 +1735,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           headers:
             Set-Cookie:
@@ -1745,13 +1745,13 @@ paths:
                 type: array
                 items:
                   type: string
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1766,7 +1766,7 @@ paths:
       summary: 現在の組織のユーザー一覧取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -1776,22 +1776,22 @@ paths:
                   users:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OrganizationUser'
+                      $ref: "#/components/schemas/OrganizationUser"
                 required:
                   - users
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1814,19 +1814,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1857,19 +1857,19 @@ paths:
       summary: 最新のポリシーに同意したかを取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PolicyConsentStatus'
-        '400':
+                $ref: "#/components/schemas/PolicyConsentStatus"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1885,19 +1885,19 @@ paths:
       summary: 最新のポリシーに同意する
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PolicyConsentStatus'
-        '400':
+                $ref: "#/components/schemas/PolicyConsentStatus"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -1923,13 +1923,13 @@ paths:
       summary: セッションのレポートにフィードバックを適用する
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2012,7 +2012,7 @@ paths:
             type: number
             nullable: true
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2025,18 +2025,18 @@ paths:
                       type: object
                       properties:
                         talkSession:
-                          $ref: '#/components/schemas/TalkSession'
+                          $ref: "#/components/schemas/TalkSession"
                         opinionCount:
                           type: integer
                       required:
                         - talkSession
                         - opinionCount
                   pagination:
-                    $ref: '#/components/schemas/OffsetPagination'
+                    $ref: "#/components/schemas/OffsetPagination"
                 required:
                   - talkSessions
                   - pagination
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -2050,7 +2050,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2082,13 +2082,13 @@ paths:
         restrictionsには [GET /talksessions/restrictions](https://app.apidog.com/link/project/674502/apis/api-14271260) より取れるkeyをカンマ区切りで入力してください。
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TalkSession'
-        '400':
+                $ref: "#/components/schemas/TalkSession"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -2137,6 +2137,8 @@ paths:
                 hideTop:
                   type: boolean
                   nullable: true
+                passphrase:
+                  type: string
               required:
                 - theme
                 - scheduledEndTime
@@ -2178,7 +2180,7 @@ paths:
               - finished
             nullable: true
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2186,14 +2188,14 @@ paths:
                 type: object
                 properties:
                   pagination:
-                    $ref: '#/components/schemas/OffsetPagination'
+                    $ref: "#/components/schemas/OffsetPagination"
                   talkSessions:
                     type: array
                     items:
                       type: object
                       properties:
                         talkSession:
-                          $ref: '#/components/schemas/TalkSession'
+                          $ref: "#/components/schemas/TalkSession"
                         opinionCount:
                           type: integer
                       required:
@@ -2202,13 +2204,13 @@ paths:
                 required:
                   - pagination
                   - talkSessions
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2249,7 +2251,7 @@ paths:
               - open
             nullable: true
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2262,7 +2264,7 @@ paths:
                       type: object
                       properties:
                         talkSession:
-                          $ref: '#/components/schemas/TalkSession'
+                          $ref: "#/components/schemas/TalkSession"
                         opinionCount:
                           type: integer
                       required:
@@ -2270,13 +2272,13 @@ paths:
                         - opinionCount
                 required:
                   - talkSessions
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2292,21 +2294,21 @@ paths:
       description: セッションの投稿制限に使用できるキーの一覧を返す
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Restriction'
-        '400':
+                  $ref: "#/components/schemas/Restriction"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2328,13 +2330,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TalkSession'
-        '400':
+                $ref: "#/components/schemas/TalkSession"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -2363,19 +2365,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TalkSession'
-        '400':
+                $ref: "#/components/schemas/TalkSession"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2433,7 +2435,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2441,11 +2443,11 @@ paths:
                 type: object
                 properties:
                   myPosition:
-                    $ref: '#/components/schemas/UserGroupPosition'
+                    $ref: "#/components/schemas/UserGroupPosition"
                   positions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/UserGroupPosition'
+                      $ref: "#/components/schemas/UserGroupPosition"
                   groupOpinions:
                     type: array
                     items:
@@ -2461,9 +2463,9 @@ paths:
                             type: object
                             properties:
                               opinion:
-                                $ref: '#/components/schemas/Opinion'
+                                $ref: "#/components/schemas/Opinion"
                               user:
-                                $ref: '#/components/schemas/User'
+                                $ref: "#/components/schemas/User"
                               agreeCount:
                                 type: integer
                               disagreeCount:
@@ -2483,7 +2485,7 @@ paths:
                 required:
                   - positions
                   - groupOpinions
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -2497,7 +2499,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2531,7 +2533,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2542,19 +2544,19 @@ paths:
                     type: boolean
                 required:
                   - disableAnalysis
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '404':
+        "404":
           description: The server cannot find the requested resource.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2574,19 +2576,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Conclusion'
-        '400':
+                $ref: "#/components/schemas/Conclusion"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2610,19 +2612,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Conclusion'
-        '400':
+                $ref: "#/components/schemas/Conclusion"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2653,7 +2655,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2664,13 +2666,13 @@ paths:
                     type: boolean
                 required:
                   - hasConsent
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2689,19 +2691,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2709,6 +2711,64 @@ paths:
                 type: object
       tags:
         - talk_session
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/join:
+    post:
+      operationId: joinLockedSession
+      summary: クローズドセッションに参加
+      description: |-
+        クローズドセッションに合言葉を使って参加する。
+        既に参加済みの場合は合言葉なしで成功する。
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+        "400":
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+        "403":
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                passphrase:
+                  type: string
       x-ogen-operation-group: TalkSession
   /talksessions/{talkSessionID}/opinions:
     get:
@@ -2749,7 +2809,7 @@ paths:
             type: boolean
             nullable: true
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2759,7 +2819,7 @@ paths:
                   opinions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OpinionWithReplyAndVote'
+                      $ref: "#/components/schemas/OpinionWithReplyAndVote"
                   pagination:
                     type: object
                     properties:
@@ -2770,13 +2830,13 @@ paths:
                 required:
                   - opinions
                   - pagination
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2798,7 +2858,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2808,7 +2868,7 @@ paths:
                   report:
                     type: string
                     nullable: true
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2839,7 +2899,7 @@ paths:
               - deleted
               - hold
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2849,16 +2909,16 @@ paths:
                   reports:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ReportDetail'
+                      $ref: "#/components/schemas/ReportDetail"
                 required:
                   - reports
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2887,7 +2947,7 @@ paths:
               - deleted
               - hold
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2898,13 +2958,13 @@ paths:
                     type: integer
                 required:
                   - count
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2925,21 +2985,21 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Restriction'
-        '400':
+                  $ref: "#/components/schemas/Restriction"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -2949,6 +3009,345 @@ paths:
         - talk_session
       security:
         - {}
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/survey:
+    get:
+      operationId: getTalkSessionSurvey
+      summary: アンケート定義取得
+      description: セッションのアンケート定義を取得（参加前に質問を表示するため）
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkSessionSurvey"
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
+      security:
+        - {}
+      x-ogen-operation-group: TalkSession
+    post:
+      operationId: createTalkSessionSurvey
+      summary: アンケート作成
+      description: セッションにアンケートを作成（オーナーのみ、セッションあたり 1 件まで）
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkSessionSurvey"
+        "400":
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        "403":
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+        "409":
+          description: The request conflicts with the current state of the server.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+      tags:
+        - talk_session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TalkSessionSurveyQuestionInput"
+              required:
+                - questions
+      x-ogen-operation-group: TalkSession
+    put:
+      operationId: updateTalkSessionSurvey
+      summary: アンケート編集
+      description: |-
+        アンケートを編集（オーナーのみ）。
+        既に回答がある質問・選択肢は soft delete 経由でのみ非表示化可能。
+        questionID / choiceID 指定で既存項目を編集、省略で新規追加。
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkSessionSurvey"
+        "400":
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        "403":
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                questions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TalkSessionSurveyQuestionInput"
+                deletedQuestionIDs:
+                  type: array
+                  items:
+                    type: string
+                  description: 削除する質問ID（回答があれば soft delete、なければ hard delete）
+                deletedChoiceIDs:
+                  type: array
+                  items:
+                    type: string
+                  description: 削除する選択肢ID
+              required:
+                - questions
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/survey/submissions:
+    post:
+      operationId: submitTalkSessionSurvey
+      summary: アンケート回答送信
+      description: |-
+        アンケートに回答を送信（1 ユーザー 1 送信、修正不可）。
+        成功すると survey.answered restriction が自動的に満たされた状態になる。
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  submissionID:
+                    type: string
+                required:
+                  - submissionID
+        "400":
+          description: The server could not understand the request due to invalid syntax.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+        "409":
+          description: The request conflicts with the current state of the server.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  message:
+                    type: string
+                required:
+                  - code
+                  - message
+      tags:
+        - talk_session
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                answers:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/TalkSessionSurveyAnswerInput"
+              required:
+                - answers
+      x-ogen-operation-group: TalkSession
+    get:
+      operationId: listTalkSessionSurveySubmissions
+      summary: アンケート回答一覧（オーナー）
+      description: セッションオーナー向け：回答一覧を取得
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+        - name: offset
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+          explode: false
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  submissions:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/TalkSessionSurveySubmission"
+                  totalCount:
+                    type: integer
+                    format: int32
+                required:
+                  - submissions
+                  - totalCount
+        "403":
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
+      x-ogen-operation-group: TalkSession
+  /talksessions/{talkSessionID}/survey/summary:
+    get:
+      operationId: getTalkSessionSurveySummary
+      summary: アンケート集計結果（オーナー）
+      description: セッションオーナー向け：質問ごとに集計した結果を取得
+      parameters:
+        - name: talkSessionID
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TalkSessionSurveySummary"
+        "403":
+          description: Access is forbidden.
+          content:
+            application/json:
+              schema:
+                type: object
+        "404":
+          description: The server cannot find the requested resource.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - talk_session
       x-ogen-operation-group: TalkSession
   /talksessions/{talkSessionID}/swipe_opinions:
     get:
@@ -2971,7 +3370,7 @@ paths:
             nullable: true
             default: 10
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -2981,13 +3380,13 @@ paths:
                   opinions:
                     type: array
                     items:
-                      $ref: '#/components/schemas/OpinionWithReplyCount'
+                      $ref: "#/components/schemas/OpinionWithReplyCount"
                   remainingCount:
                     type: integer
                 required:
                   - opinions
                   - remainingCount
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -3001,7 +3400,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3031,7 +3430,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3057,13 +3456,13 @@ paths:
                   - status
                   - createdAt
                   - updatedAt
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3100,7 +3499,7 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3110,16 +3509,16 @@ paths:
                   items:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ActionItem'
+                      $ref: "#/components/schemas/ActionItem"
                 required:
                   - items
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3146,19 +3545,19 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ActionItem'
-        '400':
+                $ref: "#/components/schemas/ActionItem"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3194,7 +3593,7 @@ paths:
       summary: OpenAPIテスト用
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3218,13 +3617,13 @@ paths:
                     type: string
                     nullable: true
                     format: url
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3241,19 +3640,19 @@ paths:
       summary: init dummy
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: object
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
               schema:
                 type: object
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3312,7 +3711,7 @@ paths:
       summary: ユーザー情報の取得
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3320,16 +3719,16 @@ paths:
                 type: object
                 properties:
                   user:
-                    $ref: '#/components/schemas/User'
+                    $ref: "#/components/schemas/User"
                   demographics:
-                    $ref: '#/components/schemas/UserDemographics'
+                    $ref: "#/components/schemas/UserDemographics"
                   email:
                     type: string
                     nullable: true
                 required:
                   - user
                   - demographics
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3343,13 +3742,13 @@ paths:
       summary: ユーザー作成
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -3363,7 +3762,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3412,13 +3811,13 @@ paths:
       summary: ユーザー情報の変更
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '400':
+                $ref: "#/components/schemas/User"
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -3432,7 +3831,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3487,7 +3886,7 @@ paths:
       summary: ユーザー退会
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3502,7 +3901,7 @@ paths:
                 required:
                   - message
                   - withdrawalDate
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -3516,7 +3915,7 @@ paths:
                 required:
                   - code
                   - message
-        '401':
+        "401":
           description: Access is unauthorized.
           content:
             application/json:
@@ -3530,7 +3929,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3558,13 +3957,13 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
-        '404':
+                $ref: "#/components/schemas/User"
+        "404":
           description: The server cannot find the requested resource.
           content:
             application/json:
@@ -3578,7 +3977,7 @@ paths:
                 required:
                   - code
                   - message
-        '500':
+        "500":
           description: Server error
           content:
             application/json:
@@ -3620,7 +4019,7 @@ paths:
               - open
             nullable: true
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
@@ -3633,18 +4032,18 @@ paths:
                       type: object
                       properties:
                         talkSession:
-                          $ref: '#/components/schemas/TalkSession'
+                          $ref: "#/components/schemas/TalkSession"
                         opinionCount:
                           type: integer
                       required:
                         - talkSession
                         - opinionCount
                   pagination:
-                    $ref: '#/components/schemas/OffsetPagination'
+                    $ref: "#/components/schemas/OffsetPagination"
                 required:
                   - talkSessions
                   - pagination
-        '400':
+        "400":
           description: The server could not understand the request due to invalid syntax.
           content:
             application/json:
@@ -3683,12 +4082,12 @@ paths:
             format: int32
           explode: false
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TalkSessionListResponse'
+                $ref: "#/components/schemas/TalkSessionListResponse"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3702,12 +4101,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TalkSessionForManage'
+                $ref: "#/components/schemas/TalkSessionForManage"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3721,12 +4120,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RegenerateResponse'
+                $ref: "#/components/schemas/RegenerateResponse"
       tags:
         - manage
       requestBody:
@@ -3734,7 +4133,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/RegenerateRequest'
+              $ref: "#/components/schemas/RegenerateRequest"
       x-ogen-operation-group: manage
   /v1/manage/talksessions/{talkSessionID}/analysis/report:
     get:
@@ -3746,12 +4145,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/AnalysisReportResponse'
+                $ref: "#/components/schemas/AnalysisReportResponse"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3764,12 +4163,12 @@ paths:
           schema:
             type: string
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ToggleReportVisibilityResponse'
+                $ref: "#/components/schemas/ToggleReportVisibilityResponse"
       tags:
         - manage
       requestBody:
@@ -3777,7 +4176,7 @@ paths:
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/ToggleReportVisibilityRequest'
+              $ref: "#/components/schemas/ToggleReportVisibilityRequest"
       x-ogen-operation-group: manage
   /v1/manage/users/list:
     get:
@@ -3824,14 +4223,14 @@ paths:
               - desc
           explode: false
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserForManage'
+                  $ref: "#/components/schemas/UserForManage"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3860,14 +4259,14 @@ paths:
             format: int32
           explode: false
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/UserStatsResponse'
+                  $ref: "#/components/schemas/UserStatsResponse"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3876,12 +4275,12 @@ paths:
       operationId: getUserStatsTotalManage
       parameters: []
       responses:
-        '200':
+        "200":
           description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/UserStatsResponse'
+                $ref: "#/components/schemas/UserStatsResponse"
       tags:
         - manage
       x-ogen-operation-group: manage
@@ -3925,7 +4324,7 @@ components:
       properties:
         user:
           allOf:
-            - $ref: '#/components/schemas/User'
+            - $ref: "#/components/schemas/User"
           description: 作成ユーザー
         content:
           type: string
@@ -4047,7 +4446,7 @@ components:
           description: 親の意見ID。ルートならば無し
         voteType:
           allOf:
-            - $ref: '#/components/schemas/VoteType'
+            - $ref: "#/components/schemas/VoteType"
           nullable: true
           description: 意見投稿主の意見。ルート意見の場合はここには何も入らない
         pictureURL:
@@ -4088,14 +4487,14 @@ components:
         - replyCount
       properties:
         opinion:
-          $ref: '#/components/schemas/Opinion'
+          $ref: "#/components/schemas/Opinion"
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         replyCount:
           type: integer
         myVoteType:
           allOf:
-            - $ref: '#/components/schemas/VoteType'
+            - $ref: "#/components/schemas/VoteType"
           nullable: true
       description: 意見とリプライ数と投票情報を含むレスポンス
     OpinionWithReplyCount:
@@ -4106,9 +4505,9 @@ components:
         - replyCount
       properties:
         opinion:
-          $ref: '#/components/schemas/Opinion'
+          $ref: "#/components/schemas/Opinion"
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         replyCount:
           type: integer
       description: 意見とリプライ数を含むレスポンス
@@ -4119,9 +4518,9 @@ components:
         - user
       properties:
         opinion:
-          $ref: '#/components/schemas/Opinion'
+          $ref: "#/components/schemas/Opinion"
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
       description: 意見とユーザー情報を含む基本レスポンス
     OpinionWithVote:
       type: object
@@ -4130,12 +4529,12 @@ components:
         - user
       properties:
         opinion:
-          $ref: '#/components/schemas/Opinion'
+          $ref: "#/components/schemas/Opinion"
         user:
-          $ref: '#/components/schemas/User'
+          $ref: "#/components/schemas/User"
         myVoteType:
           allOf:
-            - $ref: '#/components/schemas/VoteType'
+            - $ref: "#/components/schemas/VoteType"
           nullable: true
       description: 意見と投票情報を含むレスポンス
     OptionalCookieAuth:
@@ -4297,13 +4696,13 @@ components:
         - reportCount
       properties:
         opinion:
-          $ref: '#/components/schemas/Opinion'
+          $ref: "#/components/schemas/Opinion"
         user:
           allOf:
-            - $ref: '#/components/schemas/User'
+            - $ref: "#/components/schemas/User"
           description: 作成ユーザー
         status:
-          $ref: '#/components/schemas/ReportStatus'
+          $ref: "#/components/schemas/ReportStatus"
         reasons:
           type: array
           items:
@@ -4327,7 +4726,7 @@ components:
       properties:
         reasonID:
           type: integer
-          description: '1'
+          description: "1"
         reason:
           type: string
           description: 不適切な内容
@@ -4370,6 +4769,7 @@ components:
         - scheduledEndTime
         - restrictions
         - hideReport
+        - isLocked
       properties:
         id:
           type: string
@@ -4383,12 +4783,12 @@ components:
           description: 説明
         owner:
           allOf:
-            - $ref: '#/components/schemas/User'
+            - $ref: "#/components/schemas/User"
           description: 作成ユーザー
         organizationAlias:
           type: object
           allOf:
-            - $ref: '#/components/schemas/OrganizationAlias'
+            - $ref: "#/components/schemas/OrganizationAlias"
           nullable: true
           description: 作成組織名
         createdAt:
@@ -4399,7 +4799,7 @@ components:
           description: 終了予定日時
         location:
           allOf:
-            - $ref: '#/components/schemas/Location'
+            - $ref: "#/components/schemas/Location"
           description: 位置情報
         city:
           type: string
@@ -4416,7 +4816,7 @@ components:
         restrictions:
           type: array
           items:
-            $ref: '#/components/schemas/Restriction'
+            $ref: "#/components/schemas/Restriction"
           description: セッションの参加制限
         hideReport:
           type: boolean
@@ -4429,6 +4829,9 @@ components:
           type: boolean
           nullable: true
           description: 分析を無効化するかどうか
+        isLocked:
+          type: boolean
+          description: 合言葉でロックされたセッションかどうか
     TalkSessionForManage:
       type: object
       required:
@@ -4449,7 +4852,7 @@ components:
         description:
           type: string
         owner:
-          $ref: '#/components/schemas/UserForManage'
+          $ref: "#/components/schemas/UserForManage"
         scheduledEndTime:
           type: string
           format: date-time
@@ -4474,7 +4877,7 @@ components:
         talkSessionStats:
           type: array
           items:
-            $ref: '#/components/schemas/TalkSessionStats'
+            $ref: "#/components/schemas/TalkSessionStats"
         totalCount:
           type: integer
           format: int32
@@ -4502,7 +4905,7 @@ components:
         description:
           type: string
         owner:
-          $ref: '#/components/schemas/UserForManage'
+          $ref: "#/components/schemas/UserForManage"
         scheduledEndTime:
           type: string
           format: date-time
@@ -4530,6 +4933,377 @@ components:
         voteUserCount:
           type: integer
           format: int32
+    TalkSessionSurvey:
+      type: object
+      required:
+        - surveyID
+        - talkSessionID
+        - questions
+      properties:
+        surveyID:
+          type: string
+          description: アンケートID
+        talkSessionID:
+          type: string
+          description: 紐付くセッションID
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyQuestion"
+          description: 質問一覧（display_order 昇順）
+      description: アンケート定義
+    TalkSessionSurveyAnswer:
+      type: object
+      required:
+        - questionID
+        - selectedChoiceIDs
+      properties:
+        questionID:
+          type: string
+          description: 質問ID
+        text:
+          type: string
+          nullable: true
+          description: 自由記述（free_text）
+        selectedChoiceIDs:
+          type: array
+          items:
+            type: string
+          description: 選択された choice_id 配列
+        other:
+          type: string
+          nullable: true
+          description: 「その他」自由記述
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+          description: 評価値
+        date:
+          type: string
+          nullable: true
+          description: 日付
+      description: アンケート回答（取得用）
+    TalkSessionSurveyAnswerInput:
+      type: object
+      required:
+        - questionID
+      properties:
+        questionID:
+          type: string
+          description: 質問ID
+        text:
+          type: string
+          nullable: true
+          description: 自由記述（free_text）
+        selectedChoiceIDs:
+          type: array
+          items:
+            type: string
+          description: 選択された choice_id 配列（single/multi/dropdown）
+        other:
+          type: string
+          nullable: true
+          description: 「その他」自由記述（allowOther=true の choice 系で使用）
+        rating:
+          type: integer
+          format: int32
+          nullable: true
+          description: 評価値（rating）
+        date:
+          type: string
+          nullable: true
+          description: 日付（date, YYYY-MM-DD）
+      description: |-
+        回答送信用：単一回答
+        質問タイプによって意味が変わる：
+        - free_text: text を使用
+        - single_choice / dropdown: selectedChoiceIDs を 1 件、または allowOther の場合 other
+        - multi_choice: selectedChoiceIDs を 1 件以上、加えて allowOther の場合 other
+        - rating: rating を使用
+        - date: date を使用 (YYYY-MM-DD)
+    TalkSessionSurveyChoice:
+      type: object
+      required:
+        - choiceID
+        - text
+        - displayOrder
+      properties:
+        choiceID:
+          type: string
+          description: 選択肢ID
+        text:
+          type: string
+          description: 選択肢テキスト
+        displayOrder:
+          type: integer
+          format: int32
+          description: 表示順
+      description: アンケート選択肢
+    TalkSessionSurveyChoiceCount:
+      type: object
+      required:
+        - choiceID
+        - text
+        - count
+      properties:
+        choiceID:
+          type: string
+        text:
+          type: string
+        count:
+          type: integer
+          format: int32
+      description: 集計：選択肢ごとの件数
+    TalkSessionSurveyChoiceInput:
+      type: object
+      required:
+        - text
+        - displayOrder
+      properties:
+        choiceID:
+          type: string
+          nullable: true
+          description: 既存選択肢を編集する場合は choiceID を指定。新規追加時は省略。
+        text:
+          type: string
+        displayOrder:
+          type: integer
+          format: int32
+      description: アンケート作成用：選択肢入力
+    TalkSessionSurveyQuestion:
+      type: object
+      required:
+        - questionID
+        - text
+        - type
+        - isRequired
+        - allowOther
+        - displayOrder
+        - containsPii
+        - choices
+      properties:
+        questionID:
+          type: string
+          description: 質問ID
+        text:
+          type: string
+          description: 質問文
+        type:
+          allOf:
+            - $ref: "#/components/schemas/TalkSessionSurveyQuestionType"
+          description: 質問タイプ
+        isRequired:
+          type: boolean
+          description: 必須回答かどうか
+        allowOther:
+          type: boolean
+          description: 「その他」入力を許可するか（single_choice / multi_choice / dropdown のみ有効）
+        maxLength:
+          type: integer
+          format: int32
+          nullable: true
+          description: 自由記述の最大文字数（free_text または allowOther の入力に適用）
+        minValue:
+          type: integer
+          format: int32
+          nullable: true
+          description: rating の下限値（rating のみ有効）
+        maxValue:
+          type: integer
+          format: int32
+          nullable: true
+          description: rating の上限値（rating のみ有効）
+        minLabel:
+          type: string
+          nullable: true
+          description: rating の下限ラベル（例：「全く満足していない」）
+        maxLabel:
+          type: string
+          nullable: true
+          description: rating の上限ラベル（例：「非常に満足している」）
+        displayOrder:
+          type: integer
+          format: int32
+          description: 表示順
+        containsPii:
+          type: boolean
+          description: 個人情報を含む設問かどうか。true のとき、回答の text / other / date は AES-GCM で暗号化して保存される。
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyChoice"
+          description: 選択肢（single_choice / multi_choice / dropdown のみ）
+      description: アンケート質問
+    TalkSessionSurveyQuestionInput:
+      type: object
+      required:
+        - text
+        - type
+        - isRequired
+        - allowOther
+        - displayOrder
+        - choices
+      properties:
+        questionID:
+          type: string
+          nullable: true
+          description: 既存質問を編集する場合は questionID を指定。新規追加時は省略。
+        text:
+          type: string
+        type:
+          $ref: "#/components/schemas/TalkSessionSurveyQuestionType"
+        isRequired:
+          type: boolean
+        allowOther:
+          type: boolean
+        maxLength:
+          type: integer
+          format: int32
+          nullable: true
+        minValue:
+          type: integer
+          format: int32
+          nullable: true
+        maxValue:
+          type: integer
+          format: int32
+          nullable: true
+        minLabel:
+          type: string
+          nullable: true
+        maxLabel:
+          type: string
+          nullable: true
+        displayOrder:
+          type: integer
+          format: int32
+        containsPii:
+          type: boolean
+          description: 個人情報を含む設問かどうか。省略時は false。
+        choices:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyChoiceInput"
+      description: アンケート作成用：質問入力
+    TalkSessionSurveyQuestionSummary:
+      type: object
+      required:
+        - questionID
+        - text
+        - type
+        - containsPii
+        - answerCount
+        - choiceCounts
+        - otherCount
+        - ratingDistribution
+      properties:
+        questionID:
+          type: string
+        text:
+          type: string
+        type:
+          $ref: "#/components/schemas/TalkSessionSurveyQuestionType"
+        containsPii:
+          type: boolean
+          description: 個人情報設問かどうか
+        answerCount:
+          type: integer
+          format: int32
+          description: この質問に有効な回答を行ったユーザー数
+        choiceCounts:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyChoiceCount"
+          description: choice 系のみ：選択肢ごとの件数
+        otherCount:
+          type: integer
+          format: int32
+          description: choice 系（allowOther=true）のみ：その他テキストを記入したユーザー数
+        ratingAverage:
+          type: number
+          format: double
+          nullable: true
+          description: rating のみ：回答の平均値
+        ratingDistribution:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyRatingBucket"
+          description: rating のみ：値ごとの件数分布（minValue〜maxValue 昇順）
+      description: |-
+        集計：質問ごとの結果
+        - free_text / date: answerCount のみ意味を持つ（生データは /submissions で取得）
+        - single_choice / multi_choice / dropdown: choiceCounts + otherCount
+        - rating: ratingAverage + ratingDistribution
+    TalkSessionSurveyQuestionType:
+      type: string
+      enum:
+        - free_text
+        - single_choice
+        - multi_choice
+        - rating
+        - date
+        - dropdown
+      description: アンケートの質問タイプ
+    TalkSessionSurveyRatingBucket:
+      type: object
+      required:
+        - value
+        - count
+      properties:
+        value:
+          type: integer
+          format: int32
+        count:
+          type: integer
+          format: int32
+      description: 集計：rating の分布
+    TalkSessionSurveySubmission:
+      type: object
+      required:
+        - submissionID
+        - userID
+        - submittedAt
+        - answers
+      properties:
+        submissionID:
+          type: string
+          description: 送信ID
+        userID:
+          type: string
+          description: ユーザーID
+        submittedAt:
+          type: string
+          format: date-time
+          description: 送信日時
+        answers:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyAnswer"
+          description: 回答（質問ごと）
+      description: 回答送信レコード
+    TalkSessionSurveySummary:
+      type: object
+      required:
+        - surveyID
+        - talkSessionID
+        - submissionCount
+        - questionSummaries
+      properties:
+        surveyID:
+          type: string
+        talkSessionID:
+          type: string
+        submissionCount:
+          type: integer
+          format: int32
+          description: 送信ユーザー総数
+        questionSummaries:
+          type: array
+          items:
+            $ref: "#/components/schemas/TalkSessionSurveyQuestionSummary"
+          description: 質問ごとの集計（display_order 昇順、削除済みは除外）
+      description: 集計：survey 全体
     ToggleReportVisibilityRequest:
       type: object
       required:
@@ -4642,7 +5416,7 @@ components:
           type: integer
           nullable: true
           description: 生年月日
-          title: '20001010'
+          title: "20001010"
         gender:
           type: string
           nullable: true
@@ -4770,3 +5544,4 @@ components:
       in: cookie
       name: SessionId
       description: Cookie-based authentication using JWT tokens stored in secure HTTP-only cookies
+

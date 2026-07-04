@@ -2,21 +2,13 @@
 import fs from "node:fs";
 // biome-ignore lint/correctness/noNodejsModules: <explanation>
 import path from "node:path";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
-import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
-  // Storybookの時はStorybook用の設定を返す
-  if (process.env.SB) {
-    return {
-      plugins: [tsconfigPaths(), tailwindcss()],
-    };
-  }
-
   const proxy = await getPlatformProxy({
     environment: process.env.CF_ENV || "develop",
   });
@@ -35,7 +27,7 @@ export default defineConfig(async () => {
         path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
       ),
     },
-    host: "local.kotohiro.com",
+    host: true,
     port: 3000,
     hmr: {
       host: "local.kotohiro.com",
@@ -51,12 +43,10 @@ export default defineConfig(async () => {
       APP_URL: `${JSON.stringify(APP_URL)}`,
       API_URL: `${JSON.stringify(API_URL)}`,
     },
+    resolve: { tsconfigPaths: true },
     plugins: [
-      cloudflareDevProxy({
-        getLoadContext: ({ context }) => ({ cloudflare: context.cloudflare }),
-      }),
+      cloudflare({ viteEnvironment: { name: "ssr" } }),
       reactRouter(),
-      tsconfigPaths(),
       tailwindcss(),
     ],
   };
