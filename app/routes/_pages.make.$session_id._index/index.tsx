@@ -7,13 +7,12 @@ import {
 } from "@conform-to/react";
 import { parseWithValibot } from "@conform-to/valibot";
 import dayjs from "dayjs";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { RichTextEditor } from "~/components/features/rich-text-editor";
 import { Check } from "~/components/icons";
 import { Button } from "~/components/ui/button";
-import { Checkbox } from "~/components/ui/checkbox";
 import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
@@ -49,9 +48,8 @@ const toSurveyQuestionInputs = (questions: SurveyQuestionDraft[]) =>
   }));
 
 export default function Page({
-  loaderData: { restrictions, session, isEditMode, survey },
+  loaderData: { session, isEditMode, survey },
 }: Route.ComponentProps) {
-  const [isRestriction, setIsRestriction] = useState<boolean>(false);
   const [isSurveyEnabled, setIsSurveyEnabled] = useState<boolean>(!!survey);
   const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestionDraft[]>(
     () =>
@@ -124,17 +122,10 @@ export default function Page({
     return !error;
   };
 
-  useEffect(() => {
-    if ((session?.restrictions.length || 0) !== 0) {
-      setIsRestriction(true);
-    }
-  }, [session]);
-
   const [form, fields] = useForm({
     defaultValue: {
       theme: session?.theme || "",
       description: session?.description || "",
-      restrictions: session?.restrictions.map((r) => r.key) || [],
       scheduledEndTime: dayjs(session?.scheduledEndTime).format("YYYY-MM-DD"),
     },
     onValidate: ({ formData }) => {
@@ -160,11 +151,6 @@ export default function Page({
       }
 
       const value = submission.value;
-      const restrictions = Array.isArray(value.restrictions)
-        ? value.restrictions
-        : value.restrictions
-          ? [value.restrictions]
-          : ("[]" as unknown as never[]);
 
       if (isEditMode) {
         const { error } = await api.PUT("/talksessions/{talkSessionID}", {
@@ -177,7 +163,6 @@ export default function Page({
           body: {
             ...value,
             scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
-            restrictions,
             thumbnailURL: thumbnailRef.current || "",
           },
         });
@@ -202,7 +187,6 @@ export default function Page({
         body: {
           ...value,
           scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
-          restrictions,
           thumbnailURL: thumbnailRef.current || "",
         },
       });
@@ -278,52 +262,6 @@ export default function Page({
             onImageLoad={handleImageUploader}
             onUpdate={descriptionControl.change}
           />
-        </Label>
-
-        <Label
-          title="参加者の募集範囲"
-          notes={["どんな人に参加してほしいか決めよう"]}
-        >
-          <Select
-            disabled={isEditMode}
-            options={[
-              {
-                title: "誰でもOK",
-                value: "all",
-              },
-              {
-                title: "範囲を指定",
-                value: "restriction",
-              },
-            ]}
-            value={isRestriction ? "restriction" : "all"}
-            onChange={(e) => {
-              setIsRestriction(e.currentTarget.value === "restriction");
-            }}
-          />
-          {isRestriction && (
-            <div className="mt-2 space-y-2">
-              {restrictions?.map((restriction, i) => {
-                const checked = session?.restrictions?.some(
-                  (r) => r.key === restriction.key,
-                );
-                return (
-                  <Checkbox
-                    {...getInputProps(fields.restrictions, {
-                      type: "checkbox",
-                    })}
-                    key={i}
-                    id={restriction.key}
-                    name="restrictions"
-                    value={restriction.key}
-                    label={restriction.description}
-                    defaultChecked={checked}
-                    disabled={isEditMode}
-                  />
-                );
-              })}
-            </div>
-          )}
         </Label>
 
         <SurveyEditor

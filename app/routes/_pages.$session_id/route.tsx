@@ -26,7 +26,6 @@ import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
 import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
 import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
-import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -207,28 +206,10 @@ const Contents = ({
         </div>
 
         <div className="text-blue-500 text-sm">
-          {session.restrictions.length === 0 ? (
-            <div className="flex items-center">
-              <Notification className="fill-cs-blue-600" />
-              <p className="ml-2">誰でも参加OK</p>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2">
-              <p className="inline-block whitespace-nowrap rounded bg-cs-blue-50 px-2 py-1">
-                入力済対象
-              </p>
-              <div className="flex flex-wrap items-center">
-                {session.restrictions.map(({ description, key }, i) => {
-                  return (
-                    <p className="ml-2 flex space-x-1" key={i}>
-                      <span>{RESTRICTIONS_ICON_MAP[key]}</span>
-                      <span>{description}</span>
-                    </p>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <div className="flex items-center">
+            <Notification className="fill-cs-blue-600" />
+            <p className="ml-2">誰でも参加OK</p>
+          </div>
         </div>
 
         <div className="flex space-x-2">
