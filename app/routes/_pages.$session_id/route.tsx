@@ -25,6 +25,7 @@ import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton"
 import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
 import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
+import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
 import { RESTRICTIONS_ICON_MAP } from "./constants";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
@@ -72,6 +73,7 @@ const Contents = ({
   $user,
   $remainingCount,
   $positions,
+  $survey,
 }: Props) => {
   const tabs = [
     { label: "内容", href: `/${session.id}` },
@@ -111,6 +113,38 @@ const Contents = ({
         },
       ];
       setTabItems(ownerTabs);
+    });
+  }, []);
+
+  const [survey, setSurvey] = useState<UnwrapPromise<Props["$survey"]> | null>(
+    null,
+  );
+
+  /**
+   * セッション詳細に遷移したとき、アンケートが設定されていて
+   * 未回答（未答フラグなし）ならアンケートダイアログを開く
+   */
+  useEffect(() => {
+    Promise.all([$user, $survey]).then(([user, surveyData]) => {
+      if (!surveyData || surveyData.questions.length === 0) {
+        return;
+      }
+      // 未ログインでは回答を送信できないため表示しない
+      if (!user) {
+        return;
+      }
+      // オーナー自身には表示しない
+      if (session.owner.displayID === user.displayID) {
+        return;
+      }
+      if (
+        window.localStorage.getItem(`survey-answered-${session.id}`) ||
+        window.sessionStorage.getItem(`survey-dismissed-${session.id}`)
+      ) {
+        return;
+      }
+      setSurvey(surveyData);
+      setIsRequestModal(["survey"]);
     });
   }, []);
 
@@ -231,6 +265,29 @@ const Contents = ({
         sessionID={session.id}
       >
         {(state, next) => {
+          if (state === "survey" && survey) {
+            return (
+              <SurveyModalContent
+                sessionID={session.id}
+                survey={survey}
+                onClose={() => {
+                  // キャンセル時は同一ブラウザセッション中は再表示しない
+                  window.sessionStorage.setItem(
+                    `survey-dismissed-${session.id}`,
+                    "true",
+                  );
+                  handleCloseRequestModal();
+                }}
+                onAnswered={() => {
+                  window.localStorage.setItem(
+                    `survey-answered-${session.id}`,
+                    "true",
+                  );
+                  handleCloseRequestModal();
+                }}
+              />
+            );
+          }
           if (state === "consent") {
             return (
               <ConsentModalContent

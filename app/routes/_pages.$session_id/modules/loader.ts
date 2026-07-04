@@ -58,6 +58,21 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   });
 
   /**
+   * 入室前アンケート（未設定なら404でnull）
+   */
+  const $survey = api
+    .GET("/talksessions/{talkSessionID}/survey", {
+      headers: request.headers,
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
+      },
+    })
+    .then(({ data }) => data || null)
+    .catch(() => null);
+
+  /**
    * 制限項目リストの配列の中に足りていないフラグを仕込む処理
    */
   const $restrictions = Promise.all([
@@ -82,5 +97,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     $remainingCount,
     $restrictions,
     $positions,
+    $survey,
   };
 };

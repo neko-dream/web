@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { create } from "zustand";
 import { api } from "~/libs/openapi-fetch";
 
-export type RequestModalState = Array<"demography" | "consent" | "signup">;
+export type RequestModalState = Array<
+  "demography" | "consent" | "signup" | "survey"
+>;
 
 export const useSatisfiedStore = create<{
   nextPath?: string;
