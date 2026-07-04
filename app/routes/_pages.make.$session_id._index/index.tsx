@@ -21,18 +21,108 @@ import { Select } from "~/components/ui/select";
 import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
 import { isFieldsError } from "~/utils/form";
+import {
+  SurveyEditor,
+  createEmptyQuestion,
+  validateSurveyQuestions,
+} from "./components/SurveyEditor";
 import { createSessionFormSchema } from "./schemas";
+import type { SurveyQuestionDraft } from "./types";
 
 export { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";
 
+const toSurveyQuestionInputs = (questions: SurveyQuestionDraft[]) =>
+  questions.map((question, questionIndex) => ({
+    questionID: question.questionID,
+    text: question.text.trim(),
+    type: question.type,
+    isRequired: true,
+    allowOther: false,
+    displayOrder: questionIndex,
+    choices: question.choices.map((choice, choiceIndex) => ({
+      choiceID: choice.choiceID,
+      text: choice.text.trim(),
+      displayOrder: choiceIndex,
+    })),
+  }));
+
 export default function Page({
-  loaderData: { restrictions, session, isEditMode },
+  loaderData: { restrictions, session, isEditMode, survey },
 }: Route.ComponentProps) {
   const [isRestriction, setIsRestriction] = useState<boolean>(false);
+  const [isSurveyEnabled, setIsSurveyEnabled] = useState<boolean>(!!survey);
+  const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestionDraft[]>(
+    () =>
+      survey && survey.questions.length > 0
+        ? [...survey.questions]
+            .sort((a, b) => a.displayOrder - b.displayOrder)
+            .map((question) => ({
+              questionID: question.questionID,
+              text: question.text,
+              type: question.type === "dropdown" ? "dropdown" : "single_choice",
+              choices: [...question.choices]
+                .sort((a, b) => a.displayOrder - b.displayOrder)
+                .map((choice) => ({
+                  choiceID: choice.choiceID,
+                  text: choice.text,
+                })),
+            }))
+        : [createEmptyQuestion()],
+  );
   const thumbnailRef = useRef<string>(null);
   const navigate = useNavigate();
+
+  const saveSurvey = async (talkSessionID: string): Promise<boolean> => {
+    if (!survey) {
+      if (!isSurveyEnabled) {
+        return true;
+      }
+      const { error } = await api.POST("/talksessions/{talkSessionID}/survey", {
+        credentials: "include",
+        params: { path: { talkSessionID } },
+        body: { questions: toSurveyQuestionInputs(surveyQuestions) },
+        // アンケートAPIはJSONを受け取るため、FormData変換を上書きする
+        bodySerializer: (body) => JSON.stringify(body),
+      });
+      return !error;
+    }
+
+    // 既存アンケートの編集。OFFにした場合は全質問を削除する
+    const nextQuestions = isSurveyEnabled ? surveyQuestions : [];
+    const remainingQuestionIDs = new Set(
+      nextQuestions.map((q) => q.questionID).filter((id) => id !== undefined),
+    );
+    const deletedQuestionIDs = survey.questions
+      .filter((q) => !remainingQuestionIDs.has(q.questionID))
+      .map((q) => q.questionID);
+    const deletedChoiceIDs = survey.questions
+      .filter((q) => remainingQuestionIDs.has(q.questionID))
+      .flatMap((q) => {
+        const remainingChoiceIDs = new Set(
+          nextQuestions
+            .find((next) => next.questionID === q.questionID)
+            ?.choices.map((c) => c.choiceID) || [],
+        );
+        return q.choices
+          .filter((c) => !remainingChoiceIDs.has(c.choiceID))
+          .map((c) => c.choiceID);
+      });
+
+    const { error } = await api.PUT("/talksessions/{talkSessionID}/survey", {
+      credentials: "include",
+      params: { path: { talkSessionID } },
+      body: {
+        questions: toSurveyQuestionInputs(nextQuestions),
+        deletedQuestionIDs,
+        deletedChoiceIDs,
+      },
+      // アンケートAPIはJSONを受け取るため、FormData変換を上書きする
+      bodySerializer: (body) => JSON.stringify(body),
+    });
+    return !error;
+  };
 
   useEffect(() => {
     if ((session?.restrictions.length || 0) !== 0) {
@@ -61,6 +151,14 @@ export default function Page({
         return;
       }
 
+      if (isSurveyEnabled) {
+        const surveyError = validateSurveyQuestions(surveyQuestions);
+        if (surveyError) {
+          toast.error(surveyError);
+          return;
+        }
+      }
+
       const value = submission.value;
       const restrictions = Array.isArray(value.restrictions)
         ? value.restrictions
@@ -86,14 +184,20 @@ export default function Page({
 
         if (error) {
           toast.error(error.message);
-        } else {
-          toast.success("更新が完了しました");
-          navigate(`/${session?.id}`);
+          return;
         }
+
+        if (!(await saveSurvey(session.id))) {
+          toast.error("アンケートの保存に失敗しました");
+          return;
+        }
+
+        toast.success("更新が完了しました");
+        navigate(`/${session?.id}`);
         return;
       }
 
-      const { error } = await api.POST("/talksessions", {
+      const { data, error } = await api.POST("/talksessions", {
         credentials: "include",
         body: {
           ...value,
@@ -105,10 +209,19 @@ export default function Page({
 
       if (error) {
         toast.error(error.message);
-      } else {
-        toast.success("登録が完了しました");
-        navigate("/home");
+        return;
       }
+
+      if (data && !(await saveSurvey(data.id))) {
+        toast.error(
+          "セッションは作成されましたが、アンケートの作成に失敗しました",
+        );
+        navigate("/home");
+        return;
+      }
+
+      toast.success("登録が完了しました");
+      navigate("/home");
     },
   });
 
@@ -212,6 +325,13 @@ export default function Page({
             </div>
           )}
         </Label>
+
+        <SurveyEditor
+          enabled={isSurveyEnabled}
+          onEnabledChange={setIsSurveyEnabled}
+          questions={surveyQuestions}
+          onQuestionsChange={setSurveyQuestions}
+        />
 
         <Label
           title="募集期間"

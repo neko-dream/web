@@ -26,10 +26,16 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
-  const [{ data: restrictions }, { data: session }] = await Promise.all([
-    $restrictions,
-    $session,
-  ]);
+  const $survey = api.GET("/talksessions/{talkSessionID}/survey", {
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
+
+  const [{ data: restrictions }, { data: session }, { data: survey }] =
+    await Promise.all([$restrictions, $session, $survey]);
 
   if (!session) {
     throw notfound();
@@ -39,5 +45,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     isEditMode: true,
     session,
     restrictions,
+    survey,
   };
 };
