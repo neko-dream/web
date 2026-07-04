@@ -1,4 +1,5 @@
 import type { LoaderFunctionArgs } from "react-router";
+import { SURVEY_RESTRICTION_KEY } from "~/hooks/useVote";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
@@ -84,12 +85,17 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       return [];
     }
     const requiredKeys = requiredRestrictions?.map(({ key }) => key);
-    return restrictions?.map((restriction) => {
-      return {
-        ...restriction,
-        required: requiredKeys?.includes(restriction.key),
-      };
-    });
+    return (
+      restrictions
+        // アンケート回答restrictionはデモグラ入力モーダルには表示しない
+        ?.filter(({ key }) => key !== SURVEY_RESTRICTION_KEY)
+        .map((restriction) => {
+          return {
+            ...restriction,
+            required: requiredKeys?.includes(restriction.key),
+          };
+        })
+    );
   });
 
   return {

@@ -84,7 +84,8 @@ const Contents = ({
   const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
+  const { isRequestModal, setIsRequestModal, nextPath, setNextPath } =
+    useSatisfiedStore();
   const { revalidate } = useRevalidator();
   const [searchParams] = useSearchParams();
 
@@ -129,6 +130,8 @@ const Contents = ({
       if (!surveyData || surveyData.questions.length === 0) {
         return;
       }
+      // check()経由（意見投稿・スワイプ等のアクション時）でも表示できるよう保持しておく
+      setSurvey(surveyData);
       // 未ログインでは回答を送信できないため表示しない
       if (!user) {
         return;
@@ -143,7 +146,7 @@ const Contents = ({
       ) {
         return;
       }
-      setSurvey(surveyData);
+      setNextPath(undefined);
       setIsRequestModal(["survey"]);
     });
   }, []);
@@ -271,7 +274,7 @@ const Contents = ({
                 sessionID={session.id}
                 survey={survey}
                 onClose={() => {
-                  // キャンセル時は同一ブラウザセッション中は再表示しない
+                  // キャンセル時は同一ブラウザセッション中は自動表示しない
                   window.sessionStorage.setItem(
                     `survey-dismissed-${session.id}`,
                     "true",
@@ -283,7 +286,8 @@ const Contents = ({
                     `survey-answered-${session.id}`,
                     "true",
                   );
-                  handleCloseRequestModal();
+                  // 後続のモーダル（デモグラ等）があれば進め、なければnextPathへ遷移
+                  next();
                 }}
               />
             );
