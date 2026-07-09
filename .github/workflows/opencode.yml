@@ -29,5 +29,5 @@ jobs:
           OPENCODE_AUTH_CONTENT: ${{ secrets.OPENCODE_AUTH_CONTENT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          model: deepseek-v4-pro
+          model: opencode-go/deepseek-v4-pro
           use_github_token: true
