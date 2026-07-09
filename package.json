@@ -7,10 +7,10 @@
     "dev": "react-router dev",
     "build": "react-router build",
     "deploy": "wrangler deploy --env develop",
-    "format": "pnpm dlx biome format --write ./app",
+    "format": "biome format --write ./app",
     "lint": "biome check .",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
-    "icongen": "pnpm dlx @svgr/cli --out-dir app/components/Icons -- app/assets/icons && pnpm dlx biome format --write ./app/components/Icons"
+    "icongen": "svgr --out-dir app/components/Icons -- app/assets/icons && biome format --write ./app/components/Icons"
   },
   "dependencies": {
     "@conform-to/react": "^1.2.2",
@@ -65,6 +65,7 @@
     "@types/node": "^25.9.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-basic-ssl": "^2.3.0",
     "cross-env": "^7.0.3",
     "openapi-typescript": "^7.6.1",
     "postcss": "^8.4.49",
