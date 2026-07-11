@@ -25,7 +25,7 @@ import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton"
 import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
 import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
-import { RESTRICTIONS_ICON_MAP } from "./constants";
+import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { loader } from "./modules/loader";
@@ -72,6 +72,7 @@ const Contents = ({
   $user,
   $remainingCount,
   $positions,
+  $survey,
 }: Props) => {
   const tabs = [
     { label: "内容", href: `/${session.id}` },
@@ -82,7 +83,8 @@ const Contents = ({
   const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<Tab[]>(tabs);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal, nextPath } = useSatisfiedStore();
+  const { isRequestModal, setIsRequestModal, nextPath, setNextPath } =
+    useSatisfiedStore();
   const { revalidate } = useRevalidator();
   const [searchParams] = useSearchParams();
 
@@ -111,6 +113,40 @@ const Contents = ({
         },
       ];
       setTabItems(ownerTabs);
+    });
+  }, []);
+
+  const [survey, setSurvey] = useState<UnwrapPromise<Props["$survey"]> | null>(
+    null,
+  );
+
+  /**
+   * セッション詳細に遷移したとき、アンケートが設定されていて
+   * 未回答（未答フラグなし）ならアンケートダイアログを開く
+   */
+  useEffect(() => {
+    Promise.all([$user, $survey]).then(([user, surveyData]) => {
+      if (!surveyData || surveyData.questions.length === 0) {
+        return;
+      }
+      // check()経由（意見投稿・スワイプ等のアクション時）でも表示できるよう保持しておく
+      setSurvey(surveyData);
+      // 未ログインでは回答を送信できないため表示しない
+      if (!user) {
+        return;
+      }
+      // オーナー自身には表示しない
+      if (session.owner.displayID === user.displayID) {
+        return;
+      }
+      if (
+        window.localStorage.getItem(`survey-answered-${session.id}`) ||
+        window.sessionStorage.getItem(`survey-dismissed-${session.id}`)
+      ) {
+        return;
+      }
+      setNextPath(undefined);
+      setIsRequestModal(["survey"]);
     });
   }, []);
 
@@ -170,28 +206,10 @@ const Contents = ({
         </div>
 
         <div className="text-blue-500 text-sm">
-          {session.restrictions.length === 0 ? (
-            <div className="flex items-center">
-              <Notification className="fill-cs-blue-600" />
-              <p className="ml-2">誰でも参加OK</p>
-            </div>
-          ) : (
-            <div className="flex items-center space-x-2">
-              <p className="inline-block whitespace-nowrap rounded bg-cs-blue-50 px-2 py-1">
-                入力済対象
-              </p>
-              <div className="flex flex-wrap items-center">
-                {session.restrictions.map(({ description, key }, i) => {
-                  return (
-                    <p className="ml-2 flex space-x-1" key={i}>
-                      <span>{RESTRICTIONS_ICON_MAP[key]}</span>
-                      <span>{description}</span>
-                    </p>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+          <div className="flex items-center">
+            <Notification className="fill-cs-blue-600" />
+            <p className="ml-2">誰でも参加OK</p>
+          </div>
         </div>
 
         <div className="flex space-x-2">
@@ -231,6 +249,30 @@ const Contents = ({
         sessionID={session.id}
       >
         {(state, next) => {
+          if (state === "survey" && survey) {
+            return (
+              <SurveyModalContent
+                sessionID={session.id}
+                survey={survey}
+                onClose={() => {
+                  // キャンセル時は同一ブラウザセッション中は自動表示しない
+                  window.sessionStorage.setItem(
+                    `survey-dismissed-${session.id}`,
+                    "true",
+                  );
+                  handleCloseRequestModal();
+                }}
+                onAnswered={() => {
+                  window.localStorage.setItem(
+                    `survey-answered-${session.id}`,
+                    "true",
+                  );
+                  // 後続のモーダル（デモグラ等）があれば進め、なければnextPathへ遷移
+                  next();
+                }}
+              />
+            );
+          }
           if (state === "consent") {
             return (
               <ConsentModalContent
