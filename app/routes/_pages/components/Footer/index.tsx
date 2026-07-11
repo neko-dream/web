@@ -1,3 +1,4 @@
+import { Link } from "@remix-run/react";
 import LogoIcon from "~/assets/kotohiro.png";
 
 export const Footer = () => {
@@ -13,7 +14,18 @@ export const Footer = () => {
           return (
             <div key={i}>
               <p className="mt-8 font-bold">{title}</p>
-              {items.map(({ href, name, external }, j) => {
+              {items.map(({ href, name, external, internal }, j) => {
+                if (internal) {
+                  return (
+                    <Link
+                      key={j}
+                      to={href}
+                      className="mt-3 table hover:underline"
+                    >
+                      {name}
+                    </Link>
+                  );
+                }
                 const link = external
                   ? href
                   : `https://static.kotohiro.com/${href}`;
@@ -63,6 +75,11 @@ const links = [
         name: "運営会社",
         href: "https://corp.kotohiro.com",
         external: true,
+      },
+      {
+        name: "お問い合わせ",
+        href: "/guide/contact",
+        internal: true,
       },
       // {
       //   name: "お知らせ",
