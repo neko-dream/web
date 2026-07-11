@@ -21,7 +21,7 @@ export const Footer = () => {
                   <a
                     key={j}
                     href={link}
-                    className="mt-3 table"
+                    className="mt-3 table hover:underline"
                     target="_blank"
                     rel="noreferrer"
                   >
