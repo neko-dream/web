@@ -4,7 +4,6 @@ main = "./workers/app.ts"
 compatibility_date = "2024-10-18"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
-preview_urls = false
 
 [vars]
 APP_URL = "https://local.kotohiro.com:3000"
@@ -13,6 +12,7 @@ API_URL = "https://api.dev.kotohiro.com"
 # 開発環境の設定
 [env.develop]
 name = "kotohiro-develop"
+preview_urls = true
 routes = [
   { pattern = "develop.kotohiro.com", custom_domain = true }
 ]
@@ -24,6 +24,7 @@ API_URL = "https://api.dev.kotohiro.com"
 # ステージング環境の設定
 [env.staging]
 name = "kotohiro-staging"
+preview_urls = false
 routes = [
   { pattern = "staging.kotohiro.com", custom_domain = true }
 ]
@@ -35,6 +36,7 @@ API_URL = "https://api.kotohiro.com"
 # 本番環境の設定
 [env.production]
 name = "kotohiro"
+preview_urls = false
 routes = [
   { pattern = "kotohiro.com", custom_domain = true },
   { pattern = "www.kotohiro.com", custom_domain = true }
