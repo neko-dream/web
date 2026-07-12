@@ -104,7 +104,7 @@ export const Header = ({ $user }: Props) => {
                         onClick={handleSearchDialogOpenChange}
                         className="cursor-pointer"
                       >
-                        <Search className="h-5 w-5" />
+                        <Search className="h-5 w-5 text-[#8e8e93]" />
                       </button>
                       <Link to={"/users/me"}>
                         <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
@@ -118,7 +118,7 @@ export const Header = ({ $user }: Props) => {
                               "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
                           })}
                         >
-                          <PlusCircle />
+                          <PlusCircle className="text-white" />
                           <span>作成</span>
                         </Link>
                       )}

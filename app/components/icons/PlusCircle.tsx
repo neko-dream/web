@@ -8,7 +8,7 @@ const SvgPlusCircle = (props: SVGProps<SVGSVGElement>) => (
     viewBox="0 0 14 14"
     {...props}
   >
-    <g fill="#fff" clipPath="url(#clip0_1227_24417)">
+    <g fill="currentColor" clipPath="url(#clip0_1227_24417)">
       <mask id="path-1-inside-1_1227_24417">
         <path d="M9.516 6.563H7.438V4.483a.11.11 0 0 0-.11-.109h-.656a.11.11 0 0 0-.11.11v2.077H4.485a.11.11 0 0 0-.109.11v.656c0 .06.05.11.11.11h2.077v2.078c0 .06.05.109.11.109h.656c.06 0 .11-.05.11-.11V7.438h2.078c.06 0 .109-.049.109-.109v-.656a.11.11 0 0 0-.11-.11" />
       </mask>
