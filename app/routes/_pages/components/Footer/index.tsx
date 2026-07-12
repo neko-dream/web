@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import LogoIcon from "~/assets/kotohiro.png";
+import { ExternalLink } from "~/components/ui/external-link";
 
 export const Footer = () => {
   return (
@@ -30,15 +31,13 @@ export const Footer = () => {
                   ? href
                   : `https://static.kotohiro.com/${href}`;
                 return (
-                  <a
+                  <ExternalLink
                     key={j}
                     href={link}
                     className="mt-3 table hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
                   >
                     {name}
-                  </a>
+                  </ExternalLink>
                 );
               })}
             </div>
