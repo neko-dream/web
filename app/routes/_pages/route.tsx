@@ -34,7 +34,13 @@ export default function Layout({
       <Analytics />
       {/* 実際に見えるコンテンツ */}
       {!isTopPage && <Header $user={$user} />}
-      <main className={isTopPage ? "flex min-h-screen flex-col" : "flex min-h-[calc(100vh-48px)] flex-col"}>
+      <main
+        className={
+          isTopPage
+            ? "flex min-h-screen flex-col"
+            : "flex min-h-[calc(100vh-48px)] flex-col"
+        }
+      >
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
       <Footer />
