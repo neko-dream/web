@@ -1,5 +1,6 @@
 import { Suspense, useState } from "react";
 import { Await, Link } from "react-router";
+import { BottomNav } from "~/components/features/bottom-nav";
 import Session from "~/components/features/talksession-card";
 import { ArrowRight } from "~/components/icons";
 import type { Route } from "~/react-router/_pages.home/+types";
@@ -60,7 +61,7 @@ export default function Page({
   const [activeTab, setActiveTab] = useState<string>(TABS[0].value);
 
   return (
-    <div className="mx-auto mb-16 w-full max-w-4xl md:max-w-5xl">
+    <div className="mx-auto mb-24 w-full max-w-4xl md:max-w-5xl">
       {/* タブ */}
       <div className="border-[#c1c7ce] border-b-[0.5px] border-solid px-4">
         <div className="flex items-start">
@@ -164,6 +165,7 @@ export default function Page({
           }}
         </Await>
       </Suspense>
+      <BottomNav />
     </div>
   );
 }
