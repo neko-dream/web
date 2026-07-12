@@ -6,8 +6,10 @@ import { defineConfig } from "vite";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
+  // 環境指定は @cloudflare/vite-plugin が参照する CLOUDFLARE_ENV に統一
+  const cloudflareEnv = process.env.CLOUDFLARE_ENV;
   const proxy = await getPlatformProxy({
-    environment: process.env.CF_ENV || "develop",
+    environment: cloudflareEnv || "develop",
   });
   const { APP_URL, API_URL } = proxy.env;
 
@@ -27,7 +29,7 @@ export default defineConfig(async () => {
   };
 
   return {
-    server: process.env.CF_ENV ? undefined : server,
+    server: cloudflareEnv ? undefined : server,
     define: {
       APP_URL: `${JSON.stringify(APP_URL)}`,
       API_URL: `${JSON.stringify(API_URL)}`,
