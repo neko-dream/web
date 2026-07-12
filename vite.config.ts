@@ -6,9 +6,8 @@ import { defineConfig } from "vite";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
-  // @cloudflare/vite-plugin が参照する CLOUDFLARE_ENV に統一する。
-  // CF_ENV は旧来の指定方法との互換のためのフォールバック
-  const cloudflareEnv = process.env.CLOUDFLARE_ENV || process.env.CF_ENV;
+  // 環境指定は @cloudflare/vite-plugin が参照する CLOUDFLARE_ENV に統一
+  const cloudflareEnv = process.env.CLOUDFLARE_ENV;
   const proxy = await getPlatformProxy({
     environment: cloudflareEnv || "develop",
   });
