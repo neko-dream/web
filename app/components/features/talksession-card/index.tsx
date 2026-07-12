@@ -3,6 +3,7 @@ import { JST } from "~/libs/dayjs";
 import type { components } from "~/types/openapi";
 import { ClockCircle, Environment, Message } from "../../icons";
 import { Avatar } from "../../ui/avatar";
+import { MunicipalityBadge } from "../../ui/municipality-badge";
 
 type Props = {
   talkSession: components["schemas"]["TalkSession"];
@@ -22,19 +23,22 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
         loading="lazy"
       />
 
-      <div className="ml-4 flex w-full flex-col">
+      <div className="ml-4 flex w-full flex-col gap-[2px]">
         {/* テーマ名 */}
-        <p className="line-clamp-1 font-bold">{talkSession.theme}</p>
+        <p className="line-clamp-1 font-bold text-base">{talkSession.theme}</p>
 
         {/* アバター */}
-        <div className="mt-0.5 flex items-center space-x-2">
+        <div className="flex items-center gap-2">
           <Avatar src={talkSession.owner.iconURL} className="block h-5 w-5" />
-          <p className="text-gray-500 text-xs">
-            {talkSession.owner.displayName}
-          </p>
+          <p className="text-black text-xs">{talkSession.owner.displayName}</p>
         </div>
 
-        <div className="mt-0.5 flex space-x-4">
+        {/* 自治体バッジ */}
+        {talkSession.organizationAlias?.aliasName && (
+          <MunicipalityBadge name={talkSession.organizationAlias.aliasName} />
+        )}
+
+        <div className="flex space-x-4">
           <div className="flex w-full max-w-24 items-center space-x-1">
             <Environment className="text-gray-500" />
             <p className="text-gray-500 text-xs">{talkSession.city || "---"}</p>
