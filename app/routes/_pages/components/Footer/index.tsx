@@ -34,7 +34,7 @@ export const Footer = () => {
         })}
       </div>
 
-      <p className="mt-8 text-xs">©︎ 2025 kotohiro Inc.</p>
+      <p className="mt-8 text-xs">©︎ 2026 kotohiro Inc.</p>
     </footer>
   );
 };
