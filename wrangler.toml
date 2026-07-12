@@ -5,6 +5,11 @@ compatibility_date = "2024-10-18"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 
+[[flagship]]
+binding = "FLAGS"
+project = "kotohiro"
+appId = "147cbe10-d9e4-448b-a419-fa5832509a8b"
+
 [vars]
 APP_URL = "https://local.kotohiro.com:3000"
 API_URL = "https://api.dev.kotohiro.com"
