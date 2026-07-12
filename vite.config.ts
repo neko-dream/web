@@ -10,8 +10,9 @@ export default defineConfig(async () => {
   const cloudflareEnv = process.env.CLOUDFLARE_ENV;
   const proxy = await getPlatformProxy({
     environment: cloudflareEnv || "develop",
-  });
-  const { APP_URL, API_URL } = proxy.env;
+  }).catch(() => null);
+  const APP_URL = proxy?.env?.APP_URL ?? "https://local.kotohiro.com:3000";
+  const API_URL = proxy?.env?.API_URL ?? "https://api.dev.kotohiro.com";
 
   if (typeof APP_URL !== "string" || typeof API_URL !== "string") {
     throw new Error("APP_URL or API_URL must be defined");
