@@ -89,10 +89,10 @@ export const Header = ({ $user }: Props) => {
                         to={"/"}
                         className={button({
                           className:
-                            "flex h-8 items-center rounded-md bg-[#32ADE6] p-2 text-xs",
+                            "flex h-8 items-center rounded-md bg-[#007AFF] p-2 text-xs",
                         })}
                       >
-                        ログイン
+                        ログインする
                       </Link>
                     );
                   }
