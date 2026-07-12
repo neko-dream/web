@@ -33,7 +33,7 @@ jobs:
 
       - name: Run typecheck
         env:
-          CF_ENV: develop
+          CLOUDFLARE_ENV: develop
         run: pnpm typecheck
 
       - name: Run Lint
