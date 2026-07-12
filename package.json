@@ -36,6 +36,7 @@
     "dayjs": "^1.11.13",
     "gsap": "^3.13.0",
     "isbot": "^4.1.0",
+    "lucide-react": "^1.24.0",
     "motion": "^12.5.0",
     "openapi-fetch": "^0.12.2",
     "react": "^19.2.7",

@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { cn } from "tailwind-variants";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { Checkbox } from "~/components/ui/checkbox";
+import { ExternalLink } from "~/components/ui/external-link";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
 import { api } from "~/libs/openapi-fetch";
 
@@ -84,23 +85,19 @@ export const AuthenticateCard = ({
           htmlFor="terms"
           className="ms-2 font-medium text-gray-900 text-sm"
         >
-          <a
+          <ExternalLink
             href="https://static.kotohiro.com/tos"
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-cs-blue-600"
           >
             利用規約
-          </a>
+          </ExternalLink>
           ・
-          <a
+          <ExternalLink
             href="https://static.kotohiro.com/privacy-policy"
-            target="_blank"
-            rel="noopener noreferrer"
             className="text-cs-blue-600"
           >
             プライバシーポリシー
-          </a>
+          </ExternalLink>
           に同意して始める
         </label>
       </div>
