@@ -15,8 +15,11 @@ export default function Page() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const query = encodeURIComponent(inputRef.current?.value || "");
-    navigate(`/home?q=${query}`);
+    const query = inputRef.current?.value.trim();
+    if (!query) {
+      return;
+    }
+    navigate(`/home?q=${encodeURIComponent(query)}`);
   };
 
   return (
