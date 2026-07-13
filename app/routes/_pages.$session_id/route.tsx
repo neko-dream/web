@@ -291,15 +291,7 @@ const Contents = ({
       </div>
 
       <div className="flex-1 bg-[#F2F2F7] p-4 pb-32">
-        <Suspense>
-          <Await resolve={session}>
-            {() => {
-              return (
-                <Outlet context={{ session } satisfies SessionRouteContext} />
-              );
-            }}
-          </Await>
-        </Suspense>
+        <Outlet context={{ session } satisfies SessionRouteContext} />
       </div>
 
       <SessionToolbar
