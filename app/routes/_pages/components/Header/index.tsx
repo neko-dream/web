@@ -104,7 +104,7 @@ export const Header = ({ $user }: Props) => {
                         onClick={handleSearchDialogOpenChange}
                         className="cursor-pointer"
                       >
-                        <Search className="h-5 w-5" />
+                        <Search className="h-5 w-5 text-[#8E8E93]" />
                       </button>
                       <Link to={"/users/me"}>
                         <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
