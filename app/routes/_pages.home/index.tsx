@@ -53,12 +53,14 @@ export default function Page({
     <div className="mx-auto mb-32 w-full max-w-4xl">
       {/* タブ */}
       <div className="border-[#C1C7CE] border-b-[0.5px] border-solid px-4">
-        <div className="flex items-start">
+        <div className="flex items-start" role="tablist">
           {TABS.map((tab) => {
             const active = activeTab === tab.value;
             return (
               <button
                 type="button"
+                role="tab"
+                aria-selected={active}
                 key={tab.value}
                 onClick={() => setActiveTab(tab.value)}
                 className="flex w-[120px] cursor-pointer flex-col items-center gap-2 pt-2"
