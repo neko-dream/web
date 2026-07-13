@@ -20,7 +20,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
       {/* サムネイル */}
       <img
         src={talkSession.thumbnailURL || DefaultSessionIcon}
-        className="aspect-square h-16 w-16 rounded-2xl border-[0.33px] border-[#C1C7CE] object-cover"
+        className="aspect-square h-16 w-16 rounded-2xl border-[#C1C7CE] border-[0.33px] object-cover"
         alt="session thumbnail"
         loading="lazy"
       />
