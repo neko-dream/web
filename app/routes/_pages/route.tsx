@@ -2,6 +2,7 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
+import { BottomNav } from "~/components/features/bottom-nav";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -43,6 +44,7 @@ export default function Layout({
       >
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
+      <BottomNav />
       <Footer />
 
       {/* -- 以下ダイアログなど -- */}
