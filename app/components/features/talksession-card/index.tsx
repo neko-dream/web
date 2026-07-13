@@ -64,7 +64,7 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
               <p className="ml-1 w-14 text-gray-500 text-xs">終了</p>
             ) : (
               <p className="ml-1 w-14 whitespace-nowrap text-gray-500 text-xs">
-                あと{remainingDays}日
+                {remainingDays === 0 ? "本日まで" : `あと${remainingDays}日`}
               </p>
             )}
           </div>

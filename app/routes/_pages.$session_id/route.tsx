@@ -110,6 +110,16 @@ const Contents = ({
     ({ key }) => key !== SURVEY_RESTRICTION_KEY,
   );
 
+  const remainingDays = JST(session.scheduledEndTime).diff(
+    JST(new Date()),
+    "day",
+  );
+  const remainingLabel = isEnd(session.scheduledEndTime)
+    ? "終了"
+    : remainingDays === 0
+      ? "本日まで"
+      : `あと${remainingDays}日`;
+
   const navigate = useNavigate();
   const [tabItems, setTabItems] = useState<ToolbarItem[]>(tabs);
   const { check } = useVote({ sessionID: session.id });
@@ -246,11 +256,7 @@ const Contents = ({
           )}
           <div className="flex items-center gap-1">
             <ClockCircle className="size-4 text-[#8E8E93]" />
-            <p className="text-[#8E8E93] text-sm">
-              {isEnd(session.scheduledEndTime)
-                ? "終了"
-                : `あと${JST(session.scheduledEndTime).diff(JST(new Date()), "day")}日`}
-            </p>
+            <p className="text-[#8E8E93] text-sm">{remainingLabel}</p>
           </div>
         </div>
 
