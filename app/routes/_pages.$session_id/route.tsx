@@ -1,3 +1,4 @@
+import { FileText } from "lucide-react";
 import { type MouseEvent, Suspense, useEffect, useState } from "react";
 import {
   Await,
@@ -100,7 +101,7 @@ const Contents = ({
   $survey,
 }: Props) => {
   const tabs: ToolbarItem[] = [
-    { label: "内容", href: `/${session.id}`, icon: User },
+    { label: "内容", href: `/${session.id}`, icon: FileText },
     { label: "意見", href: `/${session.id}/opinions`, icon: Message },
     { label: "分析", href: `/${session.id}/analysis`, icon: LineChart },
   ];
