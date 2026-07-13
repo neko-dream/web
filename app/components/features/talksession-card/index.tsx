@@ -1,4 +1,6 @@
+import { useState } from "react";
 import DefaultSessionIcon from "~/assets/default/session.webp";
+import LogoIcon from "~/assets/kotohiro.png";
 import { JST } from "~/libs/dayjs";
 import type { components } from "~/types/openapi";
 import { ClockCircle, Environment, Message } from "../../icons";
@@ -14,15 +16,23 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
   const end = JST(talkSession.scheduledEndTime);
   const isFinished = end.isBefore();
   const remainingDays = end.diff(JST(new Date()), "day");
+  const [thumbnailFailed, setThumbnailFailed] = useState(false);
 
   return (
     <div className="flex">
-      {/* サムネイル */}
+      {/* サムネイル（読み込み失敗時はことひろロゴ） */}
       <img
-        src={talkSession.thumbnailURL || DefaultSessionIcon}
-        className="aspect-square h-16 w-16 rounded-2xl border-[#C1C7CE] border-[0.33px] object-cover"
+        src={
+          thumbnailFailed
+            ? LogoIcon
+            : talkSession.thumbnailURL || DefaultSessionIcon
+        }
+        className={`aspect-square h-16 w-16 rounded-2xl border-[#C1C7CE] border-[0.33px] ${
+          thumbnailFailed ? "object-contain p-2" : "object-cover"
+        }`}
         alt="session thumbnail"
         loading="lazy"
+        onError={() => setThumbnailFailed(true)}
       />
 
       <div className="ml-4 flex w-full flex-col gap-[2px]">
