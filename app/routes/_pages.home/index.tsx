@@ -30,7 +30,7 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 );
 
 const SessionList = ({ sessions }: { sessions: TalkSessionItem[] }) => (
-  <div className="flex flex-col gap-6 px-4 md:grid md:grid-cols-2 md:gap-x-8">
+  <div className="flex flex-col gap-6 px-4 min-[600px]:grid min-[600px]:grid-cols-2 min-[600px]:gap-x-8">
     {sessions.map((session, i) => (
       <Link
         to={`/${session.talkSession.id}`}
