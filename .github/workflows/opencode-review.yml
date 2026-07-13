@@ -23,7 +23,7 @@ jobs:
           model: opencode-go/deepseek-v4-pro
           use_github_token: true
           prompt: |
-            Review this pull request:
-            - Check for code quality issues
-            - Look for potential bugs
-            - Suggest improvements
+            日本語でレビューしてください。このプルリクエストをレビューし:
+            - コード品質の問題をチェック
+            - 潜在的なバグを探す
+            - 改善点を提案
