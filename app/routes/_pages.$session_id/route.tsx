@@ -106,9 +106,9 @@ const Contents = ({
   ];
 
   // 参加制限（アンケート回答restrictionはタグ表示しない）
-  const restrictions = session.restrictions.filter(
-    ({ key }) => key !== SURVEY_RESTRICTION_KEY,
-  );
+  const restrictions =
+    session.restrictions?.filter(({ key }) => key !== SURVEY_RESTRICTION_KEY) ??
+    [];
 
   const remainingDays = JST(session.scheduledEndTime).diff(
     JST(new Date()),
