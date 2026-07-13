@@ -1,5 +1,6 @@
 import { Suspense, useState } from "react";
 import { Await, Link } from "react-router";
+import { BottomNav } from "~/components/features/bottom-nav";
 import Session from "~/components/features/talksession-card";
 import { ArrowRight } from "~/components/icons";
 import type { Route } from "~/react-router/_pages.home/+types";
@@ -145,6 +146,8 @@ export default function Page({
           }}
         </Await>
       </Suspense>
+
+      <BottomNav />
     </div>
   );
 }
