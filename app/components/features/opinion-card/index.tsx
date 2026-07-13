@@ -139,7 +139,7 @@ export const Card = ({
               type="button"
               className="flex cursor-pointer space-x-2 border-gray-200 border-b py-2 text-[#8E8E93]"
             >
-              <LineChart />
+              <LineChart className="text-[#8E8E93]" />
               <span>分析</span>
             </button>
             <button
