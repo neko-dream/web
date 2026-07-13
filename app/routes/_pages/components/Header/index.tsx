@@ -1,13 +1,11 @@
 import { Suspense, useEffect, useState } from "react";
 import { Await, Link, useLocation } from "react-router";
-import { tv } from "tailwind-variants";
 import LogoIcon from "~/assets/kotohiro.png";
-import { Close, Menu, PlusCircle, Search } from "~/components/icons";
+import { Close, Menu, PlusCircle, User } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";
 import type { Route } from "~/react-router/_pages/+types/route";
 import { MenuDialog } from "../MenuDialog";
-import { SearchModal } from "../SearchModal";
 
 type Props = Route.ComponentProps["loaderData"];
 
@@ -18,23 +16,13 @@ const ignorePersonalIconPages = [
   "/guide/contact",
 ];
 
-const header = tv({
-  base: "fixed z-30 w-full border-gray-100 border-b-2",
-  variants: {
-    isDialogOpen: {
-      true: "shadow-none",
-    },
-  },
-});
-
 export const Header = ({ $user }: Props) => {
   const location = useLocation();
   const [isMenuDialogOpen, setIsMenuDialogOpen] = useState(false);
-  const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
   // モーダルの状態が変わったときにスクロールを制御
   useEffect(() => {
-    if (isMenuDialogOpen || isSearchDialogOpen) {
+    if (isMenuDialogOpen) {
       document.body.style.overflow = "hidden";
       window.scrollTo(0, 0);
     } else {
@@ -43,27 +31,21 @@ export const Header = ({ $user }: Props) => {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isMenuDialogOpen, isSearchDialogOpen]);
+  }, [isMenuDialogOpen]);
 
-  const handleSearchDialogOpenChange = () =>
-    setIsSearchDialogOpen((prev) => !prev);
   const handleMenuButtonClick = () => setIsMenuDialogOpen((prev) => !prev);
 
   return (
     <>
-      <header
-        className={header({
-          isDialogOpen: isMenuDialogOpen || isSearchDialogOpen,
-        })}
-      >
-        <span className="relative flex h-12 w-full items-center bg-white px-4">
+      <header className="fixed z-30 w-full">
+        <span className="relative flex h-14 w-full items-center bg-white px-4 py-1">
           <Suspense
-            fallback={<img src={LogoIcon} alt="" className="h-8 w-[109px]" />}
+            fallback={<img src={LogoIcon} alt="" className="h-10 w-[137px]" />}
           >
             <Await resolve={$user}>
               {(user) => (
                 <a href={user ? "/home" : "/"} className="mr-auto">
-                  <img src={LogoIcon} alt="" className="h-8 w-[109px]" />
+                  <img src={LogoIcon} alt="" className="h-10 w-[137px]" />
                 </a>
               )}
             </Await>
@@ -87,27 +69,21 @@ export const Header = ({ $user }: Props) => {
                     return (
                       <Link
                         to={"/"}
-                        className={button({
-                          className:
-                            "flex h-8 items-center rounded-md bg-[#007AFF] p-2 text-xs",
-                        })}
+                        aria-label="ログインする"
+                        className="flex size-10 items-center justify-center rounded-full bg-[#D0E5F5]"
                       >
-                        ログインする
+                        <User className="size-6 text-[#657A88]" />
                       </Link>
                     );
                   }
 
                   return (
-                    <div className="flex space-x-4">
-                      <button
-                        type="button"
-                        onClick={handleSearchDialogOpenChange}
-                        className="cursor-pointer"
-                      >
-                        <Search className="h-5 w-5 text-[#8E8E93]" />
-                      </button>
+                    <div className="flex items-center space-x-4">
                       <Link to={"/users/me"}>
-                        <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
+                        <Avatar
+                          src={user?.iconURL || ""}
+                          className="h-10 w-10"
+                        />
                       </Link>
 
                       {user?.orgType && (
@@ -132,13 +108,9 @@ export const Header = ({ $user }: Props) => {
       </header>
 
       {/* スペーサー */}
-      <div className="h-12 w-full" />
+      <div className="h-14 w-full" />
 
       {/* 各種ダイアログ */}
-      <SearchModal
-        open={isSearchDialogOpen}
-        onOpenChange={setIsSearchDialogOpen}
-      />
       <MenuDialog open={isMenuDialogOpen} onOpenChange={setIsMenuDialogOpen} />
     </>
   );
