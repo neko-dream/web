@@ -5,7 +5,7 @@ import { cn } from "tailwind-variants";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { Checkbox } from "~/components/ui/checkbox";
 import { ExternalLink } from "~/components/ui/external-link";
-import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
+import { useLoginUrls } from "~/hooks/useLoginUrls";
 import { api } from "~/libs/openapi-fetch";
 
 type Props = {
@@ -21,6 +21,7 @@ export const AuthenticateCard = ({
 }: Props) => {
   const navigate = useNavigate();
   const [isChecked, setChecked] = useState(false);
+  const loginUrls = useLoginUrls();
   const [isSubmitting, startSubmitting] = useState(false);
 
   const handleCheckboxChange = () => {
@@ -119,7 +120,7 @@ export const AuthenticateCard = ({
         <div className="w-full border-gray-300 border-t border-dashed" />
 
         <a
-          href={GOOGLE_LOGIN_URL}
+          href={loginUrls.google}
           onClick={handlePreventDefault}
           className={cn([
             "flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2",
@@ -132,7 +133,7 @@ export const AuthenticateCard = ({
           </span>
         </a>
         <a
-          href={LINE_LOGIN_URL}
+          href={loginUrls.line}
           onClick={handlePreventDefault}
           className={cn([
             "flex h-10 w-full items-center justify-between rounded-full border border-none bg-[#06C755] px-6 py-2 pl-5",
