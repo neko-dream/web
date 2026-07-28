@@ -310,17 +310,29 @@ const RatingSettings = ({
 type SettingRowProps = {
   label: string;
   note?: string;
+  /** 同じラベルが質問ごとに並ぶため、読み上げ名は質問番号で修飾する */
+  questionNumber: number;
   checked: boolean;
   onChange: (checked: boolean) => void;
 };
 
-const SettingRow = ({ label, note, checked, onChange }: SettingRowProps) => (
+const SettingRow = ({
+  label,
+  note,
+  questionNumber,
+  checked,
+  onChange,
+}: SettingRowProps) => (
   <div className="flex items-center justify-between gap-2">
     <span className="text-sm">
       {label}
       {note && <span className="block text-cs-gray-600 text-xs">{note}</span>}
     </span>
-    <Switch checked={checked} onChange={onChange} aria-label={label} />
+    <Switch
+      checked={checked}
+      onChange={onChange}
+      aria-label={`質問${questionNumber}の${label}`}
+    />
   </div>
 );
 
@@ -495,6 +507,7 @@ export const SurveyEditor = ({
               <div className="space-y-2 rounded-md bg-cs-gray-200 p-3">
                 <SettingRow
                   label="回答を必須にする"
+                  questionNumber={questionIndex + 1}
                   checked={question.isRequired}
                   onChange={(isRequired) =>
                     updateQuestion(questionIndex, { isRequired })
@@ -503,6 +516,7 @@ export const SurveyEditor = ({
                 {isChoiceQuestion(question.type) && (
                   <SettingRow
                     label="「その他」の自由記述を許可する"
+                    questionNumber={questionIndex + 1}
                     checked={question.allowOther}
                     onChange={(allowOther) =>
                       updateQuestion(questionIndex, {
@@ -535,6 +549,7 @@ export const SurveyEditor = ({
                 <SettingRow
                   label="個人情報を含む質問"
                   note="回答を暗号化して保存します"
+                  questionNumber={questionIndex + 1}
                   checked={question.containsPii}
                   onChange={(containsPii) =>
                     updateQuestion(questionIndex, { containsPii })
