@@ -23,6 +23,7 @@ import { isFieldsError } from "~/utils/form";
 import {
   SurveyEditor,
   createEmptyQuestion,
+  isChoiceQuestion,
   validateSurveyQuestions,
 } from "./components/SurveyEditor";
 import { createSessionFormSchema } from "./schemas";
@@ -37,15 +38,51 @@ const toSurveyQuestionInputs = (questions: SurveyQuestionDraft[]) =>
     questionID: question.questionID,
     text: question.text.trim(),
     type: question.type,
-    isRequired: true,
-    allowOther: false,
+    isRequired: question.isRequired,
+    allowOther: question.allowOther,
+    containsPii: question.containsPii,
+    maxLength: question.maxLength,
+    minValue: question.minValue,
+    maxValue: question.maxValue,
+    minLabel: question.minLabel,
+    maxLabel: question.maxLabel,
     displayOrder: questionIndex,
-    choices: question.choices.map((choice, choiceIndex) => ({
-      choiceID: choice.choiceID,
-      text: choice.text.trim(),
-      displayOrder: choiceIndex,
-    })),
+    // 選択肢を持たないタイプでは空配列を送る
+    choices: isChoiceQuestion(question.type)
+      ? question.choices.map((choice, choiceIndex) => ({
+          choiceID: choice.choiceID,
+          text: choice.text.trim(),
+          displayOrder: choiceIndex,
+        }))
+      : [],
   }));
+
+const toSurveyQuestionDrafts = (
+  questions: NonNullable<
+    Route.ComponentProps["loaderData"]["survey"]
+  >["questions"],
+): SurveyQuestionDraft[] =>
+  [...questions]
+    .sort((a, b) => a.displayOrder - b.displayOrder)
+    .map((question) => ({
+      questionID: question.questionID,
+      text: question.text,
+      type: question.type,
+      isRequired: question.isRequired,
+      allowOther: question.allowOther,
+      containsPii: question.containsPii,
+      maxLength: question.maxLength ?? null,
+      minValue: question.minValue ?? null,
+      maxValue: question.maxValue ?? null,
+      minLabel: question.minLabel ?? null,
+      maxLabel: question.maxLabel ?? null,
+      choices: [...question.choices]
+        .sort((a, b) => a.displayOrder - b.displayOrder)
+        .map((choice) => ({
+          choiceID: choice.choiceID,
+          text: choice.text,
+        })),
+    }));
 
 export default function Page({
   loaderData: { session, isEditMode, survey },
@@ -54,19 +91,7 @@ export default function Page({
   const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestionDraft[]>(
     () =>
       survey && survey.questions.length > 0
-        ? [...survey.questions]
-            .sort((a, b) => a.displayOrder - b.displayOrder)
-            .map((question) => ({
-              questionID: question.questionID,
-              text: question.text,
-              type: question.type === "dropdown" ? "dropdown" : "single_choice",
-              choices: [...question.choices]
-                .sort((a, b) => a.displayOrder - b.displayOrder)
-                .map((choice) => ({
-                  choiceID: choice.choiceID,
-                  text: choice.text,
-                })),
-            }))
+        ? toSurveyQuestionDrafts(survey.questions)
         : [createEmptyQuestion()],
   );
   const thumbnailRef = useRef<string>(null);
