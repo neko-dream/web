@@ -97,7 +97,11 @@ export default function Page({
   const thumbnailRef = useRef<string>(null);
   const navigate = useNavigate();
 
-  const saveSurvey = async (talkSessionID: string): Promise<boolean> => {
+  /** 通信自体が失敗した場合も呼び出し元でエラー表示できるようfalseに倒す */
+  const saveSurvey = (talkSessionID: string): Promise<boolean> =>
+    saveSurveyRequest(talkSessionID).catch(() => false);
+
+  const saveSurveyRequest = async (talkSessionID: string): Promise<boolean> => {
     if (!survey) {
       if (!isSurveyEnabled) {
         return true;

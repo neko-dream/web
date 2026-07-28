@@ -337,32 +337,38 @@ export const SurveyModalContent = ({
         }),
     };
 
-    const { error, response } = await api.POST(
-      "/talksessions/{talkSessionID}/survey/submissions",
-      {
-        credentials: "include",
-        params: { path: { talkSessionID: sessionID } },
-        body,
-        // アンケートAPIはJSONを受け取るため、FormData変換を上書きする
-        bodySerializer: (b) => JSON.stringify(b),
-      },
-    );
-    setIsSubmitting(false);
+    try {
+      const { error, response } = await api.POST(
+        "/talksessions/{talkSessionID}/survey/submissions",
+        {
+          credentials: "include",
+          params: { path: { talkSessionID: sessionID } },
+          body,
+          // アンケートAPIはJSONを受け取るため、FormData変換を上書きする
+          bodySerializer: (b) => JSON.stringify(b),
+        },
+      );
 
-    // 1ユーザー1送信のため、回答済みなら409が返る
-    if (response.status === 409) {
-      toast.info("すでに回答済みです");
+      // 1ユーザー1送信のため、回答済みなら409が返る
+      if (response.status === 409) {
+        toast.info("すでに回答済みです");
+        onAnswered();
+        return;
+      }
+
+      if (error) {
+        toast.error(error.message || "回答の送信に失敗しました");
+        return;
+      }
+
+      toast.success("アンケートに回答しました");
       onAnswered();
-      return;
+    } catch {
+      // 通信自体が失敗した場合。握りつぶすと押しっぱなしで固まる
+      toast.error("回答の送信に失敗しました。通信環境をご確認ください");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    if (error) {
-      toast.error(error.message || "回答の送信に失敗しました");
-      return;
-    }
-
-    toast.success("アンケートに回答しました");
-    onAnswered();
   };
 
   return (
