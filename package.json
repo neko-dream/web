@@ -51,7 +51,7 @@
     "tailwind-merge": "^3.4.0",
     "tailwind-variants": "^3.2.2",
     "tiptap-extension-resize-image": "^1.2.1",
-    "valibot": "^1.4.1",
+    "valibot": "^1.4.2",
     "xss": "^1.0.15",
     "zustand": "^5.0.3"
   },
