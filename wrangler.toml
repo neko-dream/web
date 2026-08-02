@@ -5,6 +5,10 @@ compatibility_date = "2024-10-18"
 compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 
+[[flagship]]
+binding = "FLAGS"
+app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
+
 [vars]
 APP_URL = "https://local.kotohiro.com:3000"
 API_URL = "https://api.dev.kotohiro.com"
@@ -16,6 +20,10 @@ preview_urls = true
 routes = [
   { pattern = "develop.kotohiro.com", custom_domain = true }
 ]
+
+[[env.develop.flagship]]
+binding = "FLAGS"
+app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
 
 [env.develop.vars]
 APP_URL = "https://develop.kotohiro.com"
@@ -29,6 +37,10 @@ routes = [
   { pattern = "staging.kotohiro.com", custom_domain = true }
 ]
 
+[[env.staging.flagship]]
+binding = "FLAGS"
+app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
+
 [env.staging.vars]
 APP_URL = "https://staging.kotohiro.com"
 API_URL = "https://api.kotohiro.com"
@@ -41,6 +53,10 @@ routes = [
   { pattern = "kotohiro.com", custom_domain = true },
   { pattern = "www.kotohiro.com", custom_domain = true }
 ]
+
+[[env.production.flagship]]
+binding = "FLAGS"
+app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
 
 [env.production.vars]
 APP_URL = "https://www.kotohiro.com"
