@@ -29,4 +29,6 @@ const contents = astToString(ast);
 // 生成したい場所にファイルを出力
 await writeFile("./app/types/openapi.ts", contents);
 
-execSync("pnpm dlx biome format --write ./app/types/openapi.ts", { stdio: "inherit" });
+execSync("pnpm dlx biome format --write ./app/types/openapi.ts", {
+  stdio: "inherit",
+});

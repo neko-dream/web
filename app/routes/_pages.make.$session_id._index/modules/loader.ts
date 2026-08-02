@@ -2,16 +2,9 @@ import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const $restrictions = api.GET("/talksessions/restrictions", {
-    headers: request.headers,
-  });
-
+export const loader = async ({ params }: LoaderFunctionArgs) => {
   if (params.session_id === "new") {
-    const { data: restrictions } = await $restrictions;
-    return {
-      restrictions,
-    };
+    return {};
   }
 
   if (!params.session_id) {
@@ -26,9 +19,17 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
-  const [{ data: restrictions }, { data: session }] = await Promise.all([
-    $restrictions,
+  const $survey = api.GET("/talksessions/{talkSessionID}/survey", {
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
+
+  const [{ data: session }, { data: survey }] = await Promise.all([
     $session,
+    $survey,
   ]);
 
   if (!session) {
@@ -38,6 +39,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return {
     isEditMode: true,
     session,
-    restrictions,
+    survey,
   };
 };

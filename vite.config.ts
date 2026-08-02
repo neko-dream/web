@@ -1,24 +1,15 @@
-// biome-ignore lint/correctness/noNodejsModules: <explanation>
-import fs from "node:fs";
-// biome-ignore lint/correctness/noNodejsModules: <explanation>
-import path from "node:path";
+import { cloudflare } from "@cloudflare/vite-plugin";
 import { reactRouter } from "@react-router/dev/vite";
-import { cloudflareDevProxy } from "@react-router/dev/vite/cloudflare";
 import tailwindcss from "@tailwindcss/vite";
+import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { getPlatformProxy } from "wrangler";
 
 export default defineConfig(async () => {
-  // Storybookの時はStorybook用の設定を返す
-  if (process.env.SB) {
-    return {
-      plugins: [tsconfigPaths(), tailwindcss()],
-    };
-  }
-
+  // 環境指定は @cloudflare/vite-plugin が参照する CLOUDFLARE_ENV に統一
+  const cloudflareEnv = process.env.CLOUDFLARE_ENV;
   const proxy = await getPlatformProxy({
-    environment: process.env.CF_ENV || "develop",
+    environment: cloudflareEnv || "develop",
   });
   const { APP_URL, API_URL } = proxy.env;
 
@@ -27,15 +18,7 @@ export default defineConfig(async () => {
   }
 
   const server = {
-    https: {
-      key: fs.readFileSync(
-        path.resolve(__dirname, "certifications/local.kotohiro.com.key"),
-      ),
-      cert: fs.readFileSync(
-        path.resolve(__dirname, "certifications/local.kotohiro.com.crt"),
-      ),
-    },
-    host: "local.kotohiro.com",
+    host: true,
     port: 3000,
     hmr: {
       host: "local.kotohiro.com",
@@ -46,17 +29,24 @@ export default defineConfig(async () => {
   };
 
   return {
-    server: process.env.CF_ENV ? undefined : server,
+    server: cloudflareEnv ? undefined : server,
     define: {
       APP_URL: `${JSON.stringify(APP_URL)}`,
       API_URL: `${JSON.stringify(API_URL)}`,
     },
+    resolve: { tsconfigPaths: true },
     plugins: [
-      cloudflareDevProxy({
-        getLoadContext: ({ context }) => ({ cloudflare: context.cloudflare }),
+      basicSsl({
+        name: "kotohiro",
+        domains: ["local.kotohiro.com"],
+        // pnpm install で消えないよう node_modules 外に固定し、
+        // 一度ホストのキーチェインに信頼登録すれば再登録不要にする
+        certDir: ".cert",
+        // ブラウザのTLS有効期限上限(398日)未満。再登録頻度を下げる
+        ttlDays: 397,
       }),
+      cloudflare({ viteEnvironment: { name: "ssr" } }),
       reactRouter(),
-      tsconfigPaths(),
       tailwindcss(),
     ],
   };
