@@ -40,7 +40,7 @@ type Tab = {
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
 export default function Layout({
-  loaderData: { $session, ...props },
+  loaderData: { $session, enableSurvey, ...props },
 }: Route.ComponentProps) {
   const { $user } = useOutletContext<RouteContext>();
 
@@ -51,7 +51,14 @@ export default function Layout({
           if (!session) {
             throw notfound();
           }
-          return <Contents session={session} $user={$user} {...props} />;
+          return (
+            <Contents
+              session={session}
+              $user={$user}
+              enableSurvey={enableSurvey}
+              {...props}
+            />
+          );
         }}
       </Await>
     </Suspense>
@@ -73,6 +80,7 @@ const Contents = ({
   $remainingCount,
   $positions,
   $survey,
+  enableSurvey,
 }: Props) => {
   const tabs = [
     { label: "内容", href: `/${session.id}` },
@@ -125,6 +133,9 @@ const Contents = ({
    * 未回答（未答フラグなし）ならアンケートダイアログを開く
    */
   useEffect(() => {
+    if (!enableSurvey) {
+      return;
+    }
     Promise.all([$user, $survey]).then(([user, surveyData]) => {
       if (!surveyData || surveyData.questions.length === 0) {
         return;
