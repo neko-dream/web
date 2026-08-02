@@ -1,11 +1,11 @@
-import { Outlet, useLocation, useNavigate } from "react-router";
+import { Outlet, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
+import { BottomNav } from "~/components/features/bottom-nav";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
-import { Header } from "./components/Header";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { meta } from "./modules/meta";
@@ -17,8 +17,6 @@ export default function Layout({
   loaderData: { $user },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const isTopPage = pathname === "/";
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {
@@ -33,16 +31,10 @@ export default function Layout({
     <>
       <Analytics />
       {/* 実際に見えるコンテンツ */}
-      {!isTopPage && <Header $user={$user} />}
-      <main
-        className={
-          isTopPage
-            ? "flex min-h-screen flex-col"
-            : "flex min-h-[calc(100vh-48px)] flex-col"
-        }
-      >
+      <main className="flex min-h-screen flex-col">
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
+      <BottomNav />
       <Footer />
 
       {/* -- 以下ダイアログなど -- */}

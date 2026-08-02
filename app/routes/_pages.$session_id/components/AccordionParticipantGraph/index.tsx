@@ -1,6 +1,6 @@
+import { MapPin } from "lucide-react";
 import { use } from "react";
 import Graph from "~/components/features/opinion-graph";
-import { PieChart } from "~/components/icons";
 import { List } from "~/components/ui/accordion";
 import { useWindowResize } from "~/hooks/useWindowResize";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
@@ -19,11 +19,11 @@ export const AccordionParticipantGraph = ({ $positions }: Props) => {
 
   return (
     <List
-      className="block bg-gray-100 md:hidden"
+      className="rounded-2xl bg-[#EAEEF3] px-4"
       title={
-        <div className="flex items-center space-x-2">
-          <PieChart />
-          <p>参加者のグラフ</p>
+        <div className="flex items-center gap-1 py-1">
+          <MapPin className="size-6 text-[#71787E]" />
+          <p className="font-bold text-[#71787E] text-sm">意見グループマップ</p>
         </div>
       }
     >
