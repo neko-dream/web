@@ -1,4 +1,6 @@
+import { Link } from "react-router";
 import LogoIcon from "~/assets/kotohiro.png";
+import { ExternalLink } from "~/components/ui/external-link";
 
 export const Footer = () => {
   return (
@@ -13,20 +15,29 @@ export const Footer = () => {
           return (
             <div key={i}>
               <p className="mt-8 font-bold">{title}</p>
-              {items.map(({ href, name, external }, j) => {
+              {items.map(({ href, name, external, internal }, j) => {
+                if (internal) {
+                  return (
+                    <Link
+                      key={j}
+                      to={href}
+                      className="mt-3 table hover:underline"
+                    >
+                      {name}
+                    </Link>
+                  );
+                }
                 const link = external
                   ? href
                   : `https://static.kotohiro.com/${href}`;
                 return (
-                  <a
+                  <ExternalLink
                     key={j}
                     href={link}
                     className="mt-3 table hover:underline"
-                    target="_blank"
-                    rel="noreferrer"
                   >
                     {name}
-                  </a>
+                  </ExternalLink>
                 );
               })}
             </div>
@@ -34,7 +45,7 @@ export const Footer = () => {
         })}
       </div>
 
-      <p className="mt-8 text-xs">©︎ 2025 kotohiro Inc.</p>
+      <p className="mt-8 text-xs">©︎ 2026 kotohiro Inc.</p>
     </footer>
   );
 };
@@ -63,6 +74,11 @@ const links = [
         name: "運営会社",
         href: "https://corp.kotohiro.com",
         external: true,
+      },
+      {
+        name: "お問い合わせ",
+        href: "/guide/contact",
+        internal: true,
       },
       // {
       //   name: "お知らせ",

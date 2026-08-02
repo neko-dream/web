@@ -1,0 +1,35 @@
+name: opencode-review
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_AUTH_CONTENT: ${{ secrets.OPENCODE_AUTH_CONTENT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          model: opencode-go/deepseek-v4-pro
+          use_github_token: true
+          prompt: |
+            日本語でレビューしてください。以下のルールを厳守すること:
+            - 実際のコード・ドキュメントから確認できる事実のみを指摘し、推測で「非標準」「存在しない」などと断定しない
+            - API やライブラリのバージョン有無を未確認のまま断言しない
+            - 指摘には必ず該当ファイル・行番号・根拠を明記する
+            - 確信が持てない項目は「要確認」と明示する
+
+            レビュー観点:
+            - コード品質の問題をチェック
+            - 潜在的なバグを探す
+            - 改善点を提案
