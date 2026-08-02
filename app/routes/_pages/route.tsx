@@ -38,7 +38,7 @@ export default function Layout({
         className={
           isTopPage
             ? "flex min-h-screen flex-col"
-            : "flex min-h-[calc(100vh-48px)] flex-col"
+            : "flex min-h-[calc(100vh-80px)] flex-col"
         }
       >
         <Outlet context={{ $user } satisfies RouteContext} />

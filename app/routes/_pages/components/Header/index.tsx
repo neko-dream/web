@@ -56,14 +56,14 @@ export const Header = ({ $user }: Props) => {
           isDialogOpen: isMenuDialogOpen || isSearchDialogOpen,
         })}
       >
-        <span className="relative flex h-12 w-full items-center bg-white px-4">
+        <span className="relative flex h-20 w-full items-center bg-white px-4">
           <Suspense
-            fallback={<img src={LogoIcon} alt="" className="h-8 w-[109px]" />}
+            fallback={<img src={LogoIcon} alt="" className="h-14 w-[191px]" />}
           >
             <Await resolve={$user}>
               {(user) => (
                 <a href={user ? "/home" : "/"} className="mr-auto">
-                  <img src={LogoIcon} alt="" className="h-8 w-[109px]" />
+                  <img src={LogoIcon} alt="" className="h-14 w-[191px]" />
                 </a>
               )}
             </Await>
@@ -132,7 +132,7 @@ export const Header = ({ $user }: Props) => {
       </header>
 
       {/* スペーサー */}
-      <div className="h-12 w-full" />
+      <div className="h-20 w-full" />
 
       {/* 各種ダイアログ */}
       <SearchModal
