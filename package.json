@@ -19,7 +19,7 @@
     "@react-router/fs-routes": "^8.0.1",
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.0.6",
-    "@tiptap/core": "^2.11.7",
+    "@tiptap/core": "^3.30.4",
     "@tiptap/extension-code": "^3.19.0",
     "@tiptap/extension-document": "^3.19.0",
     "@tiptap/extension-dropcursor": "^2.11.7",
