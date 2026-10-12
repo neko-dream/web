@@ -97,7 +97,7 @@ export function EmailVerificationCard({
       <p className="auth-help">
         {onConfirm
           ? "リンクは一度だけ使えます。期限切れの場合はログイン画面からやり直してください。"
-          : "メールが届かない場合は、迷惑メールフォルダも確認してください。リンクとPINの有効期限は15分です。"}
+          : "メールが届かない場合は、迷惑メールフォルダも確認してください。リンクと確認コードの有効期限は15分です。"}
       </p>
       {expiresAt && (
         <p className="auth-help">
@@ -134,7 +134,7 @@ function PINConfirmationForm({
       }}
     >
       <label className="auth-field">
-        <span className="auth-field-label">6桁のPIN</span>
+        <span className="auth-field-label">6桁の確認コード</span>
         <input
           className="auth-input"
           type="text"
@@ -142,7 +142,7 @@ function PINConfirmationForm({
           autoComplete="one-time-code"
           maxLength={6}
           pattern="[0-9]{6}"
-          placeholder="メールに記載されたPIN"
+          placeholder="メールに記載された6桁の番号"
           value={pin}
           onChange={(event) => setPIN(event.target.value)}
           disabled={busy || pinLocked}
@@ -154,10 +154,10 @@ function PINConfirmationForm({
         type="submit"
         disabled={busy || pinLocked || !PIN_PATTERN.test(pin)}
       >
-        {busy ? "確認しています…" : "PINで確認する"}
+        {busy ? "確認しています…" : "確認する"}
       </button>
       <p className="auth-help">
-        リンクが開けない場合は、メールのPINでも確認できます。5回間違えた場合は、確認メールを再送してください。
+        リンクが開けない場合は、メールの確認コードでも確認できます。5回間違えた場合は、確認メールを再送してください。
       </p>
     </form>
   );
