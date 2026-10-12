@@ -1,33 +1,24 @@
 import type { ReactNode } from "react";
-import { Logo } from "~/components/icons";
-import { AnimatedHexagonBackground } from "./AnimatedHexagonBackground";
+import { cn } from "tailwind-variants";
 import "./auth.css";
 
-export function AuthFrame({
-  children,
-}: { children: ReactNode; label?: string }) {
+type Props = {
+  children: ReactNode;
+  className?: string;
+};
+
+/**
+ * 一般向けログインの丸いカード
+ */
+export const AuthFrame = ({ children, className }: Props) => {
   return (
-    <section className="auth-card mx-auto mt-10 flex w-[350px] max-w-[calc(100%_-_32px)] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8">
+    <section
+      className={cn([
+        "auth-card mx-auto flex w-[350px] max-w-[calc(100%_-_32px)] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8",
+        className,
+      ])}
+    >
       {children}
     </section>
   );
-}
-
-export function OrganizationAuthFrame({ children }: { children: ReactNode }) {
-  return (
-    <section className="auth-card organization-auth">
-      <div className="organization-auth-brand">
-        <AnimatedHexagonBackground />
-        <div className="organization-auth-brand-content">
-          <Logo className="organization-auth-logo" aria-label="ことひろ" />
-          <p>
-            ことひろは、言葉を重ねて
-            <br />
-            より良い意思決定を目指すサービスです。
-          </p>
-        </div>
-      </div>
-      <div className="organization-auth-form">{children}</div>
-    </section>
-  );
-}
+};

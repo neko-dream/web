@@ -1,13 +1,13 @@
-import { type MouseEvent, useId, useState } from "react";
+import { type MouseEvent, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { cn } from "tailwind-variants";
 import { Arrow } from "~/components/icons";
-import { Checkbox } from "~/components/ui/checkbox";
-import { ExternalLink } from "~/components/ui/external-link";
 import { api } from "~/libs/openapi-fetch";
+import { AuthFrame } from "./AuthFrame";
 import { AuthProviderLinks } from "./AuthProviderLinks";
 import { OrganizationLoginLink } from "./OrganizationLoginLink";
+import { TermsAgreement } from "./TermsAgreement";
 
 type Props = {
   className?: string;
@@ -23,15 +23,9 @@ export const AuthenticateCard = ({
   const navigate = useNavigate();
   const [isChecked, setChecked] = useState(false);
   const [isSubmitting, startSubmitting] = useState(false);
-  const busy = isSubmitting;
-  const agreementID = useId();
-
-  const handleCheckboxChange = () => {
-    setChecked((prev) => !prev);
-  };
 
   const handleGuestLogin = async (e: MouseEvent<HTMLButtonElement>) => {
-    if (!isChecked || busy) {
+    if (!isChecked || isSubmitting) {
       e.preventDefault();
       return;
     }
@@ -61,7 +55,7 @@ export const AuthenticateCard = ({
   };
 
   const handlePreventDefault = (e: MouseEvent<HTMLAnchorElement>) => {
-    if (!isChecked || busy) {
+    if (!isChecked || isSubmitting) {
       e.preventDefault();
       return;
     }
@@ -71,81 +65,46 @@ export const AuthenticateCard = ({
 
   return (
     <>
-      <div
-        className={cn([
-          "auth-card mx-auto flex w-[350px] max-w-[calc(100%_-_32px)] flex-col content-center rounded-3xl bg-white px-6 pt-4 pb-8",
-          className,
-        ])}
-      >
-        <>
-          <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
-            ことひろに参加しよう
-          </p>
-          <p className="text-center text-xs">3つの方法から参加できます</p>
+      <AuthFrame className={className}>
+        <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
+          ことひろに参加しよう
+        </p>
+        <p className="text-center text-xs">3つの方法から参加できます</p>
 
-          <div className="mt-4 flex items-center">
-            {/* FIXME: サーバーにデータを送るようにする */}
-            <Checkbox
-              id={agreementID}
-              label=""
-              checked={isChecked}
-              onChange={handleCheckboxChange}
-              aria-label="利用規約とプライバシーポリシーに同意する"
-            />
-            <label
-              htmlFor={agreementID}
-              className="ms-2 font-medium text-gray-900 text-sm"
+        <TermsAgreement checked={isChecked} onChange={setChecked} />
+
+        <div className="mx-4 mt-6 flex flex-col items-center gap-4">
+          <button
+            type="button"
+            onClick={handleGuestLogin}
+            className={cn([
+              "flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2",
+              (!isChecked || isSubmitting) && "cursor-not-allowed opacity-60",
+            ])}
+          >
+            <span className="mx-auto font-bold text-gray-700">
+              ゲストとしてログイン
+            </span>
+          </button>
+
+          <div className="w-full border-gray-300 border-t border-dashed" />
+
+          <AuthProviderLinks
+            disabled={!isChecked || isSubmitting}
+            onClick={handlePreventDefault}
+          />
+
+          {useWithoutLoggingIn && (
+            <Link
+              to="/home"
+              className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
             >
-              <ExternalLink
-                href="https://static.kotohiro.com/tos"
-                className="text-cs-blue-600"
-              >
-                利用規約
-              </ExternalLink>
-              ・
-              <ExternalLink
-                href="https://static.kotohiro.com/privacy-policy"
-                className="text-cs-blue-600"
-              >
-                プライバシーポリシー
-              </ExternalLink>
-              に同意して始める
-            </label>
-          </div>
-
-          <div className="mx-4 mt-6 flex flex-col items-center gap-4">
-            <button
-              type="button"
-              onClick={handleGuestLogin}
-              className={cn([
-                "flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2",
-                (!isChecked || busy) && "cursor-not-allowed opacity-60",
-              ])}
-            >
-              <span className="mx-auto font-bold text-gray-700">
-                ゲストとしてログイン
-              </span>
-            </button>
-
-            <div className="w-full border-gray-300 border-t border-dashed" />
-
-            <AuthProviderLinks
-              disabled={!isChecked || busy}
-              onClick={handlePreventDefault}
-            />
-
-            {useWithoutLoggingIn && (
-              <Link
-                to="/home"
-                className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
-              >
-                <span>ログインせずに使う</span>
-                <Arrow className="-rotate-90" />
-              </Link>
-            )}
-          </div>
-        </>
-      </div>
+              <span>ログインせずに使う</span>
+              <Arrow className="-rotate-90" />
+            </Link>
+          )}
+        </div>
+      </AuthFrame>
       <OrganizationLoginLink className="mx-auto mt-4 mb-6 w-fit justify-center" />
     </>
   );

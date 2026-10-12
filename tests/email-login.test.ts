@@ -116,6 +116,12 @@ test("confirmation refuses redirects to another origin or non-HTTPS schemes", as
     await assert.rejects(confirmEmailLogin("one-time-token"));
   }
 });
+test("relative redirects fail with a Japanese message instead of a URL parse error", async () => {
+  globalThis.fetch = async () => response({ redirectURL: "/home" });
+  await assert.rejects(confirmEmailLogin("one-time-token"), {
+    message: "ログイン後の移動先を確認できませんでした。",
+  });
+});
 test("expired or reused links return an actionable API error", async () => {
   globalThis.fetch = async () =>
     response({ message: "ログインからやり直してください" }, 400);

@@ -10,7 +10,7 @@ export const loader = async ({
   context,
 }: LoaderFunctionArgs) => {
   const { env } = context.get(cloudflareContext);
-  // The local runtime has no remote Flagship binding. Use the flag's default.
+  // ローカル実行時はFlagshipのbindingがないため、既定値を使う
   const flags = (env as Env & { FLAGS?: Flagship }).FLAGS;
   const enableSurvey =
     (await flags?.getBooleanValue("questionnaire", false)) ?? false;
