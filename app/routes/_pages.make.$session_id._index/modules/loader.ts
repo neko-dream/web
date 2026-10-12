@@ -1,9 +1,13 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
+import { requireSessionCreationPermission } from "~/libs/session-creation";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ params }: LoaderFunctionArgs) => {
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   if (params.session_id === "new") {
+    requireSessionCreationPermission(
+      await api.GET("/users/me", { headers: request.headers }),
+    );
     return {};
   }
 

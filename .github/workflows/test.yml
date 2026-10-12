@@ -38,3 +38,6 @@ jobs:
 
       - name: Run Lint
         run: pnpm lint
+
+      - name: Test creation permission guards
+        run: pnpm test:permissions

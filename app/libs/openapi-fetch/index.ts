@@ -31,6 +31,7 @@ export const api = createClient<paths>({
 
     return fetch(init, {
       headers: init.headers,
+      credentials: "include",
     });
   },
 });

@@ -9,5 +9,10 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
     .then((res) => res?.data || null)
     .catch(console.error);
 
-  return { $user };
+  const $permissions = api
+    .GET("/users/me", { headers: request.headers })
+    .then((res) => res.data?.permissions ?? null)
+    .catch(() => null);
+
+  return { $user, $permissions };
 };
