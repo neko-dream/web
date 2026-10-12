@@ -9,7 +9,7 @@ import { resolveUrls, selectEnvironment } from "./vite.env";
 const apiPrefixPattern = /^\/api(?=\/|$)/;
 
 export default defineConfig(async ({ command }) => {
-  // Every build selects an environment explicitly. Local settings are serve-only.
+  // ビルドは必ず環境を明示する。ローカル設定は開発サーバー専用
   const cloudflareEnv = process.env.CLOUDFLARE_ENV;
   const localApiUrl = process.env.LOCAL_API_URL;
   const environment = selectEnvironment({
@@ -18,7 +18,11 @@ export default defineConfig(async ({ command }) => {
     localApiUrl,
   });
   const proxy = environment
-    ? await getPlatformProxy({ environment, remoteBindings: false, envFiles: [] })
+    ? await getPlatformProxy({
+        environment,
+        remoteBindings: false,
+        envFiles: [],
+      })
     : null;
   let urls: ReturnType<typeof resolveUrls>;
   try {
