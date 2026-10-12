@@ -38,3 +38,6 @@ jobs:
 
       - name: Run Lint
         run: pnpm lint
+
+      - name: Test authentication and deployment environment guards
+        run: pnpm test:auth

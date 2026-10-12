@@ -19,6 +19,10 @@ export default function Layout({
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isTopPage = pathname === "/";
+  const isAuthPage =
+    pathname === "/auth/login" ||
+    pathname === "/auth/email/verify" ||
+    pathname === "/organization/login";
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {
@@ -31,7 +35,7 @@ export default function Layout({
 
   return (
     <>
-      <Analytics />
+      {!isAuthPage && <Analytics />}
       {/* 実際に見えるコンテンツ */}
       {!isTopPage && <Header $user={$user} />}
       <main

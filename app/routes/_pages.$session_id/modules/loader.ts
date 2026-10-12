@@ -10,7 +10,10 @@ export const loader = async ({
   context,
 }: LoaderFunctionArgs) => {
   const { env } = context.get(cloudflareContext);
-  const enableSurvey = await env.FLAGS.getBooleanValue("questionnaire", false);
+  // The local runtime has no remote Flagship binding. Use the flag's default.
+  const flags = (env as Env & { FLAGS?: Flagship }).FLAGS;
+  const enableSurvey =
+    (await flags?.getBooleanValue("questionnaire", false)) ?? false;
   if (!params.session_id) {
     throw notfound();
   }

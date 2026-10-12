@@ -1,0 +1,215 @@
+.auth-heading {
+  display: table;
+  background: linear-gradient(90deg, #ff3b30, #5856d6 50%, #32ade6);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 0 0 16px;
+}
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #868e96;
+  margin: 24px 0 20px;
+  width: 100%;
+}
+.auth-divider::before,
+.auth-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: #d8dbe0;
+}
+.auth-field {
+  display: block;
+  margin-bottom: 14px;
+}
+.auth-field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.auth-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  height: 40px;
+  border: 1px solid #d4d4d4;
+  border-radius: 6px;
+  padding: 0 12px;
+  background: #fff;
+  font-size: 13px;
+  color: #303238;
+}
+.auth-input::placeholder {
+  color: #bdc6d3;
+}
+.auth-input[readonly] {
+  color: #697381;
+  background: #fafafa;
+}
+.auth-password-wrap {
+  position: relative;
+}
+.auth-password-wrap .auth-input {
+  padding-right: 42px;
+}
+.auth-password-toggle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  color: #868e96;
+  background: transparent;
+  border: 0;
+}
+.auth-primary {
+  width: 100%;
+  min-height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ff3b30, #5856d6 50%, #32ade6);
+  color: white;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 16px;
+  margin-top: 20px;
+}
+.auth-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.auth-caption {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #7b8590;
+  margin: 0 0 22px;
+}
+.auth-help {
+  font-size: 12px;
+  line-height: 1.6;
+  color: #7b8590;
+  margin: 16px 0 0;
+}
+.auth-error {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #b42318;
+  margin: 12px 0;
+}
+.auth-back {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #5856d6;
+  border-radius: 50%;
+  color: #007aff;
+  background: white;
+  margin: 0 0 18px;
+  text-decoration: none;
+}
+.auth-card :is(a, button, input):focus-visible {
+  outline: 3px solid #007aff;
+  outline-offset: 3px;
+}
+
+.organization-auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: 100%;
+  margin: 0;
+  flex: 1;
+  min-height: 580px;
+  background: #fff;
+  border: 0;
+  border-radius: 0;
+  overflow: hidden;
+}
+.organization-auth-brand {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 48px 32px;
+  background: #fafbfc;
+  border-right: 1px solid #eef0f3;
+  isolation: isolate;
+}
+.organization-auth-brand::before,
+.organization-auth-brand::after {
+  content: "";
+  position: absolute;
+  width: 112px;
+  height: 128px;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  z-index: -1;
+}
+.organization-auth-brand::before {
+  top: 36px;
+  left: -36px;
+  background: #f4eaf7;
+  transform: rotate(15deg);
+}
+.organization-auth-brand::after {
+  bottom: 40px;
+  right: -32px;
+  background: #e7f3fc;
+  transform: rotate(-15deg);
+}
+.organization-auth-brand-content {
+  text-align: center;
+}
+.organization-auth-logo {
+  width: 220px;
+  height: auto;
+  margin: 0 auto 20px;
+}
+.organization-auth-brand p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #5b6470;
+}
+.organization-auth-form {
+  width: 100%;
+  max-width: 400px;
+  margin: auto;
+  padding: 40px 32px;
+}
+@media (max-width: 700px) {
+  .organization-auth {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    margin: 0;
+    min-height: auto;
+  }
+  .organization-auth-brand {
+    padding: 24px;
+    background: #fff;
+    border-right: 0;
+    border-bottom: 1px solid #eef0f3;
+  }
+  .organization-auth-brand::before,
+  .organization-auth-brand::after,
+  .organization-auth-brand p {
+    display: none;
+  }
+  .organization-auth-logo {
+    width: 150px;
+    margin-bottom: 0;
+  }
+  .organization-auth-form {
+    max-width: 420px;
+    padding: 28px 24px;
+  }
+}
