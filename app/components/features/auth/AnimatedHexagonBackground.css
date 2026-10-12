@@ -33,7 +33,8 @@
   left: 25%;
   width: 80px;
   height: 80px;
-  animation-delay: -8s;
+  --hexagon-phase: 0.025;
+  animation-delay: -0.625s;
   background: #ffa8a8;
 }
 
@@ -41,7 +42,8 @@
   left: 10%;
   width: 20px;
   height: 20px;
-  animation-delay: -10s;
+  --hexagon-phase: 0.375;
+  animation-delay: -4.500s;
   animation-duration: 12s;
   background: #eebefa;
 }
@@ -50,7 +52,8 @@
   left: 70%;
   width: 20px;
   height: 20px;
-  animation-delay: -12s;
+  --hexagon-phase: 0.725;
+  animation-delay: -18.125s;
   background: #ffa94d;
 }
 
@@ -58,7 +61,8 @@
   left: 40%;
   width: 60px;
   height: 60px;
-  animation-delay: -8s;
+  --hexagon-phase: 0.075;
+  animation-delay: -1.350s;
   animation-duration: 18s;
   background: #63e6be;
 }
@@ -67,7 +71,8 @@
   left: 65%;
   width: 20px;
   height: 20px;
-  animation-delay: -8s;
+  --hexagon-phase: 0.425;
+  animation-delay: -10.625s;
   background: #ffec99;
 }
 
@@ -75,7 +80,8 @@
   left: 75%;
   width: 110px;
   height: 110px;
-  animation-delay: -11s;
+  --hexagon-phase: 0.775;
+  animation-delay: -19.375s;
   background: #c0eb75;
 }
 
@@ -83,7 +89,8 @@
   left: 35%;
   width: 150px;
   height: 150px;
-  animation-delay: -15s;
+  --hexagon-phase: 0.125;
+  animation-delay: -3.125s;
   background: #fcc2d7;
 }
 
@@ -91,7 +98,8 @@
   left: 50%;
   width: 25px;
   height: 25px;
-  animation-delay: -23s;
+  --hexagon-phase: 0.475;
+  animation-delay: -21.375s;
   animation-duration: 45s;
   background: #91a7ff;
 }
@@ -100,7 +108,8 @@
   left: 20%;
   width: 15px;
   height: 15px;
-  animation-delay: -10s;
+  --hexagon-phase: 0.825;
+  animation-delay: -28.875s;
   animation-duration: 35s;
   background: #ffa8a8;
 }
@@ -109,7 +118,8 @@
   left: 85%;
   width: 150px;
   height: 150px;
-  animation-delay: -8s;
+  --hexagon-phase: 0.175;
+  animation-delay: -1.925s;
   animation-duration: 11s;
   background: #eebefa;
 }
@@ -119,7 +129,8 @@
   left: 5%;
   width: 40px;
   height: 40px;
-  animation-delay: -9s;
+  --hexagon-phase: 0.525;
+  animation-delay: -10.500s;
   animation-duration: 20s;
   background: #74c0fc;
 }
@@ -128,7 +139,8 @@
   left: 15%;
   width: 30px;
   height: 30px;
-  animation-delay: -11s;
+  --hexagon-phase: 0.875;
+  animation-delay: -19.250s;
   animation-duration: 22s;
   background: #ffa94d;
 }
@@ -137,7 +149,8 @@
   left: 30%;
   width: 50px;
   height: 50px;
-  animation-delay: -13s;
+  --hexagon-phase: 0.225;
+  animation-delay: -4.050s;
   animation-duration: 18s;
   background: #eebefa;
 }
@@ -146,7 +159,8 @@
   left: 45%;
   width: 25px;
   height: 25px;
-  animation-delay: -12s;
+  --hexagon-phase: 0.575;
+  animation-delay: -14.950s;
   animation-duration: 26s;
   background: #ffa8a8;
 }
@@ -155,7 +169,8 @@
   left: 60%;
   width: 60px;
   height: 60px;
-  animation-delay: -14s;
+  --hexagon-phase: 0.925;
+  animation-delay: -18.500s;
   animation-duration: 20s;
   background: #91a7ff;
 }
@@ -164,7 +179,8 @@
   left: 70%;
   width: 35px;
   height: 35px;
-  animation-delay: -10s;
+  --hexagon-phase: 0.275;
+  animation-delay: -8.250s;
   animation-duration: 30s;
   background: #fcc2d7;
 }
@@ -173,7 +189,8 @@
   left: 80%;
   width: 45px;
   height: 45px;
-  animation-delay: -16s;
+  --hexagon-phase: 0.625;
+  animation-delay: -17.500s;
   animation-duration: 28s;
   background: #ffec99;
 }
@@ -182,7 +199,8 @@
   left: 65%;
   width: 50px;
   height: 50px;
-  animation-delay: -11.5s;
+  --hexagon-phase: 0.975;
+  animation-delay: -21.450s;
   animation-duration: 22s;
   background: #ffa8a8;
 }
@@ -191,7 +209,8 @@
   left: 55%;
   width: 30px;
   height: 30px;
-  animation-delay: -9.5s;
+  --hexagon-phase: 0.325;
+  animation-delay: -10.400s;
   animation-duration: 32s;
   background: #74c0fc;
 }
@@ -200,7 +219,8 @@
   left: 90%;
   width: 40px;
   height: 40px;
-  animation-delay: -8.5s;
+  --hexagon-phase: 0.675;
+  animation-delay: -16.200s;
   animation-duration: 24s;
   background: #c0eb75;
 }
@@ -213,7 +233,7 @@
   }
 
   100% {
-    transform: translateY(-1000px) rotate(720deg);
+    transform: translateY(calc(-100vh - 300px)) rotate(720deg);
     opacity: 0;
     border-radius: 50%;
   }
@@ -222,7 +242,7 @@
 @media (prefers-reduced-motion: reduce) {
   .auth-hexagons li {
     animation: none;
-    bottom: 20%;
+    bottom: calc(var(--hexagon-phase) * 100%);
     opacity: 0.25;
   }
 }
