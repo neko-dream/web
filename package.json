@@ -12,7 +12,7 @@
     "format": "biome format --write ./app",
     "lint": "biome check .",
     "typecheck": "react-router typegen && wrangler types && tsc -b",
-    "test:auth": "node --experimental-strip-types --test tests/email-login.test.ts tests/build-environment.test.ts",
+    "test:auth": "node --experimental-strip-types --test tests/email-login.test.ts tests/build-environment.test.ts tests/auth-design.test.ts",
     "icongen": "svgr --out-dir app/components/Icons -- app/assets/icons && biome format --write ./app/components/Icons"
   },
   "dependencies": {

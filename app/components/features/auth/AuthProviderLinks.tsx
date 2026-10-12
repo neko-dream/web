@@ -1,7 +1,7 @@
 import type { MouseEvent } from "react";
-import { cn } from "tailwind-variants";
 import { AuthGoogle, AuthLine } from "~/components/icons";
 import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
+import "./auth.css";
 
 type Props = {
   disabled?: boolean;
@@ -10,32 +10,24 @@ type Props = {
 
 export function AuthProviderLinks({ disabled = false, onClick }: Props) {
   return (
-    <div className="flex w-full flex-col items-center gap-4">
+    <div className="auth-provider-links">
       <a
         href={GOOGLE_LOGIN_URL}
         onClick={onClick}
         aria-disabled={disabled}
-        className={cn([
-          "flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2",
-          disabled && "cursor-not-allowed opacity-60",
-        ])}
+        className="auth-provider-link auth-provider-google"
       >
         <AuthGoogle />
-        <span className="mx-auto font-bold text-gray-700">
-          Googleでログイン
-        </span>
+        <span>Googleでログイン</span>
       </a>
       <a
         href={LINE_LOGIN_URL}
         onClick={onClick}
         aria-disabled={disabled}
-        className={cn([
-          "flex h-10 w-full items-center justify-between rounded-full border border-none bg-[#06C755] px-6 py-2 pl-5",
-          disabled && "cursor-not-allowed opacity-60",
-        ])}
+        className="auth-provider-link auth-provider-line"
       >
         <AuthLine />
-        <span className="mx-auto font-bold text-white">LINEでログイン</span>
+        <span>LINEでログイン</span>
       </a>
     </div>
   );

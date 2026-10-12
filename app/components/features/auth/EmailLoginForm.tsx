@@ -189,7 +189,7 @@ export function EmailPasswordForm({ login }: { login: LoginState }) {
             aria-pressed={showPassword}
             onClick={() => setShowPassword((value) => !value)}
           >
-            {showPassword ? <Eye size={17} /> : <EyeOff size={17} />}
+            {showPassword ? <Eye size={24} /> : <EyeOff size={24} />}
           </button>
         </div>
         {error && (
