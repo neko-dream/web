@@ -138,6 +138,7 @@ function PINConfirmationForm({
         <input
           className="auth-input"
           type="text"
+          style={{ textAlign: "center" }}
           inputMode="numeric"
           autoComplete="one-time-code"
           maxLength={6}
