@@ -19,6 +19,12 @@ export default function Layout({
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const isTopPage = pathname === "/";
+  const isAuthPage =
+    pathname === "/auth/login" ||
+    pathname === "/auth/email/verify" ||
+    pathname === "/organization/login";
+  // 組織向けログインは左側にロゴを置くので、トップページと同じくヘッダーを出さない
+  const hideHeader = isTopPage || pathname === "/organization/login";
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {
@@ -31,12 +37,12 @@ export default function Layout({
 
   return (
     <>
-      <Analytics />
+      {!isAuthPage && <Analytics />}
       {/* 実際に見えるコンテンツ */}
-      {!isTopPage && <Header $user={$user} $permissions={$permissions} />}
+      {!hideHeader && <Header $user={$user} $permissions={$permissions} />}
       <main
         className={
-          isTopPage
+          hideHeader
             ? "flex min-h-screen flex-col"
             : "flex min-h-[calc(100vh-48px)] flex-col"
         }

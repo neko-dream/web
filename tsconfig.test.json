@@ -2,6 +2,7 @@
   "extends": "./tsconfig.json",
   "include": [
     "tests/**/*.ts",
+    "vite.env.ts",
     "app/**/*",
     "workers/**/*",
     ".react-router/types/**/*",

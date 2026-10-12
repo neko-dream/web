@@ -10,7 +10,10 @@ export const loader = async ({
   context,
 }: LoaderFunctionArgs) => {
   const { env } = context.get(cloudflareContext);
-  const enableSurvey = await env.FLAGS.getBooleanValue("questionnaire", false);
+  // ローカル実行時はFlagshipのbindingがないため、既定値を使う
+  const flags = (env as Env & { FLAGS?: Flagship }).FLAGS;
+  const enableSurvey =
+    (await flags?.getBooleanValue("questionnaire", false)) ?? false;
   if (!params.session_id) {
     throw notfound();
   }

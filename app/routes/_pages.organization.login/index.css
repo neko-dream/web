@@ -1,0 +1,73 @@
+.organization-auth {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 512px;
+  width: 100%;
+  margin: 0;
+  flex: 1;
+  min-height: 580px;
+  background: #fff;
+  overflow: hidden;
+}
+.organization-auth-brand {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: 48px 32px;
+  background: #fafbfc;
+  border-right: 1px solid #eef0f3;
+  isolation: isolate;
+  overflow: hidden;
+  --hexagon-travel: 1400px;
+}
+/* 六角形の間隔はペインの大きさに依存させず、リサイズ時は切り取るだけにする */
+.organization-auth-brand .auth-hexagon-background {
+  width: 768px;
+  height: 1100px;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.organization-auth-brand .auth-hexagons {
+  overflow: visible;
+}
+.organization-auth-logo {
+  width: 280px;
+  height: auto;
+  margin: 0 auto 20px;
+}
+.organization-auth-copy {
+  font-size: 20px;
+  line-height: 25px;
+  letter-spacing: -0.45px;
+  color: #5b6470;
+}
+.organization-auth-form {
+  width: 100%;
+  max-width: 407px;
+  margin: auto;
+  padding: 40px 32px;
+}
+@media (max-width: 900px) {
+  .organization-auth {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: auto;
+  }
+  .organization-auth-brand {
+    padding: 24px;
+    background: #fff;
+    border-right: 0;
+    border-bottom: 1px solid #eef0f3;
+  }
+  .organization-auth-copy,
+  .organization-auth-brand .auth-hexagon-background {
+    display: none;
+  }
+  .organization-auth-logo {
+    width: 150px;
+    margin-bottom: 0;
+  }
+  .organization-auth-form {
+    padding: 28px 24px;
+  }
+}

@@ -1,0 +1,23 @@
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/open-sans-regular.ttf") format("truetype");
+}
+@font-face {
+  font-family: "Open Sans";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/open-sans-bold.ttf") format("truetype");
+}
+.auth-card {
+  --auth-system-font: "SF Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-family: var(--auth-system-font);
+}
+.auth-card :is(a, button, input):focus-visible {
+  outline: 3px solid #007aff;
+  outline-offset: 3px;
+}
