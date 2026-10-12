@@ -14,7 +14,7 @@ export { loader } from "./modules/loader";
 const Analytics = lazy(() => import("~/components/features/analytics"));
 
 export default function Layout({
-  loaderData: { $user },
+  loaderData: { $user, $permissions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
@@ -33,7 +33,7 @@ export default function Layout({
     <>
       <Analytics />
       {/* 実際に見えるコンテンツ */}
-      {!isTopPage && <Header $user={$user} />}
+      {!isTopPage && <Header $user={$user} $permissions={$permissions} />}
       <main
         className={
           isTopPage
