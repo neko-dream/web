@@ -36,8 +36,13 @@ jobs:
           CLOUDFLARE_ENV: develop
         run: pnpm typecheck
 
+      - name: Verify generated API types
+        run: |
+          pnpm generate:api
+          git diff --exit-code -- app/types/openapi.ts
+
       - name: Run Lint
         run: pnpm lint
 
-      - name: Test authentication and deployment environment guards
-        run: pnpm test:auth
+      - name: Run tests
+        run: pnpm test
