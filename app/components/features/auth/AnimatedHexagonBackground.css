@@ -233,7 +233,8 @@
   }
 
   100% {
-    transform: translateY(calc(-100vh - 300px)) rotate(720deg);
+    transform: translateY(calc(-1 * var(--hexagon-travel, calc(100vh + 300px))))
+      rotate(720deg);
     opacity: 0;
     border-radius: 50%;
   }

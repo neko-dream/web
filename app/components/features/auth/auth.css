@@ -173,6 +173,20 @@
   background: #fafbfc;
   border-right: 1px solid #eef0f3;
   isolation: isolate;
+  overflow: hidden;
+  --hexagon-travel: 1400px;
+}
+/* Keep particle spacing independent of the pane size; resize only crops. */
+.organization-auth-brand .auth-hexagon-background {
+  width: 768px;
+  height: 1100px;
+  inset: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.organization-auth-brand .auth-hexagons {
+  overflow: visible;
 }
 .organization-auth-brand-content {
   text-align: center;
