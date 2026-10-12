@@ -155,7 +155,7 @@
 
 .organization-auth {
   display: grid;
-  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  grid-template-columns: minmax(0, 1fr) 512px;
   width: 100%;
   margin: 0;
   flex: 1;
@@ -173,27 +173,6 @@
   background: #fafbfc;
   border-right: 1px solid #eef0f3;
   isolation: isolate;
-}
-.organization-auth-brand::before,
-.organization-auth-brand::after {
-  content: "";
-  position: absolute;
-  width: 112px;
-  height: 128px;
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  z-index: -1;
-}
-.organization-auth-brand::before {
-  top: 36px;
-  left: -36px;
-  background: #f4eaf7;
-  transform: rotate(15deg);
-}
-.organization-auth-brand::after {
-  bottom: 40px;
-  right: -32px;
-  background: #e7f3fc;
-  transform: rotate(-15deg);
 }
 .organization-auth-brand-content {
   text-align: center;
@@ -215,7 +194,7 @@
   margin: auto;
   padding: 40px 32px;
 }
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .organization-auth {
     grid-template-columns: minmax(0, 1fr);
     width: 100%;
@@ -228,9 +207,8 @@
     border-right: 0;
     border-bottom: 1px solid #eef0f3;
   }
-  .organization-auth-brand::before,
-  .organization-auth-brand::after,
-  .organization-auth-brand p {
+  .organization-auth-brand p,
+  .organization-auth-brand .auth-hexagon-background {
     display: none;
   }
   .organization-auth-logo {

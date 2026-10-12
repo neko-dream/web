@@ -31,9 +31,6 @@ export default function Page() {
       ) : (
         <>
           <h1 className="auth-heading">組織向けログイン</h1>
-          <p className="auth-caption">
-            配布されたアカウントでログインしてください。
-          </p>
           <div className="flex flex-col items-center">
             <AuthProviderLinks disabled={login.busy} onClick={guardOAuth} />
             <div className="auth-divider">または</div>

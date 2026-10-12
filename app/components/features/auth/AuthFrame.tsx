@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { Logo } from "~/components/icons";
+import { AnimatedHexagonBackground } from "./AnimatedHexagonBackground";
 import "./auth.css";
 
 export function AuthFrame({
@@ -16,6 +17,7 @@ export function OrganizationAuthFrame({ children }: { children: ReactNode }) {
   return (
     <section className="auth-card organization-auth">
       <div className="organization-auth-brand">
+        <AnimatedHexagonBackground />
         <div className="organization-auth-brand-content">
           <Logo className="organization-auth-logo" aria-label="ことひろ" />
           <p>

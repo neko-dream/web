@@ -23,10 +23,10 @@ test("shared authentication dimensions preserve the Figma component tokens", () 
   assert.match(rule(".auth-provider-link"), /font-size: 17px/);
   assert.match(rule(".auth-provider-link"), /border-radius: 16px/);
 });
-test("organization frame has no outer margins and uses Figma 60:40 columns", () => {
+test("organization frame has no outer margins and keeps the Figma login pane fixed", () => {
   assert.match(rule(".organization-auth"), /width: 100%/);
   assert.match(rule(".organization-auth"), /margin: 0/);
-  assert.match(rule(".organization-auth"), /3fr.*2fr/);
+  assert.match(rule(".organization-auth"), /1fr.*512px/);
   assert.match(rule(".organization-auth-form"), /max-width: 407px/);
   assert.match(rule(".organization-auth-form"), /padding: 40px 32px/);
 });
