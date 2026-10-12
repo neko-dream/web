@@ -25,6 +25,17 @@
   "organizeImports": {
     "enabled": true
   },
+  "overrides": [
+    {
+      "include": ["tests/**/*.ts"],
+      "linter": {
+        "rules": {
+          "style": { "noDoneCallback": "off" },
+          "suspicious": { "useAwait": "off" }
+        }
+      }
+    }
+  ],
   "linter": {
     "enabled": true,
     "ignore": [

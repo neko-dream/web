@@ -1,22 +1,4 @@
 export interface paths {
-  "/users/me": {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    /** ログイン中ユーザーと現在の権限 */
-    get: operations["getCurrentUser"];
-    put?: never;
-    post?: never;
-    delete?: never;
-    options?: never;
-    head?: never;
-    patch?: never;
-    trace?: never;
-  };
-
   "/auth/dev/detach": {
     parameters: {
       query?: never;
@@ -1245,6 +1227,23 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/users/me": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /** ログイン中ユーザーと現在の権限 */
+    get: operations["getCurrentUser"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/users/{displayID}/talksessions": {
     parameters: {
       query?: never;
@@ -1383,11 +1382,9 @@ export interface components {
       user: components["schemas"]["User"];
       permissions: components["schemas"]["UserPermissions"];
     };
-
     UserPermissions: {
       canCreateTalkSession: boolean;
     };
-
     ActionItem: {
       actionItemID: string;
       sequence: number;
@@ -2062,27 +2059,6 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-  getCurrentUser: {
-    parameters: {
-      query?: never;
-      header?: never;
-      path?: never;
-      cookie?: never;
-    };
-    requestBody?: never;
-    responses: {
-      /** @description The request has succeeded. */
-      200: {
-        headers: {
-          [name: string]: unknown;
-        };
-        content: {
-          "application/json": components["schemas"]["CurrentUser"];
-        };
-      };
-    };
-  };
-
   authAccountDetach: {
     parameters: {
       query?: never;
@@ -5787,6 +5763,26 @@ export interface operations {
         };
         content: {
           "application/json": Record<string, never>;
+        };
+      };
+    };
+  };
+  getCurrentUser: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description The request has succeeded. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["CurrentUser"];
         };
       };
     };
