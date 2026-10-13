@@ -14,6 +14,23 @@ export class EmailLoginError extends Error {
   }
 }
 
+/** ブラウザのメール形式判定を使い、標準の吹き出しではなく日本語で案内する。 */
+export function validateEmailLoginFields(
+  email: string,
+  password: string,
+  emailTypeMismatch: boolean,
+) {
+  return {
+    email: email.trim()
+      ? emailTypeMismatch
+        ? "メールアドレスの形式を確認してください。"
+        : ""
+      : "メールアドレスを入力してください。",
+    // 既存パスワードのログインには、新規設定用の最低文字数を適用しない。
+    password: password ? "" : "パスワードを入力してください。",
+  };
+}
+
 /**
  * 画面に表示するエラーメッセージに変換する
  */
@@ -23,7 +40,7 @@ export function toErrorMessage(error: unknown) {
     : "通信に失敗しました。もう一度お試しください。";
 }
 
-async function readResponse(
+export async function readResponse(
   response: Response,
 ): Promise<Record<string, unknown>> {
   const data: unknown = await response.json().catch(() => null);

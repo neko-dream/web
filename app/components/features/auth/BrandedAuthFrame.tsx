@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { AnimatedHexagonBackground } from "~/components/features/auth/AnimatedHexagonBackground";
 import { Logo } from "~/components/icons";
+import "./auth.css";
+import "./branded-auth.css";
 
 /**
- * 組織向けログインの2列レイアウト（PCは左にブランド、右にフォーム）
+ * メール認証画面共通の2列レイアウト（PCは左にブランド、右にフォーム）
  */
-export const OrganizationAuthFrame = ({
-  children,
-}: { children: ReactNode }) => {
+export const BrandedAuthFrame = ({ children }: { children: ReactNode }) => {
   return (
     <section className="auth-card organization-auth">
       <div className="organization-auth-brand">
