@@ -1,7 +1,8 @@
-import { Eye, EyeOff } from "lucide-react";
 import { type FormEvent, useId, useState } from "react";
 import { Label } from "~/components/ui/label";
 import { AuthError, AuthInput, AuthSubmitButton } from "./AuthControls";
+import { AuthPasswordInput } from "./AuthPasswordInput";
+import { validateEmailLoginFields } from "./email-login";
 
 type Props = {
   email: string;
@@ -34,17 +35,41 @@ export const EmailPasswordForm = ({
   onPasswordChange,
   onSubmit,
 }: Props) => {
-  const [showPassword, setShowPassword] = useState(false);
   const emailID = useId();
   const passwordID = useId();
+  const [fieldErrors, setFieldErrors] = useState({ email: "", password: "" });
+  const emailErrorID = `${emailID}-error`;
+  const passwordErrorID = `${passwordID}-error`;
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (busy || cooldown > 0) {
+      return;
+    }
+    const emailInput = event.currentTarget.elements.namedItem("email");
+    if (!(emailInput instanceof HTMLInputElement)) {
+      return;
+    }
+    const errors = validateEmailLoginFields(
+      email,
+      password,
+      emailInput.validity.typeMismatch,
+    );
+    setFieldErrors(errors);
+    if (errors.email || errors.password) {
+      const invalidInput = errors.email
+        ? emailInput
+        : event.currentTarget.elements.namedItem("password");
+      if (invalidInput instanceof HTMLInputElement) {
+        invalidInput.focus();
+      }
+      return;
+    }
     onSubmit();
   };
 
   return (
-    <form className="w-full" onSubmit={handleSubmit}>
+    <form className="w-full" noValidate={true} onSubmit={handleSubmit}>
       <Label className="mb-4" title="メールアドレス" htmlFor={emailID}>
         <AuthInput
           id={emailID}
@@ -53,37 +78,38 @@ export const EmailPasswordForm = ({
           autoComplete="username"
           placeholder="メールアドレスを入力"
           value={email}
-          onChange={(event) => onEmailChange(event.target.value)}
+          onChange={(event) => {
+            onEmailChange(event.target.value);
+            setFieldErrors((errors) => ({ ...errors, email: "" }));
+          }}
+          aria-invalid={Boolean(fieldErrors.email)}
+          aria-describedby={fieldErrors.email ? emailErrorID : undefined}
           required={true}
           disabled={busy}
         />
+        {fieldErrors.email && (
+          <AuthError id={emailErrorID}>{fieldErrors.email}</AuthError>
+        )}
       </Label>
       <Label className="mb-4" title="パスワード" htmlFor={passwordID}>
-        <div className="relative">
-          <AuthInput
-            id={passwordID}
-            className="pr-12"
-            name="password"
-            type={showPassword ? "text" : "password"}
-            autoComplete="current-password"
-            placeholder="パスワードを入力"
-            value={password}
-            onChange={(event) => onPasswordChange(event.target.value)}
-            required={true}
-            disabled={busy}
-          />
-          <button
-            className="absolute top-0 right-0 grid size-12 place-items-center text-[#868e96]"
-            type="button"
-            aria-label={
-              showPassword ? "パスワードを隠す" : "パスワードを表示する"
-            }
-            aria-pressed={showPassword}
-            onClick={() => setShowPassword((value) => !value)}
-          >
-            {showPassword ? <Eye size={24} /> : <EyeOff size={24} />}
-          </button>
-        </div>
+        <AuthPasswordInput
+          id={passwordID}
+          name="password"
+          autoComplete="current-password"
+          placeholder="パスワードを入力"
+          value={password}
+          onChange={(event) => {
+            onPasswordChange(event.target.value);
+            setFieldErrors((errors) => ({ ...errors, password: "" }));
+          }}
+          aria-invalid={Boolean(fieldErrors.password)}
+          aria-describedby={fieldErrors.password ? passwordErrorID : undefined}
+          required={true}
+          disabled={busy}
+        />
+        {fieldErrors.password && (
+          <AuthError id={passwordErrorID}>{fieldErrors.password}</AuthError>
+        )}
       </Label>
       {error && <AuthError>{error}</AuthError>}
       <AuthSubmitButton type="submit" disabled={busy || cooldown > 0}>

@@ -7,6 +7,7 @@ import {
   beginEmailLogin,
   confirmEmailLogin,
   confirmEmailPIN,
+  validateEmailLoginFields,
 } from "../app/components/features/auth/email-login.ts";
 
 const originalFetch = globalThis.fetch;
@@ -14,6 +15,28 @@ const globals = globalThis as typeof globalThis & {
   API_URL: string;
   APP_URL: string;
 };
+test("login validation uses Japanese field errors and the browser's email check", () => {
+  assert.deepEqual(validateEmailLoginFields("", "", false), {
+    email: "メールアドレスを入力してください。",
+    password: "パスワードを入力してください。",
+  });
+  assert.deepEqual(validateEmailLoginFields("   ", "", false), {
+    email: "メールアドレスを入力してください。",
+    password: "パスワードを入力してください。",
+  });
+  assert.deepEqual(validateEmailLoginFields("asdf@", "existing", true), {
+    email: "メールアドレスの形式を確認してください。",
+    password: "",
+  });
+});
+test("login validation does not apply new password rules or trim existing passwords", () => {
+  for (const password of ["short", " existing ", " "]) {
+    assert.deepEqual(
+      validateEmailLoginFields("city@example.com", password, false),
+      { email: "", password: "" },
+    );
+  }
+});
 test("PIN preserves leading zeros and sends only JSON with browser credentials", async () => {
   globalThis.fetch = (input, init) => {
     assert.equal(input, "https://api.example.com/auth/password/verify-pin");

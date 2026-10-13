@@ -7,9 +7,20 @@ import { Input } from "~/components/ui/input";
  * ログイン画面共通の部品（Figma 48:6133 / 48:6211 の寸法）
  */
 
-export const AuthHeading = ({ children }: { children: ReactNode }) => {
+export const AuthHeading = ({
+  children,
+  className,
+}: {
+  children: ReactNode;
+  className?: string;
+}) => {
   return (
-    <h1 className="primary-gradient mb-4 w-fit text-clip font-bold text-[28px] leading-[34px] tracking-[0.38px]">
+    <h1
+      className={cn([
+        "primary-gradient mb-4 w-fit text-clip font-bold text-[28px] leading-[34px] tracking-[0.38px]",
+        className,
+      ])}
+    >
       {children}
     </h1>
   );
@@ -46,9 +57,20 @@ export const AuthSubmitButton = ({
   );
 };
 
-export const AuthError = ({ children }: { children: ReactNode }) => {
+export const AuthError = ({
+  children,
+  className,
+  ...props
+}: ComponentProps<"p">) => {
   return (
-    <p className="my-3 text-[#b42318] text-[13px] leading-normal" role="alert">
+    <p
+      {...props}
+      className={cn([
+        "my-3 text-[#b42318] text-[13px] leading-normal",
+        className,
+      ])}
+      role="alert"
+    >
       {children}
     </p>
   );

@@ -22,9 +22,13 @@ export default function Layout({
   const isAuthPage =
     pathname === "/auth/login" ||
     pathname === "/auth/email/verify" ||
+    pathname === "/auth/password/setup" ||
     pathname === "/organization/login";
   // 組織向けログインは左側にロゴを置くので、トップページと同じくヘッダーを出さない
-  const hideHeader = isTopPage || pathname === "/organization/login";
+  const hideHeader =
+    isTopPage ||
+    pathname === "/organization/login" ||
+    pathname === "/auth/password/setup";
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {

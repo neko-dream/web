@@ -2,12 +2,10 @@ import type { MouseEvent } from "react";
 import { Link } from "react-router";
 import { AuthHeading } from "~/components/features/auth/AuthControls";
 import { AuthProviderLinks } from "~/components/features/auth/AuthProviderLinks";
+import { BrandedAuthFrame } from "~/components/features/auth/BrandedAuthFrame";
 import { EmailPasswordForm } from "~/components/features/auth/EmailPasswordForm";
 import { EmailPINConfirmation } from "~/components/features/auth/EmailVerification";
 import { useEmailLogin } from "~/hooks/useEmailLogin";
-import { OrganizationAuthFrame } from "./components/OrganizationAuthFrame";
-import "~/components/features/auth/auth.css";
-import "./index.css";
 
 export { authHeaders as headers } from "~/components/features/auth/authHeaders";
 
@@ -27,7 +25,7 @@ export default function Page() {
   };
 
   return (
-    <OrganizationAuthFrame>
+    <BrandedAuthFrame>
       {login.waiting ? (
         <EmailPINConfirmation
           // 再送で確認コードの入力をリセットする
@@ -69,6 +67,6 @@ export default function Page() {
           </Link>
         </>
       )}
-    </OrganizationAuthFrame>
+    </BrandedAuthFrame>
   );
 }

@@ -71,7 +71,7 @@ export const EmailLinkConfirmation = ({
             <ChevronLeft size={20} />
           </Link>
         }
-        caption="ログインを開始したブラウザで、下のボタンを押して本人確認を完了してください。"
+        caption="ログインを開始したブラウザで、下のボタンを押してください。"
       />
       {error && <AuthError>{error}</AuthError>}
       <AuthSubmitButton
@@ -79,7 +79,7 @@ export const EmailLinkConfirmation = ({
         disabled={busy || disabled}
         onClick={onConfirm}
       >
-        {busy ? "確認しています…" : "ログインを確認する"}
+        {busy ? "確認しています…" : "確認する"}
       </AuthSubmitButton>
       <AuthHelp>
         リンクは一度だけ使えます。期限切れの場合はログイン画面からやり直してください。
@@ -146,14 +146,14 @@ export const EmailPINConfirmation = ({
             <ChevronLeft size={20} />
           </button>
         }
-        caption="本人確認メールを送信しました。ログインを開始したブラウザで、メールの確認リンクを開いてください。"
+        caption="確認メールを送信しました。メールの「確認する」ボタンを押すか、下に6桁の番号を入力してください。"
       />
       <Label className="mb-4" title="メールアドレス" htmlFor={emailID}>
         <AuthInput id={emailID} type="email" value={email} readOnly={true} />
       </Label>
       {error && <AuthError>{error}</AuthError>}
       <form onSubmit={handleSubmit}>
-        <Label className="mb-4" title="6桁の確認コード" htmlFor={pinID}>
+        <Label className="mb-4" title="6桁の番号" htmlFor={pinID}>
           <AuthInput
             id={pinID}
             className="text-center"
@@ -171,7 +171,7 @@ export const EmailPINConfirmation = ({
           {busy ? "確認しています…" : "確認する"}
         </AuthSubmitButton>
         <AuthHelp>
-          リンクが開けない場合は、メールの確認コードでも確認できます。5回間違えた場合は、確認メールを再送してください。
+          番号を5回間違えた場合は、確認メールを再送してください。
         </AuthHelp>
       </form>
       <AuthSubmitButton
@@ -182,7 +182,7 @@ export const EmailPINConfirmation = ({
         {resendButtonLabel(busy, cooldown)}
       </AuthSubmitButton>
       <AuthHelp>
-        メールが届かない場合は、迷惑メールフォルダも確認してください。リンクと確認コードの有効期限は15分です。
+        メールが届かない場合は、迷惑メールフォルダも確認してください。このメールで確認できる時間は15分です。
       </AuthHelp>
       <AuthHelp>
         有効期限：

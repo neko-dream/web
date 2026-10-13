@@ -5,7 +5,10 @@ import { ErrorView } from "~/components/layouts/error";
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
 
-  if (isRouteErrorResponse(error)) {
+  if (
+    isRouteErrorResponse(error) &&
+    (error.status === 401 || error.status === 403)
+  ) {
     return (
       <ErrorView>
         <p>ログイン後使用可能です！</p>
@@ -16,5 +19,10 @@ export function ErrorBoundary(): JSX.Element {
     );
   }
 
-  return <ErrorView />;
+  return (
+    <ErrorView>
+      <p>ユーザー情報を取得できませんでした。</p>
+      <p>時間をおいて、もう一度お試しください。</p>
+    </ErrorView>
+  );
 }
