@@ -12,6 +12,7 @@ import { BrandedAuthFrame } from "~/components/features/auth/BrandedAuthFrame";
 import { toErrorMessage } from "~/components/features/auth/email-login";
 import {
   type PasswordPolicy,
+  describePasswordPolicy,
   isPasswordSetupToken,
   loadPasswordPolicy,
   setupPassword,
@@ -35,7 +36,7 @@ function passwordPolicyCaption(
   loading: boolean,
 ) {
   if (policy) {
-    return `${policy.minLength}文字以上（英数字は最大${policy.maxBytes}文字）`;
+    return describePasswordPolicy(policy);
   }
   return loading ? "入力条件を確認しています…" : "";
 }
