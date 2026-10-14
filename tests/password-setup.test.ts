@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
 import { EmailLoginError } from "../app/components/features/auth/email-login.ts";
 import {
+  describePasswordPolicy,
   isPasswordSetupToken,
   loadPasswordPolicy,
   setupPassword,
@@ -15,7 +16,14 @@ const previousFetch = globalThis.fetch;
 const minimumMessage = /12文字/;
 const mismatchMessage = /一致/;
 const maximumMessage = /長すぎ/;
-const policy = { minLength: 12, maxBytes: 55 };
+const whitespaceMessage = /先頭と末尾に空白は使えません/;
+const controlMessage = /改行やタブなどの特殊な文字は使えません/;
+const policy = {
+  minLength: 12,
+  maxBytes: 55,
+  forbidControlCharacters: true,
+  forbidSurroundingWhitespace: true,
+};
 beforeEach(() => {
   (globalThis as typeof globalThis & { API_URL: string }).API_URL =
     "https://api.example.com";
@@ -95,8 +103,56 @@ test("password confirmation uses server-supplied Unicode minimum and UTF-8 byte 
     validateSetupPassword("あ".repeat(12), "あ".repeat(12), policy),
     "",
   );
-  assert.equal(
+  assert.match(
     validateSetupPassword(` ${"a".repeat(12)}`, ` ${"a".repeat(12)}`, policy),
+    whitespaceMessage,
+  );
+});
+
+test("control characters and surrounding whitespace follow the server policy flags", () => {
+  for (const invalid of [
+    "abcdef\nghijkl",
+    "abcdef\r\nghijkl",
+    "abcdef\tghijkl",
+    "abcdef\u0000ghijkl",
+    "abcdef\u007fghijkl",
+    "abcdef\u0085ghijkl",
+    `${"a".repeat(12)}\n`,
+  ]) {
+    assert.match(
+      validateSetupPassword(invalid, invalid, policy),
+      controlMessage,
+    );
+  }
+  for (const invalid of [
+    `${"a".repeat(12)} `,
+    ` ${"a".repeat(12)}`,
+    `\u3000${"a".repeat(12)}`,
+    `${"あ".repeat(12)}\u3000`,
+  ]) {
+    assert.match(
+      validateSetupPassword(invalid, invalid, policy),
+      whitespaceMessage,
+    );
+  }
+  for (const valid of [
+    "abcdef ghijkl",
+    "あいうえお\u3000かきくけこさ",
+    "パスワードは日本語でもいい",
+  ]) {
+    assert.equal(validateSetupPassword(valid, valid, policy), "");
+  }
+  const permissive = {
+    ...policy,
+    forbidControlCharacters: false,
+    forbidSurroundingWhitespace: false,
+  };
+  assert.equal(
+    validateSetupPassword(
+      ` ${"a".repeat(11)}\n`,
+      ` ${"a".repeat(11)}\n`,
+      permissive,
+    ),
     "",
   );
 });
@@ -118,12 +174,15 @@ test("missing or malformed policy never silently falls back to hardcoded limits"
     null,
     {},
     [],
-    { minLength: 0, maxBytes: 55 },
-    { minLength: 12, maxBytes: 11 },
-    { minLength: "12", maxBytes: 55 },
-    { minLength: 12.5, maxBytes: 55 },
-    { minLength: 12, maxBytes: -1 },
-    { minLength: 12, maxBytes: 55.5 },
+    { ...policy, minLength: 0 },
+    { ...policy, maxBytes: 11 },
+    { ...policy, minLength: "12" },
+    { ...policy, minLength: 12.5 },
+    { ...policy, maxBytes: -1 },
+    { ...policy, maxBytes: 55.5 },
+    { minLength: 12, maxBytes: 55 },
+    { ...policy, forbidControlCharacters: "true" },
+    { ...policy, forbidSurroundingWhitespace: 1 },
   ]) {
     globalThis.fetch = async () =>
       new Response(JSON.stringify(body), { status: 200 });
@@ -140,7 +199,12 @@ test("missing or malformed policy never silently falls back to hardcoded limits"
 
 test("server policy boundaries count code points, not UTF-16 units, and never trim passwords", () => {
   for (const maxBytes of [12, 36, 55, 66, 72]) {
-    const policy = { minLength: 12, maxBytes };
+    const policy = {
+      minLength: 12,
+      maxBytes,
+      forbidControlCharacters: true,
+      forbidSurroundingWhitespace: true,
+    };
     assert.equal(
       validateSetupPassword("a".repeat(maxBytes), "a".repeat(maxBytes), policy),
       "",
@@ -158,7 +222,11 @@ test("server policy boundaries count code points, not UTF-16 units, and never tr
       minimumMessage,
     );
     assert.equal(
-      validateSetupPassword(` ${"a".repeat(11)}`, ` ${"a".repeat(11)}`, policy),
+      validateSetupPassword(
+        `a ${"a".repeat(10)}`,
+        `a ${"a".repeat(10)}`,
+        policy,
+      ),
       "",
     );
   }
@@ -172,7 +240,22 @@ test("server policy boundaries count code points, not UTF-16 units, and never tr
   );
   // Constraints are data, including the minimum, rather than a second fixed policy.
   assert.equal(
-    validateSetupPassword("short", "short", { minLength: 5, maxBytes: 8 }),
+    validateSetupPassword("short", "short", {
+      ...policy,
+      minLength: 5,
+      maxBytes: 8,
+    }),
     "",
+  );
+});
+
+test("policy caption tells the server-supplied rules before submission", () => {
+  assert.equal(
+    describePasswordPolicy(policy),
+    "12文字以上（英数字は最大55文字）。先頭と末尾に空白は使えません",
+  );
+  assert.equal(
+    describePasswordPolicy({ ...policy, forbidSurroundingWhitespace: false }),
+    "12文字以上（英数字は最大55文字）",
   );
 });
