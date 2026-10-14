@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 import { afterEach, beforeEach, test } from "node:test";
 import { EmailLoginError } from "../app/components/features/auth/email-login.ts";
 import {
+  describePasswordPolicy,
   isPasswordSetupToken,
   loadPasswordPolicy,
   setupPassword,
@@ -15,7 +16,8 @@ const previousFetch = globalThis.fetch;
 const minimumMessage = /12文字/;
 const mismatchMessage = /一致/;
 const maximumMessage = /長すぎ/;
-const characterMessage = /制御文字/;
+const whitespaceMessage = /先頭と末尾に空白は使えません/;
+const controlMessage = /改行やタブなどの特殊な文字は使えません/;
 const policy = {
   minLength: 12,
   maxBytes: 55,
@@ -103,7 +105,7 @@ test("password confirmation uses server-supplied Unicode minimum and UTF-8 byte 
   );
   assert.match(
     validateSetupPassword(` ${"a".repeat(12)}`, ` ${"a".repeat(12)}`, policy),
-    characterMessage,
+    whitespaceMessage,
   );
 });
 
@@ -116,13 +118,21 @@ test("control characters and surrounding whitespace follow the server policy fla
     "abcdef\u007fghijkl",
     "abcdef\u0085ghijkl",
     `${"a".repeat(12)}\n`,
+  ]) {
+    assert.match(
+      validateSetupPassword(invalid, invalid, policy),
+      controlMessage,
+    );
+  }
+  for (const invalid of [
     `${"a".repeat(12)} `,
+    ` ${"a".repeat(12)}`,
     `\u3000${"a".repeat(12)}`,
     `${"あ".repeat(12)}\u3000`,
   ]) {
     assert.match(
       validateSetupPassword(invalid, invalid, policy),
-      characterMessage,
+      whitespaceMessage,
     );
   }
   for (const valid of [
@@ -236,5 +246,16 @@ test("server policy boundaries count code points, not UTF-16 units, and never tr
       maxBytes: 8,
     }),
     "",
+  );
+});
+
+test("policy caption tells the server-supplied rules before submission", () => {
+  assert.equal(
+    describePasswordPolicy(policy),
+    "12文字以上（英数字は最大55文字）。先頭と末尾に空白は使えません",
+  );
+  assert.equal(
+    describePasswordPolicy({ ...policy, forbidSurroundingWhitespace: false }),
+    "12文字以上（英数字は最大55文字）",
   );
 });

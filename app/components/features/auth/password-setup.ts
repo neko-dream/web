@@ -44,6 +44,14 @@ export async function loadPasswordPolicy(
   };
 }
 
+// 入力欄の案内文。改行・タブは通常の入力欄では入力できないため、空白のルールだけを案内する。
+export function describePasswordPolicy(policy: PasswordPolicy): string {
+  const length = `${policy.minLength}文字以上（英数字は最大${policy.maxBytes}文字）`;
+  return policy.forbidSurroundingWhitespace
+    ? `${length}。先頭と末尾に空白は使えません`
+    : length;
+}
+
 export function isPasswordSetupToken(token: string): boolean {
   return token.length === 44 && SETUP_TOKEN_PATTERN.test(token);
 }
@@ -60,12 +68,16 @@ export function validateSetupPassword(
     return "パスワードが長すぎます。短いものにしてください。";
   }
   if (
-    (policy.forbidControlCharacters &&
-      CONTROL_CHARACTER_PATTERN.test(password)) ||
-    (policy.forbidSurroundingWhitespace &&
-      SURROUNDING_WHITESPACE_PATTERN.test(password))
+    policy.forbidControlCharacters &&
+    CONTROL_CHARACTER_PATTERN.test(password)
   ) {
-    return "パスワードに改行などの制御文字や、先頭・末尾の空白は使用できません。";
+    return "改行やタブなどの特殊な文字は使えません。";
+  }
+  if (
+    policy.forbidSurroundingWhitespace &&
+    SURROUNDING_WHITESPACE_PATTERN.test(password)
+  ) {
+    return "パスワードの先頭と末尾に空白は使えません。";
   }
   if (password !== confirmation) {
     return "確認用のパスワードが一致していません。";
