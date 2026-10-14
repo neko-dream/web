@@ -323,19 +323,20 @@ export default function Page({
         </Label>
 
         <Label
-          title="ホームの一覧に非表示するかどうか"
-          notes={["※ プロフィール画面では表示されます"]}
+          title="ホームの一覧への表示"
+          htmlFor={fields.hideTop.id}
+          notes={["プロフィール画面には、この設定に関係なく表示されます"]}
         >
           <Select
             {...getSelectProps(fields.hideTop)}
             options={[
               {
-                title: "はい",
-                value: "true",
+                title: "表示する",
+                value: "false",
               },
               {
-                title: "いいえ",
-                value: "false",
+                title: "表示しない",
+                value: "true",
               },
             ]}
             value={session?.hideTop === true ? "true" : "false"}
