@@ -1,0 +1,9 @@
+# Local-only runtime: no Cloudflare login or remote bindings required.
+name = "kotohiro-local"
+main = "./workers/app.ts"
+compatibility_date = "2024-10-18"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+APP_URL = "https://localhost:3000"
+API_URL = "https://localhost:3000/api"

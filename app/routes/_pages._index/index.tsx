@@ -1,3 +1,4 @@
+import { AnimatedHexagonBackground } from "~/components/features/auth/AnimatedHexagonBackground";
 import { Logo } from "~/components/icons";
 import "./index.css";
 import { AuthenticateCard } from "~/components/features/auth/LoginCard";
@@ -7,13 +8,7 @@ export { meta } from "./modules/meta";
 export default function Page() {
   return (
     <>
-      <div className="area">
-        <ul className="circles">
-          {Array.from({ length: 20 }).map((_, i) => (
-            <li key={i} />
-          ))}
-        </ul>
-      </div>
+      <AnimatedHexagonBackground />
 
       <div className="mt-18 flex flex-col justify-center">
         <div className="mx-auto inline-block items-center justify-center rounded-md backdrop-blur-[20px]">

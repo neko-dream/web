@@ -3988,6 +3988,21 @@ paths:
       security:
         - {}
       x-ogen-operation-group: User
+  /users/me:
+    get:
+      operationId: getCurrentUser
+      summary: ログイン中ユーザーと現在の権限
+      parameters: []
+      responses:
+        "200":
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrentUser"
+      tags:
+        - user
+      x-ogen-operation-group: user
   /users/{displayID}/talksessions:
     get:
       operationId: getUserTalkSessions
@@ -4288,6 +4303,26 @@ security:
   - CookieAuth: []
 components:
   schemas:
+    CurrentUser:
+      type: object
+      required:
+        - userID
+        - user
+        - permissions
+      properties:
+        userID:
+          type: string
+        user:
+          $ref: "#/components/schemas/User"
+        permissions:
+          $ref: "#/components/schemas/UserPermissions"
+    UserPermissions:
+      type: object
+      required:
+        - canCreateTalkSession
+      properties:
+        canCreateTalkSession:
+          type: boolean
     ActionItem:
       type: object
       required:
