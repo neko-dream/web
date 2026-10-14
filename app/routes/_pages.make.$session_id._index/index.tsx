@@ -324,7 +324,8 @@ export default function Page({
 
         <Label
           title="ホームの一覧への表示"
-          notes={["「表示しない」にしても、プロフィール画面には表示されます"]}
+          htmlFor={fields.hideTop.id}
+          notes={["プロフィール画面には、この設定に関係なく表示されます"]}
         >
           <Select
             {...getSelectProps(fields.hideTop)}
