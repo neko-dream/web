@@ -1,9 +1,7 @@
-import { Outlet, useNavigate } from "react-router";
-import { Slide, ToastContainer, toast } from "react-toastify";
+import { Outlet, useLocation, useNavigate } from "react-router";
+import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
-import { Button } from "~/components/ui/button";
-import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -16,9 +14,21 @@ export { loader } from "./modules/loader";
 const Analytics = lazy(() => import("~/components/features/analytics"));
 
 export default function Layout({
-  loaderData: { $user },
+  loaderData: { $user, $permissions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isTopPage = pathname === "/";
+  const isAuthPage =
+    pathname === "/auth/login" ||
+    pathname === "/auth/email/verify" ||
+    pathname === "/auth/password/setup" ||
+    pathname === "/organization/login";
+  // 組織向けログインは左側にロゴを置くので、トップページと同じくヘッダーを出さない
+  const hideHeader =
+    isTopPage ||
+    pathname === "/organization/login" ||
+    pathname === "/auth/password/setup";
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {
@@ -29,30 +39,21 @@ export default function Layout({
     });
   }, []);
 
-  const handleClick = async () => {
-    const { error } = await api.POST("/auth/revoke", {
-      credentials: "include",
-    });
-    if (!error) {
-      toast.success("ログアウトしました。");
-    }
-  };
-
   return (
     <>
-      <Analytics />
+      {!isAuthPage && <Analytics />}
       {/* 実際に見えるコンテンツ */}
-      <Header $user={$user} />
-      <main className="flex min-h-[calc(100vh-48px)] flex-col">
+      {!hideHeader && <Header $user={$user} $permissions={$permissions} />}
+      <main
+        className={
+          hideHeader
+            ? "flex min-h-screen flex-col"
+            : "flex min-h-[calc(100vh-48px)] flex-col"
+        }
+      >
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
       <Footer />
-
-      <div className="flex">
-        <Button color="primary" onClick={handleClick}>
-          ログアウト
-        </Button>
-      </div>
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer

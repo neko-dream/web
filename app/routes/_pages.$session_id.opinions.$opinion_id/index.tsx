@@ -1,5 +1,5 @@
 import { getFormProps, getInputProps, useForm } from "@conform-to/react";
-import { parseWithValibot } from "conform-to-valibot";
+import { parseWithValibot } from "@conform-to/valibot";
 import { useState } from "react";
 import { Form, useRevalidator } from "react-router";
 import { toast } from "react-toastify";

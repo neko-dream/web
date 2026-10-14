@@ -1,3 +1,4 @@
+import { ExternalLink } from "~/components/ui/external-link";
 import { CenterDialog, type ModalProps } from "~/components/ui/modal";
 
 export const HintOpinionModal = (props: Omit<ModalProps, "children">) => {
@@ -9,14 +10,12 @@ export const HintOpinionModal = (props: Omit<ModalProps, "children">) => {
       </p>
       <p>
         ただし、
-        <a
+        <ExternalLink
           href="https://static.kotohiro.com/tos"
-          target="_blank"
-          rel="noopener noreferrer"
           className="text-cs-blue-600"
         >
           利用規約
-        </a>
+        </ExternalLink>
         に違反する内容は許可していません。
       </p>
       <p>【例】</p>

@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router";
 import { CenterDialog, type ModalProps } from "~/components/ui/modal";
-import { useSatisfiedStore } from "~/hooks/useVote";
+import { type RequestModalState, useSatisfiedStore } from "~/hooks/useVote";
 
 type Props = Omit<ModalProps, "children"> & {
   sessionID: string;
   children: (
-    status: "consent" | "demography" | "signup",
+    status: RequestModalState[number],
     next: () => void,
   ) => React.ReactNode;
 };

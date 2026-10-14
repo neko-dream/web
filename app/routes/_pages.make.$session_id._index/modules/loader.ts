@@ -1,17 +1,19 @@
 import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
+import { requireSessionCreationPermission } from "~/libs/session-creation";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
-  const $restrictions = api.GET("/talksessions/restrictions", {
-    headers: request.headers,
-  });
-
+export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   if (params.session_id === "new") {
-    const { data: restrictions } = await $restrictions;
-    return {
-      restrictions,
-    };
+    const result = await api
+      .GET("/users/me", { headers: request.headers })
+      .catch((error) => {
+        // biome-ignore lint/suspicious/noConsole: Server-side failures must remain observable.
+        console.error("セッション作成権限の取得に失敗しました", error);
+        throw new Response("作成権限を確認できませんでした", { status: 503 });
+      });
+    requireSessionCreationPermission(result);
+    return {};
   }
 
   if (!params.session_id) {
@@ -26,9 +28,17 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     },
   });
 
-  const [{ data: restrictions }, { data: session }] = await Promise.all([
-    $restrictions,
+  const $survey = api.GET("/talksessions/{talkSessionID}/survey", {
+    params: {
+      path: {
+        talkSessionID: params.session_id,
+      },
+    },
+  });
+
+  const [{ data: session }, { data: survey }] = await Promise.all([
     $session,
+    $survey,
   ]);
 
   if (!session) {
@@ -38,6 +48,6 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   return {
     isEditMode: true,
     session,
-    restrictions,
+    survey,
   };
 };
