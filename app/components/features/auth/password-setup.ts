@@ -1,10 +1,15 @@
 import { readResponse } from "~/components/features/auth/email-login";
 
 const SETUP_TOKEN_PATTERN = /^[A-Za-z0-9+/]{42}[AEIMQUYcgkosw048]=$/;
+// サーバー（Go の unicode.IsControl / unicode.IsSpace）と同じ文字集合で判定する。
+const CONTROL_CHARACTER_PATTERN = /\p{Cc}/u;
+const SURROUNDING_WHITESPACE_PATTERN = /^\p{White_Space}|\p{White_Space}$/u;
 
 export interface PasswordPolicy {
   minLength: number;
   maxBytes: number;
+  forbidControlCharacters: boolean;
+  forbidSurroundingWhitespace: boolean;
 }
 
 export async function loadPasswordPolicy(
@@ -23,13 +28,20 @@ export async function loadPasswordPolicy(
     data.minLength < 1 ||
     typeof data.maxBytes !== "number" ||
     !Number.isSafeInteger(data.maxBytes) ||
-    data.maxBytes < data.minLength
+    data.maxBytes < data.minLength ||
+    typeof data.forbidControlCharacters !== "boolean" ||
+    typeof data.forbidSurroundingWhitespace !== "boolean"
   ) {
     throw new Error(
       "パスワードの入力条件を取得できませんでした。画面を開き直してください。",
     );
   }
-  return { minLength: data.minLength, maxBytes: data.maxBytes };
+  return {
+    minLength: data.minLength,
+    maxBytes: data.maxBytes,
+    forbidControlCharacters: data.forbidControlCharacters,
+    forbidSurroundingWhitespace: data.forbidSurroundingWhitespace,
+  };
 }
 
 export function isPasswordSetupToken(token: string): boolean {
@@ -46,6 +58,14 @@ export function validateSetupPassword(
   }
   if (new TextEncoder().encode(password).length > policy.maxBytes) {
     return "パスワードが長すぎます。短いものにしてください。";
+  }
+  if (
+    (policy.forbidControlCharacters &&
+      CONTROL_CHARACTER_PATTERN.test(password)) ||
+    (policy.forbidSurroundingWhitespace &&
+      SURROUNDING_WHITESPACE_PATTERN.test(password))
+  ) {
+    return "パスワードに改行などの制御文字や、先頭・末尾の空白は使用できません。";
   }
   if (password !== confirmation) {
     return "確認用のパスワードが一致していません。";
