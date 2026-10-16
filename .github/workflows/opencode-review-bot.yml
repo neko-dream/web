@@ -1,0 +1,64 @@
+name: opencode-review (bot PR)
+
+# Dependabot などの bot が作成した PR では pull_request の opencode-review が動かない。
+# 理由は2つ:
+#   1. bot が起こした pull_request イベントでは GITHUB_TOKEN が read-only になり、
+#      Actions secrets (OPENCODE_AUTH_CONTENT) も空になる
+#      https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-on-actions
+#   2. opencode の権限チェックが actor の collaborator 権限を見るが、
+#      bot アカウントは常に permission: none を返すため
+#      "User dependabot[bot] does not have write permissions" で失敗する
+# pull_request_target は base ref が bot 由来でない限りこの制限を受けないため、
+# 信頼できる bot の PR に限りこちらのワークフローでレビューを実行する。
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions: {}
+
+jobs:
+  review:
+    # pull_request_target は base ブランチの権限で動くため、対象を絞る:
+    # - head が同一リポジトリ内のブランチであること (fork からの PR は対象外)
+    # - PR の作成者が信頼できる bot であること
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      contains(fromJSON('["dependabot[bot]", "github-actions[bot]", "claude[bot]", "renovate[bot]"]'), github.event.pull_request.user.login)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          # pull_request_target のデフォルトどおり base ブランチを checkout する。
+          # レビュー対象の PR ブランチは opencode 自身が fetch する。
+          persist-credentials: false
+
+      - uses: anomalyco/opencode/github@latest
+        env:
+          OPENCODE_AUTH_CONTENT: ${{ secrets.OPENCODE_AUTH_CONTENT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # opencode は pull_request_target を未対応イベントとして弾くため、
+          # payload の形が同じ pull_request として扱わせる
+          GITHUB_EVENT_NAME: pull_request
+          # bot アカウントは collaborator permission が常に none になり権限チェックを通らない。
+          # ここでは上の if で「信頼できる bot の PR」に限定済みなので、
+          # 権限チェック用に write 権限を持つユーザーを actor として渡す。
+          # 別のユーザーを使いたい場合はリポジトリ変数 OPENCODE_REVIEW_ACTOR を設定する。
+          GITHUB_ACTOR: ${{ vars.OPENCODE_REVIEW_ACTOR || 'haryoiro' }}
+        with:
+          model: opencode-go/deepseek-v4-pro
+          use_github_token: true
+          prompt: |
+            日本語でレビューしてください。以下のルールを厳守すること:
+            - 実際のコード・ドキュメントから確認できる事実のみを指摘し、推測で「非標準」「存在しない」などと断定しない
+            - API やライブラリのバージョン有無を未確認のまま断言しない
+            - 指摘には必ず該当ファイル・行番号・根拠を明記する
+            - 確信が持てない項目は「要確認」と明示する
+
+            レビュー観点:
+            - コード品質の問題をチェック
+            - 潜在的なバグを探す
+            - 改善点を提案

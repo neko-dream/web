@@ -5,6 +5,9 @@ on:
 
 jobs:
   review:
+    # bot が作成した PR は read-only な GITHUB_TOKEN / secrets 不可 で必ず失敗するため、
+    # pull_request_target で動く opencode-review-bot.yml に任せてここではスキップする。
+    if: ${{ !endsWith(github.event.pull_request.user.login, '[bot]') }}
     runs-on: ubuntu-latest
     permissions:
       id-token: write
