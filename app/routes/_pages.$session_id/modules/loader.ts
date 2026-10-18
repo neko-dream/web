@@ -1,8 +1,19 @@
 import type { LoaderFunctionArgs } from "react-router";
+import { cloudflareContext } from "~/../workers/app";
+import { SURVEY_RESTRICTION_KEY } from "~/hooks/useVote";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const loader = async ({
+  request,
+  params,
+  context,
+}: LoaderFunctionArgs) => {
+  const { env } = context.get(cloudflareContext);
+  // ローカル実行時はFlagshipのbindingがないため、既定値を使う
+  const flags = (env as Env & { FLAGS?: Flagship }).FLAGS;
+  const enableSurvey =
+    (await flags?.getBooleanValue("questionnaire", false)) ?? false;
   if (!params.session_id) {
     throw notfound();
   }
@@ -58,6 +69,23 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   });
 
   /**
+   * 入室前アンケート（未設定なら404でnull）
+   */
+  const $survey = enableSurvey
+    ? api
+        .GET("/talksessions/{talkSessionID}/survey", {
+          headers: request.headers,
+          params: {
+            path: {
+              talkSessionID: params.session_id,
+            },
+          },
+        })
+        .then(({ data }) => data || null)
+        .catch(() => null)
+    : Promise.resolve(null);
+
+  /**
    * 制限項目リストの配列の中に足りていないフラグを仕込む処理
    */
   const $restrictions = Promise.all([
@@ -69,12 +97,17 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
       return [];
     }
     const requiredKeys = requiredRestrictions?.map(({ key }) => key);
-    return restrictions?.map((restriction) => {
-      return {
-        ...restriction,
-        required: requiredKeys?.includes(restriction.key),
-      };
-    });
+    return (
+      restrictions
+        // アンケート回答restrictionはデモグラ入力モーダルには表示しない
+        ?.filter(({ key }) => key !== SURVEY_RESTRICTION_KEY)
+        .map((restriction) => {
+          return {
+            ...restriction,
+            required: requiredKeys?.includes(restriction.key),
+          };
+        })
+    );
   });
 
   return {
@@ -82,5 +115,7 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
     $remainingCount,
     $restrictions,
     $positions,
+    $survey,
+    enableSurvey,
   };
 };

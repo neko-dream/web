@@ -5,6 +5,7 @@ import LogoIcon from "~/assets/kotohiro.png";
 import { Close, Menu, PlusCircle, Search } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";
+import { canCreateTalkSession } from "~/libs/session-creation";
 import type { Route } from "~/react-router/_pages/+types/route";
 import { MenuDialog } from "../MenuDialog";
 import { SearchModal } from "../SearchModal";
@@ -27,7 +28,7 @@ const header = tv({
   },
 });
 
-export const Header = ({ $user }: Props) => {
+export const Header = ({ $user, $permissions }: Props) => {
   const location = useLocation();
   const [isMenuDialogOpen, setIsMenuDialogOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
@@ -89,10 +90,10 @@ export const Header = ({ $user }: Props) => {
                         to={"/"}
                         className={button({
                           className:
-                            "flex h-8 items-center rounded-md bg-[#32ADE6] p-2 text-xs",
+                            "flex h-8 items-center rounded-md bg-[#007AFF] p-2 text-xs",
                         })}
                       >
-                        ログイン
+                        ログインする
                       </Link>
                     );
                   }
@@ -110,18 +111,24 @@ export const Header = ({ $user }: Props) => {
                         <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
                       </Link>
 
-                      {user?.orgType && (
-                        <Link
-                          to={"/make/new"}
-                          className={button({
-                            className:
-                              "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
-                          })}
-                        >
-                          <PlusCircle />
-                          <span>作成</span>
-                        </Link>
-                      )}
+                      <Suspense fallback={null}>
+                        <Await resolve={$permissions}>
+                          {(permissions) =>
+                            canCreateTalkSession(permissions) && (
+                              <Link
+                                to={"/make/new"}
+                                className={button({
+                                  className:
+                                    "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
+                                })}
+                              >
+                                <PlusCircle />
+                                <span>作成</span>
+                              </Link>
+                            )
+                          }
+                        </Await>
+                      </Suspense>
                     </div>
                   );
                 }}

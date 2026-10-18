@@ -3,12 +3,17 @@ import { api } from "~/libs/openapi-fetch";
 import { forbidden } from "~/utils/response";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { data } = await api.GET("/user", {
+  const { data, response } = await api.GET("/user", {
     headers: request.headers,
   });
 
   if (!data?.user) {
-    throw forbidden();
+    if (response.status === 401 || response.status === 403) {
+      throw forbidden();
+    }
+    throw new Response("Failed to load user profile", {
+      status: response.ok ? 500 : response.status,
+    });
   }
 
   return {

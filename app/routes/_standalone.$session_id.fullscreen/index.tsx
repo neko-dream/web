@@ -55,7 +55,7 @@ export default function Page({
   useEffect(() => {
     let interval: number;
     if (!session.disableAnalysis) {
-      interval = setInterval(() => {
+      interval = window.setInterval(() => {
         revalidate();
       }, 1000);
     }

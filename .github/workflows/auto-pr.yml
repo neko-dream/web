@@ -69,17 +69,17 @@ jobs:
       - name: Create PR
         if: ${{ steps.check_pr_exist.outputs.count == 0 }}
         run: |
-          pr_body="${{ steps.config.outputs.pr_header }}
+          pr_body="## 含まれるコミット
 
-          ## 含まれるコミット
-
-          ${{ steps.commits.outputs.commits }}"
+          ${COMMITS}"
 
           gh pr create -B "${{ steps.config.outputs.target_branch }}" \
             -t "${{ steps.config.outputs.pr_title }}" \
             -b "$pr_body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # コミットメッセージ中のバッククォート等がシェル実行されないよう env 経由で渡す
+          COMMITS: ${{ steps.commits.outputs.commits }}
 
       - name: Update existing PR
         if: ${{ steps.check_pr_exist.outputs.count > 0 }}
@@ -94,8 +94,10 @@ jobs:
 
           ## 含まれるコミット
 
-          ${{ steps.commits.outputs.commits }}"
+          ${COMMITS}"
 
           gh pr edit ${{ steps.check_pr_exist.outputs.number }} --body "$new_body"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # コミットメッセージ中のバッククォート等がシェル実行されないよう env 経由で渡す
+          COMMITS: ${{ steps.commits.outputs.commits }}

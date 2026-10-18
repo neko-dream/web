@@ -1,8 +1,10 @@
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
 import { generateMetaTag } from "~/utils/metatag";
 
-export const meta: Route.MetaFunction = ({ data }: Route.MetaArgs) => {
+export const meta: Route.MetaFunction = ({ loaderData }: Route.MetaArgs) => {
   return generateMetaTag({
-    title: data?.isEditMode ? "セッションを編集する" : "セッションを作成する",
+    title: loaderData?.isEditMode
+      ? "セッションを編集する"
+      : "セッションを作成する",
   });
 };
