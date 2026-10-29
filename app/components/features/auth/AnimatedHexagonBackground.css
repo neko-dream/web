@@ -1,0 +1,249 @@
+.auth-hexagon-background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.auth-hexagons {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.auth-hexagons li {
+  position: absolute;
+  display: block;
+  list-style: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  animation: auth-hexagon-float 25s linear infinite;
+  bottom: -150px;
+  clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+}
+
+/* 1〜10 */
+.auth-hexagons li:nth-child(1) {
+  left: 25%;
+  width: 80px;
+  height: 80px;
+  --hexagon-phase: 0.025;
+  animation-delay: -0.625s;
+  background: #ffa8a8;
+}
+
+.auth-hexagons li:nth-child(2) {
+  left: 10%;
+  width: 20px;
+  height: 20px;
+  --hexagon-phase: 0.375;
+  animation-delay: -4.500s;
+  animation-duration: 12s;
+  background: #eebefa;
+}
+
+.auth-hexagons li:nth-child(3) {
+  left: 70%;
+  width: 20px;
+  height: 20px;
+  --hexagon-phase: 0.725;
+  animation-delay: -18.125s;
+  background: #ffa94d;
+}
+
+.auth-hexagons li:nth-child(4) {
+  left: 40%;
+  width: 60px;
+  height: 60px;
+  --hexagon-phase: 0.075;
+  animation-delay: -1.350s;
+  animation-duration: 18s;
+  background: #63e6be;
+}
+
+.auth-hexagons li:nth-child(5) {
+  left: 65%;
+  width: 20px;
+  height: 20px;
+  --hexagon-phase: 0.425;
+  animation-delay: -10.625s;
+  background: #ffec99;
+}
+
+.auth-hexagons li:nth-child(6) {
+  left: 75%;
+  width: 110px;
+  height: 110px;
+  --hexagon-phase: 0.775;
+  animation-delay: -19.375s;
+  background: #c0eb75;
+}
+
+.auth-hexagons li:nth-child(7) {
+  left: 35%;
+  width: 150px;
+  height: 150px;
+  --hexagon-phase: 0.125;
+  animation-delay: -3.125s;
+  background: #fcc2d7;
+}
+
+.auth-hexagons li:nth-child(8) {
+  left: 50%;
+  width: 25px;
+  height: 25px;
+  --hexagon-phase: 0.475;
+  animation-delay: -21.375s;
+  animation-duration: 45s;
+  background: #91a7ff;
+}
+
+.auth-hexagons li:nth-child(9) {
+  left: 20%;
+  width: 15px;
+  height: 15px;
+  --hexagon-phase: 0.825;
+  animation-delay: -28.875s;
+  animation-duration: 35s;
+  background: #ffa8a8;
+}
+
+.auth-hexagons li:nth-child(10) {
+  left: 85%;
+  width: 150px;
+  height: 150px;
+  --hexagon-phase: 0.175;
+  animation-delay: -1.925s;
+  animation-duration: 11s;
+  background: #eebefa;
+}
+
+/* 11〜20 */
+.auth-hexagons li:nth-child(11) {
+  left: 5%;
+  width: 40px;
+  height: 40px;
+  --hexagon-phase: 0.525;
+  animation-delay: -10.500s;
+  animation-duration: 20s;
+  background: #74c0fc;
+}
+
+.auth-hexagons li:nth-child(12) {
+  left: 15%;
+  width: 30px;
+  height: 30px;
+  --hexagon-phase: 0.875;
+  animation-delay: -19.250s;
+  animation-duration: 22s;
+  background: #ffa94d;
+}
+
+.auth-hexagons li:nth-child(13) {
+  left: 30%;
+  width: 50px;
+  height: 50px;
+  --hexagon-phase: 0.225;
+  animation-delay: -4.050s;
+  animation-duration: 18s;
+  background: #eebefa;
+}
+
+.auth-hexagons li:nth-child(14) {
+  left: 45%;
+  width: 25px;
+  height: 25px;
+  --hexagon-phase: 0.575;
+  animation-delay: -14.950s;
+  animation-duration: 26s;
+  background: #ffa8a8;
+}
+
+.auth-hexagons li:nth-child(15) {
+  left: 60%;
+  width: 60px;
+  height: 60px;
+  --hexagon-phase: 0.925;
+  animation-delay: -18.500s;
+  animation-duration: 20s;
+  background: #91a7ff;
+}
+
+.auth-hexagons li:nth-child(16) {
+  left: 70%;
+  width: 35px;
+  height: 35px;
+  --hexagon-phase: 0.275;
+  animation-delay: -8.250s;
+  animation-duration: 30s;
+  background: #fcc2d7;
+}
+
+.auth-hexagons li:nth-child(17) {
+  left: 80%;
+  width: 45px;
+  height: 45px;
+  --hexagon-phase: 0.625;
+  animation-delay: -17.500s;
+  animation-duration: 28s;
+  background: #ffec99;
+}
+
+.auth-hexagons li:nth-child(18) {
+  left: 65%;
+  width: 50px;
+  height: 50px;
+  --hexagon-phase: 0.975;
+  animation-delay: -21.450s;
+  animation-duration: 22s;
+  background: #ffa8a8;
+}
+
+.auth-hexagons li:nth-child(19) {
+  left: 55%;
+  width: 30px;
+  height: 30px;
+  --hexagon-phase: 0.325;
+  animation-delay: -10.400s;
+  animation-duration: 32s;
+  background: #74c0fc;
+}
+
+.auth-hexagons li:nth-child(20) {
+  left: 90%;
+  width: 40px;
+  height: 40px;
+  --hexagon-phase: 0.675;
+  animation-delay: -16.200s;
+  animation-duration: 24s;
+  background: #c0eb75;
+}
+
+@keyframes auth-hexagon-float {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+    border-radius: 0;
+  }
+
+  100% {
+    transform: translateY(calc(-1 * var(--hexagon-travel, calc(100vh + 300px))))
+      rotate(720deg);
+    opacity: 0;
+    border-radius: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-hexagons li {
+    animation: none;
+    bottom: calc(var(--hexagon-phase) * 100%);
+    opacity: 0.25;
+  }
+}

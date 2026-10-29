@@ -7,7 +7,6 @@ export const createSessionFormSchema = v.object({
   ),
   scheduledEndTime: v.string("終了日時の入力は必須です"),
   description: v.optional(v.string()),
-  restrictions: v.optional(v.union([v.array(v.string()), v.string()])),
   hideTop: v.optional(
     v.pipe(
       v.string(), // HTMLからは文字列として受け取る
