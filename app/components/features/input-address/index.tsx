@@ -14,7 +14,7 @@ import { isCity, isFieldsError } from "~/utils/form";
 
 type Props = {
   // FIXME: 正味このコンポーネントはupdateしか読んでないのでanyでもいいのだが...
-  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  // biome-ignore lint/suspicious/noExplicitAny: フォーム型の都合上anyが必要
   form: FormMetadata<any, string[]>;
   fields: {
     prefecture: FieldMetadata<string | null | undefined>;

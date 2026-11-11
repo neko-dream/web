@@ -1,7 +1,7 @@
 export { default as Alert } from "./Alert";
+export { default as Arrow } from "./Arrow";
 export { default as ArrowLeft } from "./ArrowLeft";
 export { default as ArrowRight } from "./ArrowRight";
-export { default as Arrow } from "./Arrow";
 export { default as AuthGoogle } from "./AuthGoogle";
 export { default as AuthLine } from "./AuthLine";
 export { default as Camera } from "./Camera";
@@ -29,8 +29,8 @@ export { default as PieChart } from "./PieChart";
 export { default as PlusCircle } from "./PlusCircle";
 export { default as Pushpin } from "./Pushpin";
 export { default as Reload } from "./Reload";
-export { default as SearchWhite } from "./SearchWhite";
 export { default as Search } from "./Search";
+export { default as SearchWhite } from "./SearchWhite";
 export { default as Setting } from "./Setting";
 export { default as Smile } from "./Smile";
 export { default as User } from "./User";

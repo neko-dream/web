@@ -1,8 +1,5 @@
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
 import { readFileSync } from "node:fs";
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
 import { test } from "node:test";
 import { resolveUrls, selectEnvironment } from "../vite.env.ts";
 

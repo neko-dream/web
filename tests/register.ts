@@ -1,8 +1,5 @@
-// biome-ignore lint/correctness/noNodejsModules: Test-only Node module resolution.
 import { existsSync } from "node:fs";
-// biome-ignore lint/correctness/noNodejsModules: Test-only Node module resolution.
 import { registerHooks } from "node:module";
-// biome-ignore lint/correctness/noNodejsModules: Test-only Node module resolution.
 import { fileURLToPath } from "node:url";
 
 // Resolve the application's existing ~/ alias without changing production imports.

@@ -33,24 +33,22 @@ export const Card = ({
           </p>
         </div>
 
-        <>
-          {/* ライン */}
-          <div className="mt-2 h-[1px] w-full bg-gray-200" />
+        {/* ライン */}
+        <div className="mt-2 h-[1px] w-full bg-gray-200" />
 
-          <p className="mt-2 text-gray-300 text-xs">あなたの意見</p>
-          {/* 40pxはアバター分 */}
-          <div className="mt-1 flex w-full justify-between">
-            <OpinionButton tabIndex={-1} color={"disabled"}>
-              違うかも
-            </OpinionButton>
-            <OpinionButton tabIndex={-1} color={"disabled"}>
-              パス
-            </OpinionButton>
-            <OpinionButton tabIndex={-1} color={"disabled"}>
-              良さそう
-            </OpinionButton>
-          </div>
-        </>
+        <p className="mt-2 text-gray-300 text-xs">あなたの意見</p>
+        {/* 40pxはアバター分 */}
+        <div className="mt-1 flex w-full justify-between">
+          <OpinionButton tabIndex={-1} color={"disabled"}>
+            違うかも
+          </OpinionButton>
+          <OpinionButton tabIndex={-1} color={"disabled"}>
+            パス
+          </OpinionButton>
+          <OpinionButton tabIndex={-1} color={"disabled"}>
+            良さそう
+          </OpinionButton>
+        </div>
       </div>
     </div>
   );

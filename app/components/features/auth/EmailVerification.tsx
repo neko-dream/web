@@ -31,7 +31,10 @@ const normalizePIN = (value: string) =>
 const VerificationHeader = ({
   back,
   caption,
-}: { back: ReactNode; caption: string }) => {
+}: {
+  back: ReactNode;
+  caption: string;
+}) => {
   return (
     <>
       {back}
