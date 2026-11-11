@@ -6,8 +6,6 @@ import {
   toErrorMessage,
 } from "~/components/features/auth/email-login";
 
-export { authHeaders as headers } from "~/components/features/auth/authHeaders";
-
 const VERIFICATION_TOKEN_PATTERN = /^[A-Za-z0-9_-]{43}$/;
 
 export const meta = () => [

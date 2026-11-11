@@ -7,8 +7,6 @@ import { EmailPasswordForm } from "~/components/features/auth/EmailPasswordForm"
 import { EmailPINConfirmation } from "~/components/features/auth/EmailVerification";
 import { useEmailLogin } from "~/hooks/useEmailLogin";
 
-export { authHeaders as headers } from "~/components/features/auth/authHeaders";
-
 export const meta = () => [
   { title: "組織向けログイン | ことひろ" },
   { name: "referrer", content: "no-referrer" },

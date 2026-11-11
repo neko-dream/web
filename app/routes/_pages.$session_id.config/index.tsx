@@ -13,7 +13,7 @@ import type { SessionRouteContext } from "~/types/ctx";
 import type { Route } from "./+types";
 import { SeedOpinions } from "./components/SeedOpinions";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({

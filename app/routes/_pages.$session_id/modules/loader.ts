@@ -1,25 +1,17 @@
-import type { LoaderFunctionArgs } from "react-router";
-import { cloudflareContext } from "~/../workers/app";
+import type { ClientLoaderFunctionArgs } from "react-router";
+import { ENABLE_SURVEY } from "~/constants";
 import { SURVEY_RESTRICTION_KEY } from "~/hooks/useVote";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({
-  request,
-  params,
-  context,
-}: LoaderFunctionArgs) => {
-  const { env } = context.get(cloudflareContext);
-  // ローカル実行時はFlagshipのbindingがないため、既定値を使う
-  const flags = (env as Env & { FLAGS?: Flagship }).FLAGS;
-  const enableSurvey =
-    (await flags?.getBooleanValue("questionnaire", false)) ?? false;
+export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
   if (!params.session_id) {
     throw notfound();
   }
 
+  const enableSurvey = ENABLE_SURVEY;
+
   const $session = api.GET("/talksessions/{talkSessionID}", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id,
@@ -29,7 +21,6 @@ export const loader = async ({
 
   const $remainingCount = api
     .GET("/talksessions/{talkSessionID}/swipe_opinions", {
-      headers: request.headers,
       params: {
         path: {
           talkSessionID: params.session_id,
@@ -46,7 +37,6 @@ export const loader = async ({
   const $restrictionsRequired = api.GET(
     "/talksessions/{talkSessionID}/restrictions",
     {
-      headers: request.headers,
       params: {
         path: {
           talkSessionID: params.session_id,
@@ -55,12 +45,9 @@ export const loader = async ({
     },
   );
 
-  const $restrictionsList = api.GET("/talksessions/restrictions", {
-    headers: request.headers,
-  });
+  const $restrictionsList = api.GET("/talksessions/restrictions");
 
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id,
@@ -74,7 +61,6 @@ export const loader = async ({
   const $survey = enableSurvey
     ? api
         .GET("/talksessions/{talkSessionID}/survey", {
-          headers: request.headers,
           params: {
             path: {
               talkSessionID: params.session_id,

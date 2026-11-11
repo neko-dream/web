@@ -10,7 +10,7 @@ import type { SessionRouteContext } from "~/types/ctx";
 import { OpinionList } from "./components/OpinionList";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 const GROUP_NAME_MAP: { readonly [key: number]: string } = {
   0: "A",

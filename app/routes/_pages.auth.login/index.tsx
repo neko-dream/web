@@ -7,8 +7,6 @@ import { TermsAgreement } from "~/components/features/auth/TermsAgreement";
 import { Arrow } from "~/components/icons";
 
 export { meta } from "./modules/meta";
-export { authHeaders as headers } from "~/components/features/auth/authHeaders";
-
 export default function Page() {
   const [agreed, setAgreed] = useState(false);
 

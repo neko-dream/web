@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { create } from "zustand";
-import { api } from "~/libs/openapi-fetch";
+import { ENABLE_SURVEY } from "~/constants";
+import { api, getApiErrorCode } from "~/libs/openapi-fetch";
 
 export type RequestModalState = Array<
   "demography" | "consent" | "signup" | "survey"
@@ -59,15 +60,15 @@ export const useVote = ({ sessionID }: Props) => {
         api.GET("/talksessions/{talkSessionID}/restrictions", props),
       ]);
 
-    if (error?.code === "AUTH-0000") {
+    if (getApiErrorCode(error) === "AUTH-0000") {
       setIsRequestModal(["signup"]);
       return "non-satisfied";
     }
 
     // アンケート回答はデモグラ入力とは別モーダルなので分離する
-    const surveyRequired = restrictionsRequired?.some(
-      ({ key }) => key === SURVEY_RESTRICTION_KEY,
-    );
+    const surveyRequired =
+      ENABLE_SURVEY &&
+      restrictionsRequired?.some(({ key }) => key === SURVEY_RESTRICTION_KEY);
     const demographicsRequired = restrictionsRequired?.filter(
       ({ key }) => key !== SURVEY_RESTRICTION_KEY,
     );
@@ -118,7 +119,7 @@ export const useVote = ({ sessionID }: Props) => {
       },
     });
 
-    if (error?.code === "restriction_not_satisfied") {
+    if (getApiErrorCode(error) === "restriction_not_satisfied") {
       // 何が足りないかを判定して適切なモーダルを開く
       await check();
       return "pending";

@@ -1,10 +1,7 @@
-import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const $opinions = await api.GET("/opinions/histories", {
-    headers: request.headers,
-  });
+export const clientLoader = async () => {
+  const $opinions = await api.GET("/opinions/histories");
 
   return {
     $opinions,

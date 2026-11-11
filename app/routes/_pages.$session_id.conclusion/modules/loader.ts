@@ -1,8 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = ({ params }: LoaderFunctionArgs) => {
+export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
   if (!params.session_id) {
     throw notfound();
   }

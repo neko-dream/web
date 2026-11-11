@@ -21,10 +21,13 @@ const convertFormData = (params: object): URLSearchParams | FormData => {
 
 /**
  * APIクライアント
+ *
+ * SPAではloaderもブラウザで実行されるため、Cookie認証は
+ * SSR時のヘッダー転送ではなく credentials: "include" で送る。
  */
 export const api = createClient<paths>({
-  // ローカルAPI接続時、SSRはHTTPのAPIへ直接Cookieを転送する。ブラウザは /api プロキシ経由
-  baseUrl: import.meta.env?.SSR && LOCAL_API_URL ? LOCAL_API_URL : API_URL,
+  baseUrl: API_URL,
+  credentials: "include",
   bodySerializer: (body) => body && convertFormData(body),
   fetch: (init) => {
     // TODO: なぜかついているとAPIが404を返す

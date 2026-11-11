@@ -22,7 +22,7 @@ import type { VoteType } from "~/types";
 import { postVote } from "./libs";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 // GSAPのDraggableを登録
@@ -210,7 +210,6 @@ export default function Page({
             });
           });
         },
-        // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
         onDragEnd() {
           const threshold = windowWidth * 0.3; // 画面幅の30%
           const xdir = this.x > threshold ? 1 : this.x < -threshold ? -1 : 0;

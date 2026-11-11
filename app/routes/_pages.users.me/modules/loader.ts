@@ -1,11 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { forbidden } from "~/utils/response";
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { data, response } = await api.GET("/user", {
-    headers: request.headers,
-  });
+export const clientLoader = async () => {
+  const { data, response } = await api.GET("/user");
 
   if (!data?.user) {
     if (response.status === 401 || response.status === 403) {

@@ -7,7 +7,7 @@ import { ConfiromDialog } from "./components/ConfirmDialog";
 import { ReportCard } from "./components/ReportCard";
 import { Tabs } from "./components/Tabs";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 type TabsType = "unsolved" | "hold" | "deleted";
 

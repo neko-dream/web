@@ -8,7 +8,7 @@ import {
   ScrollRestoration,
 } from "react-router";
 import "./tailwind.css";
-import type { JSX } from "react";
+import { type JSX, useEffect } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "manifest", href: "/manifest.json", crossOrigin: "use-credentials" },
@@ -36,7 +36,40 @@ export function Layout() {
 }
 
 export default function App() {
+  useEffect(() => {
+    if (LOCAL_API_URL || !("serviceWorker" in navigator)) {
+      return;
+    }
+
+    const register = () => {
+      navigator.serviceWorker.register("/sw.js").catch(console.error);
+    };
+
+    if (document.readyState === "complete") {
+      register();
+      return;
+    }
+
+    window.addEventListener("load", register, { once: true });
+    return () => window.removeEventListener("load", register);
+  }, []);
+
   return <Outlet />;
+}
+
+/**
+ * SPA の初回読み込みで各ルートの clientLoader が完了するまで表示する
+ */
+export function HydrateFallback() {
+  return (
+    <div className="flex h-screen items-center justify-center">
+      <div
+        className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-gray-700"
+        role="status"
+        aria-label="読み込み中"
+      />
+    </div>
+  );
 }
 
 export function ErrorBoundary(): JSX.Element {
