@@ -5,7 +5,7 @@ import { Checkbox } from "~/components/ui/checkbox";
 import { Input } from "~/components/ui/input";
 import { Select } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
-import { api } from "~/libs/openapi-fetch";
+import { api, getApiErrorMessage } from "~/libs/openapi-fetch";
 import type { components } from "~/types/openapi";
 import "simplebar-react/dist/simplebar.min.css";
 
@@ -357,7 +357,7 @@ export const SurveyModalContent = ({
       }
 
       if (error) {
-        toast.error(error.message || "回答の送信に失敗しました");
+        toast.error(getApiErrorMessage(error, "回答の送信に失敗しました"));
         return;
       }
 
