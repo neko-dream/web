@@ -4,7 +4,31 @@ type EnvironmentOptions = {
   localApiUrl?: string;
 };
 const LOCAL_API_PATTERN = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/;
-const DEPLOYMENT_ENVIRONMENTS = new Set(["develop", "staging", "production"]);
+const DEPLOYMENT_ENVIRONMENTS = ["develop", "staging", "production"] as const;
+type DeploymentEnvironment = (typeof DEPLOYMENT_ENVIRONMENTS)[number];
+
+const DEPLOYMENT_URLS: Record<
+  DeploymentEnvironment,
+  { APP_URL: string; API_URL: string }
+> = {
+  develop: {
+    APP_URL: "https://develop.kotohiro.com",
+    API_URL: "https://api.dev.kotohiro.com",
+  },
+  staging: {
+    APP_URL: "https://staging.kotohiro.com",
+    API_URL: "https://api.kotohiro.com",
+  },
+  production: {
+    APP_URL: "https://www.kotohiro.com",
+    API_URL: "https://api.kotohiro.com",
+  },
+};
+
+const isDeploymentEnvironment = (
+  value: string | undefined,
+): value is DeploymentEnvironment =>
+  DEPLOYMENT_ENVIRONMENTS.includes(value as DeploymentEnvironment);
 
 export function selectEnvironment({
   command,
@@ -31,7 +55,7 @@ export function selectEnvironment({
     );
   }
   const environment = cloudflareEnv ?? "develop";
-  if (!DEPLOYMENT_ENVIRONMENTS.has(environment)) {
+  if (!isDeploymentEnvironment(environment)) {
     throw new Error(`Unknown CLOUDFLARE_ENV: ${environment}`);
   }
   return environment;
@@ -67,11 +91,12 @@ export function resolveUrls(
       API_URL: "https://localhost:3000/api",
     };
   }
-  if (!DEPLOYMENT_ENVIRONMENTS.has(environment)) {
+  if (!isDeploymentEnvironment(environment)) {
     throw new Error("Unknown deployment environment");
   }
+  const defaults = DEPLOYMENT_URLS[environment];
   return {
-    APP_URL: deploymentOrigin(env?.APP_URL, "APP_URL"),
-    API_URL: deploymentOrigin(env?.API_URL, "API_URL"),
+    APP_URL: deploymentOrigin(env?.APP_URL ?? defaults.APP_URL, "APP_URL"),
+    API_URL: deploymentOrigin(env?.API_URL ?? defaults.API_URL, "API_URL"),
   };
 }

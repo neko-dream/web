@@ -2,7 +2,6 @@ import { reactRouter } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
 import basicSsl from "@vitejs/plugin-basic-ssl";
 import { defineConfig, type ServerOptions } from "vite";
-import { getPlatformProxy } from "wrangler";
 import { resolveUrls, selectEnvironment } from "./vite.env.ts";
 
 const apiPrefixPattern = /^\/api(?=\/|$)/;
@@ -16,20 +15,10 @@ export default defineConfig(async ({ command, isPreview }) => {
     cloudflareEnv,
     localApiUrl,
   });
-  const proxy = environment
-    ? await getPlatformProxy({
-        environment,
-        remoteBindings: false,
-        envFiles: [],
-      })
-    : null;
-  let urls: ReturnType<typeof resolveUrls>;
-  try {
-    urls = resolveUrls(environment, proxy?.env);
-  } finally {
-    await proxy?.dispose();
-  }
-  const { APP_URL, API_URL } = urls;
+  const { APP_URL, API_URL } = resolveUrls(environment, {
+    APP_URL: process.env.APP_URL,
+    API_URL: process.env.API_URL,
+  });
 
   const server: ServerOptions = {
     host: true,
