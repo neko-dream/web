@@ -1,5 +1,5 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "kotohiro-develop"
+name = "web"
 compatibility_date = "2024-10-18"
 workers_dev = false
 
@@ -16,9 +16,6 @@ API_URL = "https://api.dev.kotohiro.com"
 [env.develop]
 name = "kotohiro-develop"
 preview_urls = true
-routes = [
-  { pattern = "develop.kotohiro.com", custom_domain = true }
-]
 
 [env.develop.vars]
 APP_URL = "https://develop.kotohiro.com"
@@ -28,9 +25,6 @@ API_URL = "https://api.dev.kotohiro.com"
 [env.staging]
 name = "kotohiro-staging"
 preview_urls = false
-routes = [
-  { pattern = "staging.kotohiro.com", custom_domain = true }
-]
 
 [env.staging.vars]
 APP_URL = "https://staging.kotohiro.com"
@@ -40,10 +34,6 @@ API_URL = "https://api.kotohiro.com"
 [env.production]
 name = "kotohiro"
 preview_urls = false
-routes = [
-  { pattern = "kotohiro.com", custom_domain = true },
-  { pattern = "www.kotohiro.com", custom_domain = true }
-]
 
 [env.production.vars]
 APP_URL = "https://www.kotohiro.com"
