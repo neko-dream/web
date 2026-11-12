@@ -12,3 +12,7 @@ not_found_handling = "single-page-application"
 name = "web"
 
 [env.develop.previews]
+
+# Cloudflare Workers Builds の本番デプロイ用
+[env.production]
+name = "web"
