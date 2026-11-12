@@ -66,10 +66,12 @@ export const AuthenticateCard = ({
   return (
     <>
       <AuthFrame className={className}>
-        <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
+        <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold text-lg">
           ことひろに参加しよう
         </p>
-        <p className="text-center text-xs">3つの方法から参加できます</p>
+        <p className="mt-1 text-center text-ink-subtle text-xs">
+          3つの方法から参加できます
+        </p>
 
         <TermsAgreement checked={isChecked} onChange={setChecked} />
 

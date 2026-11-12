@@ -1,7 +1,9 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { lazy, useEffect } from "react";
+import { lazy, useEffect, useState } from "react";
+import { BottomNav } from "~/components/features/bottom-nav";
+import { canCreateTalkSession } from "~/libs/session-creation";
 import type { Route } from "~/react-router/_pages/+types/route";
 import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
@@ -13,29 +15,56 @@ export { meta } from "./modules/meta";
 
 const Analytics = lazy(() => import("~/components/features/analytics"));
 
+const SESSION_PATH_PATTERN =
+  /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+
 export default function Layout({
   loaderData: { $user, $permissions },
 }: Route.ComponentProps) {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const isTopPage = pathname === "/";
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [canCreate, setCanCreate] = useState(false);
+
   const isAuthPage =
     pathname === "/auth/login" ||
     pathname === "/auth/email/verify" ||
     pathname === "/auth/password/setup" ||
     pathname === "/organization/login";
-  // 組織向けログインは左側にロゴを置くので、トップページと同じくヘッダーを出さない
+
+  const isTopPage = pathname === "/";
+  const isTabPage =
+    pathname === "/home" ||
+    pathname === "/search" ||
+    pathname.startsWith("/users/me");
+  const isSessionPage = SESSION_PATH_PATTERN.test(pathname);
+  const isSwipePage = pathname.startsWith("/swipe/");
+  const isMakePage = pathname.startsWith("/make/");
+
+  // アプリ内の主要画面はボトムナビと各画面のヘッダーに任せる
   const hideHeader =
     isTopPage ||
-    pathname === "/organization/login" ||
-    pathname === "/auth/password/setup";
+    isAuthPage ||
+    isTabPage ||
+    isSessionPage ||
+    isSwipePage ||
+    isMakePage;
+  // フッターは公開ページだけに出す
+  const showFooter = isTopPage || isAuthPage || pathname.startsWith("/guide");
 
   // ログイン済みだったらホームにリダイレクト
   useEffect(() => {
     $user.then((user) => {
+      setIsLoggedIn(!!user);
       if (user && window.location.pathname === "/") {
         navigate("/home", { replace: true });
       }
+    });
+  }, []);
+
+  useEffect(() => {
+    $permissions.then((permissions) => {
+      setCanCreate(canCreateTalkSession(permissions));
     });
   }, []);
 
@@ -47,13 +76,18 @@ export default function Layout({
       <main
         className={
           hideHeader
-            ? "flex min-h-screen flex-col"
-            : "flex min-h-[calc(100vh-48px)] flex-col"
+            ? `flex min-h-screen flex-col ${
+                isTabPage
+                  ? "pb-[calc(env(safe-area-inset-bottom,0px)+88px)]"
+                  : ""
+              }`
+            : "flex min-h-[calc(100vh-56px)] flex-col"
         }
       >
         <Outlet context={{ $user } satisfies RouteContext} />
       </main>
-      <Footer />
+      {showFooter && <Footer />}
+      <BottomNav isLoggedIn={isLoggedIn} canCreate={canCreate} />
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer

@@ -6,18 +6,19 @@ type Props = ComponentProps<"div"> & {
   items: Array<{
     label: string;
     href: string;
+    external?: boolean;
   }>;
 };
 
 const tabs = tv({
-  base: "flex h-10 bg-white px-4",
+  base: "flex w-full border-line border-b bg-white px-4",
 });
 
 const link = tv({
-  base: "relative flex h-full w-40 items-center justify-center font-bold text-cs-gray-500 text-sm",
+  base: "relative flex h-11 flex-1 items-center justify-center font-bold text-ink-subtle text-sm",
   variants: {
     isActive: {
-      true: "before:-translate-x-1/2 text-black before:absolute before:bottom-0 before:left-1/2 before:h-1 before:w-3/4 before:transform before:rounded-full before:bg-cyan-500",
+      true: "text-ink before:-translate-x-1/2 before:absolute before:bottom-0 before:left-1/2 before:h-[3px] before:w-full before:transform before:rounded-full before:bg-[linear-gradient(90deg,#FF3B30,#5856D6,#32ADE6)]",
     },
   },
 });
@@ -28,7 +29,7 @@ const link = tv({
 export const Tabs = ({ className, items, ...props }: Props) => {
   return (
     <div {...props} className={tabs({ className })}>
-      {items.map(({ href, label }, i) => {
+      {items.map(({ href, label, external }, i) => {
         return (
           <NavLink
             key={i}
@@ -38,6 +39,9 @@ export const Tabs = ({ className, items, ...props }: Props) => {
             prefetch="viewport"
             replace={true}
             viewTransition={true}
+            preventScrollReset={true}
+            target={external ? "_blank" : undefined}
+            rel={external ? "noopener noreferrer" : undefined}
           >
             {label}
           </NavLink>
