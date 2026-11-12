@@ -16,6 +16,13 @@ preview_urls = true
 
 [env.develop.previews]
 
+# Cloudflare Workers Builds のstagingプレビュー用
+[env.staging]
+name = "web"
+preview_urls = true
+
+[env.staging.previews]
+
 # Cloudflare Workers Builds の本番デプロイ用
 [env.production]
 name = "web"
