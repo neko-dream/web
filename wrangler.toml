@@ -4,9 +4,11 @@ compatibility_date = "2024-10-18"
 workers_dev = false
 preview_urls = false
 
-# 本番カスタムドメイン
+# 本番は kotohiro.com / www.kotohiro.com。
+# previews_enabled = true により、Preview は <preview-name>.kotohiro.com で配信される
+# （develop ブランチ → develop.kotohiro.com、staging ブランチ → staging.kotohiro.com）
 routes = [
-  { pattern = "kotohiro.com", custom_domain = true },
+  { pattern = "kotohiro.com", custom_domain = true, previews_enabled = true },
   { pattern = "www.kotohiro.com", custom_domain = true }
 ]
 
@@ -15,18 +17,20 @@ routes = [
 directory = "./build/client"
 not_found_handling = "single-page-application"
 
-# Cloudflare Workers Builds の develop 用（開発APIに接続）
+# 同じ Worker "web" の Preview として develop を扱う
 [env.develop]
-name = "web-develop"
-preview_urls = false
+name = "web"
 routes = [
-  { pattern = "develop.kotohiro.com", custom_domain = true }
+  { pattern = "kotohiro.com", custom_domain = true, previews_enabled = true }
 ]
 
-# Cloudflare Workers Builds の staging 用（本番APIに接続）
+[env.develop.previews]
+
+# 同じ Worker "web" の Preview として staging を扱う
 [env.staging]
-name = "web-staging"
-preview_urls = false
+name = "web"
 routes = [
-  { pattern = "staging.kotohiro.com", custom_domain = true }
+  { pattern = "kotohiro.com", custom_domain = true, previews_enabled = true }
 ]
+
+[env.staging.previews]
