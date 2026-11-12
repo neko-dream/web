@@ -34,3 +34,11 @@ routes = [
 ]
 
 [env.staging.previews]
+
+# Cloudflare Workers Builds の本番デプロイ用（--env production が渡される）
+[env.production]
+name = "web"
+routes = [
+  { pattern = "kotohiro.com", custom_domain = true, previews_enabled = true },
+  { pattern = "www.kotohiro.com", custom_domain = true }
+]
