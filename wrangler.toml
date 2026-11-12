@@ -2,32 +2,31 @@
 name = "web"
 compatibility_date = "2024-10-18"
 workers_dev = false
-preview_urls = true
+preview_urls = false
+
+# 本番カスタムドメイン
+routes = [
+  { pattern = "kotohiro.com", custom_domain = true },
+  { pattern = "www.kotohiro.com", custom_domain = true }
+]
 
 # SPA の静的ファイルのみを配信する（Worker スクリプトなし）
 [assets]
 directory = "./build/client"
 not_found_handling = "single-page-application"
 
-# Cloudflare Workers Builds の develop プレビュー用
+# Cloudflare Workers Builds の develop 用（開発APIに接続）
 [env.develop]
-name = "web"
-preview_urls = true
-
-[env.develop.previews]
-
-# Cloudflare Workers Builds のstagingプレビュー用
-[env.staging]
-name = "web"
-preview_urls = true
-
-[env.staging.previews]
-
-# Cloudflare Workers Builds の本番デプロイ用
-[env.production]
-name = "web"
+name = "web-develop"
 preview_urls = false
 routes = [
-  { pattern = "kotohiro.com", custom_domain = true },
-  { pattern = "www.kotohiro.com", custom_domain = true }
+  { pattern = "develop.kotohiro.com", custom_domain = true }
+]
+
+# Cloudflare Workers Builds の staging 用（本番APIに接続）
+[env.staging]
+name = "web-staging"
+preview_urls = false
+routes = [
+  { pattern = "staging.kotohiro.com", custom_domain = true }
 ]
