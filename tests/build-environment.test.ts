@@ -20,37 +20,13 @@ test("every build needs an explicit known deployment environment", () => {
   }
 });
 
-test("Cloudflare preview builds resolve the environment from the branch", () => {
-  for (const branch of ["docs/readme-cleanup", "feat/foo", undefined]) {
+test("Cloudflare's development preview environment uses develop", () => {
+  for (const command of ["build", "serve"] as const) {
     assert.equal(
-      selectEnvironment({
-        command: "build",
-        cloudflareEnv: "development",
-        branch,
-      }),
+      selectEnvironment({ command, cloudflareEnv: "development" }),
       "develop",
     );
   }
-  assert.equal(
-    selectEnvironment({
-      command: "build",
-      cloudflareEnv: "development",
-      branch: "staging",
-    }),
-    "staging",
-  );
-  assert.equal(
-    selectEnvironment({
-      command: "build",
-      cloudflareEnv: "development",
-      branch: "main",
-    }),
-    "production",
-  );
-  assert.equal(
-    selectEnvironment({ command: "build", branch: "staging" }),
-    "staging",
-  );
 });
 
 test("local API configuration can never reach build output", () => {
