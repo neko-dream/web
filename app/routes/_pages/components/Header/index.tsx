@@ -20,7 +20,7 @@ const ignorePersonalIconPages = [
 ];
 
 const header = tv({
-  base: "fixed z-30 w-full border-gray-100 border-b-2",
+  base: "fixed z-30 w-full border-line border-b bg-white/90 backdrop-blur",
   variants: {
     isDialogOpen: {
       true: "shadow-none",
@@ -57,7 +57,7 @@ export const Header = ({ $user, $permissions }: Props) => {
           isDialogOpen: isMenuDialogOpen || isSearchDialogOpen,
         })}
       >
-        <span className="relative flex h-12 w-full items-center bg-white px-4">
+        <span className="relative flex h-14 w-full items-center px-4">
           <Suspense
             fallback={<img src={LogoIcon} alt="" className="h-8 w-[109px]" />}
           >
@@ -90,7 +90,7 @@ export const Header = ({ $user, $permissions }: Props) => {
                         to={"/"}
                         className={button({
                           className:
-                            "flex h-8 items-center rounded-md bg-[#007AFF] p-2 text-xs",
+                            "flex h-8 items-center rounded-full bg-brand-blue p-2 text-xs",
                         })}
                       >
                         ログインする
@@ -105,7 +105,7 @@ export const Header = ({ $user, $permissions }: Props) => {
                         onClick={handleSearchDialogOpenChange}
                         className="cursor-pointer"
                       >
-                        <Search className="h-5 w-5" />
+                        <Search className="h-5 w-5 text-ink-muted" />
                       </button>
                       <Link to={"/users/me"}>
                         <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
@@ -119,7 +119,7 @@ export const Header = ({ $user, $permissions }: Props) => {
                                 to={"/make/new"}
                                 className={button({
                                   className:
-                                    "flex h-8 items-center space-x-1 rounded-md bg-[#007AFF] p-2 text-xs",
+                                    "flex h-8 items-center gap-1 rounded-full bg-brand-blue p-2 text-xs",
                                 })}
                               >
                                 <PlusCircle />
@@ -139,7 +139,7 @@ export const Header = ({ $user, $permissions }: Props) => {
       </header>
 
       {/* スペーサー */}
-      <div className="h-12 w-full" />
+      <div className="h-14 w-full" />
 
       {/* 各種ダイアログ */}
       <SearchModal

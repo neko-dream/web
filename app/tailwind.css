@@ -73,6 +73,21 @@
   --color-cs-pass: #5856d6;
   --color-cs-green: #34c759;
 
+  /* 新しいUI基盤 */
+  --color-ink: #191c1e;
+  --color-ink-muted: #71787e;
+  --color-ink-subtle: #8e8e93;
+  --color-line: #e5e5ea;
+  --color-surface: #f2f2f7;
+  --color-brand-red: #ff3b30;
+  --color-brand-purple: #5856d6;
+  --color-brand-cyan: #32ade6;
+  --color-brand-blue: #007aff;
+
+  --font-sans:
+    "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", ui-sans-serif,
+    system-ui, sans-serif;
+
   --shadow-cs-normal: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 
   --font-roboto: "Roboto", sans-serif;
