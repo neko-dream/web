@@ -1,70 +1,14 @@
 #:schema node_modules/wrangler/config-schema.json
-name = "kotohiro-develop"
-main = "./workers/app.ts"
+name = "web"
 compatibility_date = "2024-10-18"
-compatibility_flags = ["nodejs_compat"]
-workers_dev = false
 
-[[flagship]]
-binding = "FLAGS"
-app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
+# SPA の静的ファイルのみを配信する（Worker スクリプトなし）
+[assets]
+directory = "./build/client"
+not_found_handling = "single-page-application"
 
-[vars]
-APP_URL = "https://local.kotohiro.com:3000"
-API_URL = "https://api.dev.kotohiro.com"
-
-# 開発環境の設定
+# Cloudflare Workers Builds の develop プレビュー用
 [env.develop]
-name = "kotohiro-develop"
-preview_urls = true
-routes = [
-  { pattern = "develop.kotohiro.com", custom_domain = true }
-]
+name = "web"
 
-[[env.develop.flagship]]
-binding = "FLAGS"
-app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
-
-[env.develop.vars]
-APP_URL = "https://develop.kotohiro.com"
-API_URL = "https://api.dev.kotohiro.com"
-
-# ステージング環境の設定
-[env.staging]
-name = "kotohiro-staging"
-preview_urls = false
-routes = [
-  { pattern = "staging.kotohiro.com", custom_domain = true }
-]
-
-[[env.staging.flagship]]
-binding = "FLAGS"
-app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
-
-[env.staging.vars]
-APP_URL = "https://staging.kotohiro.com"
-API_URL = "https://api.kotohiro.com"
-
-# 本番環境の設定
-[env.production]
-name = "kotohiro"
-preview_urls = false
-routes = [
-  { pattern = "kotohiro.com", custom_domain = true },
-  { pattern = "www.kotohiro.com", custom_domain = true }
-]
-
-[[env.production.flagship]]
-binding = "FLAGS"
-app_id = "147cbe10-d9e4-448b-a419-fa5832509a8b"
-
-[env.production.vars]
-APP_URL = "https://www.kotohiro.com"
-API_URL = "https://api.kotohiro.com"
-
-[observability.logs]
-enabled = true
-invocation_logs = true
-
-[observability.traces]
-enabled = true
+[env.develop.previews]

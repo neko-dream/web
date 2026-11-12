@@ -25,7 +25,14 @@
   background: white;
   animation: auth-hexagon-float 25s linear infinite;
   bottom: -150px;
-  clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0% 50%);
+  clip-path: polygon(
+    25% 6.7%,
+    75% 6.7%,
+    100% 50%,
+    75% 93.3%,
+    25% 93.3%,
+    0% 50%
+  );
 }
 
 /* 1〜10 */
@@ -43,7 +50,7 @@
   width: 20px;
   height: 20px;
   --hexagon-phase: 0.375;
-  animation-delay: -4.500s;
+  animation-delay: -4.5s;
   animation-duration: 12s;
   background: #eebefa;
 }
@@ -62,7 +69,7 @@
   width: 60px;
   height: 60px;
   --hexagon-phase: 0.075;
-  animation-delay: -1.350s;
+  animation-delay: -1.35s;
   animation-duration: 18s;
   background: #63e6be;
 }
@@ -130,7 +137,7 @@
   width: 40px;
   height: 40px;
   --hexagon-phase: 0.525;
-  animation-delay: -10.500s;
+  animation-delay: -10.5s;
   animation-duration: 20s;
   background: #74c0fc;
 }
@@ -140,7 +147,7 @@
   width: 30px;
   height: 30px;
   --hexagon-phase: 0.875;
-  animation-delay: -19.250s;
+  animation-delay: -19.25s;
   animation-duration: 22s;
   background: #ffa94d;
 }
@@ -150,7 +157,7 @@
   width: 50px;
   height: 50px;
   --hexagon-phase: 0.225;
-  animation-delay: -4.050s;
+  animation-delay: -4.05s;
   animation-duration: 18s;
   background: #eebefa;
 }
@@ -160,7 +167,7 @@
   width: 25px;
   height: 25px;
   --hexagon-phase: 0.575;
-  animation-delay: -14.950s;
+  animation-delay: -14.95s;
   animation-duration: 26s;
   background: #ffa8a8;
 }
@@ -170,7 +177,7 @@
   width: 60px;
   height: 60px;
   --hexagon-phase: 0.925;
-  animation-delay: -18.500s;
+  animation-delay: -18.5s;
   animation-duration: 20s;
   background: #91a7ff;
 }
@@ -180,7 +187,7 @@
   width: 35px;
   height: 35px;
   --hexagon-phase: 0.275;
-  animation-delay: -8.250s;
+  animation-delay: -8.25s;
   animation-duration: 30s;
   background: #fcc2d7;
 }
@@ -190,7 +197,7 @@
   width: 45px;
   height: 45px;
   --hexagon-phase: 0.625;
-  animation-delay: -17.500s;
+  animation-delay: -17.5s;
   animation-duration: 28s;
   background: #ffec99;
 }
@@ -200,7 +207,7 @@
   width: 50px;
   height: 50px;
   --hexagon-phase: 0.975;
-  animation-delay: -21.450s;
+  animation-delay: -21.45s;
   animation-duration: 22s;
   background: #ffa8a8;
 }
@@ -210,7 +217,7 @@
   width: 30px;
   height: 30px;
   --hexagon-phase: 0.325;
-  animation-delay: -10.400s;
+  animation-delay: -10.4s;
   animation-duration: 32s;
   background: #74c0fc;
 }
@@ -220,7 +227,7 @@
   width: 40px;
   height: 40px;
   --hexagon-phase: 0.675;
-  animation-delay: -16.200s;
+  animation-delay: -16.2s;
   animation-duration: 24s;
   background: #c0eb75;
 }

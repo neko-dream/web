@@ -1,7 +1,6 @@
 import { Suspense, useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { Await, useRevalidator } from "react-router";
-import {} from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
 import { GroupTabs } from "~/components/ui/group-tabs";
 import type { Route } from "./+types";
@@ -14,7 +13,7 @@ const MAIN_TABS = [
   { label: "レポート", value: "report" },
 ];
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 const GROUP_NAME_MAP: { readonly [key: number]: string } = {
   0: "A",

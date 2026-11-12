@@ -1,6 +1,4 @@
-// biome-ignore lint/correctness/noNodejsModules: Test-only Node import.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: Test-only Node import.
 import { afterEach, beforeEach, test } from "node:test";
 import { EmailLoginError } from "../app/components/features/auth/email-login.ts";
 import {

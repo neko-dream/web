@@ -11,16 +11,15 @@ import { AuthPasswordInput } from "~/components/features/auth/AuthPasswordInput"
 import { BrandedAuthFrame } from "~/components/features/auth/BrandedAuthFrame";
 import { toErrorMessage } from "~/components/features/auth/email-login";
 import {
-  type PasswordPolicy,
   describePasswordPolicy,
   isPasswordSetupToken,
   loadPasswordPolicy,
+  type PasswordPolicy,
   setupPassword,
   validateSetupPassword,
 } from "~/components/features/auth/password-setup";
 import { Label } from "~/components/ui/label";
 
-export { authHeaders as headers } from "~/components/features/auth/authHeaders";
 export const meta = () => [
   { title: "新しいパスワードを設定 | ことひろ" },
   { name: "referrer", content: "no-referrer" },

@@ -1,14 +1,13 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = ({ params, request }: LoaderFunctionArgs) => {
+export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
   if (!params.session_id) {
     return notfound();
   }
 
   const $session = api.GET("/talksessions/{talkSessionID}", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id || "",
@@ -17,7 +16,6 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
   });
 
   const $reports = api.GET("/talksessions/{talkSessionID}/report", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id,
@@ -26,7 +24,6 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
   });
 
   const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id,

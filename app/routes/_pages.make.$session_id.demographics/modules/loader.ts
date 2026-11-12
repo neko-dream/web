@@ -1,8 +1,11 @@
-import { type LoaderFunctionArgs, redirect } from "react-router";
+import { type ClientLoaderFunctionArgs, redirect } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { forbidden, notfound } from "~/utils/response";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const clientLoader = async ({
+  request,
+  params,
+}: ClientLoaderFunctionArgs) => {
   if (!params.session_id) {
     throw notfound();
   }
@@ -11,20 +14,15 @@ export const loader = async ({ request, params }: LoaderFunctionArgs) => {
 
   const [{ data }, { data: requiredRestrictions }, { data: restrictions }] =
     await Promise.all([
-      api.GET("/user", {
-        headers: request.headers,
-      }),
+      api.GET("/user"),
       api.GET("/talksessions/{talkSessionID}/restrictions", {
-        headers: request.headers,
         params: {
           path: {
             talkSessionID: params.session_id,
           },
         },
       }),
-      api.GET("/talksessions/restrictions", {
-        headers: request.headers,
-      }),
+      api.GET("/talksessions/restrictions"),
     ]);
 
   if (!data?.user) {

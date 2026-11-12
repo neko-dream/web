@@ -1,9 +1,10 @@
 import { CSSProperties, useCallback, useEffect, useRef } from "react";
+
 // Removed MUI imports: Box, MenuList, MenuItem, useForkRef
 
-import { ScrollPickerItem } from "./ScrollPickerItem"; // Assuming this is MUI-free
 import { SCROLL_ITEM_HEIGHT } from "./constants/ScrollItemHeight";
 import { useHandleScroll } from "./hooks/useHandleScroll";
+import { ScrollPickerItem } from "./ScrollPickerItem"; // Assuming this is MUI-free
 import { ScrollItem } from "./types/ScrollItemType";
 import { findSelectableScrollItemValue } from "./utils/findSelectableScrollItemValue";
 import { scrollToItemValue } from "./utils/scrollToItemValue";

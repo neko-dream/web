@@ -1,19 +1,20 @@
-// biome-ignore lint/correctness/noNodejsModules: Node's test runner is used only in tests.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: Node's test runner is used only in tests.
 import { test } from "node:test";
-import { RouterContextProvider } from "react-router";
+import {
+  type ClientLoaderFunctionArgs,
+  RouterContextProvider,
+} from "react-router";
 
 Object.assign(globalThis, { API_URL: "https://api.example.test" });
 const { api } = await import("../app/libs/openapi-fetch/index.ts");
-const { loader } = await import(
+const { clientLoader } = await import(
   "../app/routes/_pages.make.$session_id._index/modules/loader.ts"
 );
-const { loader: pagesLoader } = await import(
+const { clientLoader: pagesLoader } = await import(
   "../app/routes/_pages/modules/loader.ts"
 );
 
-test("creation loader forwards cookies and denies ungranted, unauthenticated and missing users", async (t) => {
+test("creation loader sends browser credentials and denies ungranted, unauthenticated and missing users", async (t) => {
   for (const [status, allowed, expected] of [
     [200, true, 200],
     [200, false, 403],
@@ -26,7 +27,7 @@ test("creation loader forwards cookies and denies ungranted, unauthenticated and
       "fetch",
       async (request: Request) => {
         assert.equal(request.url, "https://api.example.test/users/me");
-        assert.equal(request.headers.get("cookie"), "SessionId=test-session");
+        assert.equal(request.credentials, "include");
         assert.equal(request.headers.has("host"), false);
         return new Response(
           JSON.stringify(
@@ -44,18 +45,17 @@ test("creation loader forwards cookies and denies ungranted, unauthenticated and
     );
     const args = {
       params: { session_id: "new" },
-      request: new Request("https://web.example.test/make/new", {
-        headers: { Cookie: "SessionId=test-session", Host: "web.example.test" },
-      }),
+      request: new Request("https://web.example.test/make/new"),
       context: new RouterContextProvider(),
       url: new URL("https://web.example.test/make/new"),
       pattern: "/make/:session_id",
-    };
+      serverLoader: async () => ({}),
+    } as unknown as ClientLoaderFunctionArgs;
     if (expected === 200) {
-      assert.deepEqual(await loader(args), {});
+      assert.deepEqual(await clientLoader(args), {});
     } else {
       await assert.rejects(
-        loader(args),
+        clientLoader(args),
         (error) => error instanceof Response && error.status === expected,
       );
     }
@@ -70,13 +70,14 @@ test("network failures deny creation with 503", async (t) => {
   });
   t.mock.method(console, "error", () => {});
   await assert.rejects(
-    loader({
+    clientLoader({
       params: { session_id: "new" },
       request: new Request("https://web.example.test/make/new"),
       context: new RouterContextProvider(),
       url: new URL("https://web.example.test/make/new"),
       pattern: "/make/:session_id",
-    }),
+      serverLoader: async () => ({}),
+    } as unknown as ClientLoaderFunctionArgs),
     (error) => error instanceof Response && error.status === 503,
   );
 });
@@ -90,13 +91,14 @@ test("editing an existing session does not depend on creation permission", async
       { headers: { "Content-Type": "application/json" } },
     );
   });
-  const result = await loader({
+  const result = await clientLoader({
     params: { session_id: "existing" },
     request: new Request("https://web.example.test/make/existing"),
     context: new RouterContextProvider(),
     url: new URL("https://web.example.test/make/existing"),
     pattern: "/make/:session_id",
-  });
+    serverLoader: async () => ({}),
+  } as unknown as ClientLoaderFunctionArgs);
   assert.equal("isEditMode" in result && result.isEditMode, true);
   assert.deepEqual(paths.sort(), [
     "/talksessions/existing",
@@ -109,18 +111,12 @@ test("permissions fail closed with an observable error in the page loader", asyn
     throw new TypeError("network unavailable");
   });
   const logger = t.mock.method(console, "error", () => {});
-  const { $permissions } = pagesLoader({
-    request: new Request("https://web.example.test/home"),
-    params: {},
-    context: new RouterContextProvider(),
-    url: new URL("https://web.example.test/home"),
-    pattern: "/home",
-  });
+  const { $permissions } = pagesLoader();
   assert.equal(await $permissions, null);
   assert.ok(logger.mock.callCount() > 0);
 });
 
-test("the shared API client preserves explicit per-request credentials without forcing SSR", async (t) => {
+test("the shared API client sends credentials by default and preserves explicit per-request credentials", async (t) => {
   const requests: Array<{ request: Request; init?: RequestInit }> = [];
   t.mock.method(
     globalThis,
@@ -140,7 +136,7 @@ test("the shared API client preserves explicit per-request credentials without f
   await api.GET("/users/me", { credentials: "include" });
   await api.GET("/users/me");
   assert.equal(requests[0].request.credentials, "include");
-  assert.equal(requests[1].request.credentials, "same-origin");
+  assert.equal(requests[1].request.credentials, "include");
   assert.equal(requests[0].init?.credentials, undefined);
   assert.equal(requests[1].init?.credentials, undefined);
 });

@@ -13,7 +13,7 @@ import { AnalyticsModal } from "./components/AnalyticsModal";
 import { ReportModal } from "./components/ReportModal";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 export default function Page({
   loaderData: { $opinions, $reasons, $user, $positions },

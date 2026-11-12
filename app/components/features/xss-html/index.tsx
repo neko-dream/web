@@ -18,7 +18,6 @@ export const SanitizedHtml = ({ html }: Props) => {
   return (
     <article
       className="html"
-      // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
     />
   );

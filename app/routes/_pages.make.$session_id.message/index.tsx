@@ -12,7 +12,7 @@ import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.message/+types";
 import { schema } from "./schemas";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({

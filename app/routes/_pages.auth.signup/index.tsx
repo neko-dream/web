@@ -29,7 +29,7 @@ import { removeHyphens } from "~/utils/format-date";
 import { signupFormSchema, signupFormWithEmailSchema } from "./schemas";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({

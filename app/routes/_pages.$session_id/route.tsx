@@ -28,9 +28,9 @@ import { DemographicsModalContent } from "./components/RequestsModal/components/
 import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
-export { shouldRevalidate } from "./modules/shouldRevalidate";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
+export { shouldRevalidate } from "./modules/shouldRevalidate";
 
 type Tab = {
   label: string;

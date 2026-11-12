@@ -1,13 +1,6 @@
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
-import { readFileSync } from "node:fs";
-// biome-ignore lint/correctness/noNodejsModules: Node-only build configuration tests.
 import { test } from "node:test";
 import { resolveUrls, selectEnvironment } from "../vite.env.ts";
-
-const APP_URL_PATTERN = /^APP_URL = "([^"]+)"/m;
-const API_URL_PATTERN = /^API_URL = "([^"]+)"/m;
 
 test("every build needs an explicit known deployment environment", () => {
   for (const cloudflareEnv of [
@@ -26,6 +19,7 @@ test("every build needs an explicit known deployment environment", () => {
     );
   }
 });
+
 test("local API configuration can never reach build output", () => {
   for (const cloudflareEnv of [undefined, "develop", "production"]) {
     assert.throws(() =>
@@ -61,15 +55,31 @@ test("local API configuration can never reach build output", () => {
     API_URL: "https://localhost:3000/api",
   });
 });
-test("missing or unsafe deployment URLs never fall back to development", () => {
-  for (const environment of ["develop", "staging", "production"]) {
+
+test("deployment URLs use per-environment defaults and reject unsafe overrides", () => {
+  const defaults = {
+    develop: {
+      APP_URL: "https://develop.kotohiro.com",
+      API_URL: "https://api.dev.kotohiro.com",
+    },
+    staging: {
+      APP_URL: "https://staging.kotohiro.com",
+      API_URL: "https://api.kotohiro.com",
+    },
+    production: {
+      APP_URL: "https://www.kotohiro.com",
+      API_URL: "https://api.kotohiro.com",
+    },
+  };
+
+  for (const [environment, expected] of Object.entries(defaults)) {
     for (const env of [
       undefined,
       {},
-      { APP_URL: "https://app.example.com" },
-      { API_URL: "https://api.example.com" },
+      { APP_URL: expected.APP_URL },
+      { API_URL: expected.API_URL },
     ]) {
-      assert.throws(() => resolveUrls(environment, env));
+      assert.deepEqual(resolveUrls(environment, env), expected);
     }
     for (const value of [
       "http://example.com",
@@ -96,17 +106,21 @@ test("missing or unsafe deployment URLs never fall back to development", () => {
       );
     }
   }
-});
-test("production uses the canonical www origin and production API", () => {
-  const config = readFileSync(
-    new URL("../wrangler.toml", import.meta.url),
-    "utf8",
+
+  assert.deepEqual(
+    resolveUrls("develop", {
+      APP_URL: "https://app.example.com",
+      API_URL: "https://api.example.com",
+    }),
+    {
+      APP_URL: "https://app.example.com",
+      API_URL: "https://api.example.com",
+    },
   );
-  const production = config.split("[env.production.vars]")[1]?.split("\n[")[0];
-  assert.ok(production);
-  const app = production.match(APP_URL_PATTERN)?.[1];
-  const api = production.match(API_URL_PATTERN)?.[1];
-  assert.deepEqual(resolveUrls("production", { APP_URL: app, API_URL: api }), {
+});
+
+test("production uses the canonical www origin and production API", () => {
+  assert.deepEqual(resolveUrls("production"), {
     APP_URL: "https://www.kotohiro.com",
     API_URL: "https://api.kotohiro.com",
   });

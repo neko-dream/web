@@ -1,4 +1,4 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
 const setStatus = (requestURL: string) => {
@@ -23,10 +23,9 @@ const setTheme = (requestURL: string) => {
   }
 };
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
   const $session = api
     .GET("/talksessions", {
-      headers: request.headers,
       params: {
         query: {
           status: setStatus(request.url),
@@ -35,11 +34,14 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
         },
       },
     })
-    .then((res) => res?.data || null);
+    .then((res) => res?.data || null)
+    .catch((error) => {
+      console.error("セッション一覧の取得に失敗しました", error);
+      return null;
+    });
 
   const $closeSession = api
     .GET("/talksessions", {
-      headers: request.headers,
       params: {
         query: {
           status: "finished",
@@ -47,7 +49,11 @@ export const loader = ({ request }: LoaderFunctionArgs) => {
         },
       },
     })
-    .then((res) => res?.data || null);
+    .then((res) => res?.data || null)
+    .catch((error) => {
+      console.error("終了済みセッションの取得に失敗しました", error);
+      return null;
+    });
 
   return { $session, $closeSession, theme: setTheme(request.url) };
 };

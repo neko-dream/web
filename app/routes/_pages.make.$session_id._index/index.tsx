@@ -17,20 +17,21 @@ import { Heading } from "~/components/ui/heading";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
-import { api } from "~/libs/openapi-fetch";
+import { ENABLE_SURVEY } from "~/constants";
+import { api, getApiErrorMessage } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
 import { isFieldsError } from "~/utils/form";
 import {
-  SurveyEditor,
   createEmptyQuestion,
   isChoiceQuestion,
+  SurveyEditor,
   validateSurveyQuestions,
 } from "./components/SurveyEditor";
 import { createSessionFormSchema } from "./schemas";
 import type { SurveyQuestionDraft } from "./types";
 
-export { loader } from "./modules/loader";
 export { ErrorBoundary } from "./modules/ErrorBoundary";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 const toSurveyQuestionInputs = (questions: SurveyQuestionDraft[]) =>
@@ -102,6 +103,10 @@ export default function Page({
     saveSurveyRequest(talkSessionID).catch(() => false);
 
   const saveSurveyRequest = async (talkSessionID: string): Promise<boolean> => {
+    if (!ENABLE_SURVEY) {
+      return true;
+    }
+
     if (!survey) {
       if (!isSurveyEnabled) {
         return true;
@@ -163,7 +168,6 @@ export default function Page({
       });
       return parse;
     },
-    // biome-ignore lint/complexity/noExcessiveCognitiveComplexity: <explanation>
     onSubmit: async (e, { submission }) => {
       e.preventDefault();
 
@@ -197,7 +201,7 @@ export default function Page({
         });
 
         if (error) {
-          toast.error(error.message);
+          toast.error(getApiErrorMessage(error, "更新に失敗しました"));
           return;
         }
 
@@ -293,12 +297,14 @@ export default function Page({
           />
         </Label>
 
-        <SurveyEditor
-          enabled={isSurveyEnabled}
-          onEnabledChange={setIsSurveyEnabled}
-          questions={surveyQuestions}
-          onQuestionsChange={setSurveyQuestions}
-        />
+        {ENABLE_SURVEY && (
+          <SurveyEditor
+            enabled={isSurveyEnabled}
+            onEnabledChange={setIsSurveyEnabled}
+            questions={surveyQuestions}
+            onQuestionsChange={setSurveyQuestions}
+          />
+        )}
 
         <Label
           title="募集期間"

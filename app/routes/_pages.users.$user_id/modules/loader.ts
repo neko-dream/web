@@ -1,8 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = ({ params, request }: LoaderFunctionArgs) => {
+export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
   if (!params.user_id) {
     throw notfound();
   }
@@ -16,7 +16,6 @@ export const loader = ({ params, request }: LoaderFunctionArgs) => {
   });
 
   const $sesssions = api.GET("/users/{displayID}/talksessions", {
-    headers: request.headers,
     params: {
       path: {
         displayID: params.user_id,

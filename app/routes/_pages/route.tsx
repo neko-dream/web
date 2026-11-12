@@ -8,8 +8,8 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
-export { loader } from "./modules/loader";
 
 const Analytics = lazy(() => import("~/components/features/analytics"));
 

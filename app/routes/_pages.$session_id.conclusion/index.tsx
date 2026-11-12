@@ -4,7 +4,7 @@ import type { SessionRouteContext } from "~/types/ctx";
 import type { Route } from "../_pages.$session_id.conclusion/+types";
 import { ConclusionMessage } from "./components/ConclusionMessage";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 export default function Page({
   loaderData: { $message },

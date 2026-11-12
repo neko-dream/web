@@ -2,10 +2,11 @@
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
   "vcs": {
     "enabled": true,
-    "clientKind": "git"
+    "clientKind": "git",
+    "useIgnoreFile": true
   },
   "files": {
-    "ignore": [".react-router", "worker-configuration.d.ts"]
+    "includes": ["**", "!**/.react-router"]
   },
   "formatter": {
     "enabled": true,
@@ -22,12 +23,15 @@
       "trailingCommas": "none"
     }
   },
-  "organizeImports": {
-    "enabled": true
+  "css": {
+    "parser": {
+      "tailwindDirectives": true
+    }
   },
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "overrides": [
     {
-      "include": ["tests/**/*.ts"],
+      "includes": ["**/tests/**/*.ts"],
       "linter": {
         "rules": {
           "style": { "noDoneCallback": "off" },
@@ -38,22 +42,16 @@
   ],
   "linter": {
     "enabled": true,
-    "ignore": [
-      "app/components/features/opinion-graph",
-      "tools/kotohiro.openapi.yaml",
-      "tools/generate.ts",
-      "app/components/features/date-scroll-picker"
+    "includes": [
+      "**",
+      "!app/components/features/opinion-graph/**",
+      "!tools/kotohiro.openapi.yaml",
+      "!tools/generate.ts",
+      "!app/components/features/date-scroll-picker/**"
     ],
     "rules": {
-      "all": true,
       "nursery": {
-        "useSortedClasses": {
-          "level": "warn",
-          "fix": "safe",
-          "options": {
-            "functions": ["tv"]
-          }
-        }
+        "useTailwindSortedClasses": "off"
       },
       "suspicious": {
         "noReactSpecificProps": "off",
@@ -65,7 +63,6 @@
         "useNamingConvention": "off",
         "noDefaultExport": "off",
         "useFilenamingConvention": "off",
-        "noNamespaceImport": "off",
         "noParameterAssign": "off"
       },
       "a11y": {
@@ -78,8 +75,10 @@
         "useExhaustiveDependencies": "off"
       },
       "performance": {
-        "noBarrelFile": "off"
+        "noBarrelFile": "off",
+        "noNamespaceImport": "off"
       }
     }
-  }
+  },
+  "tailwind": { "variantFunctions": ["tv"] }
 }

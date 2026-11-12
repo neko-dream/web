@@ -21,10 +21,13 @@ const convertFormData = (params: object): URLSearchParams | FormData => {
 
 /**
  * APIクライアント
+ *
+ * SPAではloaderもブラウザで実行されるため、Cookie認証は
+ * SSR時のヘッダー転送ではなく credentials: "include" で送る。
  */
 export const api = createClient<paths>({
-  // ローカルAPI接続時、SSRはHTTPのAPIへ直接Cookieを転送する。ブラウザは /api プロキシ経由
-  baseUrl: import.meta.env?.SSR && LOCAL_API_URL ? LOCAL_API_URL : API_URL,
+  baseUrl: API_URL,
+  credentials: "include",
   bodySerializer: (body) => body && convertFormData(body),
   fetch: (init) => {
     // TODO: なぜかついているとAPIが404を返す
@@ -35,3 +38,33 @@ export const api = createClient<paths>({
     });
   },
 });
+
+/**
+ * OpenAPI定義にエラーレスポンスのbodyがない場合、openapi-fetchの error は {} になる。
+ * 実行時に code / message を持つ場合だけ安全に取り出す。
+ */
+export const getApiErrorCode = (error: unknown): string | undefined => {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "code" in error &&
+    typeof error.code === "string"
+  ) {
+    return error.code;
+  }
+};
+
+export const getApiErrorMessage = (
+  error: unknown,
+  fallback: string,
+): string => {
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof error.message === "string"
+  ) {
+    return error.message;
+  }
+  return fallback;
+};

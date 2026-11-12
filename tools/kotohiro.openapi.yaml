@@ -5579,4 +5579,3 @@ components:
       in: cookie
       name: SessionId
       description: Cookie-based authentication using JWT tokens stored in secure HTTP-only cookies
-

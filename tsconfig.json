@@ -1,19 +1,32 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.node.json" },
-    { "path": "./tsconfig.cloudflare.json" },
-    { "path": "./tsconfig.test.json" }
+  "include": [
+    "app/**/*",
+    "tests/**/*",
+    "tools/**/*",
+    "vite.config.ts",
+    "vite.env.ts",
+    ".react-router/types/**/*"
   ],
   "compilerOptions": {
-    "checkJs": true,
-    // "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "types": ["node", "@react-router/node", "vite/client"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "jsx": "react-jsx",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "resolveJsonModule": true,
+    "target": "ES2022",
     "strict": true,
-    "noEmit": true,
-    "baseUrl": ".",
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
     "paths": {
-      "~/*": ["./app/*"]
-    }
+      "~/*": ["./app/*"],
+      "~/react-router/*": ["./.react-router/types/app/routes/*"]
+    },
+    "skipLibCheck": true,
+    "noEmit": true,
+    "allowImportingTsExtensions": true,
+    "rootDirs": [".", "./.react-router/types"]
   }
 }
