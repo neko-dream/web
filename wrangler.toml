@@ -26,6 +26,15 @@ routes = [
 
 [env.develop.previews]
 
+# Cloudflare Workers Builds が名前付き環境のないブランチに使う既定環境
+[env.development]
+name = "web"
+routes = [
+  { pattern = "kotohiro.com", custom_domain = true, previews_enabled = true }
+]
+
+[env.development.previews]
+
 # 同じ Worker "web" の Preview として staging を扱う
 [env.staging]
 name = "web"
