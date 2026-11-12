@@ -16,3 +16,7 @@ name = "web"
 # Cloudflare Workers Builds の本番デプロイ用
 [env.production]
 name = "web"
+routes = [
+  { pattern = "kotohiro.com", custom_domain = true },
+  { pattern = "www.kotohiro.com", custom_domain = true }
+]
