@@ -1,17 +1,14 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { requireSessionCreationPermission } from "~/libs/session-creation";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
   if (params.session_id === "new") {
-    const result = await api
-      .GET("/users/me", { headers: request.headers })
-      .catch((error) => {
-        // biome-ignore lint/suspicious/noConsole: Server-side failures must remain observable.
-        console.error("セッション作成権限の取得に失敗しました", error);
-        throw new Response("作成権限を確認できませんでした", { status: 503 });
-      });
+    const result = await api.GET("/users/me").catch((error) => {
+      console.error("セッション作成権限の取得に失敗しました", error);
+      throw new Response("作成権限を確認できませんでした", { status: 503 });
+    });
     requireSessionCreationPermission(result);
     return {};
   }

@@ -22,7 +22,7 @@ import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
 import { createDynamicSchema } from "./schema";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({

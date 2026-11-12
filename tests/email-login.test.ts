@@ -1,12 +1,10 @@
-// biome-ignore lint/correctness/noNodejsModules: This file runs only in the Node test runner.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: This file runs only in the Node test runner.
 import { afterEach, beforeEach, test } from "node:test";
 import {
-  EmailLoginError,
   beginEmailLogin,
   confirmEmailLogin,
   confirmEmailPIN,
+  EmailLoginError,
   validateEmailLoginFields,
 } from "../app/components/features/auth/email-login.ts";
 

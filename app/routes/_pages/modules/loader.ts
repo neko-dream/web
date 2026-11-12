@@ -1,19 +1,18 @@
-import type { LoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
-export const loader = ({ request }: LoaderFunctionArgs) => {
+export const clientLoader = () => {
   const $user = api
-    .GET("/auth/token/info", {
-      headers: request.headers,
-    })
+    .GET("/auth/token/info")
     .then((res) => res?.data || null)
-    .catch(console.error);
+    .catch((error) => {
+      console.error("ユーザー情報の取得に失敗しました", error);
+      return null;
+    });
 
   const $permissions = api
-    .GET("/users/me", { headers: request.headers })
+    .GET("/users/me")
     .then((res) => res.data?.permissions ?? null)
     .catch((error) => {
-      // biome-ignore lint/suspicious/noConsole: Server-side failures must remain observable.
       console.error("セッション作成権限の取得に失敗しました", error);
       return null;
     });

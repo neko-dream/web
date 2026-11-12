@@ -5,7 +5,7 @@ import type { Route } from "~/react-router/_pages.users.me/+types/route";
 import { Tabs } from "./components/Tabs";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 export default function Layout({ loaderData: { user } }: Route.ComponentProps) {
   return (

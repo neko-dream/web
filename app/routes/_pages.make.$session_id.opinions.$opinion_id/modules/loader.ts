@@ -1,10 +1,9 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ request, params }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
   const { data: session } = await api.GET("/talksessions/{talkSessionID}", {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id || "",

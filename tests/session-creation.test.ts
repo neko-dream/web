@@ -1,6 +1,4 @@
-// biome-ignore lint/correctness/noNodejsModules: Node's test runner is used only in tests.
 import assert from "node:assert/strict";
-// biome-ignore lint/correctness/noNodejsModules: Node's test runner is used only in tests.
 import { test } from "node:test";
 import {
   canCreateTalkSession,

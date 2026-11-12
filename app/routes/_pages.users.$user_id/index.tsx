@@ -4,7 +4,7 @@ import TalkSessionCard from "~/components/features/talksession-card";
 import { Avatar } from "~/components/ui/avatar";
 import type { Route } from "~/react-router/_pages.users.$user_id/+types";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 export default function Page({
   loaderData: { $user, $sesssions },

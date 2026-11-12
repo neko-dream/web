@@ -11,7 +11,7 @@ export const removeHyphens = (date?: string) => {
     if (formattedDate === "Invalid Date") {
       throw new Error("Invalid date format");
     }
-    return Number.parseInt(formattedDate);
+    return Number.parseInt(formattedDate, 10);
   } catch {
     return null;
   }
@@ -22,11 +22,7 @@ export const removeHyphens = (date?: string) => {
  * - サーバーから数値で来るのでそれをinput=dateに渡すために変換する関数
  */
 export const formatDate = (str?: string) => {
-  return str?.replace(
-    // biome-ignore lint/performance/useTopLevelRegex: <explanation>
-    /^(\d{4})(\d{2})(\d{2})$/,
-    "$1-$2-$3",
-  );
+  return str?.replace(/^(\d{4})(\d{2})(\d{2})$/, "$1-$2-$3");
 };
 
 /**

@@ -1,14 +1,13 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
   if (!params.session_id) {
     return notfound();
   }
 
   const props = {
-    headers: request.headers,
     params: {
       path: {
         talkSessionID: params.session_id,

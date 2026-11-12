@@ -3,7 +3,7 @@ import { Await, Link } from "react-router";
 import Session from "~/components/features/talksession-card";
 import type { Route } from "~/react-router/_pages.users.me.histories/+types";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 
 export default function Page({
   loaderData: { $session },

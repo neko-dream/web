@@ -1,8 +1,8 @@
-import type { LoaderFunctionArgs } from "react-router";
+import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
 
-export const loader = async ({ params, request }: LoaderFunctionArgs) => {
+export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
   if (!(params.opinion_id && params.session_id)) {
     return notfound();
   }
@@ -10,13 +10,10 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
   const [
     { data: session },
     { data: root },
-    {
-      data: { opinions } = { opinions: [] },
-    },
+    { data: { opinions } = { opinions: [] } },
     { data: currentUser },
   ] = await Promise.all([
     api.GET("/talksessions/{talkSessionID}", {
-      headers: request.headers,
       params: {
         path: {
           talkSessionID: params.session_id,
@@ -24,7 +21,6 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     }),
     api.GET("/opinions/{opinionID}", {
-      headers: request.headers,
       params: {
         path: {
           opinionID: params.opinion_id,
@@ -32,16 +28,13 @@ export const loader = async ({ params, request }: LoaderFunctionArgs) => {
       },
     }),
     api.GET("/opinions/{opinionID}/replies", {
-      headers: request.headers,
       params: {
         path: {
           opinionID: params.opinion_id,
         },
       },
     }),
-    api.GET("/auth/token/info", {
-      headers: request.headers,
-    }),
+    api.GET("/auth/token/info"),
   ]);
 
   if (!(root && opinions && session)) {

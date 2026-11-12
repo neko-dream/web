@@ -2,7 +2,7 @@ import { RichTextEditor } from "~/components/features/rich-text-editor";
 import { Heading } from "~/components/ui/heading";
 import type { Route } from "../_pages.make.$session_id.loadmap/+types";
 
-export { loader } from "./modules/loader";
+export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 
 export default function Page({

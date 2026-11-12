@@ -10,6 +10,10 @@
 
 [🤖 Swagger](https://api.dev.kotohiro.com/docs/)
 
+## レンダリング
+
+React Router の SPA モード（`ssr: false`）で、画面はブラウザで描画する。ビルド時に `build/client/index.html` を生成し、Cloudflare Workers Static Assets が配信する。Worker スクリプトは使わず、アンケート機能の有効化は `app/constants/index.tsx` の `ENABLE_SURVEY` で制御する。
+
 ## セッション作成権限
 
 `GET /users/me` の `permissions.canCreateTalkSession` で作成ボタンと `/make/new` へのアクセスを制御する。組織ログインや token/info の組織情報とは独立している。既存セッションの編集認可は変更しない。
@@ -18,7 +22,7 @@
 
 ## 検証・型生成
 
-- `pnpm test`: 権限判定と実loaderのCookie転送・通信障害・編集導線を検証する。Node 24を使用し、テスト専用の標準モジュールフックで既存の `~/` aliasを解決する。
-- `pnpm typecheck`: アプリとテストを型チェックする。Workerの型生成も含む。
-- `CLOUDFLARE_ENV=develop pnpm build`: develop向けクライアント／SSRビルド。
+- `pnpm test`: 権限判定とclientLoaderのCookie送信・通信障害・編集導線を検証する。Node 24を使用し、テスト専用の標準モジュールフックで既存の `~/` aliasを解決する。
+- `pnpm typecheck`: アプリとテストを型チェックする。React Routerのroute型生成も含む。
+- `CLOUDFLARE_ENV=develop pnpm build`: develop向けSPAビルド（`build/client` を生成）。
 - API契約変更は `tools/kotohiro.openapi.yaml` へ反映して `pnpm generate:api` を実行する。`app/types/openapi.ts` を手編集しない。CIでも再生成結果に差分がないことを確認する。

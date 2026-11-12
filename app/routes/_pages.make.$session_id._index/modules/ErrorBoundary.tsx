@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import {
-  Link,
   isRouteErrorResponse,
+  Link,
   useParams,
   useRouteError,
 } from "react-router";
