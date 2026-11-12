@@ -14,6 +14,7 @@ export default defineConfig(async ({ command, isPreview }) => {
     command,
     cloudflareEnv,
     localApiUrl,
+    branch: process.env.WORKERS_CI_BRANCH,
   });
   const { APP_URL, API_URL } = resolveUrls(environment, {
     APP_URL: process.env.APP_URL,

@@ -2,6 +2,7 @@ type EnvironmentOptions = {
   command: "build" | "serve";
   cloudflareEnv?: string;
   localApiUrl?: string;
+  branch?: string;
 };
 const LOCAL_API_PATTERN = /^http:\/\/(localhost|127\.0\.0\.1):\d+$/;
 const DEPLOYMENT_ENVIRONMENTS = ["develop", "staging", "production"] as const;
@@ -30,10 +31,27 @@ const isDeploymentEnvironment = (
 ): value is DeploymentEnvironment =>
   DEPLOYMENT_ENVIRONMENTS.includes(value as DeploymentEnvironment);
 
+// Cloudflare Workers Builds は名前付き環境を持たないブランチに
+// CLOUDFLARE_ENV=development を自動で設定する
+const CLOUDFLARE_PREVIEW_ENV = "development";
+
+function environmentFromBranch(
+  branch: string | undefined,
+): DeploymentEnvironment {
+  if (branch === "main" || branch === "production") {
+    return "production";
+  }
+  if (branch === "staging") {
+    return "staging";
+  }
+  return "develop";
+}
+
 export function selectEnvironment({
   command,
   cloudflareEnv,
   localApiUrl,
+  branch,
 }: EnvironmentOptions): string | undefined {
   if (localApiUrl) {
     if (command === "build") {
@@ -49,16 +67,28 @@ export function selectEnvironment({
     }
     return undefined;
   }
-  if (command === "build" && !cloudflareEnv) {
-    throw new Error(
-      "Builds require explicit CLOUDFLARE_ENV (develop, staging or production)",
-    );
+  if (command === "build") {
+    const isCloudflarePreview = cloudflareEnv === CLOUDFLARE_PREVIEW_ENV;
+    const requestedEnv = isCloudflarePreview ? undefined : cloudflareEnv;
+    if (!requestedEnv && !branch && !isCloudflarePreview) {
+      throw new Error(
+        "Builds require explicit CLOUDFLARE_ENV (develop, staging or production)",
+      );
+    }
+    if (!requestedEnv) {
+      return environmentFromBranch(branch);
+    }
+    if (!isDeploymentEnvironment(requestedEnv)) {
+      throw new Error(`Unknown CLOUDFLARE_ENV: ${requestedEnv}`);
+    }
+    return requestedEnv;
   }
-  const environment = cloudflareEnv ?? "develop";
-  if (!isDeploymentEnvironment(environment)) {
-    throw new Error(`Unknown CLOUDFLARE_ENV: ${environment}`);
+  const requestedEnv =
+    cloudflareEnv === CLOUDFLARE_PREVIEW_ENV ? undefined : cloudflareEnv;
+  if (requestedEnv && !isDeploymentEnvironment(requestedEnv)) {
+    throw new Error(`Unknown CLOUDFLARE_ENV: ${requestedEnv}`);
   }
-  return environment;
+  return requestedEnv ?? environmentFromBranch(branch);
 }
 
 function deploymentOrigin(value: unknown, name: string): string {
