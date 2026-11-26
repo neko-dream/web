@@ -14,5 +14,8 @@ node_modules
 output
 
 .cert
+/test-results
+/playwright-report
+/blob-report
 
 .DS_Store
