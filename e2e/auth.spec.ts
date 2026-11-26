@@ -64,6 +64,12 @@ test.describe("トップページのゲストログイン", () => {
   test("ログインせずに使うでホームへ移動する", async ({ page }) => {
     await page.goto("/");
 
+    // hydration 前にクリックすると遷移が取り消されることがあるため、React の反映を待つ
+    await page.getByRole("checkbox", { name: consentCheckbox }).check();
+    await expect(
+      page.getByRole("link", { name: "Googleでログイン" }),
+    ).toHaveAttribute("aria-disabled", "false");
+
     await page.getByRole("link", { name: "ログインせずに使う" }).click();
 
     await expect(page).toHaveURL(/\/home$/);
