@@ -2,8 +2,7 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
-import type { Route } from "~/react-router/_pages/+types/route";
-import type { RouteContext } from "~/types/ctx";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
@@ -13,11 +12,10 @@ export { meta } from "./modules/meta";
 
 const Analytics = lazy(() => import("~/components/features/analytics"));
 
-export default function Layout({
-  loaderData: { $user, $permissions },
-}: Route.ComponentProps) {
+export default function Layout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+  const user = useAuthStore((state) => state.user);
   const isTopPage = pathname === "/";
   const isAuthPage =
     pathname === "/auth/login" ||
@@ -30,20 +28,18 @@ export default function Layout({
     pathname === "/organization/login" ||
     pathname === "/auth/password/setup";
 
-  // ログイン済みだったらホームにリダイレクト
+  // ログイン状態が確定してからトップページをホームへ逃がす
   useEffect(() => {
-    $user.then((user) => {
-      if (user && window.location.pathname === "/") {
-        navigate("/home", { replace: true });
-      }
-    });
-  }, []);
+    if (user && pathname === "/") {
+      navigate("/home", { replace: true });
+    }
+  }, [user, pathname, navigate]);
 
   return (
     <>
       {!isAuthPage && <Analytics />}
       {/* 実際に見えるコンテンツ */}
-      {!hideHeader && <Header $user={$user} $permissions={$permissions} />}
+      {!hideHeader && <Header />}
       <main
         className={
           hideHeader
@@ -51,7 +47,7 @@ export default function Layout({
             : "flex min-h-[calc(100vh-48px)] flex-col"
         }
       >
-        <Outlet context={{ $user } satisfies RouteContext} />
+        <Outlet />
       </main>
       <Footer />
 

@@ -1,10 +1,9 @@
-import { type ComponentProps, use } from "react";
+import type { ComponentProps } from "react";
 import { Link } from "react-router";
 import { Edit } from "~/components/icons";
-import type { RouteContext } from "~/types/ctx";
+import { useAuthStore } from "~/hooks/useAuthStore";
 
 type Props = ComponentProps<"button"> & {
-  $user: RouteContext["$user"];
   session: {
     owner: {
       displayID: string;
@@ -13,8 +12,8 @@ type Props = ComponentProps<"button"> & {
   };
 };
 
-export const EditButton = ({ $user, session }: Props) => {
-  const user = use($user);
+export const EditButton = ({ session }: Props) => {
+  const user = useAuthStore((state) => state.user);
 
   if (user?.displayID !== session.owner.displayID) {
     return null;
