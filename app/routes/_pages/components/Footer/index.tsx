@@ -52,7 +52,7 @@ export const Footer = () => {
           </div>
         </div>
 
-        <p className="mt-8 border-line border-t pt-6 text-ink-subtle text-xs">
+        <p className="mt-8 border-line border-t pt-6 text-ink-muted text-xs">
           ©︎ 2026 kotohiro Inc.
         </p>
       </div>

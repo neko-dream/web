@@ -43,7 +43,7 @@ export default function Page() {
           <AuthHeading>組織向けログイン</AuthHeading>
           <div className="flex flex-col items-center">
             <AuthProviderLinks disabled={login.busy} onClick={guardOAuth} />
-            <div className="my-6 flex w-full items-center gap-2 text-[#868e96] before:h-px before:flex-1 before:bg-[#d8dbe0] after:h-px after:flex-1 after:bg-[#d8dbe0]">
+            <div className="my-6 flex w-full items-center gap-2 text-[13px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
               または
             </div>
             <EmailPasswordForm
@@ -59,7 +59,7 @@ export default function Page() {
           </div>
           <Link
             to="/"
-            className="mt-6 block text-center text-gray-600 text-sm underline underline-offset-4"
+            className="mx-auto mt-6 flex min-h-11 w-fit items-center text-[13px] text-ink-muted underline underline-offset-4 hover:text-ink"
           >
             一般向けログインはこちら
           </Link>

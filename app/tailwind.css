@@ -75,7 +75,7 @@
 
   /* 新しいUI基盤 */
   --color-ink: #191c1e;
-  --color-ink-muted: #71787e;
+  --color-ink-muted: #6f767c;
   --color-ink-subtle: #8e8e93;
   --color-line: #e5e5ea;
   --color-surface: #f2f2f7;
@@ -94,7 +94,11 @@
 }
 
 /* デフォルト */
-button,
+button:not(:disabled),
 a {
   cursor: pointer;
+}
+
+[aria-disabled="true"] {
+  cursor: not-allowed;
 }

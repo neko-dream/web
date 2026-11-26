@@ -55,13 +55,15 @@ export default function Page() {
   };
 
   return (
-    <AuthFrame>
-      <EmailLinkConfirmation
-        busy={busy}
-        disabled={!ready}
-        error={error}
-        onConfirm={confirm}
-      />
-    </AuthFrame>
+    <div className="flex flex-1 items-center justify-center px-4 py-10">
+      <AuthFrame>
+        <EmailLinkConfirmation
+          busy={busy}
+          disabled={!ready}
+          error={error}
+          onConfirm={confirm}
+        />
+      </AuthFrame>
+    </div>
   );
 }

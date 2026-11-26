@@ -28,7 +28,7 @@ export const meta = () => [
 
 // Figma 48:8061: 343px form, 24px section gaps, 48px password inputs.
 const passwordFieldClassName =
-  "space-y-2 [&>div:first-child]:mb-0 [&_label]:font-['Open_Sans',sans-serif] [&_label]:text-[#191c1e] [&_label]:text-base [&_label]:leading-[1.55]";
+  "space-y-2 [&>div:first-child]:mb-0 [&_label]:text-[#191c1e] [&_label]:text-base [&_label]:leading-[1.55]";
 
 function passwordPolicyCaption(
   policy: PasswordPolicy | null,

@@ -34,7 +34,7 @@ export const AuthInput = ({
     <Input
       {...props}
       className={cn([
-        "rounded-lg border-[#545456]/34 px-2 font-['Open_Sans',sans-serif] text-[#303238] text-base leading-[1.55] placeholder:text-[#bdc6d3] read-only:bg-[#fafafa] read-only:text-[#697381]",
+        "rounded-xl border-[#545456]/34 px-3 text-[#303238] text-base leading-[1.55] placeholder:text-ink-muted read-only:bg-[#fafafa] read-only:text-[#697381]",
         className,
       ])}
     />
@@ -50,7 +50,7 @@ export const AuthSubmitButton = ({
       color="primary"
       {...props}
       className={cn([
-        "mt-6 h-auto min-h-[54px] w-full px-4 py-2.5 font-normal text-[17px] leading-[22px] tracking-[-0.43px] disabled:cursor-not-allowed disabled:opacity-50",
+        "mt-6 h-auto min-h-[54px] w-full px-4 py-2.5 font-semibold text-[17px] leading-[22px] tracking-[-0.43px] disabled:cursor-not-allowed disabled:opacity-50",
         className,
       ])}
     />
@@ -78,6 +78,6 @@ export const AuthError = ({
 
 export const AuthHelp = ({ children }: { children: ReactNode }) => {
   return (
-    <p className="mt-4 text-[#7b8590] text-xs leading-relaxed">{children}</p>
+    <p className="mt-4 text-ink-muted text-xs leading-relaxed">{children}</p>
   );
 };
