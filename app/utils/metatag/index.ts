@@ -4,8 +4,12 @@ type Props = {
   ogp?: string;
 };
 
+// テスト実行時はViteのdefineが無いため、本番URLにフォールバックする
+const APP_ORIGIN =
+  typeof APP_URL === "string" ? APP_URL : "https://www.kotohiro.com";
+
 const absoluteUrl = (value: string) =>
-  value.startsWith("http") ? value : `${APP_URL}${value}`;
+  value.startsWith("http") ? value : `${APP_ORIGIN}${value}`;
 
 export const generateMetaTag = ({ title, description, ogp }: Props) => {
   return [
@@ -28,7 +32,7 @@ export const generateMetaTag = ({ title, description, ogp }: Props) => {
     },
     {
       property: "og:url",
-      content: APP_URL,
+      content: APP_ORIGIN,
     },
     {
       property: "og:image",

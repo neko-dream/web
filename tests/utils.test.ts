@@ -72,9 +72,12 @@ test("generateMetaTag fills defaults and replaces each overridable tag", () => {
       content: "ことひろは、言葉を重ねてより良い意思決定を目指すサービスです",
     },
     { property: "og:title", content: "ことひろ" },
-    { property: "og:property", content: "website" },
+    { property: "og:type", content: "website" },
     { property: "og:url", content: "https://www.kotohiro.com" },
-    { property: "og:image", content: "/ogp.png" },
+    {
+      property: "og:image",
+      content: "https://www.kotohiro.com/ogp.webp",
+    },
     { property: "og:site_name", content: "ことひろ" },
     {
       property: "og:description",
@@ -91,7 +94,7 @@ test("generateMetaTag fills defaults and replaces each overridable tag", () => {
   assert.deepEqual(custom[1], { name: "description", content: "説明" });
   assert.deepEqual(custom[5], {
     property: "og:image",
-    content: "/custom.png",
+    content: "https://www.kotohiro.com/custom.png",
   });
   assert.deepEqual(custom[7], {
     property: "og:description",
