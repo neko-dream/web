@@ -33,3 +33,15 @@ export const formatDate = (str?: string) => {
 export const isEnd = (date?: string) => {
   return JST(date).isBefore(JST(dayjs()));
 };
+
+/**
+ * 募集期間の日付を、その日の終わり（JST 23:59:59.999）のISO文字列に変換する。
+ * 日付だけの入力をその日の0時にすると、表示上の「まで」より1日早く終了するため。
+ */
+export const toScheduledEndTime = (date?: string): string | null => {
+  if (!date) {
+    return null;
+  }
+  const endOfDay = JST(`${date}T00:00:00+09:00`).endOf("day");
+  return endOfDay.isValid() ? endOfDay.toISOString() : null;
+};

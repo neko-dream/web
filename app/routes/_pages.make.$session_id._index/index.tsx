@@ -21,6 +21,7 @@ import { ENABLE_SURVEY } from "~/constants";
 import { api, getApiErrorMessage } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id._index/+types";
 import { isFieldsError } from "~/utils/form";
+import { toScheduledEndTime } from "~/utils/format-date";
 import {
   createEmptyQuestion,
   isChoiceQuestion,
@@ -96,6 +97,8 @@ export default function Page({
         : [createEmptyQuestion()],
   );
   const thumbnailRef = useRef<string>(null);
+  const submittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   /** 通信自体が失敗した場合も呼び出し元でエラー表示できるようfalseに倒す */
@@ -171,7 +174,7 @@ export default function Page({
     onSubmit: async (e, { submission }) => {
       e.preventDefault();
 
-      if (submission?.status !== "success") {
+      if (submittingRef.current || submission?.status !== "success") {
         return;
       }
 
@@ -184,61 +187,75 @@ export default function Page({
       }
 
       const value = submission.value;
+      const scheduledEndTime = toScheduledEndTime(value.scheduledEndTime);
+      if (!scheduledEndTime) {
+        toast.error("募集期間の日付を確認してください");
+        return;
+      }
 
-      if (isEditMode) {
-        const { error } = await api.PUT("/talksessions/{talkSessionID}", {
-          credentials: "include",
-          params: {
-            path: {
-              talkSessionID: session.id,
+      submittingRef.current = true;
+      setIsSubmitting(true);
+      try {
+        if (isEditMode) {
+          const { error } = await api.PUT("/talksessions/{talkSessionID}", {
+            credentials: "include",
+            params: {
+              path: {
+                talkSessionID: session.id,
+              },
             },
-          },
+            body: {
+              ...value,
+              scheduledEndTime,
+              thumbnailURL: thumbnailRef.current || "",
+            },
+          });
+
+          if (error) {
+            toast.error(getApiErrorMessage(error, "更新に失敗しました"));
+            return;
+          }
+
+          if (!(await saveSurvey(session.id))) {
+            toast.error("アンケートの保存に失敗しました");
+            return;
+          }
+
+          toast.success("更新が完了しました");
+          navigate(`/${session?.id}`);
+          return;
+        }
+
+        const { data, error } = await api.POST("/talksessions", {
+          credentials: "include",
           body: {
             ...value,
-            scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
+            scheduledEndTime,
             thumbnailURL: thumbnailRef.current || "",
           },
         });
 
         if (error) {
-          toast.error(getApiErrorMessage(error, "更新に失敗しました"));
+          toast.error(error.message);
           return;
         }
 
-        if (!(await saveSurvey(session.id))) {
-          toast.error("アンケートの保存に失敗しました");
+        if (data && !(await saveSurvey(data.id))) {
+          toast.error(
+            "セッションは作成されましたが、アンケートの作成に失敗しました",
+          );
+          navigate("/home");
           return;
         }
 
-        toast.success("更新が完了しました");
-        navigate(`/${session?.id}`);
-        return;
-      }
-
-      const { data, error } = await api.POST("/talksessions", {
-        credentials: "include",
-        body: {
-          ...value,
-          scheduledEndTime: dayjs(value?.scheduledEndTime).toISOString(),
-          thumbnailURL: thumbnailRef.current || "",
-        },
-      });
-
-      if (error) {
-        toast.error(error.message);
-        return;
-      }
-
-      if (data && !(await saveSurvey(data.id))) {
-        toast.error(
-          "セッションは作成されましたが、アンケートの作成に失敗しました",
-        );
+        toast.success("登録が完了しました");
         navigate("/home");
-        return;
+      } catch {
+        toast.error("通信に失敗しました。もう一度お試しください");
+      } finally {
+        submittingRef.current = false;
+        setIsSubmitting(false);
       }
-
-      toast.success("登録が完了しました");
-      navigate("/home");
     },
   });
 
@@ -353,6 +370,7 @@ export default function Page({
           color="primary"
           type="submit"
           className="!mt-12 mx-auto flex items-center space-x-4"
+          disabled={isSubmitting}
         >
           <Check />
           <span>
