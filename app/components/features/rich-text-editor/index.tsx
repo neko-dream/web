@@ -41,9 +41,16 @@ export const RichTextEditor = ({
   });
 
   useEffect(() => {
-    editor?.on("update", () => {
-      onUpdate(editor?.getHTML() || "");
-    });
+    if (!editor) {
+      return;
+    }
+    const handleUpdate = () => {
+      onUpdate(editor.getHTML());
+    };
+    editor.on("update", handleUpdate);
+    return () => {
+      editor.off("update", handleUpdate);
+    };
   }, [editor, onUpdate]);
 
   if (!editor) {
