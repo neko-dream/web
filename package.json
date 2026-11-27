@@ -6,6 +6,8 @@
   "packageManager": "pnpm@10.29.1",
   "scripts": {
     "test": "node --import ./tests/register.ts --test tests/*.test.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "generate:api": "node tools/generate.ts",
     "dev": "react-router dev",
     "dev:local": "cross-env LOCAL_API_URL=http://127.0.0.1:8080 react-router dev",
@@ -61,6 +63,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.6.6",
+    "@playwright/test": "^1.65.1",
     "@react-router/dev": "^8.5.1",
     "@svgr/cli": "^8.1.0",
     "@svgr/plugin-jsx": "^8.1.0",

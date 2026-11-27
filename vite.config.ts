@@ -15,18 +15,30 @@ export default defineConfig(async ({ command, isPreview }) => {
     cloudflareEnv,
     localApiUrl,
   });
-  const { APP_URL, API_URL } = resolveUrls(environment, {
-    APP_URL: process.env.APP_URL,
-    API_URL: process.env.API_URL,
-  });
+  const { APP_URL: resolvedAppURL, API_URL: resolvedAPIURL } = resolveUrls(
+    environment,
+    {
+      APP_URL: process.env.APP_URL,
+      API_URL: process.env.API_URL,
+    },
+  );
+
+  // E2E は通常の dev サーバーと衝突しないよう専用ポートで動かす
+  const port = Number(process.env.E2E_PORT ?? 3000);
+  if (!Number.isInteger(port) || port < 1 || port > 65_535) {
+    throw new Error(`Invalid E2E_PORT: ${process.env.E2E_PORT}`);
+  }
+  const localBaseURL = `https://localhost:${port}`;
+  const APP_URL = localApiUrl ? localBaseURL : resolvedAppURL;
+  const API_URL = localApiUrl ? `${localBaseURL}/api` : resolvedAPIURL;
 
   const server: ServerOptions = {
     host: true,
-    port: 3000,
+    port,
     hmr: {
       host: localApiUrl ? "localhost" : "local.kotohiro.com",
       protocol: "wss",
-      clientPort: 3000,
+      clientPort: port,
     },
     strictPort: true,
     proxy: localApiUrl
