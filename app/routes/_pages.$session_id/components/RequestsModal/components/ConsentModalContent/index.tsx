@@ -15,24 +15,41 @@ type Props = {
 
 export const ConsentModalContent = ({
   sessionID,
+  aliasName,
   onConform,
   onClose,
 }: Props) => {
   const [isChecked, setChecked] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleConform = async () => {
-    const data = await api.POST("/talksessions/{talkSessionID}/consent", {
-      credentials: "include",
-      params: {
-        path: {
-          talkSessionID: sessionID,
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // openapi-fetchは成功時も失敗時もオブジェクトを返すため、response.okで判定する
+      const { error, response } = await api.POST(
+        "/talksessions/{talkSessionID}/consent",
+        {
+          credentials: "include",
+          params: {
+            path: {
+              talkSessionID: sessionID,
+            },
+          },
         },
-      },
-    });
-    if (data) {
+      );
+      if (error || !response.ok) {
+        toast.error("同意に失敗しました。もう一度お試しください。");
+        return;
+      }
       onConform();
-    } else {
-      toast.error("同意に失敗しました");
+    } catch {
+      toast.error("通信に失敗しました。もう一度お試しください。");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -48,7 +65,7 @@ export const ConsentModalContent = ({
         className="mt-4 whitespace-pre-line rounded-md bg-gray-50 p-2 text-xs"
         autoHide={false}
       >
-        {CONSENT_MODAL_TEXT("鯖江市役所")}
+        {CONSENT_MODAL_TEXT(aliasName)}
       </SimpleBar>
       <div className="mt-4">
         <Checkbox
@@ -61,14 +78,15 @@ export const ConsentModalContent = ({
           type="button"
           className="cursor-pointer text-center font-bold text-cs-blue-600 disabled:opacity-60"
           onClick={handleConform}
-          disabled={!isChecked}
+          disabled={!isChecked || isSubmitting}
         >
-          セッションに参加する
+          {isSubmitting ? "送信中..." : "セッションに参加する"}
         </button>
         <button
           type="button"
-          className="cursor-pointer font-bold text-cs-disabled"
+          className="cursor-pointer font-bold text-cs-disabled disabled:opacity-60"
           onClick={onClose}
+          disabled={isSubmitting}
         >
           キャンセル
         </button>
