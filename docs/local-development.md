@@ -30,6 +30,6 @@ Google / LINE ではプロバイダーへのローカル callback URL 登録が�
 接続確認にはトップ画面のゲストログインか `/api/auth/dev/login` を使用できる。
 
 ローカル起動には Cloudflare ログインは不要。アンケート機能は
-`app/constants/index.tsx` の `ENABLE_SURVEY` で制御する。現在は有効（`true`）。
-無効化する場合は、既存アンケートとAPI側の `survey.answered` restriction も
-合わせて無効化する必要がある。
+`app/constants/index.tsx` の `ENABLE_SURVEY` で制御する。現在は無効（`false`）。
+有効化する場合は、既存アンケートとAPI側の `survey.answered` restriction も
+合わせて有効化する必要がある。

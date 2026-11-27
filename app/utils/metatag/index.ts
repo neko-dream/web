@@ -4,6 +4,9 @@ type Props = {
   ogp?: string;
 };
 
+const absoluteUrl = (value: string) =>
+  value.startsWith("http") ? value : `${APP_URL}${value}`;
+
 export const generateMetaTag = ({ title, description, ogp }: Props) => {
   return [
     {
@@ -20,16 +23,16 @@ export const generateMetaTag = ({ title, description, ogp }: Props) => {
       content: title || "ことひろ",
     },
     {
-      property: "og:property",
+      property: "og:type",
       content: "website",
     },
     {
       property: "og:url",
-      content: "https://www.kotohiro.com",
+      content: APP_URL,
     },
     {
       property: "og:image",
-      content: ogp || "/ogp.png",
+      content: absoluteUrl(ogp || "/ogp.webp"),
     },
     {
       property: "og:site_name",
