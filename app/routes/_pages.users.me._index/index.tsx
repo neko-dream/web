@@ -20,7 +20,7 @@ export default function Page({
                   title={opinion.title}
                   description={opinion.content}
                   user={{
-                    displayID: "",
+                    displayID: user.displayID,
                     displayName: user.displayName,
                     iconURL: user.iconURL,
                   }}
