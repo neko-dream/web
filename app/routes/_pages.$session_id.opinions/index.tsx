@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { DeletedOpinionCard } from "~/components/features/deleted-opinion-card";
 import { Card, OpinionCardSkeleton } from "~/components/features/opinion-card";
 import Graph from "~/components/features/opinion-graph";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { useVote } from "~/hooks/useVote";
 import type { Route } from "~/react-router/_pages.$session_id.opinions/+types";
 import type { VoteType } from "~/types";
@@ -16,10 +17,11 @@ export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { clientLoader } from "./modules/loader";
 
 export default function Page({
-  loaderData: { $opinions, $reasons, $user, $positions },
+  loaderData: { $opinions, $reasons, $positions },
 }: Route.ComponentProps) {
   const { revalidate } = useRevalidator();
   const { session } = useOutletContext<SessionRouteContext>();
+  const user = useAuthStore((state) => state.user);
   const [isOpen, setIsOpen] = useState(false);
   const [selectOpinionID, setSelectOpinionID] = useState("");
   const [isAnalyticsDialogOpen, setIsAnalyticsDialogOpen] = useState(false);
@@ -52,59 +54,53 @@ export default function Page({
         <div className="w-full space-y-2">
           <Suspense fallback={<OpinionCardSkeleton />}>
             <Await resolve={$opinions}>
-              {({ data: { opinions } = { opinions: [] } }) => (
-                <Await resolve={$user}>
-                  {({ data: user }) => {
-                    const opinionCardList = opinions.map((props, i) => {
-                      const {
-                        opinion: { id, ...opinion },
-                        user: { displayID, displayName, iconURL },
-                        myVoteType,
-                        replyCount,
-                      } = props;
+              {({ data: { opinions } = { opinions: [] } }) => {
+                const opinionCardList = opinions.map((props, i) => {
+                  const {
+                    opinion: { id, ...opinion },
+                    user: { displayID, displayName, iconURL },
+                    myVoteType,
+                    replyCount,
+                  } = props;
 
-                      if (opinion.isDeleted) {
-                        return (
-                          <DeletedOpinionCard
-                            key={i}
-                            href={`/${session.id}/opinions/${id}`}
-                            description={opinion.content}
-                            date={opinion.postedAt}
-                            opinionCount={replyCount}
-                            className="mx-auto w-full max-w-2xl"
-                          />
-                        );
-                      }
+                  if (opinion.isDeleted) {
+                    return (
+                      <DeletedOpinionCard
+                        key={i}
+                        href={`/${session.id}/opinions/${id}`}
+                        description={opinion.content}
+                        date={opinion.postedAt}
+                        opinionCount={replyCount}
+                        className="mx-auto w-full max-w-2xl"
+                      />
+                    );
+                  }
 
-                      return (
-                        <Card
-                          key={i}
-                          href={`/${session.id}/opinions/${id}`}
-                          title={opinion.title}
-                          description={opinion.content}
-                          user={{ displayID, displayName, iconURL }}
-                          status={myVoteType}
-                          date={opinion.postedAt}
-                          className="mx-auto w-full max-w-2xl"
-                          isJudgeButton={user?.displayID !== displayID}
-                          isMoreButton={user?.displayID !== displayID}
-                          onClickAgree={() => handleVote(id, "agree")}
-                          onClickDisagree={() => handleVote(id, "disagree")}
-                          onClickPass={() => handleVote(id, "pass")}
-                          onClickReport={() => handleOpenModal(id)}
-                          onClickAnalytics={() => handleAnalyticsModal(id)}
-                          opinionCount={replyCount}
-                          isJudgeButtonDisabled={isEnd(
-                            session.scheduledEndTime,
-                          )}
-                        />
-                      );
-                    });
+                  return (
+                    <Card
+                      key={i}
+                      href={`/${session.id}/opinions/${id}`}
+                      title={opinion.title}
+                      description={opinion.content}
+                      user={{ displayID, displayName, iconURL }}
+                      status={myVoteType}
+                      date={opinion.postedAt}
+                      className="mx-auto w-full max-w-2xl"
+                      isJudgeButton={user?.displayID !== displayID}
+                      isMoreButton={user?.displayID !== displayID}
+                      onClickAgree={() => handleVote(id, "agree")}
+                      onClickDisagree={() => handleVote(id, "disagree")}
+                      onClickPass={() => handleVote(id, "pass")}
+                      onClickReport={() => handleOpenModal(id)}
+                      onClickAnalytics={() => handleAnalyticsModal(id)}
+                      opinionCount={replyCount}
+                      isJudgeButtonDisabled={isEnd(session.scheduledEndTime)}
+                    />
+                  );
+                });
 
-                    return opinionCardList;
-                  }}
-                </Await>
-              )}
+                return opinionCardList;
+              }}
             </Await>
           </Suspense>
         </div>

@@ -21,6 +21,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Select } from "~/components/ui/select";
 import { Tip } from "~/components/ui/tip";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { fileCompress } from "~/libs/compressor";
 import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.auth.signup/+types";
@@ -38,6 +39,7 @@ export default function Page({
   const [preview, setPreview] = useState<string>();
   const inputFileRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
+  const refresh = useAuthStore((state) => state.refresh);
   const [isPending, startTransition] = useTransition();
 
   const schema = isEmailVerified ? signupFormSchema : signupFormWithEmailSchema;
@@ -67,6 +69,8 @@ export default function Page({
           toast.error(error.message);
         } else {
           toast.success("登録が完了しました");
+          // 登録前のゲスト状態をヘッダーなどに残さない
+          await refresh();
           navigate("/home");
         }
       });
