@@ -1,8 +1,10 @@
 {
   "include": [
     "app/**/*",
+    "e2e/**/*",
     "tests/**/*",
     "tools/**/*",
+    "playwright.config.ts",
     "vite.config.ts",
     "vite.env.ts",
     ".react-router/types/**/*"

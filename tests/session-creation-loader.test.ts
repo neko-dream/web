@@ -10,9 +10,7 @@ const { api } = await import("../app/libs/openapi-fetch/index.ts");
 const { clientLoader } = await import(
   "../app/routes/_pages.make.$session_id._index/modules/loader.ts"
 );
-const { clientLoader: pagesLoader } = await import(
-  "../app/routes/_pages/modules/loader.ts"
-);
+const { useAuthStore } = await import("../app/hooks/useAuthStore.ts");
 
 test("creation loader sends browser credentials and denies ungranted, unauthenticated and missing users", async (t) => {
   for (const [status, allowed, expected] of [
@@ -106,13 +104,31 @@ test("editing an existing session does not depend on creation permission", async
   ]);
 });
 
-test("permissions fail closed with an observable error in the page loader", async (t) => {
+test("auth refresh stores the logged-in user and permissions", async (t) => {
+  t.mock.method(globalThis, "fetch", async (request: Request) => {
+    const path = new URL(request.url).pathname;
+    return new Response(
+      JSON.stringify(
+        path === "/auth/token/info"
+          ? { displayID: "self", isRegistered: true }
+          : { permissions: { canCreateTalkSession: true } },
+      ),
+      { headers: { "Content-Type": "application/json" } },
+    );
+  });
+  await useAuthStore.getState().refresh();
+  assert.equal(useAuthStore.getState().user?.displayID, "self");
+  assert.equal(useAuthStore.getState().permissions?.canCreateTalkSession, true);
+});
+
+test("auth refresh fails closed with an observable error", async (t) => {
   t.mock.method(globalThis, "fetch", async () => {
     throw new TypeError("network unavailable");
   });
   const logger = t.mock.method(console, "error", () => {});
-  const { $permissions } = pagesLoader();
-  assert.equal(await $permissions, null);
+  await useAuthStore.getState().refresh();
+  assert.equal(useAuthStore.getState().user, null);
+  assert.equal(useAuthStore.getState().permissions, null);
   assert.ok(logger.mock.callCount() > 0);
 });
 

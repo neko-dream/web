@@ -1,18 +1,16 @@
 import { type ComponentProps, use } from "react";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
-import type { RouteContext } from "~/types/ctx";
 
 type Props = ComponentProps<"button"> & {
   $remainingCount: Route.ComponentProps["loaderData"]["$remainingCount"];
-  $user: RouteContext["$user"];
 };
 
 export const LookupOtherOpinionButton = ({
   $remainingCount,
-  $user,
   ...props
 }: Props) => {
-  const user = use($user);
+  const user = useAuthStore((state) => state.user);
   const count = use($remainingCount);
 
   if (!(user || count) || count === 0) {
