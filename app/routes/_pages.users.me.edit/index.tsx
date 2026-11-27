@@ -32,6 +32,7 @@ import { isFieldsError } from "~/utils/form";
 import { removeHyphens } from "~/utils/format-date";
 import { userEditSchema } from "./schemas";
 
+export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 

@@ -20,6 +20,7 @@ import { api } from "~/libs/openapi-fetch";
 import type { Route } from "~/react-router/_pages.make.$session_id.demographics/+types";
 import { isFieldsError } from "~/utils/form";
 import { formatDate, removeHyphens } from "~/utils/format-date";
+import { toSafeInternalPath } from "~/utils/redirect";
 import { createDynamicSchema } from "./schema";
 
 export { clientLoader } from "./modules/loader";
@@ -33,8 +34,9 @@ export default function Page({
 
   const submitSuccess = () => {
     toast.success("登録情報の編集が完了しました");
-    if (next) {
-      navigate(next);
+    const destination = toSafeInternalPath(next);
+    if (destination) {
+      navigate(destination);
     }
   };
 

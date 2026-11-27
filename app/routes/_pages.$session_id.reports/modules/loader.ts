@@ -1,6 +1,11 @@
 import type { ClientLoaderFunctionArgs } from "react-router";
-import { api } from "~/libs/openapi-fetch";
+import { api, getApiErrorMessage } from "~/libs/openapi-fetch";
 import { notfound } from "~/utils/response";
+
+type ReportTab = "unsolved" | "hold" | "deleted";
+
+const toReportTab = (value: string | null): ReportTab =>
+  value === "hold" || value === "deleted" ? value : "unsolved";
 
 export const clientLoader = async ({
   request,
@@ -10,35 +15,28 @@ export const clientLoader = async ({
     throw notfound();
   }
 
-  try {
-    let query = new URL(request.url).searchParams.get("q") as
-      | "unsolved"
-      | "hold"
-      | "deleted";
-
-    if (!query) {
-      query = "unsolved";
-    }
-
-    const { data: reports } = await api.GET(
-      "/talksessions/{talkSessionID}/reports",
-      {
-        params: {
-          path: {
-            talkSessionID: params.session_id,
-          },
-          query: {
-            status: query,
-          },
-        },
+  const query = toReportTab(new URL(request.url).searchParams.get("q"));
+  const {
+    data: reports,
+    error,
+    response,
+  } = await api.GET("/talksessions/{talkSessionID}/reports", {
+    params: {
+      path: {
+        talkSessionID: params.session_id,
       },
-    );
+      query: {
+        status: query,
+      },
+    },
+  });
 
-    return { ...reports, defaultTab: query };
-  } catch {
-    return {
-      reports: [],
-      defaultTab: "unsolved" as "unsolved" | "hold" | "deleted",
-    };
+  if (error || !reports) {
+    throw new Response(
+      getApiErrorMessage(error, "通報一覧の取得に失敗しました"),
+      { status: response.ok ? 502 : response.status },
+    );
   }
+
+  return { ...reports, defaultTab: query };
 };

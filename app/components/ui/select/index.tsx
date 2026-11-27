@@ -1,4 +1,4 @@
-import type { ComponentProps } from "react";
+import { type ComponentProps, useEffect, useState } from "react";
 import { tv } from "tailwind-variants";
 import { Arrow } from "~/components/icons";
 
@@ -32,17 +32,29 @@ export const Select = ({
   placeholder,
   defaultValue,
   value,
+  onChange,
   ...props
 }: Props) => {
+  const initialValue = value ?? defaultValue ?? "";
+  const [selectedValue, setSelectedValue] = useState(initialValue);
+
+  useEffect(() => {
+    setSelectedValue(value ?? defaultValue ?? "");
+  }, [value, defaultValue]);
+
   return (
     <span className={div({ className })}>
       <select
         {...props}
         className={select({
-          init: !value || value === "",
+          init: selectedValue === "",
           error,
         })}
-        defaultValue={value}
+        value={selectedValue}
+        onChange={(event) => {
+          setSelectedValue(event.currentTarget.value);
+          onChange?.(event);
+        }}
       >
         <option value="" hidden={true}>
           {placeholder || "選択する"}

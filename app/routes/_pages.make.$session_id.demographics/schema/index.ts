@@ -14,7 +14,22 @@ export const baseSchema = v.object({
 });
 
 /**
- * requestRestrictionsに基づいて動的にスキーマを作成する関数
+ * 制限キーとフォームフィールドの対応。
+ * API側の誕生日キーは `birth` だが、フォームでは `dateOfBirth` を使う。
+ */
+const FIELD_BY_RESTRICTION_KEY: Record<
+  string,
+  keyof typeof baseSchema.entries
+> = {
+  birth: "dateOfBirth",
+  gender: "gender",
+  city: "city",
+  prefecture: "prefecture",
+};
+
+/**
+ * requestRestrictionsに基づいて動的にスキーマを作成する関数。
+ * 明示的にrequiredになった項目だけを必須にし、それ以外は任意にする。
  */
 export const createDynamicSchema = (
   requestRestrictions: Array<{
@@ -27,13 +42,22 @@ export const createDynamicSchema = (
     ...baseSchema.entries,
   };
 
+  const requiredFields = new Set<keyof typeof newSchema>();
   for (const restriction of requestRestrictions) {
-    const fieldName = restriction.key.replace(
-      "demographics.",
-      "",
-    ) as keyof typeof newSchema;
+    if (!restriction.required) {
+      continue;
+    }
+    const restrictionKey = restriction.key.replace(/^demographics\./, "");
+    const fieldName = FIELD_BY_RESTRICTION_KEY[restrictionKey];
+    if (fieldName) {
+      requiredFields.add(fieldName);
+    }
+  }
 
-    if (!restriction.required && newSchema[fieldName]) {
+  for (const fieldName of Object.keys(newSchema) as Array<
+    keyof typeof newSchema
+  >) {
+    if (!requiredFields.has(fieldName)) {
       newSchema[fieldName] = v.optional(newSchema[fieldName]) as never;
     }
   }

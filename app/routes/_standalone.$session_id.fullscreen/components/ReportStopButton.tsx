@@ -3,14 +3,12 @@ import { useParams } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
 type Props = {
-  defaultDisableAnalysis?: boolean | null;
+  disableAnalysis: boolean;
+  onChange: (disableAnalysis: boolean) => void;
 };
 
-export const ReportStopButton = ({ defaultDisableAnalysis }: Props) => {
+export const ReportStopButton = ({ disableAnalysis, onChange }: Props) => {
   const { session_id } = useParams();
-  const [disableAnalysis, setDisableAnalysis] = useState(
-    defaultDisableAnalysis ?? false,
-  );
   const [isLoading, setIsLoading] = useState(false);
 
   const handleToggle = async () => {
@@ -36,7 +34,7 @@ export const ReportStopButton = ({ defaultDisableAnalysis }: Props) => {
         return;
       }
 
-      setDisableAnalysis(data.disableAnalysis);
+      onChange(data.disableAnalysis);
     } finally {
       setIsLoading(false);
     }

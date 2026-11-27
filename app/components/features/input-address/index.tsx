@@ -82,7 +82,8 @@ export const AddressInputs = ({ form, fields, required }: Props) => {
       >
         <Select
           {...getSelectProps(fields.city)}
-          value={fields.city.value}
+          key={fields.prefecture.value ?? ""}
+          value={fields.city.value ?? ""}
           error={isFieldsError(fields.city.errors)}
           placeholder={
             fields.prefecture.value ? "選択する" : "都道府県を選択してください"

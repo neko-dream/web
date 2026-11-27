@@ -1,6 +1,6 @@
 import { getFormProps, useForm, useInputControl } from "@conform-to/react";
 import { parseWithValibot } from "@conform-to/valibot";
-import { useRef, useTransition } from "react";
+import { useTransition } from "react";
 import { Form, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { RichTextEditor } from "~/components/features/rich-text-editor";
@@ -18,7 +18,6 @@ export { meta } from "./modules/meta";
 export default function Page({
   loaderData: { session, message },
 }: Route.ComponentProps) {
-  const thumbnailRef = useRef<string>(null);
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
 
@@ -35,25 +34,29 @@ export default function Page({
           return;
         }
 
-        const { data } = await api.POST(
-          "/talksessions/{talkSessionID}/conclusion",
-          {
-            credentials: "include",
-            params: {
-              path: {
-                talkSessionID: session.id,
+        try {
+          const { data } = await api.POST(
+            "/talksessions/{talkSessionID}/conclusion",
+            {
+              credentials: "include",
+              params: {
+                path: {
+                  talkSessionID: session.id,
+                },
+              },
+              body: {
+                content: submission.value.content,
               },
             },
-            body: {
-              content: submission.value.content,
-            },
-          },
-        );
-        if (data) {
-          toast.success("送信しました。");
-          navigate(`/${session.id}`);
-        } else {
-          toast.success("送信できませんでした。");
+          );
+          if (data) {
+            toast.success("送信しました。");
+            navigate(`/${session.id}`);
+          } else {
+            toast.error("送信できませんでした。");
+          }
+        } catch {
+          toast.error("通信に失敗しました。もう一度お試しください");
         }
       });
     },
@@ -71,9 +74,6 @@ export default function Page({
         image: file,
       },
     });
-    if (!thumbnailRef.current) {
-      thumbnailRef.current = data?.url || null;
-    }
     return data?.url || "";
   };
 

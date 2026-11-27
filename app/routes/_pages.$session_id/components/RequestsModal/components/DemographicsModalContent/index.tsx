@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Await, Link } from "react-router";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
+import { toSafeInternalPath } from "~/utils/redirect";
 
 type Props = Pick<Route.ComponentProps["loaderData"], "$restrictions"> & {
   sessionID: string;
@@ -14,6 +15,8 @@ export const DemographicsModalContent = ({
   onClose,
   nextPath,
 }: Props) => {
+  const safeNextPath = toSafeInternalPath(nextPath);
+
   return (
     <Suspense>
       <Await resolve={$restrictions}>
@@ -50,7 +53,11 @@ export const DemographicsModalContent = ({
               <div className="mt-4 flex flex-col space-y-4">
                 <Link
                   className="cursor-pointer text-center font-bold text-cs-blue-600"
-                  to={`/make/${sessionID}/demographics?next=${nextPath}`}
+                  to={`/make/${sessionID}/demographics${
+                    safeNextPath
+                      ? `?next=${encodeURIComponent(safeNextPath)}`
+                      : ""
+                  }`}
                 >
                   情報を入力・認証する
                 </Link>

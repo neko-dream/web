@@ -1,11 +1,17 @@
 import type { JSX } from "react";
-import { useRouteError } from "react-router";
+import { isRouteErrorResponse, useRouteError } from "react-router";
 import { ErrorView } from "~/components/layouts/error";
 
 export function ErrorBoundary(): JSX.Element {
   const error = useRouteError();
+  const status =
+    error instanceof Response
+      ? error.status
+      : isRouteErrorResponse(error)
+        ? error.status
+        : undefined;
 
-  if (error instanceof Response && error.status === 404) {
+  if (status === 404) {
     return (
       <ErrorView>
         <p>お探しのトークセッションは </p>

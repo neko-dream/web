@@ -54,6 +54,9 @@ export default function Page({
     Array<{ index: number; status: VoteType }>
   >([]);
   const [cardZIndexes, setCardZIndexes] = useState<Record<number, number>>({});
+  const loadingRef = useRef(false);
+  const swipeCountRef = useRef(swipeCount);
+  swipeCountRef.current = swipeCount;
 
   // 初期z-indexの設定
   useEffect(() => {
@@ -70,31 +73,81 @@ export default function Page({
     }
   }, [swipeCount]);
 
-  // カードのスワイプ後の処理
-  const handleSwipe = async ({
-    opinionStatus,
-  }: {
-    opinionStatus: VoteType;
-  }) => {
-    const opinionID = opinions[swipeCount].opinion.id;
+  const resetCard = (index: number) => {
+    const card = cardsRef.current[index];
+    if (!card) {
+      return;
+    }
 
-    setLoading(true);
-
-    const { error } = await postVote({
-      opinionID,
-      voteStatus: opinionStatus as never,
+    gsap.to(card, {
+      x: 0,
+      y: 0,
+      rotation: 0,
+      duration: 0.5,
+      ease: "power2.out",
     });
 
-    if (error) {
-      toast.error(error.message);
-      setLoading(false);
-    } else {
+    setCardsState((prev) =>
+      prev.map((state, i) =>
+        i === index
+          ? {
+              ...state,
+              x: 0,
+              y: 0,
+              rotation: 0,
+              scale: 1,
+              opacity: 1,
+              backgroundColor: "transparent",
+            }
+          : state,
+      ),
+    );
+  };
+
+  // カードのスワイプ後の処理
+  const handleSwipe = async ({
+    index,
+    opinionStatus,
+  }: {
+    index: number;
+    opinionStatus: VoteType;
+  }) => {
+    if (loadingRef.current || index !== swipeCountRef.current) {
+      return;
+    }
+
+    const opinionID = opinions[index]?.opinion.id;
+    if (!opinionID) {
+      return;
+    }
+
+    loadingRef.current = true;
+    setLoading(true);
+
+    try {
+      const { error } = await postVote({
+        opinionID,
+        voteStatus: opinionStatus,
+      });
+
+      if (error) {
+        toast.error(
+          typeof error === "object" && error !== null && "message" in error
+            ? String(error.message)
+            : "意思表明に失敗しました",
+        );
+        resetCard(index);
+        return;
+      }
+
       // スワイプ履歴に追加
-      setSwipeHistory((prev) => [
-        ...prev,
-        { index: swipeCount, status: opinionStatus },
-      ]);
+      setSwipeHistory((prev) => [...prev, { index, status: opinionStatus }]);
       setSwipeCount((prev) => prev + 1);
+    } catch {
+      toast.error("通信に失敗しました。もう一度お試しください");
+      resetCard(index);
+    } finally {
+      loadingRef.current = false;
       setLoading(false);
     }
   };
@@ -157,132 +210,128 @@ export default function Page({
     }
   };
 
-  // GSAP Draggableの設定
+  // 一番上のカードだけをドラッグ可能にする。swipeCountが変わったら前のインスタンスを破棄する
   useEffect(() => {
-    // 各カードにDraggableを適用
-    cardsRef.current.map((card, index) => {
-      if (!card) {
-        return null;
-      }
+    const index = swipeCount;
+    const card = cardsRef.current[index];
+    if (!card) {
+      return;
+    }
 
-      return Draggable.create(card, {
-        type: "x,y",
-        zIndexBoost: false,
-        onDrag: function () {
-          // ドラッグ中の回転と背景色の更新
-          const rotation = this.x / 20;
-          let backgroundColor = "transparent";
-          let opacity = 0;
+    const draggables = Draggable.create(card, {
+      type: "x,y",
+      zIndexBoost: false,
+      onDrag: function () {
+        if (loadingRef.current) {
+          return;
+        }
 
-          if (this.x > 10) {
-            backgroundColor = "blue";
-            opacity = this.x / 400;
-          } else if (this.x < -10) {
-            backgroundColor = "red";
-            opacity = -this.x / 400;
-          }
+        // ドラッグ中の回転と背景色の更新
+        const rotation = this.x / 20;
+        let backgroundColor = "transparent";
+        let opacity = 0;
 
-          if (this.y < -100) {
-            backgroundColor = "transparent";
-          }
+        if (this.x > 10) {
+          backgroundColor = "blue";
+          opacity = this.x / 400;
+        } else if (this.x < -10) {
+          backgroundColor = "red";
+          opacity = -this.x / 400;
+        }
 
+        if (this.y < -100) {
+          backgroundColor = "transparent";
+        }
+
+        gsap.to(card, {
+          rotation,
+          duration: 0,
+        });
+
+        setCardsState((prev) => {
+          return prev.map((state, i) => {
+            if (i === index) {
+              return {
+                ...state,
+                x: this.x,
+                y: this.y,
+                rotation,
+                backgroundColor,
+                opacity,
+              };
+            }
+
+            return state;
+          });
+        });
+      },
+      onDragEnd: function () {
+        if (loadingRef.current) {
+          resetCard(index);
+          return;
+        }
+
+        const threshold = windowWidth * 0.3; // 画面幅の30%
+        const xdir = this.x > threshold ? 1 : this.x < -threshold ? -1 : 0;
+        const ydir = this.y > 100 ? 1 : this.y < -100 ? -1 : 0;
+
+        let status: VoteType | null = null;
+
+        if (xdir >= 1) {
+          status = "agree";
+          // カードを右に飛ばすアニメーション
           gsap.to(card, {
-            rotation,
-            duration: 0,
+            x: window.innerWidth + 200,
+            y: this.y,
+            duration: 0.5,
+            ease: "power2.out",
           });
-
-          setCardsState((prev) => {
-            return prev.map((state, i) => {
-              // インデックスが一致する場合、状態を更新
-              if (i === index) {
-                return {
-                  ...state,
-                  x: this.x,
-                  y: this.y,
-                  rotation,
-                  backgroundColor,
-                  opacity,
-                };
-              }
-
-              // そうでない場合は状態を変更せずに返す
-              return state;
-            });
+        } else if (xdir <= -1) {
+          status = "disagree";
+          // カードを左に飛ばすアニメーション
+          gsap.to(card, {
+            x: -window.innerWidth - 200,
+            y: this.y,
+            duration: 0.5,
+            ease: "power2.out",
           });
-        },
-        onDragEnd() {
-          const threshold = windowWidth * 0.3; // 画面幅の30%
-          const xdir = this.x > threshold ? 1 : this.x < -threshold ? -1 : 0;
-          const ydir = this.y > 100 ? 1 : this.y < -100 ? -1 : 0;
+        } else if (ydir >= 1) {
+          status = "pass";
+          // カードを下に飛ばすアニメーション
+          gsap.to(card, {
+            x: this.x,
+            y: window.innerHeight + 200,
+            duration: 0.5,
+            ease: "power2.out",
+          });
+        }
 
-          let status: VoteType = "pass";
+        if (!status) {
+          // どの方向にもスワイプされなかった場合は元の位置に戻す
+          resetCard(index);
+          return;
+        }
 
-          if (xdir >= 1) {
-            status = "agree";
-            // カードを右に飛ばすアニメーション
-            gsap.to(card, {
-              x: window.innerWidth + 200,
-              y: this.y,
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          } else if (xdir <= -1) {
-            status = "disagree";
-            // カードを左に飛ばすアニメーション
-            gsap.to(card, {
-              x: -window.innerWidth - 200,
-              y: this.y,
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          } else if (ydir >= 1) {
-            status = "pass";
-            // カードを下に飛ばすアニメーション
-            gsap.to(card, {
-              x: this.x,
-              y: window.innerHeight + 200,
-              duration: 0.5,
-              ease: "power2.out",
-            });
-          } else {
-            // どの方向にもスワイプされなかった場合は元の位置に戻す
-            gsap.to(card, {
-              x: 0,
-              y: 0,
-              rotation: 0,
-              duration: 0.5,
-              ease: "elastic.out(1, 0.5)",
-            });
-
-            setCardsState((prev) => {
-              return prev.map((state, i) => {
-                // インデックスが一致する場合、状態を更新
-                if (i === index) {
-                  return {
-                    ...state,
-                    x: this.x,
-                    y: this.y,
-                    backgroundColor: "transparent",
-                  };
-                }
-
-                // そうでない場合は状態を変更せずに返す
-                return state;
-              });
-            });
-            return;
-          }
-
-          // ユーザーコールバックを呼び出し
-          handleSwipe({ opinionStatus: status });
-        },
-      });
+        // ユーザーコールバックを呼び出し
+        void handleSwipe({ index, opinionStatus: status });
+      },
     });
-  }, [swipeCount]);
+
+    return () => {
+      for (const draggable of draggables) {
+        draggable.kill();
+      }
+    };
+  }, [swipeCount, windowWidth]);
 
   const handleSubmitVote = async (opinionStatus: VoteType) => {
+    if (loadingRef.current) {
+      return;
+    }
+
     // カードをアニメーションで移動
-    const card = cardsRef.current[swipeCount];
+    const index = swipeCount;
+    const card = cardsRef.current[index];
 
     if (!card) {
       return;
@@ -321,7 +370,7 @@ export default function Page({
     // カードの状態を即座に更新して重なりを表示
     setCardsState((prev) =>
       prev.map((state, i) => {
-        if (i === swipeCount) {
+        if (i === index) {
           return {
             ...state,
             backgroundColor,
@@ -338,28 +387,10 @@ export default function Page({
       rotation,
       duration: 0.7,
       ease: "power2.out",
-      onComplete: () => {
-        // アニメーション完了後に最終状態を更新
-        setCardsState((prev) =>
-          prev.map((state, i) => {
-            if (i === swipeCount) {
-              return {
-                ...state,
-                x,
-                y,
-                rotation,
-                backgroundColor,
-                opacity,
-              };
-            }
-            return state;
-          }),
-        );
-      },
     });
 
     // ユーザーコールバックを呼び出し
-    handleSwipe({ opinionStatus });
+    await handleSwipe({ index, opinionStatus });
   };
 
   return (

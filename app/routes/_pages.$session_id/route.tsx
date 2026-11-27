@@ -7,6 +7,7 @@ import {
   useRevalidator,
   useSearchParams,
 } from "react-router";
+import { toast } from "react-toastify";
 import { AuthenticateCard } from "~/components/features/auth/LoginCard";
 import { Left, Notification } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
@@ -17,6 +18,7 @@ import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
 import { isEnd } from "~/utils/format-date";
+import { toSafeInternalPath } from "~/utils/redirect";
 import { notfound } from "~/utils/response";
 import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
 import { CreateOpinionButton } from "./components/CreateOpinionButton";
@@ -226,7 +228,9 @@ const Contents = ({
         <div className="text-blue-500 text-sm">
           <div className="flex items-center">
             <Notification className="fill-cs-blue-600" />
-            <p className="ml-2">誰でも参加OK</p>
+            <p className="ml-2">
+              {session.isLocked ? "合言葉が必要" : "誰でも参加OK"}
+            </p>
           </div>
         </div>
 
@@ -317,9 +321,22 @@ const Contents = ({
           if (state === "signup") {
             return (
               <AuthenticateCard
-                onSuccess={() => {
+                onSuccess={async () => {
                   revalidate();
-                  setIsRequestModal(["consent"]);
+                  try {
+                    const result = await check(nextPath);
+                    if (result === "satisfied") {
+                      setIsRequestModal([]);
+                      const destination = toSafeInternalPath(nextPath);
+                      if (destination) {
+                        navigate(destination);
+                      }
+                    }
+                  } catch {
+                    toast.error(
+                      "参加条件を確認できませんでした。もう一度お試しください",
+                    );
+                  }
                 }}
                 useWithoutLoggingIn={false}
               />
