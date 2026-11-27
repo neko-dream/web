@@ -11,13 +11,25 @@ export const clientLoader = async ({ params }: ClientLoaderFunctionArgs) => {
 
   const enableSurvey = ENABLE_SURVEY;
 
-  const $session = api.GET("/talksessions/{talkSessionID}", {
-    params: {
-      path: {
-        talkSessionID: params.session_id,
+  const $session = api
+    .GET("/talksessions/{talkSessionID}", {
+      params: {
+        path: {
+          talkSessionID: params.session_id,
+        },
       },
-    },
-  });
+    })
+    .then(({ data, error, response }) => {
+      if (error) {
+        if (response.status === 404) {
+          throw notfound();
+        }
+        throw new Response("セッションを取得できませんでした", {
+          status: response.ok ? 502 : response.status,
+        });
+      }
+      return { data };
+    });
 
   const $remainingCount = api
     .GET("/talksessions/{talkSessionID}/swipe_opinions", {
