@@ -1,5 +1,6 @@
 import { type ClientLoaderFunctionArgs, redirect } from "react-router";
 import { api } from "~/libs/openapi-fetch";
+import { toSafeInternalPath } from "~/utils/redirect";
 import { forbidden, notfound } from "~/utils/response";
 
 export const clientLoader = async ({
@@ -10,7 +11,9 @@ export const clientLoader = async ({
     throw notfound();
   }
 
-  const next = new URL(request.url).searchParams.get("next");
+  const next = toSafeInternalPath(
+    new URL(request.url).searchParams.get("next"),
+  );
 
   const [{ data }, { data: requiredRestrictions }, { data: restrictions }] =
     await Promise.all([
