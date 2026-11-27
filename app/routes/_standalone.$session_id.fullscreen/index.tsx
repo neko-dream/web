@@ -49,18 +49,27 @@ export default function Page({
 }: Route.ComponentProps) {
   const [currentTab, setCurrentTab] = useState("opinions");
   const [activeTab, setActiveTab] = useState("A");
+  const [disableAnalysis, setDisableAnalysis] = useState(
+    session.disableAnalysis ?? false,
+  );
   const { revalidate } = useRevalidator();
 
   useEffect(() => {
-    let interval: number;
-    if (!session.disableAnalysis) {
-      interval = window.setInterval(() => {
-        revalidate();
-      }, 1000);
+    setDisableAnalysis(session.disableAnalysis ?? false);
+  }, [session.disableAnalysis]);
+
+  useEffect(() => {
+    if (disableAnalysis) {
+      return;
     }
+    const interval = window.setInterval(() => {
+      if (document.visibilityState === "visible") {
+        revalidate();
+      }
+    }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [disableAnalysis, revalidate]);
 
   // グループ名を取得する関数
   const handleSelectGroup = (id: number) => {
@@ -81,7 +90,10 @@ export default function Page({
         <p className="primary-gradient inline-block text-clip text-center font-bold text-2xl">
           {session.theme}
         </p>
-        <ReportStopButton defaultDisableAnalysis={session.disableAnalysis} />
+        <ReportStopButton
+          disableAnalysis={disableAnalysis}
+          onChange={setDisableAnalysis}
+        />
       </div>
 
       <Tabs tabs={MAIN_TABS} activeTab={currentTab} onChange={setCurrentTab} />
