@@ -35,9 +35,7 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
   const navItems = [
     { icon: Setting, label: "設定", to: "/settings" },
     { icon: Home, label: "ホーム", to: "/home" },
-    isLoggedIn
-      ? { icon: User, label: "マイページ", to: "/users/me" }
-      : { icon: User, label: "ログイン", to: "/" },
+    { icon: User, label: "マイページ", to: "/users/me" },
   ];
 
   const visible =
@@ -47,6 +45,26 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
 
   if (!visible) {
     return null;
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="pointer-events-none fixed right-0 bottom-0 left-0 z-40 flex justify-center pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+        <motion.div
+          initial={{ y: 96, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ...spring, damping: 24 }}
+          className="pointer-events-auto"
+        >
+          <Link
+            to="/"
+            className="primary-gradient flex h-13 w-[232px] items-center justify-center rounded-full font-bold text-[15px] text-white shadow-[0px_4px_8px_rgba(0,0,0,0.16)]"
+          >
+            ログインする
+          </Link>
+        </motion.div>
+      </div>
+    );
   }
 
   return (

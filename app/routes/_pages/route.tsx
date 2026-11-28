@@ -22,6 +22,7 @@ export default function Layout() {
   const { pathname } = useLocation();
   const user = useAuthStore((state) => state.user);
   const permissions = useAuthStore((state) => state.permissions);
+  const authStatus = useAuthStore((state) => state.status);
   const isLoggedIn = !!user;
   const canCreate = canCreateTalkSession(permissions);
 
@@ -80,7 +81,9 @@ export default function Layout() {
         <Outlet />
       </main>
       {showFooter && <Footer />}
-      <BottomNav isLoggedIn={isLoggedIn} canCreate={canCreate} />
+      {authStatus === "ready" && (
+        <BottomNav isLoggedIn={isLoggedIn} canCreate={canCreate} />
+      )}
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer
