@@ -3,13 +3,10 @@ import { create } from "zustand";
 import { ENABLE_SURVEY } from "~/constants";
 import { api, getApiErrorCode } from "~/libs/openapi-fetch";
 
-export type RequestModalState = Array<
-  "demography" | "consent" | "signup" | "survey"
->;
+export type RequestModalState = Array<"consent" | "signup" | "survey">;
 
 /**
- * アンケート回答で満たされるrestrictionのキー。
- * デモグラ入力とは別のモーダル（アンケート回答）で満たす
+ * アンケート回答で満たされるrestrictionのキー
  */
 export const SURVEY_RESTRICTION_KEY = "survey.answered";
 
@@ -65,13 +62,9 @@ export const useVote = ({ sessionID }: Props) => {
       return "non-satisfied";
     }
 
-    // アンケート回答はデモグラ入力とは別モーダルなので分離する
     const surveyRequired =
       ENABLE_SURVEY &&
       restrictionsRequired?.some(({ key }) => key === SURVEY_RESTRICTION_KEY);
-    const demographicsRequired = restrictionsRequired?.filter(
-      ({ key }) => key !== SURVEY_RESTRICTION_KEY,
-    );
 
     const isRequestModal: RequestModalState = [];
     // 同意モーダルを出す
@@ -81,10 +74,6 @@ export const useVote = ({ sessionID }: Props) => {
     // アンケートモーダルを出す
     if (surveyRequired) {
       isRequestModal.push("survey");
-    }
-    // デモグラモーダルを出す
-    if (demographicsRequired && demographicsRequired.length > 0) {
-      isRequestModal.push("demography");
     }
     if (isRequestModal.length > 0) {
       setIsRequestModal(isRequestModal);

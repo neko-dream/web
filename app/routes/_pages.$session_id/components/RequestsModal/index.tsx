@@ -18,7 +18,7 @@ export const RequestsModal = ({ sessionID, children, ...props }: Props) => {
 
   const next = () => {
     const [, ...rest] = isRequestModal;
-    // 次のでもグラを取得する必要がなければ繊維
+    // 次のモーダルがなければ遷移する
     if (rest.length === 0 && nextPath) {
       navigate(nextPath);
     }

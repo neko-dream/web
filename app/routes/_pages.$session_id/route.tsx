@@ -13,26 +13,17 @@ import {
   Alert,
   ClockCircle,
   Environment,
-  Home,
   Left,
   LineChart,
   Message,
   More,
-  Notification,
   Pen,
-  Pushpin,
   Setting,
-  Smile,
-  User,
 } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { MunicipalityBadge } from "~/components/ui/municipality-badge";
 import { useAuthStore } from "~/hooks/useAuthStore";
-import {
-  SURVEY_RESTRICTION_KEY,
-  useSatisfiedStore,
-  useVote,
-} from "~/hooks/useVote";
+import { useSatisfiedStore, useVote } from "~/hooks/useVote";
 import { JST } from "~/libs/dayjs";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
 import type { SessionRouteContext } from "~/types/ctx";
@@ -43,7 +34,6 @@ import { EditButton } from "./components/EditButton";
 import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton";
 import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
-import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
 import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
 import { SessionToolbar, type ToolbarItem } from "./components/SessionToolbar";
 
@@ -53,17 +43,6 @@ export { meta } from "./modules/meta";
 export { shouldRevalidate } from "./modules/shouldRevalidate";
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
-
-/** 参加制限（入力済対象）タグのアイコン */
-const restrictionIcons: Record<
-  string,
-  React.ComponentType<React.SVGProps<SVGSVGElement>>
-> = {
-  birth: User,
-  gender: Smile,
-  city: Home,
-  prefecture: Pushpin,
-};
 
 export default function Layout({
   loaderData: { $session, enableSurvey, ...props },
@@ -97,7 +76,6 @@ type Props = Omit<Route.ComponentProps["loaderData"], "$session"> & {
 
 const Contents = ({
   session,
-  $restrictions,
   $remainingCount,
   $positions,
   $survey,
@@ -108,11 +86,6 @@ const Contents = ({
     { label: "意見", href: `/${session.id}/opinions`, icon: Message },
     { label: "分析", href: `/${session.id}/analysis`, icon: LineChart },
   ];
-
-  // 参加制限（アンケート回答restrictionはタグ表示しない）
-  const restrictions =
-    session.restrictions?.filter(({ key }) => key !== SURVEY_RESTRICTION_KEY) ??
-    [];
 
   const remainingDays = JST(session.scheduledEndTime).diff(
     JST(new Date()),
@@ -128,7 +101,7 @@ const Contents = ({
   const authStatus = useAuthStore((state) => state.status);
   const user = useAuthStore((state) => state.user);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal, nextPath, setNextPath } =
+  const { isRequestModal, setIsRequestModal, setNextPath } =
     useSatisfiedStore();
   const { revalidate } = useRevalidator();
   const [searchParams] = useSearchParams();
@@ -287,35 +260,6 @@ const Contents = ({
             <p className="text-ink-subtle text-sm">{remainingLabel}</p>
           </div>
         </div>
-
-        {restrictions.length > 0 ? (
-          <div className="flex flex-wrap items-center gap-1 py-1">
-            <div className="rounded bg-[#D0E5F5] px-2 py-1">
-              <p className="whitespace-nowrap text-[#657A88] text-sm">
-                入力済対象
-              </p>
-            </div>
-            {restrictions.map((restriction) => {
-              const Icon = restrictionIcons[restriction.key];
-              return (
-                <div
-                  key={restriction.key}
-                  className="flex items-center gap-[2px] py-1"
-                >
-                  {Icon && <Icon className="size-[18px] text-ink-muted" />}
-                  <p className="whitespace-nowrap text-ink-muted text-sm">
-                    {restriction.description}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="flex items-center text-blue-500 text-sm">
-            <Notification className="fill-cs-blue-600" />
-            <p className="ml-2">誰でも参加OK</p>
-          </div>
-        )}
       </div>
 
       <div className="flex-1 bg-surface px-4 py-4 pb-32">
@@ -354,7 +298,7 @@ const Contents = ({
                     `survey-answered-${session.id}`,
                     "true",
                   );
-                  // 後続のモーダル（デモグラ等）があれば進め、なければnextPathへ遷移
+                  // 後続のモーダルがあれば進め、なければnextPathへ遷移
                   next();
                 }}
               />
@@ -370,16 +314,6 @@ const Contents = ({
                 }
                 onClose={handleCloseRequestModal}
                 onConform={next}
-              />
-            );
-          }
-          if (state === "demography") {
-            return (
-              <DemographicsModalContent
-                $restrictions={$restrictions}
-                sessionID={session.id}
-                onClose={handleCloseRequestModal}
-                nextPath={nextPath}
               />
             );
           }
