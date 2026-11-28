@@ -13,12 +13,14 @@ const setTheme = (requestURL: string) => {
 };
 
 export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
+  const theme = setTheme(request.url);
+
   const $session = api
     .GET("/talksessions", {
       params: {
         query: {
-          status: "open",
-          theme: setTheme(request.url),
+          status: theme ? undefined : "open",
+          theme,
           limit: 100,
         },
       },
@@ -44,5 +46,5 @@ export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
       return null;
     });
 
-  return { $session, $closeSession, theme: setTheme(request.url) };
+  return { $session, $closeSession, theme };
 };

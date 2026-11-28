@@ -45,7 +45,7 @@ test("home loader requests open and finished sessions separately", async (t) => 
   await Promise.all([data.$session, data.$closeSession]);
 
   assert.equal(urls.length, 2);
-  assert.equal(statusOf(urls[0]), null);
+  assert.equal(statusOf(urls[0]), "open");
   assert.equal(themeOf(urls[0]), null);
   assert.equal(urls[0].searchParams.get("limit"), "100");
   assert.equal(statusOf(urls[1]), "finished");
