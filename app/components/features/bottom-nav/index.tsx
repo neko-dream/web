@@ -1,0 +1,128 @@
+import { motion } from "motion/react";
+import { Link, useLocation } from "react-router";
+import { Home, PlusCircle, Setting, User } from "~/components/icons";
+
+type Props = {
+  isLoggedIn: boolean;
+  canCreate: boolean;
+};
+
+const isActivePath = (to: string, pathname: string) => {
+  if (to === "/home") {
+    return pathname === "/home";
+  }
+  if (to === "/settings") {
+    return pathname === "/settings";
+  }
+  if (to === "/users/me") {
+    return pathname === "/users/me" || pathname === "/users/me/histories";
+  }
+  if (to === "/") {
+    return false;
+  }
+  return pathname.startsWith(to);
+};
+
+const spring = {
+  type: "spring",
+  stiffness: 400,
+  damping: 30,
+} as const;
+
+export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
+  const { pathname } = useLocation();
+
+  const navItems = [
+    { icon: Setting, label: "設定", to: "/settings" },
+    { icon: Home, label: "ホーム", to: "/home" },
+    { icon: User, label: "マイページ", to: "/users/me" },
+  ];
+
+  const visible =
+    pathname === "/home" ||
+    pathname === "/settings" ||
+    pathname.startsWith("/users/me");
+
+  if (!visible) {
+    return null;
+  }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="pointer-events-none fixed right-0 bottom-0 left-0 z-40 flex justify-center pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+        <motion.div
+          initial={{ y: 96, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ ...spring, damping: 24 }}
+          className="pointer-events-auto"
+        >
+          <Link
+            to="/"
+            className="primary-gradient flex h-13 w-[232px] items-center justify-center rounded-full font-bold text-[15px] text-white shadow-[0px_4px_8px_rgba(0,0,0,0.16)]"
+          >
+            ログインする
+          </Link>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pointer-events-none fixed right-0 bottom-0 left-0 z-40 flex justify-center pb-[calc(env(safe-area-inset-bottom,0px)+16px)]">
+      <motion.div
+        initial={{ y: 96, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ ...spring, damping: 24 }}
+        className="pointer-events-auto flex items-center gap-6"
+      >
+        <nav className="flex items-center gap-6 rounded-full bg-[#F0F4F9] p-2 shadow-[0px_4px_8px_rgba(0,0,0,0.16)]">
+          {navItems.map((item) => {
+            const active = isActivePath(item.to, pathname);
+            return (
+              <Link
+                key={item.to}
+                to={item.to}
+                aria-label={item.label}
+                aria-current={active ? "page" : undefined}
+                className="relative flex size-14 flex-col items-center justify-center gap-0.5"
+              >
+                {active && (
+                  <motion.span
+                    layoutId="bottom-nav-active"
+                    transition={spring}
+                    className="absolute inset-0 rounded-full bg-[linear-gradient(90deg,#FFC4C0,#CDCCF3_50%,#C1E6F7)]"
+                  />
+                )}
+                <motion.span
+                  whileTap={{ scale: 0.85 }}
+                  transition={spring}
+                  className={`relative flex flex-col items-center gap-0.5 ${active ? "text-ink" : "text-ink-muted"}`}
+                >
+                  <item.icon className="size-5" />
+                  <span className="text-[10px] leading-none">{item.label}</span>
+                </motion.span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {canCreate && (
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.9 }}
+            transition={spring}
+            className="rounded-2xl shadow-[0px_4px_2px_rgba(0,0,0,0.25)]"
+          >
+            <Link
+              to="/make/new"
+              aria-label="セッションを作成"
+              className="flex size-16 items-center justify-center rounded-2xl bg-[linear-gradient(225deg,#FF3B30_0%,#5856D6_50%,#32ADE6_100%)]"
+            >
+              <PlusCircle className="size-6 text-white" />
+            </Link>
+          </motion.div>
+        )}
+      </motion.div>
+    </div>
+  );
+};

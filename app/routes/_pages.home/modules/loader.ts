@@ -1,17 +1,6 @@
 import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
-const setStatus = (requestURL: string) => {
-  try {
-    const query = new URL(requestURL).searchParams.get("q");
-    if (query === "open" || query === "finished") {
-      return query;
-    }
-  } catch {
-    return;
-  }
-};
-
 const setTheme = (requestURL: string) => {
   try {
     const query = new URL(requestURL).searchParams.get("q");
@@ -24,12 +13,14 @@ const setTheme = (requestURL: string) => {
 };
 
 export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
+  const theme = setTheme(request.url);
+
   const $session = api
     .GET("/talksessions", {
       params: {
         query: {
-          status: setStatus(request.url),
-          theme: setTheme(request.url),
+          status: theme ? undefined : "open",
+          theme,
           limit: 100,
         },
       },
@@ -55,5 +46,5 @@ export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
       return null;
     });
 
-  return { $session, $closeSession, theme: setTheme(request.url) };
+  return { $session, $closeSession, theme };
 };

@@ -2,7 +2,9 @@ import { Outlet, useLocation, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { lazy, useEffect } from "react";
+import { BottomNav } from "~/components/features/bottom-nav";
 import { useAuthStore } from "~/hooks/useAuthStore";
+import { canCreateTalkSession } from "~/libs/session-creation";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
@@ -12,21 +14,46 @@ export { meta } from "./modules/meta";
 
 const Analytics = lazy(() => import("~/components/features/analytics"));
 
+const SESSION_PATH_PATTERN =
+  /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
+
 export default function Layout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const user = useAuthStore((state) => state.user);
-  const isTopPage = pathname === "/";
+  const permissions = useAuthStore((state) => state.permissions);
+  const authStatus = useAuthStore((state) => state.status);
+  const isLoggedIn = !!user;
+  const canCreate = canCreateTalkSession(permissions);
+
   const isAuthPage =
     pathname === "/auth/login" ||
     pathname === "/auth/email/verify" ||
     pathname === "/auth/password/setup" ||
     pathname === "/organization/login";
-  // 組織向けログインは左側にロゴを置くので、トップページと同じくヘッダーを出さない
+
+  const isTopPage = pathname === "/";
+  const isTabPage =
+    pathname === "/home" ||
+    pathname === "/settings" ||
+    pathname.startsWith("/users/me");
+  // 自前でボトムナビ分の余白を持つページ
+  const isOwnPaddingPage =
+    pathname === "/settings" || pathname.startsWith("/users/me");
+  const isSessionPage = SESSION_PATH_PATTERN.test(pathname);
+  const isSwipePage = pathname.startsWith("/swipe/");
+  const isMakePage = pathname.startsWith("/make/");
+
+  // アプリ内の主要画面はボトムナビと各画面のヘッダーに任せる
   const hideHeader =
     isTopPage ||
-    pathname === "/organization/login" ||
-    pathname === "/auth/password/setup";
+    isAuthPage ||
+    isTabPage ||
+    isSessionPage ||
+    isSwipePage ||
+    isMakePage;
+  // フッターは公開ページだけに出す
+  const showFooter = isTopPage || isAuthPage || pathname.startsWith("/guide");
 
   // ログイン状態が確定してからトップページをホームへ逃がす
   useEffect(() => {
@@ -43,13 +70,20 @@ export default function Layout() {
       <main
         className={
           hideHeader
-            ? "flex min-h-screen flex-col"
-            : "flex min-h-[calc(100vh-48px)] flex-col"
+            ? `flex min-h-screen flex-col ${
+                isTabPage && !isOwnPaddingPage
+                  ? "pb-[calc(env(safe-area-inset-bottom,0px)+88px)]"
+                  : ""
+              }`
+            : "flex min-h-[calc(100vh-56px)] flex-col"
         }
       >
         <Outlet />
       </main>
-      <Footer />
+      {showFooter && <Footer />}
+      {authStatus === "ready" && (
+        <BottomNav isLoggedIn={isLoggedIn} canCreate={canCreate} />
+      )}
 
       {/* -- 以下ダイアログなど -- */}
       <ToastContainer

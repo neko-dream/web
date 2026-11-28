@@ -11,11 +11,11 @@ export const TopicCard = () => {
         <p className="mx-4 font-bold">西山公園で野外ライブを開催したい！</p>
         <div className="mx-4 mt-4 box-border flex w-[-webkit-fill-available] justify-between border-[#E5E5EA] border-b pb-2">
           <p className="flex w-28 text-xs">
-            <Environment />
+            <Environment className="text-[#8E8E93]" />
             鯖江
           </p>
           <p className="flex w-28 text-xs">
-            <ClockCircle />
+            <ClockCircle className="text-[#8E8E93]" />
             あと40日
           </p>
         </div>

@@ -1,6 +1,6 @@
 import { use } from "react";
 import { Card } from "~/components/features/opinion-card";
-import type { Route } from "~/react-router/_pages.$session_id.analysis/+types";
+import type { Route } from "~/react-router/_standalone.$session_id.fullscreen/+types";
 
 type Props = {
   $positions: Route.ComponentProps["loaderData"]["$positions"];

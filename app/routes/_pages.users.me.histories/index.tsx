@@ -13,7 +13,15 @@ export default function Page({
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={$session}>
           {({ data }) => {
-            return data?.talkSessions.map((session, i) => (
+            if (!data?.talkSessions?.length) {
+              return (
+                <p className="px-4 py-12 text-center text-ink-subtle text-sm">
+                  参加したセッションはまだありません。
+                </p>
+              );
+            }
+
+            return data.talkSessions.map((session, i) => (
               <Link
                 to={`/${session.talkSession.id}`}
                 className="mx-auto block w-full max-w-2xl rounded-md bg-white p-2"

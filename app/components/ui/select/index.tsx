@@ -9,7 +9,7 @@ type Props = ComponentProps<"select"> & {
 };
 
 const select = tv({
-  base: "h-12 w-full appearance-none rounded-md border border-gray-300 bg-white px-4",
+  base: "h-12 w-full appearance-none rounded-xl border border-line bg-white px-4 text-base",
   variants: {
     error: {
       true: "border-red-500 bg-red-50",

@@ -20,7 +20,7 @@ export const ReportCard = ({
   return (
     <div className="rounded-xl bg-white p-2 ">
       <div className="flex items-center font-bold text-cs-caution">
-        <Alert />
+        <Alert className="text-[#FF3B30]" />
         <p className="ml-1">{reportCount}人から通報</p>
       </div>
       <div className="mt-1 border-cs-gray-200 border-b pb-3">

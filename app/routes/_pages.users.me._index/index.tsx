@@ -13,7 +13,15 @@ export default function Page({
       <Suspense fallback={<div>Loading...</div>}>
         <Await resolve={$opinions}>
           {({ data }) => {
-            return data?.opinions.map(({ opinion, user }, i) => {
+            if (!data?.opinions?.length) {
+              return (
+                <p className="px-4 py-12 text-center text-ink-subtle text-sm">
+                  まだ意見を投稿していません。
+                </p>
+              );
+            }
+
+            return data.opinions.map(({ opinion, user }, i) => {
               return (
                 <Card
                   key={i}

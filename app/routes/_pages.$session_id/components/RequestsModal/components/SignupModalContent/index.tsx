@@ -3,10 +3,11 @@ import { Link } from "react-router";
 import { Arrow, AuthGoogle, AuthLine } from "~/components/icons";
 import { Checkbox } from "~/components/ui/checkbox";
 import { ExternalLink } from "~/components/ui/external-link";
-import { GOOGLE_LOGIN_URL, LINE_LOGIN_URL } from "~/constants";
+import { useLoginUrls } from "~/hooks/useLoginUrls";
 
 export const SignupModalContent = () => {
   const [isChecked, setChecked] = useState(false);
+  const loginUrls = useLoginUrls();
 
   const handleCheckboxChange = () => {
     setChecked((prev) => !prev);
@@ -45,7 +46,7 @@ export const SignupModalContent = () => {
 
       <div className="mx-4 mt-6 flex flex-col items-center">
         <a
-          href={GOOGLE_LOGIN_URL}
+          href={loginUrls.google}
           onClick={(e) => !isChecked && e.preventDefault()}
           className={`flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2 ${
             isChecked ? "" : "cursor-not-allowed opacity-60"
@@ -57,7 +58,7 @@ export const SignupModalContent = () => {
           </span>
         </a>
         <a
-          href={LINE_LOGIN_URL}
+          href={loginUrls.line}
           onClick={(e) => !isChecked && e.preventDefault()}
           className={`mt-4 flex h-10 w-full items-center justify-between rounded-full border border-none bg-[#06C755] px-6 py-2 pl-5 ${
             isChecked ? "" : "cursor-not-allowed opacity-60"

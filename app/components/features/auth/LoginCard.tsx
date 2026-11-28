@@ -1,7 +1,6 @@
 import { type MouseEvent, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { cn } from "tailwind-variants";
 import { Arrow } from "~/components/icons";
 import { useAuthStore } from "~/hooks/useAuthStore";
 import { api } from "~/libs/openapi-fetch";
@@ -72,28 +71,30 @@ export const AuthenticateCard = ({
   return (
     <>
       <AuthFrame className={className}>
-        <p className="primary-gradient mx-auto inline-block text-clip text-center font-bold">
+        <h2 className="text-center font-bold text-[19px] text-ink tracking-tight">
           ことひろに参加しよう
+        </h2>
+        <p className="mt-1.5 text-center text-[13px] text-ink-muted">
+          ゲストでも、すぐに参加できます
         </p>
-        <p className="text-center text-xs">3つの方法から参加できます</p>
 
         <TermsAgreement checked={isChecked} onChange={setChecked} />
 
-        <div className="mx-4 mt-6 flex flex-col items-center gap-4">
+        <div className="mt-5 flex flex-col items-center gap-3">
           <button
             type="button"
             onClick={handleGuestLogin}
-            className={cn([
-              "flex h-10 w-full items-center justify-between rounded-full border border-[#545456]/34 px-6 py-2",
-              (!isChecked || isSubmitting) && "cursor-not-allowed opacity-60",
-            ])}
+            aria-disabled={!isChecked || isSubmitting}
+            className={`flex h-12 w-full items-center justify-center rounded-2xl bg-ink px-4 font-bold text-[15px] text-white transition-opacity active:opacity-90 ${
+              !isChecked || isSubmitting ? "!cursor-not-allowed opacity-60" : ""
+            }`}
           >
-            <span className="mx-auto font-bold text-gray-700">
-              ゲストとしてログイン
-            </span>
+            ゲストとしてログイン
           </button>
 
-          <div className="w-full border-gray-300 border-t border-dashed" />
+          <div className="my-1 flex w-full items-center gap-3 text-[11px] text-ink-muted before:h-px before:flex-1 before:bg-line after:h-px after:flex-1 after:bg-line">
+            または
+          </div>
 
           <AuthProviderLinks
             disabled={!isChecked || isSubmitting}
@@ -103,7 +104,7 @@ export const AuthenticateCard = ({
           {useWithoutLoggingIn && (
             <Link
               to="/home"
-              className="mt-6 flex items-center space-x-2 font-bold text-gray-600 text-sm"
+              className="mt-2 flex min-h-11 items-center gap-1.5 font-medium text-[13px] text-ink-muted hover:text-ink"
             >
               <span>ログインせずに使う</span>
               <Arrow className="-rotate-90" />
@@ -111,7 +112,7 @@ export const AuthenticateCard = ({
           )}
         </div>
       </AuthFrame>
-      <OrganizationLoginLink className="mx-auto mt-4 mb-6 w-fit justify-center" />
+      <OrganizationLoginLink className="mx-auto mt-4 mb-2 w-fit justify-center rounded-full bg-white/90 px-4 backdrop-blur-sm" />
     </>
   );
 };

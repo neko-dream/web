@@ -1,3 +1,4 @@
+import { FileText } from "lucide-react";
 import { type MouseEvent, Suspense, useEffect, useRef, useState } from "react";
 import {
   Await,
@@ -8,35 +9,38 @@ import {
   useSearchParams,
 } from "react-router";
 import { AuthenticateCard } from "~/components/features/auth/LoginCard";
-import { Left, Notification } from "~/components/icons";
+import {
+  Alert,
+  ClockCircle,
+  Environment,
+  Left,
+  LineChart,
+  Message,
+  More,
+  Pen,
+  Setting,
+} from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
+import { MunicipalityBadge } from "~/components/ui/municipality-badge";
 import { useAuthStore } from "~/hooks/useAuthStore";
 import { useSatisfiedStore, useVote } from "~/hooks/useVote";
 import { JST } from "~/libs/dayjs";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
-import { Tabs } from "~/routes/_pages.$session_id/components/Tabs";
 import type { SessionRouteContext } from "~/types/ctx";
 import { isEnd } from "~/utils/format-date";
 import { notfound } from "~/utils/response";
 import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
-import { CreateOpinionButton } from "./components/CreateOpinionButton";
 import { EditButton } from "./components/EditButton";
 import { LookupOtherOpinionButton } from "./components/LookupOtherOpinionButton";
 import { RequestsModal } from "./components/RequestsModal";
 import { ConsentModalContent } from "./components/RequestsModal/components/ConsentModalContent";
-import { DemographicsModalContent } from "./components/RequestsModal/components/DemographicsModalContent";
 import { SurveyModalContent } from "./components/RequestsModal/components/SurveyModalContent";
+import { SessionToolbar, type ToolbarItem } from "./components/SessionToolbar";
 
 export { ErrorBoundary } from "./modules/ErrorBoundary";
 export { clientLoader } from "./modules/loader";
 export { meta } from "./modules/meta";
 export { shouldRevalidate } from "./modules/shouldRevalidate";
-
-type Tab = {
-  label: string;
-  href: string;
-  external?: boolean;
-};
 
 type UnwrapPromise<T> = T extends Promise<infer U> ? U : T;
 
@@ -72,23 +76,32 @@ type Props = Omit<Route.ComponentProps["loaderData"], "$session"> & {
 
 const Contents = ({
   session,
-  $restrictions,
   $remainingCount,
   $positions,
   $survey,
   enableSurvey,
 }: Props) => {
-  const tabs: Tab[] = [
-    { label: "内容", href: `/${session.id}` },
-    { label: "意見", href: `/${session.id}/opinions` },
-    { label: "分析", href: `/${session.id}/analysis` },
+  const tabs: ToolbarItem[] = [
+    { label: "内容", href: `/${session.id}`, icon: FileText },
+    { label: "意見", href: `/${session.id}/opinions`, icon: Message },
+    { label: "分析", href: `/${session.id}/analysis`, icon: LineChart },
   ];
+
+  const remainingDays = JST(session.scheduledEndTime).diff(
+    JST(new Date()),
+    "day",
+  );
+  const remainingLabel = isEnd(session.scheduledEndTime)
+    ? "終了"
+    : remainingDays === 0
+      ? "本日まで"
+      : `あと${remainingDays}日`;
 
   const navigate = useNavigate();
   const authStatus = useAuthStore((state) => state.status);
   const user = useAuthStore((state) => state.user);
   const { check } = useVote({ sessionID: session.id });
-  const { isRequestModal, setIsRequestModal, nextPath, setNextPath } =
+  const { isRequestModal, setIsRequestModal, setNextPath } =
     useSatisfiedStore();
   const { revalidate } = useRevalidator();
   const [searchParams] = useSearchParams();
@@ -106,15 +119,16 @@ const Contents = ({
 
   // オーナーかどうかでタブを出し分ける。ログイン状態の変化に追随させる
   const isOwner = user?.displayID === session.owner.displayID;
-  const tabItems: Tab[] = isOwner
+  const tabItems: ToolbarItem[] = isOwner
     ? [
         ...tabs,
-        { label: "活動報告", href: `/${session.id}/conclusion` },
-        { label: "通報", href: `/${session.id}/reports` },
-        { label: "設定", href: `/${session.id}/config` },
+        { label: "活動報告", href: `/${session.id}/conclusion`, icon: Pen },
+        { label: "通報", href: `/${session.id}/reports`, icon: Alert },
+        { label: "設定", href: `/${session.id}/config`, icon: Setting },
         {
           label: "スクリーン",
           href: `/${session.id}/fullscreen`,
+          icon: More,
           external: true,
         },
       ]
@@ -191,19 +205,27 @@ const Contents = ({
 
   return (
     <>
-      <div className="mx-auto mt-2 flex w-full max-w-4xl flex-col space-y-2 px-4 py-2">
-        <div className="flex items-center">
-          <Link to="/home">
-            <Left className="fill-gray-600" />
+      <div className="sticky top-0 z-20 border-line border-b bg-white/90 backdrop-blur">
+        <div className="mx-auto flex h-14 w-full max-w-4xl items-center gap-2 px-4">
+          <Link
+            to="/home"
+            aria-label="ホームに戻る"
+            className="-ml-2 flex size-10 shrink-0 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface"
+          >
+            <Left className="fill-current" />
           </Link>
-          <p className="ml-2 font-bold text-base md:text-3xl">
+          <p className="line-clamp-1 font-bold text-base tracking-tight">
             {session.theme}
           </p>
-          <Suspense>
-            <EditButton session={session} />
-          </Suspense>
+          <div className="ml-auto flex shrink-0">
+            <Suspense>
+              <EditButton session={session} />
+            </Suspense>
+          </div>
         </div>
+      </div>
 
+      <div className="mx-auto flex w-full max-w-4xl flex-col gap-2 px-4 py-3">
         <Suspense>
           <AccordionParticipantGraph $positions={$positions} />
         </Suspense>
@@ -216,50 +238,41 @@ const Contents = ({
           />
         </Suspense>
 
-        <div className="flex items-center space-x-2">
-          <Avatar src={session.owner.iconURL} className="h-6 w-6" />
-          <p className="line-clamp-1 w-48 text-gray-500 text-sm">
+        <div className="flex items-center gap-2">
+          {session.organizationAlias?.aliasName && (
+            <MunicipalityBadge name={session.organizationAlias.aliasName} />
+          )}
+          <Avatar src={session.owner.iconURL} className="h-[30px] w-[30px]" />
+          <p className="line-clamp-1 text-ink-subtle text-sm">
             {session.owner.displayName}
           </p>
         </div>
 
-        <div className="text-blue-500 text-sm">
-          <div className="flex items-center">
-            <Notification className="fill-cs-blue-600" />
-            <p className="ml-2">誰でも参加OK</p>
+        <div className="flex items-center gap-4">
+          {session.city && (
+            <div className="flex items-center gap-1">
+              <Environment className="size-4 text-ink-subtle" />
+              <p className="text-ink-subtle text-sm">{session.city}</p>
+            </div>
+          )}
+          <div className="flex items-center gap-1">
+            <ClockCircle className="size-4 text-ink-subtle" />
+            <p className="text-ink-subtle text-sm">{remainingLabel}</p>
           </div>
         </div>
+      </div>
 
-        <div className="flex space-x-2">
-          {session.city && (
-            <p className="text-gray-500 text-sm">{session.city}</p>
-          )}
-          <p className="text-gray-500 text-sm">
-            {JST(session.scheduledEndTime).format("MM/DD(ddd)まで")}
-          </p>
+      <div className="flex-1 bg-surface py-4 pb-32">
+        <div className="mx-auto w-full max-w-4xl px-4">
+          <Outlet context={{ session } satisfies SessionRouteContext} />
         </div>
       </div>
 
-      <div className="mx-auto w-full max-w-4xl">
-        <Tabs items={tabItems} />
-      </div>
-
-      <div className="flex-1 bg-[#F2F2F7] p-4">
-        <Suspense>
-          <Await resolve={session}>
-            {() => {
-              return (
-                <Outlet context={{ session } satisfies SessionRouteContext} />
-              );
-            }}
-          </Await>
-        </Suspense>
-        <div className="fixed right-4 bottom-4 z-10">
-          {!isEnd(session.scheduledEndTime) && (
-            <CreateOpinionButton onClick={handleMoveCreateOpinionPage} />
-          )}
-        </div>
-      </div>
+      <SessionToolbar
+        items={tabItems}
+        showFab={!isEnd(session.scheduledEndTime)}
+        onFabClick={handleMoveCreateOpinionPage}
+      />
 
       <RequestsModal
         isOpen={isRequestModal.length > 0}
@@ -285,7 +298,7 @@ const Contents = ({
                     `survey-answered-${session.id}`,
                     "true",
                   );
-                  // 後続のモーダル（デモグラ等）があれば進め、なければnextPathへ遷移
+                  // 後続のモーダルがあれば進め、なければnextPathへ遷移
                   next();
                 }}
               />
@@ -301,16 +314,6 @@ const Contents = ({
                 }
                 onClose={handleCloseRequestModal}
                 onConform={next}
-              />
-            );
-          }
-          if (state === "demography") {
-            return (
-              <DemographicsModalContent
-                $restrictions={$restrictions}
-                sessionID={session.id}
-                onClose={handleCloseRequestModal}
-                nextPath={nextPath}
               />
             );
           }

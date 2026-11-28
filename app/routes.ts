@@ -16,9 +16,9 @@ const customRoutes: Array<RouteConfigEntry & { id: string }> = [
     path: ":session_id/opinions/:opinion_id",
   },
   {
-    id: "routes/_pages.users.me.edit",
-    file: "routes/_pages.users.me.edit/index.tsx",
-    path: "users/me/edit",
+    id: "routes/_pages.settings",
+    file: "routes/_pages.settings/index.tsx",
+    path: "settings",
   },
 ];
 
