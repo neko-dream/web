@@ -1,6 +1,6 @@
 import { motion } from "motion/react";
 import { Link, useLocation } from "react-router";
-import { Home, PlusCircle, Search, User } from "~/components/icons";
+import { Home, PlusCircle, Setting, User } from "~/components/icons";
 
 type Props = {
   isLoggedIn: boolean;
@@ -10,6 +10,12 @@ type Props = {
 const isActivePath = (to: string, pathname: string) => {
   if (to === "/home") {
     return pathname === "/home";
+  }
+  if (to === "/settings") {
+    return pathname === "/settings";
+  }
+  if (to === "/users/me") {
+    return pathname === "/users/me" || pathname === "/users/me/histories";
   }
   if (to === "/") {
     return false;
@@ -27,8 +33,8 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
   const { pathname } = useLocation();
 
   const navItems = [
+    { icon: Setting, label: "設定", to: "/settings" },
     { icon: Home, label: "ホーム", to: "/home" },
-    { icon: Search, label: "検索", to: "/search" },
     isLoggedIn
       ? { icon: User, label: "マイページ", to: "/users/me" }
       : { icon: User, label: "ログイン", to: "/" },
@@ -36,7 +42,7 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
 
   const visible =
     pathname === "/home" ||
-    pathname === "/search" ||
+    pathname === "/settings" ||
     pathname.startsWith("/users/me");
 
   if (!visible) {
@@ -60,7 +66,7 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
                 to={item.to}
                 aria-label={item.label}
                 aria-current={active ? "page" : undefined}
-                className="relative flex size-12 items-center justify-center"
+                className="relative flex size-14 flex-col items-center justify-center gap-0.5"
               >
                 {active && (
                   <motion.span
@@ -72,9 +78,10 @@ export const BottomNav = ({ isLoggedIn, canCreate }: Props) => {
                 <motion.span
                   whileTap={{ scale: 0.85 }}
                   transition={spring}
-                  className={`relative ${active ? "text-ink" : "text-ink-subtle"}`}
+                  className={`relative flex flex-col items-center gap-0.5 ${active ? "text-ink" : "text-ink-muted"}`}
                 >
-                  <item.icon className="size-6" />
+                  <item.icon className="size-5" />
+                  <span className="text-[10px] leading-none">{item.label}</span>
                 </motion.span>
               </Link>
             );
