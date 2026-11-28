@@ -1,17 +1,6 @@
 import type { ClientLoaderFunctionArgs } from "react-router";
 import { api } from "~/libs/openapi-fetch";
 
-const setStatus = (requestURL: string) => {
-  try {
-    const query = new URL(requestURL).searchParams.get("q");
-    if (query === "open" || query === "finished") {
-      return query;
-    }
-  } catch {
-    return;
-  }
-};
-
 const setTheme = (requestURL: string) => {
   try {
     const query = new URL(requestURL).searchParams.get("q");
@@ -28,7 +17,7 @@ export const clientLoader = ({ request }: ClientLoaderFunctionArgs) => {
     .GET("/talksessions", {
       params: {
         query: {
-          status: setStatus(request.url),
+          status: "open",
           theme: setTheme(request.url),
           limit: 100,
         },

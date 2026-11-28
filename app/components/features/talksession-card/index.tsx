@@ -43,8 +43,13 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
 
         {/* アバター */}
         <div className="flex items-center gap-2">
-          <Avatar src={talkSession.owner.iconURL} className="block h-5 w-5" />
-          <p className="text-black text-xs">{talkSession.owner.displayName}</p>
+          <Avatar
+            src={talkSession.owner.iconURL}
+            className="block h-5 w-5 shrink-0"
+          />
+          <p className="min-w-0 truncate text-black text-xs">
+            {talkSession.owner.displayName}
+          </p>
         </div>
 
         {/* 自治体バッジ */}
@@ -53,15 +58,19 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
         )}
 
         <div className="flex space-x-4">
-          <div className="flex w-full max-w-24 items-center space-x-1">
-            <Environment className="text-gray-500" />
-            <p className="text-gray-500 text-xs">{talkSession.city || "---"}</p>
+          <div className="flex w-full min-w-0 max-w-24 items-center space-x-1">
+            <Environment className="shrink-0 text-gray-500" />
+            <p className="min-w-0 truncate text-gray-500 text-xs">
+              {talkSession.city || "---"}
+            </p>
           </div>
 
-          <div className="flex items-center">
+          <div className="flex shrink-0 items-center">
             <ClockCircle className="text-gray-500" />
             {isFinished ? (
-              <p className="ml-1 w-14 text-gray-500 text-xs">終了</p>
+              <p className="ml-1 w-14 whitespace-nowrap text-gray-500 text-xs">
+                終了
+              </p>
             ) : (
               <p className="ml-1 w-14 whitespace-nowrap text-gray-500 text-xs">
                 {remainingDays === 0 ? "本日まで" : `あと${remainingDays}日`}
@@ -69,9 +78,9 @@ export default function TalkSessionCard({ talkSession, opinionCount }: Props) {
             )}
           </div>
 
-          <div className="flex items-center space-x-1">
+          <div className="flex shrink-0 items-center space-x-1">
             <Message className="text-blue-500" />
-            <p className="font-bold text-blue-500 text-xs">
+            <p className="whitespace-nowrap font-bold text-blue-500 text-xs">
               {opinionCount < 99 ? opinionCount : "99+"} 件
             </p>
           </div>

@@ -1,7 +1,7 @@
 import { Suspense, useState } from "react";
 import { Await, Link } from "react-router";
-import LogoIcon from "~/assets/kotohiro.png";
 import Session from "~/components/features/talksession-card";
+import { LogoHeader } from "~/components/ui/logo-header";
 import type { Route } from "~/react-router/_pages.home/+types";
 import type { components } from "~/types/openapi";
 import { SessionSkeleton } from "./components/SessionSkeleton";
@@ -15,7 +15,6 @@ type TalkSessionItem = {
 };
 
 const TABS = [
-  { label: "すべて", value: "all" },
   { label: "開催中", value: "open" },
   { label: "終了", value: "finished" },
 ] as const;
@@ -32,7 +31,7 @@ const SectionHeading = ({ children }: { children: React.ReactNode }) => (
 );
 
 const SessionList = ({ sessions }: { sessions: TalkSessionItem[] }) => (
-  <div className="grid grid-cols-1 gap-6 px-4 min-[600px]:grid-cols-2 min-[600px]:gap-x-8">
+  <div className="grid grid-cols-1 gap-6 px-4 lg:grid-cols-2 lg:gap-x-8">
     {sessions.map((session) => (
       <Link
         to={`/${session.talkSession.id}`}
@@ -71,16 +70,14 @@ const SearchHint = ({ theme }: { theme: string }) => (
 export default function Page({
   loaderData: { $session, $closeSession, theme },
 }: Route.ComponentProps) {
-  const [activeTab, setActiveTab] = useState<TabValue>("all");
+  const [activeTab, setActiveTab] = useState<TabValue>("open");
 
-  const showOpen = !theme && activeTab !== "finished";
-  const showClosed = !theme && activeTab !== "open";
+  const showOpen = Boolean(theme) || activeTab === "open";
+  const showClosed = !theme && activeTab === "finished";
 
   return (
     <div className="mx-auto w-full max-w-4xl">
-      <div className="flex items-center px-4 pt-5 pb-2">
-        <img src={LogoIcon} alt="ことひろ" className="h-8 w-[109px]" />
-      </div>
+      <LogoHeader />
 
       {theme ? (
         <div className="flex items-center gap-2 border-line border-b px-4 pt-2 pb-4">
@@ -130,14 +127,7 @@ export default function Page({
       )}
 
       {showOpen && (
-        <Suspense
-          fallback={
-            <>
-              <SectionHeading>注目のセッション</SectionHeading>
-              <SessionSkeleton />
-            </>
-          }
-        >
+        <Suspense fallback={<SessionSkeleton />}>
           <Await resolve={$session}>
             {(data) => {
               const sessions = data?.talkSessions || [];
@@ -151,13 +141,19 @@ export default function Page({
                 );
               }
 
+              if (theme) {
+                return (
+                  <>
+                    <SectionHeading>検索結果</SectionHeading>
+                    <SessionList sessions={sessions} />
+                  </>
+                );
+              }
+
               return (
-                <>
-                  <SectionHeading>
-                    {theme ? "検索結果" : "注目のセッション"}
-                  </SectionHeading>
+                <div className="pt-6">
                   <SessionList sessions={sessions} />
-                </>
+                </div>
               );
             }}
           </Await>
@@ -165,17 +161,20 @@ export default function Page({
       )}
 
       {showClosed && (
-        <Suspense fallback={null}>
+        <Suspense fallback={<SessionSkeleton />}>
           <Await resolve={$closeSession}>
             {(data) => {
               const sessions = data?.talkSessions || [];
               if (sessions.length === 0) {
-                return null;
+                return (
+                  <p className="px-4 pt-8 text-center text-ink-subtle text-sm">
+                    終了したセッションはありません。
+                  </p>
+                );
               }
 
               return (
-                <div className="mt-4">
-                  <SectionHeading>終了したセッション</SectionHeading>
+                <div className="pt-6">
                   <SessionList sessions={sessions} />
                 </div>
               );
