@@ -126,8 +126,8 @@ export const InputDateByScrollPicker: FC<InputDateByScrollPickerProps> = ({
     paddingRight: "60px", // Make space for icons
     fontSize: "1rem",
     fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    border: "1px solid oklch(0.872 0.01 258.338)",
-    borderRadius: "6px",
+    border: "1px solid #E5E5EA",
+    borderRadius: "12px",
     boxSizing: "border-box",
     cursor: "pointer",
     backgroundColor: "#fff",

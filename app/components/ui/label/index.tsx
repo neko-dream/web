@@ -1,5 +1,6 @@
 import type { ComponentProps, JSX, ReactNode } from "react";
 import { tv } from "tailwind-variants";
+import { Tip } from "~/components/ui/tip";
 
 type Props = ComponentProps<"div"> & {
   title: string;
@@ -30,10 +31,14 @@ export const Label = ({
 }: Props): JSX.Element => {
   return (
     <div {...props} className={label({ className })}>
-      <div className="mb-1 flex items-center space-x-1">
-        <label htmlFor={htmlFor} className="cursor-pointer font-bold">
+      <div className="mb-1 flex items-center gap-1.5">
+        <label
+          htmlFor={htmlFor}
+          className="cursor-pointer font-semibold text-[13px] text-ink"
+        >
           {title}
         </label>
+        {required && <Tip label="必須" required={true} />}
         {tip && tip}
       </div>
       {notes?.map((v, i) => (
