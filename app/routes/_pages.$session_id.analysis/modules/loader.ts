@@ -23,16 +23,7 @@ export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
       };
     });
 
-  const $positions = api.GET("/talksessions/{talkSessionID}/analysis", {
-    params: {
-      path: {
-        talkSessionID: params.session_id,
-      },
-    },
-  });
-
   return {
-    $positions,
     $reports,
   };
 };
