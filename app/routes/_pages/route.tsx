@@ -34,8 +34,11 @@ export default function Layout() {
   const isTopPage = pathname === "/";
   const isTabPage =
     pathname === "/home" ||
-    pathname === "/search" ||
+    pathname === "/settings" ||
     pathname.startsWith("/users/me");
+  // 自前でボトムナビ分の余白を持つページ
+  const isOwnPaddingPage =
+    pathname === "/settings" || pathname.startsWith("/users/me");
   const isSessionPage = SESSION_PATH_PATTERN.test(pathname);
   const isSwipePage = pathname.startsWith("/swipe/");
   const isMakePage = pathname.startsWith("/make/");
@@ -67,7 +70,7 @@ export default function Layout() {
         className={
           hideHeader
             ? `flex min-h-screen flex-col ${
-                isTabPage
+                isTabPage && !isOwnPaddingPage
                   ? "pb-[calc(env(safe-area-inset-bottom,0px)+88px)]"
                   : ""
               }`

@@ -5,7 +5,7 @@ import { useLoginUrls } from "~/hooks/useLoginUrls";
 
 type Props = {
   disabled?: boolean;
-  onClick: (event: MouseEvent<HTMLAnchorElement>) => void;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 };
 
 // Figma 48:6218 / 48:6224
