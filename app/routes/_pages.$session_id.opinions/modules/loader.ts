@@ -7,8 +7,6 @@ export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
     return notfound();
   }
 
-  const $user = api.GET("/auth/token/info");
-
   const $opinions = api.GET("/talksessions/{talkSessionID}/opinions", {
     params: {
       path: {
@@ -30,5 +28,5 @@ export const clientLoader = ({ params }: ClientLoaderFunctionArgs) => {
     },
   });
 
-  return { $opinions, $reasons, $user, $positions };
+  return { $opinions, $reasons, $positions };
 };

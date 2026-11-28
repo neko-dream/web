@@ -1,16 +1,14 @@
-import { Suspense, useEffect, useState } from "react";
-import { Await, Link, useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router";
 import { tv } from "tailwind-variants";
 import LogoIcon from "~/assets/kotohiro.png";
 import { Close, Menu, PlusCircle, Search } from "~/components/icons";
 import { Avatar, AvatarSkeleton } from "~/components/ui/avatar";
 import { button } from "~/components/ui/button";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { canCreateTalkSession } from "~/libs/session-creation";
-import type { Route } from "~/react-router/_pages/+types/route";
 import { MenuDialog } from "../MenuDialog";
 import { SearchModal } from "../SearchModal";
-
-type Props = Route.ComponentProps["loaderData"];
 
 const ignorePersonalIconPages = [
   "/",
@@ -28,8 +26,11 @@ const header = tv({
   },
 });
 
-export const Header = ({ $user, $permissions }: Props) => {
+export const Header = () => {
   const location = useLocation();
+  const status = useAuthStore((state) => state.status);
+  const user = useAuthStore((state) => state.user);
+  const permissions = useAuthStore((state) => state.permissions);
   const [isMenuDialogOpen, setIsMenuDialogOpen] = useState(false);
   const [isSearchDialogOpen, setIsSearchDialogOpen] = useState(false);
 
@@ -58,17 +59,9 @@ export const Header = ({ $user, $permissions }: Props) => {
         })}
       >
         <span className="relative flex h-14 w-full items-center px-4">
-          <Suspense
-            fallback={<img src={LogoIcon} alt="" className="h-8 w-[109px]" />}
-          >
-            <Await resolve={$user}>
-              {(user) => (
-                <a href={user ? "/home" : "/"} className="mr-auto">
-                  <img src={LogoIcon} alt="" className="h-8 w-[109px]" />
-                </a>
-              )}
-            </Await>
-          </Suspense>
+          <a href={user ? "/home" : "/"} className="mr-auto">
+            <img src={LogoIcon} alt="" className="h-8 w-[109px]" />
+          </a>
 
           {ignorePersonalIconPages.includes(location.pathname) && (
             <button
@@ -80,61 +73,46 @@ export const Header = ({ $user, $permissions }: Props) => {
             </button>
           )}
 
-          {!ignorePersonalIconPages.includes(location.pathname) && (
-            <Suspense fallback={<AvatarSkeleton />}>
-              <Await resolve={$user}>
-                {(user) => {
-                  if (!user?.isRegistered) {
-                    return (
-                      <Link
-                        to={"/"}
-                        className={button({
-                          className:
-                            "flex h-8 items-center rounded-full bg-brand-blue p-2 text-xs",
-                        })}
-                      >
-                        ログインする
-                      </Link>
-                    );
-                  }
+          {!ignorePersonalIconPages.includes(location.pathname) &&
+            (status === "loading" ? (
+              <AvatarSkeleton />
+            ) : !user?.isRegistered ? (
+              <Link
+                to={"/"}
+                className={button({
+                  className:
+                    "flex h-8 items-center rounded-full bg-brand-blue p-2 text-xs",
+                })}
+              >
+                ログインする
+              </Link>
+            ) : (
+              <div className="flex space-x-4">
+                <button
+                  type="button"
+                  onClick={handleSearchDialogOpenChange}
+                  className="cursor-pointer"
+                >
+                  <Search className="h-5 w-5 text-ink-muted" />
+                </button>
+                <Link to={"/users/me"}>
+                  <Avatar src={user.iconURL || ""} className="h-8 w-8" />
+                </Link>
 
-                  return (
-                    <div className="flex space-x-4">
-                      <button
-                        type="button"
-                        onClick={handleSearchDialogOpenChange}
-                        className="cursor-pointer"
-                      >
-                        <Search className="h-5 w-5 text-ink-muted" />
-                      </button>
-                      <Link to={"/users/me"}>
-                        <Avatar src={user?.iconURL || ""} className="h-8 w-8" />
-                      </Link>
-
-                      <Suspense fallback={null}>
-                        <Await resolve={$permissions}>
-                          {(permissions) =>
-                            canCreateTalkSession(permissions) && (
-                              <Link
-                                to={"/make/new"}
-                                className={button({
-                                  className:
-                                    "flex h-8 items-center gap-1 rounded-full bg-brand-blue p-2 text-xs",
-                                })}
-                              >
-                                <PlusCircle />
-                                <span>作成</span>
-                              </Link>
-                            )
-                          }
-                        </Await>
-                      </Suspense>
-                    </div>
-                  );
-                }}
-              </Await>
-            </Suspense>
-          )}
+                {canCreateTalkSession(permissions) && (
+                  <Link
+                    to={"/make/new"}
+                    className={button({
+                      className:
+                        "flex h-8 items-center gap-1 rounded-full bg-brand-blue p-2 text-xs",
+                    })}
+                  >
+                    <PlusCircle />
+                    <span>作成</span>
+                  </Link>
+                )}
+              </div>
+            ))}
         </span>
       </header>
 

@@ -22,7 +22,8 @@ React Router の SPA モード（`ssr: false`）で、画面はブラウザで�
 
 ## 検証・型生成
 
-- `pnpm test`: 権限判定とclientLoaderのCookie送信・通信障害・編集導線を検証する。Node 24を使用し、テスト専用の標準モジュールフックで既存の `~/` aliasを解決する。
+- `pnpm test`: 単体テスト。権限判定・フォームスキーマ・ホームloader・APIエラーヘルパー・日付/URLユーティリティなどを検証する。Node 24を使用し、テスト専用の標準モジュールフックで既存の `~/` aliasを解決する。
+- `pnpm test:e2e`: Playwrightで主要な画面遷移を検証する。APIはテスト内でモックするためAPIサーバーは不要。`pnpm dev:local` 相当のサーバーを3100番で自動起動する。初回は `pnpm exec playwright install chromium` でブラウザを用意する。
 - `pnpm typecheck`: アプリとテストを型チェックする。React Routerのroute型生成も含む。
 - `CLOUDFLARE_ENV=develop pnpm build`: develop向けSPAビルド（`build/client` を生成）。
 - API契約変更は `tools/kotohiro.openapi.yaml` へ反映して `pnpm generate:api` を実行する。`app/types/openapi.ts` を手編集しない。CIでも再生成結果に差分がないことを確認する。

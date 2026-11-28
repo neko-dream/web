@@ -2,6 +2,7 @@ import { type MouseEvent, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { Arrow } from "~/components/icons";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { api } from "~/libs/openapi-fetch";
 import { AuthFrame } from "./AuthFrame";
 import { AuthProviderLinks } from "./AuthProviderLinks";
@@ -20,6 +21,7 @@ export const AuthenticateCard = ({
   useWithoutLoggingIn = true,
 }: Props) => {
   const navigate = useNavigate();
+  const refresh = useAuthStore((state) => state.refresh);
   const [isChecked, setChecked] = useState(false);
   const [isSubmitting, startSubmitting] = useState(false);
 
@@ -30,26 +32,30 @@ export const AuthenticateCard = ({
     }
 
     startSubmitting(true);
-    let errorFlag = false;
 
     const { error: guestLoginError } = await api.POST("/auth/guest/login", {
       credentials: "include",
     });
-    errorFlag = !!guestLoginError;
 
-    const { error: tokenInfoError } = await api.GET("/auth/token/info", {
-      credentials: "include",
-    });
-    errorFlag = !!tokenInfoError;
-
-    if (errorFlag) {
+    if (guestLoginError) {
       startSubmitting(false);
       toast.error("ゲストログインに失敗しました");
-    } else if (onSuccess) {
+      return;
+    }
+
+    // ヘッダーなどがログイン前の状態のまま残らないよう、共有ストアを更新する
+    await refresh();
+    if (!useAuthStore.getState().user) {
+      startSubmitting(false);
+      toast.error("ゲストログインに失敗しました");
+      return;
+    }
+
+    if (onSuccess) {
       startSubmitting(false);
       onSuccess();
     } else {
-      navigate("/home");
+      navigate("/home", { replace: true });
     }
   };
 

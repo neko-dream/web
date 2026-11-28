@@ -20,6 +20,15 @@ test("every build needs an explicit known deployment environment", () => {
   }
 });
 
+test("Cloudflare's development preview environment uses develop", () => {
+  for (const command of ["build", "serve"] as const) {
+    assert.equal(
+      selectEnvironment({ command, cloudflareEnv: "development" }),
+      "develop",
+    );
+  }
+});
+
 test("local API configuration can never reach build output", () => {
   for (const cloudflareEnv of [undefined, "develop", "production"]) {
     assert.throws(() =>

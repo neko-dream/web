@@ -1,11 +1,10 @@
 import { Outlet, useLocation, useNavigate } from "react-router";
 import { Slide, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { lazy, useEffect, useState } from "react";
+import { lazy, useEffect } from "react";
 import { BottomNav } from "~/components/features/bottom-nav";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import { canCreateTalkSession } from "~/libs/session-creation";
-import type { Route } from "~/react-router/_pages/+types/route";
-import type { RouteContext } from "~/types/ctx";
 import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 
@@ -18,13 +17,13 @@ const Analytics = lazy(() => import("~/components/features/analytics"));
 const SESSION_PATH_PATTERN =
   /^\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/;
 
-export default function Layout({
-  loaderData: { $user, $permissions },
-}: Route.ComponentProps) {
+export default function Layout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [canCreate, setCanCreate] = useState(false);
+  const user = useAuthStore((state) => state.user);
+  const permissions = useAuthStore((state) => state.permissions);
+  const isLoggedIn = !!user;
+  const canCreate = canCreateTalkSession(permissions);
 
   const isAuthPage =
     pathname === "/auth/login" ||
@@ -52,27 +51,18 @@ export default function Layout({
   // フッターは公開ページだけに出す
   const showFooter = isTopPage || isAuthPage || pathname.startsWith("/guide");
 
-  // ログイン済みだったらホームにリダイレクト
+  // ログイン状態が確定してからトップページをホームへ逃がす
   useEffect(() => {
-    $user.then((user) => {
-      setIsLoggedIn(!!user);
-      if (user && window.location.pathname === "/") {
-        navigate("/home", { replace: true });
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    $permissions.then((permissions) => {
-      setCanCreate(canCreateTalkSession(permissions));
-    });
-  }, []);
+    if (user && pathname === "/") {
+      navigate("/home", { replace: true });
+    }
+  }, [user, pathname, navigate]);
 
   return (
     <>
       {!isAuthPage && <Analytics />}
       {/* 実際に見えるコンテンツ */}
-      {!hideHeader && <Header $user={$user} $permissions={$permissions} />}
+      {!hideHeader && <Header />}
       <main
         className={
           hideHeader
@@ -84,7 +74,7 @@ export default function Layout({
             : "flex min-h-[calc(100vh-56px)] flex-col"
         }
       >
-        <Outlet context={{ $user } satisfies RouteContext} />
+        <Outlet />
       </main>
       {showFooter && <Footer />}
       <BottomNav isLoggedIn={isLoggedIn} canCreate={canCreate} />

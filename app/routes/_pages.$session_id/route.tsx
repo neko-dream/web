@@ -1,11 +1,10 @@
 import { FileText } from "lucide-react";
-import { type MouseEvent, Suspense, useEffect, useState } from "react";
+import { type MouseEvent, Suspense, useEffect, useRef, useState } from "react";
 import {
   Await,
   Link,
   Outlet,
   useNavigate,
-  useOutletContext,
   useRevalidator,
   useSearchParams,
 } from "react-router";
@@ -28,6 +27,7 @@ import {
 } from "~/components/icons";
 import { Avatar } from "~/components/ui/avatar";
 import { MunicipalityBadge } from "~/components/ui/municipality-badge";
+import { useAuthStore } from "~/hooks/useAuthStore";
 import {
   SURVEY_RESTRICTION_KEY,
   useSatisfiedStore,
@@ -35,7 +35,7 @@ import {
 } from "~/hooks/useVote";
 import { JST } from "~/libs/dayjs";
 import type { Route } from "~/react-router/_pages.$session_id/+types/route";
-import type { RouteContext, SessionRouteContext } from "~/types/ctx";
+import type { SessionRouteContext } from "~/types/ctx";
 import { isEnd } from "~/utils/format-date";
 import { notfound } from "~/utils/response";
 import { AccordionParticipantGraph } from "./components/AccordionParticipantGraph";
@@ -68,8 +68,6 @@ const restrictionIcons: Record<
 export default function Layout({
   loaderData: { $session, enableSurvey, ...props },
 }: Route.ComponentProps) {
-  const { $user } = useOutletContext<RouteContext>();
-
   return (
     <Suspense>
       <Await resolve={$session}>
@@ -80,7 +78,6 @@ export default function Layout({
           return (
             <Contents
               session={session}
-              $user={$user}
               enableSurvey={enableSurvey}
               {...props}
             />
@@ -96,13 +93,11 @@ type Props = Omit<Route.ComponentProps["loaderData"], "$session"> & {
     UnwrapPromise<Route.ComponentProps["loaderData"]["$session"]>["data"],
     null | undefined
   >;
-  $user: RouteContext["$user"];
 };
 
 const Contents = ({
   session,
   $restrictions,
-  $user,
   $remainingCount,
   $positions,
   $survey,
@@ -130,27 +125,29 @@ const Contents = ({
       : `あと${remainingDays}日`;
 
   const navigate = useNavigate();
-  const [tabItems, setTabItems] = useState<ToolbarItem[]>(tabs);
+  const authStatus = useAuthStore((state) => state.status);
+  const user = useAuthStore((state) => state.user);
   const { check } = useVote({ sessionID: session.id });
   const { isRequestModal, setIsRequestModal, nextPath, setNextPath } =
     useSatisfiedStore();
   const { revalidate } = useRevalidator();
   const [searchParams] = useSearchParams();
+  const signupQuery = searchParams.get("signup");
 
+  // ログイン状態が確定してから、未ログイン時のサインアップ導線を出す
   useEffect(() => {
-    $user.then((user) => {
-      if (!user) {
-        const signup = searchParams.get("signup");
-        if (signup === "true") {
-          setIsRequestModal(["signup"]);
-        }
-      }
+    if (authStatus !== "ready" || user) {
+      return;
+    }
+    if (signupQuery === "true") {
+      setIsRequestModal(["signup"]);
+    }
+  }, [authStatus, user, signupQuery, setIsRequestModal]);
 
-      if (session.owner.displayID !== user?.displayID) {
-        return;
-      }
-
-      const ownerTabs: ToolbarItem[] = [
+  // オーナーかどうかでタブを出し分ける。ログイン状態の変化に追随させる
+  const isOwner = user?.displayID === session.owner.displayID;
+  const tabItems: ToolbarItem[] = isOwner
+    ? [
         ...tabs,
         { label: "活動報告", href: `/${session.id}/conclusion`, icon: Pen },
         { label: "通報", href: `/${session.id}/reports`, icon: Alert },
@@ -161,24 +158,26 @@ const Contents = ({
           icon: More,
           external: true,
         },
-      ];
-      setTabItems(ownerTabs);
-    });
-  }, []);
+      ]
+    : tabs;
 
   const [survey, setSurvey] = useState<UnwrapPromise<Props["$survey"]> | null>(
     null,
   );
+  const hasCheckedSurvey = useRef(false);
 
   /**
    * セッション詳細に遷移したとき、アンケートが設定されていて
    * 未回答（未答フラグなし）ならアンケートダイアログを開く
    */
   useEffect(() => {
-    if (!enableSurvey) {
+    if (!enableSurvey || authStatus !== "ready" || hasCheckedSurvey.current) {
       return;
     }
-    Promise.all([$user, $survey]).then(([user, surveyData]) => {
+    hasCheckedSurvey.current = true;
+    // 自動表示は初回のログイン状態で判定する（ログイン後の再表示はしない）
+    const user = useAuthStore.getState().user;
+    $survey.then((surveyData) => {
       if (!surveyData || surveyData.questions.length === 0) {
         return;
       }
@@ -201,7 +200,15 @@ const Contents = ({
       setNextPath(undefined);
       setIsRequestModal(["survey"]);
     });
-  }, []);
+  }, [
+    enableSurvey,
+    authStatus,
+    $survey,
+    session.id,
+    session.owner.displayID,
+    setNextPath,
+    setIsRequestModal,
+  ]);
 
   const handleCloseRequestModal = () => {
     setIsRequestModal([]);
@@ -239,7 +246,7 @@ const Contents = ({
           </p>
           <div className="ml-auto flex shrink-0">
             <Suspense>
-              <EditButton $user={$user} session={session} />
+              <EditButton session={session} />
             </Suspense>
           </div>
         </div>
@@ -253,7 +260,6 @@ const Contents = ({
         <Suspense>
           <LookupOtherOpinionButton
             $remainingCount={$remainingCount}
-            $user={$user}
             onClick={handleMoveSwipePage}
             className="relative mx-auto mt-2 block h-12 w-[248px] cursor-pointer border-gradient p-2 text-center before:rounded-2xl"
           />

@@ -30,6 +30,10 @@ const isDeploymentEnvironment = (
 ): value is DeploymentEnvironment =>
   DEPLOYMENT_ENVIRONMENTS.includes(value as DeploymentEnvironment);
 
+// Cloudflare Workers Builds は名前付き環境を持たないブランチに
+// CLOUDFLARE_ENV=development を自動で設定する
+const CLOUDFLARE_PREVIEW_ENV = "development";
+
 export function selectEnvironment({
   command,
   cloudflareEnv,
@@ -49,12 +53,14 @@ export function selectEnvironment({
     }
     return undefined;
   }
-  if (command === "build" && !cloudflareEnv) {
+  const requestedEnv =
+    cloudflareEnv === CLOUDFLARE_PREVIEW_ENV ? "develop" : cloudflareEnv;
+  if (command === "build" && !requestedEnv) {
     throw new Error(
       "Builds require explicit CLOUDFLARE_ENV (develop, staging or production)",
     );
   }
-  const environment = cloudflareEnv ?? "develop";
+  const environment = requestedEnv ?? "develop";
   if (!isDeploymentEnvironment(environment)) {
     throw new Error(`Unknown CLOUDFLARE_ENV: ${environment}`);
   }
