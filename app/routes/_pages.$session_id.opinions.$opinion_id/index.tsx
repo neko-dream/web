@@ -8,9 +8,9 @@ import { HintOpinionModal } from "~/components/features/hint-opinion-modal";
 import { Card } from "~/components/features/opinion-card";
 import { InfoCircle, More } from "~/components/icons";
 import { Button } from "~/components/ui/button";
-import { Heading } from "~/components/ui/heading";
 import { Label } from "~/components/ui/label";
 import { HalfBottomDialog } from "~/components/ui/modal";
+import { PageHeader } from "~/components/ui/page-header";
 import { Textarea } from "~/components/ui/textarea";
 import { useVote } from "~/hooks/useVote";
 import { api } from "~/libs/openapi-fetch";
@@ -81,67 +81,72 @@ export default function Page({
 
   return (
     <>
-      {/* FIXME: 意見IDからセッションのIDが欲しい */}
-      <Heading title="コメント一覧" to={`/${session.id}`} isLink={true} />
+      <PageHeader title="コメント" backTo={`/${session.id}/opinions`} />
 
-      {root.opinion.isDeleted ? (
-        <DeletedOpinionCard
-          title={root.opinion.title}
-          description={root.opinion.content}
-          status={root.myVoteType}
-          date={root.opinion.postedAt}
-        />
-      ) : (
-        <Card
-          title={root.opinion.title}
-          description={root.opinion.content}
-          user={root.user}
-          status={root.myVoteType}
-          date={root.opinion.postedAt}
-          isJudgeButton={currentUser?.displayID !== root.user.displayID}
-          onClickAgree={() => handleVote(root.opinion.id, "agree")}
-          onClickDisagree={() => handleVote(root.opinion.id, "disagree")}
-          onClickPass={() => handleVote(root.opinion.id, "pass")}
-          className="mx-auto w-full max-w-2xl"
-          isAllText={true}
-          isJudgeButtonDisabled={isEnd(session.scheduledEndTime)}
-        />
-      )}
-
-      <div className="flex flex-1 flex-col bg-[#F2F2F7] p-4 pt-0">
-        {opinions.map(({ opinion, user, myVoteType }, i) => {
-          if (opinion.isDeleted) {
-            return (
+      <div className="flex-1 bg-surface">
+        <div className="mx-auto w-full max-w-4xl px-4 py-4">
+          <div className="mx-auto w-full max-w-2xl">
+            {root.opinion.isDeleted ? (
               <DeletedOpinionCard
-                key={i}
-                href={`/${session.id}/opinions/${opinion.id}`}
-                title={opinion.title}
-                description={opinion.content}
-                status={myVoteType}
-                date={opinion.postedAt}
+                title={root.opinion.title}
+                description={root.opinion.content}
+                status={root.myVoteType}
+                date={root.opinion.postedAt}
               />
-            );
-          }
-
-          return (
-            <div key={i} className="mx-auto w-full max-w-2xl">
-              <More className="ml-4 w-6 text-cyan-500" />
+            ) : (
               <Card
-                key={i}
-                title={opinion.title}
-                description={opinion.content}
-                user={user}
-                status={myVoteType}
-                date={opinion.postedAt}
-                isJudgeButton={currentUser?.displayID !== user.displayID}
-                onClickAgree={() => handleVote(opinion.id, "agree")}
-                onClickDisagree={() => handleVote(opinion.id, "disagree")}
-                onClickPass={() => handleVote(opinion.id, "pass")}
+                title={root.opinion.title}
+                description={root.opinion.content}
+                user={root.user}
+                status={root.myVoteType}
+                date={root.opinion.postedAt}
+                isJudgeButton={currentUser?.displayID !== root.user.displayID}
+                onClickAgree={() => handleVote(root.opinion.id, "agree")}
+                onClickDisagree={() => handleVote(root.opinion.id, "disagree")}
+                onClickPass={() => handleVote(root.opinion.id, "pass")}
+                className="w-full"
                 isAllText={true}
+                isJudgeButtonDisabled={isEnd(session.scheduledEndTime)}
               />
-            </div>
-          );
-        })}
+            )}
+          </div>
+
+          <div className="mx-auto mt-4 flex w-full max-w-2xl flex-col gap-4">
+            {opinions.map(({ opinion, user, myVoteType }, i) => {
+              if (opinion.isDeleted) {
+                return (
+                  <DeletedOpinionCard
+                    key={i}
+                    href={`/${session.id}/opinions/${opinion.id}`}
+                    title={opinion.title}
+                    description={opinion.content}
+                    status={myVoteType}
+                    date={opinion.postedAt}
+                  />
+                );
+              }
+
+              return (
+                <div key={i} className="w-full">
+                  <More className="ml-4 w-6 text-cyan-500" />
+                  <Card
+                    key={i}
+                    title={opinion.title}
+                    description={opinion.content}
+                    user={user}
+                    status={myVoteType}
+                    date={opinion.postedAt}
+                    isJudgeButton={currentUser?.displayID !== user.displayID}
+                    onClickAgree={() => handleVote(opinion.id, "agree")}
+                    onClickDisagree={() => handleVote(opinion.id, "disagree")}
+                    onClickPass={() => handleVote(opinion.id, "pass")}
+                    isAllText={true}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
       </div>
 
       {!(root.opinion.isDeleted || isEnd(session.scheduledEndTime)) && (
