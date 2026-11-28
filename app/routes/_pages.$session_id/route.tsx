@@ -262,8 +262,8 @@ const Contents = ({
         </div>
       </div>
 
-      <div className="flex-1 bg-surface px-4 py-4 pb-32">
-        <div className="mx-auto w-full max-w-4xl">
+      <div className="flex-1 bg-surface py-4 pb-32">
+        <div className="mx-auto w-full max-w-4xl px-4">
           <Outlet context={{ session } satisfies SessionRouteContext} />
         </div>
       </div>

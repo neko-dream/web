@@ -31,9 +31,9 @@ export const SessionToolbar = ({ items, showFab, onFabClick }: Props) => {
         initial={{ y: 96, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ ...spring, damping: 24 }}
-        className="pointer-events-auto flex max-w-full items-center gap-2 px-2"
+        className="pointer-events-auto flex max-w-full items-center gap-6 px-2"
       >
-        <nav className="flex items-center gap-1.5 overflow-x-auto rounded-full bg-[#EAEEF3] p-1.5 shadow-[0px_4px_8px_rgba(0,0,0,0.16)]">
+        <nav className="flex min-w-0 items-center gap-6 overflow-x-auto rounded-full bg-[#EAEEF3] p-2 shadow-[0px_4px_8px_rgba(0,0,0,0.16)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {items.map((item) => (
             <NavLink
               key={item.href}
@@ -46,7 +46,7 @@ export const SessionToolbar = ({ items, showFab, onFabClick }: Props) => {
               preventScrollReset={true}
               target={item.external ? "_blank" : undefined}
               rel={item.external ? "noopener noreferrer" : undefined}
-              className="relative flex size-11 shrink-0 items-center justify-center"
+              className="relative flex size-14 shrink-0 flex-col items-center justify-center gap-0.5"
             >
               {({ isActive }) => (
                 <>
@@ -60,9 +60,12 @@ export const SessionToolbar = ({ items, showFab, onFabClick }: Props) => {
                   <motion.span
                     whileTap={{ scale: 0.85 }}
                     transition={spring}
-                    className={`relative ${isActive ? "text-ink" : "text-ink-muted"}`}
+                    className={`relative flex flex-col items-center gap-0.5 ${isActive ? "text-ink" : "text-ink-muted"}`}
                   >
                     <item.icon className="size-5" />
+                    <span className="text-[10px] leading-none">
+                      {item.label}
+                    </span>
                   </motion.span>
                 </>
               )}
