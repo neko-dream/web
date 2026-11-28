@@ -13,7 +13,9 @@ export default function Layout({ loaderData: { user } }: Route.ComponentProps) {
       <LogoHeader />
       <div className="mx-auto flex w-full max-w-2xl flex-col items-center pt-2">
         <Avatar src={user.iconURL} className="mt-2 h-24 w-24" />
-        <p className="mt-2 text-2xl">{user.displayName}</p>
+        <p className="mt-2 font-bold text-2xl tracking-tight">
+          {user.displayName}
+        </p>
         <Tabs
           className="mt-2"
           items={[
